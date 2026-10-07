@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Kartu LKPD Laju Reaksi · EduKinetika</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --ink: #14213d;
+            --paper: #f3f6fa;
+            --grid: #dde5ef;
+            --muted: #5b6b82;
+            --reaktan: #2563eb;
+            --produk: #f08a24;
+            --tinggi-bilah: 64px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            min-height: 100dvh;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            color: var(--ink);
+            background-color: var(--paper);
+            /* Latar kertas grafik: mengingatkan pada grafik konsentrasi terhadap waktu */
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 28px 28px;
+            background-position: -1px -1px;
+            overflow-x: clip;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        body.lkpd-terbuka {
+            overflow: hidden;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        h1,
+        h2,
+        h3,
+        p,
+        figure {
+            margin: 0;
+        }
+
+        .display {
+            font-family: 'Bricolage Grotesque', 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* ===== Tombol Dashboard (sudut kanan atas) ===== */
+        .btn-dashboard {
+            position: fixed;
+            top: calc(12px + env(safe-area-inset-top, 0px));
+            right: calc(14px + env(safe-area-inset-right, 0px));
+            z-index: 70;
+            display: inline-flex;
+            align-items: center;
+            gap: .55rem;
+            padding: .6rem 1rem .6rem .65rem;
+            background: rgba(255, 255, 255, .9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1.5px solid var(--ink);
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: .82rem;
+            color: var(--ink);
+            box-shadow: 3px 3px 0 var(--ink);
+            transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+            text-decoration: none;
+        }
+
+        .btn-dashboard .ikon {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            background: var(--ink);
+            color: #fff;
+            font-size: .75rem;
+        }
+
+        .btn-dashboard:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0 var(--ink);
+            background: #fff;
+        }
+
+        .btn-dashboard:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 var(--ink);
+        }
+
+        /* ===== Tata letak menu ===== */
+        .halaman {
+            width: 100%;
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 88px max(20px, env(safe-area-inset-right, 0px)) 40px max(20px, env(safe-area-inset-left, 0px));
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 40px;
+            align-items: center;
+            margin-bottom: 56px;
+        }
+
+        .hero .pengantar {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            font-size: .88rem;
+            font-weight: 600;
+            color: var(--muted);
+            margin-bottom: .75rem;
+        }
+
+        .hero .pengantar i {
+            color: var(--reaktan);
+        }
+
+        .hero h1 {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2.3rem, 5.4vw, 3.9rem);
+            line-height: 1.02;
+            letter-spacing: -.02em;
+        }
+
+        .hero .deskripsi {
+            margin-top: 1rem;
+            font-size: 15px;
+            line-height: 1.65;
+            color: var(--muted);
+            max-width: 30rem;
+        }
+
+        .chip-daftar {
+            margin-top: 1.25rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            background: #fff;
+            border: 1.5px solid var(--ink);
+            border-radius: 999px;
+            padding: .28rem .7rem;
+            font-size: .76rem;
+            font-weight: 700;
+        }
+
+        .grafik-hero {
+            background: #fff;
+            border: 1.5px solid var(--ink);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 5px 5px 0 var(--ink);
+        }
+
+        .grafik-hero svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .grafik-hero figcaption {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+            text-align: center;
+        }
+
+        .kurva {
+            stroke-dasharray: 520;
+            stroke-dashoffset: 520;
+            animation: gambar 2.2s cubic-bezier(.3, .7, .2, 1) .3s forwards;
+        }
+
+        .kurva.produk {
+            animation-delay: .6s;
+        }
+
+        .titik {
+            opacity: 0;
+            animation: muncul .4s ease 2.4s forwards;
+        }
+
+        @keyframes gambar {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes muncul {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .kepala-daftar {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 22px;
+        }
+
+        .kepala-daftar h2 {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 800;
+            font-size: clamp(1.5rem, 3vw, 1.9rem);
+        }
+
+        .kepala-daftar p {
+            font-size: .88rem;
+            color: var(--muted);
+        }
+
+        /* ===== Jalur urutan + kartu ===== */
+        .daftar-kartu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+            gap: 28px;
+            counter-reset: kartu;
+        }
+
+        .kartu {
+            --warna: var(--reaktan);
+            --lembut: #e8efff;
+            --gelap: #1e3a8a;
+            position: relative;
+            text-align: left;
+            font: inherit;
+            color: var(--ink);
+            background: #fff;
+            border: 1.5px solid var(--ink);
+            border-radius: 22px;
+            box-shadow: 6px 6px 0 var(--ink);
+            transition: transform .2s ease, box-shadow .2s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .kartu:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 9px 9px 0 var(--warna);
+        }
+
+        .kartu:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--ink);
+        }
+
+        .kartu:focus-visible,
+        .btn-dashboard:focus-visible,
+        .btn-kembali:focus-visible,
+        .btn-bilah:focus-visible {
+            outline: 3px solid var(--warna, var(--reaktan));
+            outline-offset: 4px;
+        }
+
+        /* Panggung ilustrasi di bagian atas kartu */
+        .kartu .panggung {
+            position: relative;
+            height: 150px;
+            background-color: var(--lembut);
+            background-image:
+                linear-gradient(rgba(20, 33, 61, .07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(20, 33, 61, .07) 1px, transparent 1px);
+            background-size: 18px 18px;
+            border-bottom: 1.5px solid var(--ink);
+            overflow: hidden;
+        }
+
+        .kartu .panggung svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .kartu .nomor {
+            position: absolute;
+            left: 16px;
+            bottom: -10px;
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 800;
+            font-size: 4.4rem;
+            line-height: 1;
+            color: #fff;
+            -webkit-text-stroke: 2px var(--ink);
+            paint-order: stroke fill;
+            text-shadow: 4px 4px 0 var(--warna);
+            pointer-events: none;
+        }
+
+        .kartu .waktu {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            background: #fff;
+            border: 1.5px solid var(--ink);
+            border-radius: 999px;
+            padding: .2rem .6rem;
+            font-size: .72rem;
+            font-weight: 700;
+        }
+
+        .kartu .isi {
+            padding: 20px 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .kartu .label-lkpd {
+            font-size: .78rem;
+            font-weight: 700;
+            color: var(--warna);
+        }
+
+        .kartu h3 {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 800;
+            font-size: 1.32rem;
+            line-height: 1.2;
+            margin-top: -6px;
+        }
+
+        .kartu .masalah {
+            position: relative;
+            background: #fffaf2;
+            border: 1.5px dashed #e6a15c;
+            border-radius: 14px;
+            padding: 10px 12px 10px 40px;
+            font-size: .88rem;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        .kartu .masalah i {
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            color: #c2410c;
+            font-size: .95rem;
+        }
+
+        .kartu .masalah small {
+            display: block;
+            font-size: .72rem;
+            font-weight: 700;
+            color: #c2410c;
+            margin-bottom: 2px;
+        }
+
+        .kartu .konsep {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .kartu .konsep span {
+            background: var(--lembut);
+            color: var(--gelap);
+            border-radius: 8px;
+            padding: .25rem .55rem;
+            font-size: .74rem;
+            font-weight: 700;
+        }
+
+        .kartu .aksi {
+            margin-top: auto;
+            border-top: 1.5px solid var(--ink);
+            padding: 12px 14px 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+            font-weight: 800;
+            font-size: .9rem;
+            background: #fff;
+            transition: background .2s ease, color .2s ease;
+        }
+
+        .kartu .aksi .panah {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: var(--warna);
+            color: #fff;
+            border: 1.5px solid var(--ink);
+            transition: transform .2s ease;
+        }
+
+        .kartu:hover .aksi {
+            background: var(--lembut);
+        }
+
+        .kartu:hover .aksi .panah {
+            transform: translateX(3px) rotate(-8deg);
+        }
+
+        .k1 {
+            --warna: #2563eb;
+            --lembut: #e8efff;
+            --gelap: #1e3a8a;
+        }
+
+        .k2 {
+            --warna: #059669;
+            --lembut: #e1f6ee;
+            --gelap: #065f46;
+        }
+
+        .k3 {
+            --warna: #7c3aed;
+            --lembut: #f0e9ff;
+            --gelap: #4c1d95;
+        }
+
+        .k4 {
+            --warna: #ea7a12;
+            --lembut: #fff1e2;
+            --gelap: #9a3412;
+        }
+
+        .k5 {
+            --warna: #db2777;
+            --lembut: #fde7f2;
+            --gelap: #9d174d;
+        }
+
+        /* ---- Gerak ilustrasi saat kartu disorot ---- */
+        .ilus .gerak {
+            transition: transform .6s cubic-bezier(.3, .7, .2, 1);
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+
+        .ilus .ledak {
+            opacity: 0;
+            transform: scale(.4);
+            transition: opacity .3s ease .35s, transform .4s cubic-bezier(.3, 1.6, .5, 1) .35s;
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+
+        .kartu:hover .ilus-tumbukan .kiri,
+        .kartu:focus-visible .ilus-tumbukan .kiri {
+            transform: translateX(34px);
+        }
+
+        .kartu:hover .ilus-tumbukan .kanan,
+        .kartu:focus-visible .ilus-tumbukan .kanan {
+            transform: translateX(-34px);
+        }
+
+        .kartu:hover .ilus .ledak,
+        .kartu:focus-visible .ilus .ledak {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .ilus-tablet .gel {
+            animation: naik 2.4s ease-in infinite;
+            animation-play-state: paused;
+        }
+
+        .ilus-tablet .gel:nth-child(2) {
+            animation-delay: -.6s;
+        }
+
+        .ilus-tablet .gel:nth-child(3) {
+            animation-delay: -1.2s;
+        }
+
+        .ilus-tablet .gel:nth-child(4) {
+            animation-delay: -1.8s;
+        }
+
+        .ilus-tablet .gel:nth-child(5) {
+            animation-delay: -.3s;
+        }
+
+        .ilus-tablet .gel:nth-child(6) {
+            animation-delay: -1.5s;
+        }
+
+        .kartu:hover .ilus-tablet .gel,
+        .kartu:focus-visible .ilus-tablet .gel {
+            animation-play-state: running;
+        }
+
+        @keyframes naik {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-58px);
+                opacity: 0;
+            }
+        }
+
+        .kartu:hover .ilus-emisi .mobil,
+        .kartu:focus-visible .ilus-emisi .mobil {
+            transform: translateX(26px);
+        }
+
+        .ilus-emisi .asap {
+            animation: kepul 2.6s ease-out infinite;
+            animation-play-state: paused;
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+
+        .ilus-emisi .asap:nth-child(2) {
+            animation-delay: -.9s;
+        }
+
+        .ilus-emisi .asap:nth-child(3) {
+            animation-delay: -1.7s;
+        }
+
+        .kartu:hover .ilus-emisi .asap,
+        .kartu:focus-visible .ilus-emisi .asap {
+            animation-play-state: running;
+        }
+
+        @keyframes kepul {
+            0% {
+                transform: translate(0, 0) scale(.6);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-18px, -46px) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* ===== Penampil LKPD layar penuh ===== */
+        #wadah-iframe {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            display: flex;
+            flex-direction: column;
+            background: var(--paper);
+        }
+
+        .bilah-lkpd {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: calc(var(--tinggi-bilah) + env(safe-area-inset-top, 0px));
+            padding: env(safe-area-inset-top, 0px) calc(262px + env(safe-area-inset-right, 0px)) 0 max(12px, env(safe-area-inset-left, 0px));
+            background: #fff;
+            border-bottom: 1.5px solid var(--ink);
+        }
+
+        .bilah-lkpd h2 {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            min-width: 0;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-kembali,
+        .btn-bilah {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            background: #fff;
+            border: 1.5px solid var(--ink);
+            border-radius: 999px;
+            padding: .5rem .95rem;
+            font: inherit;
+            font-weight: 700;
+            font-size: .82rem;
+            color: var(--ink);
+            box-shadow: 3px 3px 0 var(--ink);
+            cursor: pointer;
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+
+        .btn-bilah {
+            width: 38px;
+            height: 38px;
+            padding: 0;
+        }
+
+        .btn-kembali:hover,
+        .btn-bilah:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0 var(--ink);
+        }
+
+        .btn-kembali:active,
+        .btn-bilah:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 var(--ink);
+        }
+
+        .layar-lkpd {
+            position: relative;
+            flex: 1 1 auto;
+            min-height: 0;
+            background: #fff;
+        }
+
+        .layar-lkpd iframe {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .memuat {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            align-content: center;
+            gap: 14px;
+            background: var(--paper);
+            font-weight: 700;
+            color: var(--muted);
+            font-size: .9rem;
+            transition: opacity .25s ease;
+        }
+
+        .memuat.selesai {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .memuat .labu {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 4px solid var(--grid);
+            border-top-color: var(--reaktan);
+            animation: putar .8s linear infinite;
+        }
+
+        @keyframes putar {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        footer {
+            text-align: center;
+            color: var(--muted);
+            font-size: .75rem;
+            padding: 32px 16px;
+        }
+
+        /* ===== Responsif ===== */
+        @media (max-width: 860px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 28px;
+                margin-bottom: 44px;
+            }
+
+            .grafik-hero {
+                max-width: 520px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .halaman {
+                padding-top: 76px;
+            }
+
+            .kepala-daftar p {
+                display: none;
+            }
+
+            .daftar-kartu {
+                gap: 22px;
+            }
+
+            .kartu {
+                box-shadow: 5px 5px 0 var(--ink);
+            }
+
+            .kartu .panggung {
+                height: 132px;
+            }
+
+            .kartu .nomor {
+                font-size: 3.7rem;
+            }
+
+            .bilah-lkpd {
+                --tinggi-bilah: 58px;
+            }
+
+            .bilah-lkpd h2 {
+                font-size: .98rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .bilah-lkpd {
+                padding-right: calc(66px + env(safe-area-inset-right, 0px));
+            }
+
+            .btn-dashboard .label {
+                display: none;
+            }
+
+            .btn-dashboard {
+                padding: .45rem;
+            }
+
+            .btn-kembali .teks {
+                display: none;
+            }
+
+            .btn-kembali {
+                width: 38px;
+                height: 38px;
+                padding: 0;
+            }
+
+            .halaman {
+                padding-left: max(16px, env(safe-area-inset-left, 0px));
+                padding-right: max(16px, env(safe-area-inset-right, 0px));
+            }
+
+            .kartu .isi {
+                padding: 16px 16px 14px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+
+            .kurva {
+                stroke-dashoffset: 0;
+            }
+
+            .titik {
+                opacity: 1;
+            }
+
+            .ilus .ledak {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Tombol kembali ke Dashboard (sudut kanan atas, selalu terlihat) -->
+    <a href="index.html" target="_top" class="btn-dashboard" aria-label="Kembali ke Dashboard">
+        <span class="ikon"><i class="fa-solid fa-house"></i></span>
+        <span class="label">Kembali ke Dashboard</span>
+    </a>
+
+    <!-- ================= MENU KARTU ================= -->
+    <div id="menu-utama" class="halaman">
+
+        <header class="hero">
+            <div>
+                <p class="pengantar"><i class="fa-solid fa-flask-vial"></i> Lembar Kerja Peserta Didik</p>
+                <h1>Seberapa cepat<br>reaksi berlangsung?</h1>
+                <p class="deskripsi" id="deskripsi-hero">
+                    Lembar kerja berbasis masalah tentang laju reaksi. Kerjakan berurutan bersama kelompokmu.
+                </p>
+                <div class="chip-daftar">
+                    <span class="chip"><i class="fa-regular fa-clipboard"></i> <span id="jumlah-lkpd">–</span>
+                        LKPD</span>
+                    <span class="chip"><i class="fa-solid fa-atom"></i> Kimia kelas XI</span>
+                    <span class="chip"><i class="fa-solid fa-people-group"></i> Problem Based Learning</span>
+                </div>
+            </div>
+
+            <!-- Grafik konsentrasi vs waktu -->
+            <figure class="grafik-hero">
+                <svg viewBox="0 0 320 200" role="img"
+                    aria-label="Grafik konsentrasi reaktan menurun dan produk meningkat terhadap waktu">
+                    <line x1="36" y1="16" x2="36" y2="168" stroke="#14213d" stroke-width="1.5" />
+                    <line x1="36" y1="168" x2="306" y2="168" stroke="#14213d" stroke-width="1.5" />
+                    <path d="M36 16 l-4 7 M36 16 l4 7 M306 168 l-7 -4 M306 168 l-7 4" stroke="#14213d"
+                        stroke-width="1.5" fill="none" />
+                    <g stroke="#dde5ef" stroke-width="1">
+                        <line x1="36" y1="60" x2="300" y2="60" />
+                        <line x1="36" y1="114" x2="300" y2="114" />
+                        <line x1="120" y1="20" x2="120" y2="168" />
+                        <line x1="210" y1="20" x2="210" y2="168" />
+                    </g>
+                    <path class="kurva" d="M36 30 C 80 95, 130 140, 296 156" stroke="#2563eb" stroke-width="3.5"
+                        fill="none" stroke-linecap="round" />
+                    <path class="kurva produk" d="M36 166 C 80 101, 130 56, 296 40" stroke="#f08a24" stroke-width="3.5"
+                        fill="none" stroke-linecap="round" />
+                    <g class="titik">
+                        <circle cx="296" cy="156" r="5" fill="#2563eb" stroke="#14213d" stroke-width="1.5" />
+                        <circle cx="296" cy="40" r="5" fill="#f08a24" stroke="#14213d" stroke-width="1.5" />
+                        <text x="250" y="148" font-size="11" font-weight="700" fill="#2563eb"
+                            font-family="Plus Jakarta Sans">[Reaktan]</text>
+                        <text x="252" y="32" font-size="11" font-weight="700" fill="#c26a12"
+                            font-family="Plus Jakarta Sans">[Produk]</text>
+                    </g>
+                    <text x="18" y="96" font-size="10" fill="#5b6b82" font-family="Plus Jakarta Sans"
+                        transform="rotate(-90 18 96)" text-anchor="middle">konsentrasi</text>
+                    <text x="171" y="188" font-size="10" fill="#5b6b82" font-family="Plus Jakarta Sans"
+                        text-anchor="middle">waktu</text>
+                </svg>
+                <figcaption>Reaktan berkurang, produk bertambah seiring waktu.</figcaption>
+            </figure>
+        </header>
+
+        <div class="kepala-daftar">
+            <h2>Pilih LKPD</h2>
+            <p>Klik kartu untuk membuka lembar kerja dalam layar penuh</p>
+        </div>
+
+        <!-- Kartu dibuat otomatis dari DAFTAR_LKPD (lihat skrip di bawah) -->
+        <main class="daftar-kartu" id="daftar-kartu"></main>
+    </div>
+
+    <!-- ================= PENAMPIL LKPD (IFRAME, LAYAR PENUH) ================= -->
+    <div id="wadah-iframe" class="hidden" role="dialog" aria-modal="true" aria-labelledby="judul-lkpd">
+        <div class="bilah-lkpd">
+            <button type="button" onclick="kembaliKeMenu()" class="btn-kembali" aria-label="Kembali ke daftar kartu">
+                <i class="fa-solid fa-arrow-left"></i><span class="teks">Daftar kartu</span>
+            </button>
+            <h2 id="judul-lkpd"></h2>
+            <button type="button" class="btn-bilah" id="tombol-layar-penuh" aria-label="Layar penuh" title="Layar penuh"
+                hidden>
+                <i class="fa-solid fa-expand"></i>
+            </button>
+        </div>
+        <div class="layar-lkpd">
+            <iframe id="frame-konten-lkpd" src="about:blank" title="Lembar kerja LKPD" allow="fullscreen"></iframe>
+            <div class="memuat selesai" id="memuat" aria-hidden="true">
+                <span class="labu"></span>
+                <span>Membuka LKPD…</span>
+            </div>
+        </div>
+    </div>
+
+    <footer>&copy; 2026 EduKinetika · Kartu LKPD Laju Reaksi</footer>
+
+    <script>
+        /* =====================================================================
+           DAFTAR LKPD
+           Jumlah kartu mengikuti isi daftar ini. Untuk menambah LKPD baru,
+           cukup tambahkan satu objek; kartu dan jumlahnya ikut bertambah.
+           ===================================================================== */
+        const DAFTAR_LKPD = [
+            {
+                file: 'lkpd_pertemuan2.html',
+                judul: 'Teori Tumbukan & Energi Aktivasi',
+                masalah: 'Mengapa gas LPG yang bocor baru meledak ketika ada percikan api?',
+                konsep: ['Tumbukan efektif', 'Energi aktivasi', 'Kompleks teraktivasi'],
+                waktu: '2 × 45 menit',
+                ilustrasi: 'tumbukan'
+            },
+            // Urutan materi: P1 teori tumbukan, P2 persamaan laju & orde, P3 faktor (nama file tetap)
+            {
+                file: 'lkpd_pertemuan4.html',
+                judul: 'Persamaan Laju & Orde Reaksi',
+                masalah: 'Seberapa cepat gas NO₂ terbentuk saat kemacetan membuat gas NO naik tiga kali lipat?',
+                konsep: ['Metode laju awal', 'Orde reaksi', 'v = k[A]ˣ[B]ʸ'],
+                waktu: '2 × 45 menit',
+                ilustrasi: 'emisi'
+            },
+            {
+                file: 'lkpd_pertemuan3.html',
+                judul: 'Faktor-Faktor yang Memengaruhi Laju Reaksi',
+                masalah: 'Faktor apa yang membuat tablet vitamin bereaksi secepat mungkin?',
+                konsep: ['Luas permukaan', 'Konsentrasi', 'Suhu', 'Katalis'],
+                waktu: '2 × 45 menit',
+                ilustrasi: 'tablet'
+            }
+        ];
+
+        /* ---------- Ilustrasi kartu (SVG) ---------- */
+        const ILUSTRASI = {
+            tumbukan: `<svg class="ilus ilus-tumbukan" viewBox="0 0 320 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                <path d="M40 118 C 110 118, 130 44, 160 44 C 190 44, 206 128, 290 128" fill="none" stroke="#14213d" stroke-opacity=".18" stroke-width="3" stroke-dasharray="6 6"/>
+                <g class="gerak kiri">
+                    <circle cx="96" cy="76" r="15" fill="#2563eb" stroke="#14213d" stroke-width="2"/>
+                    <circle cx="118" cy="76" r="11" fill="#93c5fd" stroke="#14213d" stroke-width="2"/>
+                    <path d="M58 70 h18 M52 82 h22" stroke="#14213d" stroke-width="2.5" stroke-linecap="round"/>
+                </g>
+                <g class="gerak kanan">
+                    <circle cx="222" cy="76" r="15" fill="#f08a24" stroke="#14213d" stroke-width="2"/>
+                    <circle cx="200" cy="76" r="11" fill="#fed7aa" stroke="#14213d" stroke-width="2"/>
+                    <path d="M262 70 h-18 M268 82 h-22" stroke="#14213d" stroke-width="2.5" stroke-linecap="round"/>
+                </g>
+                <path class="ledak" d="M160 50 l7 16 17-4 -11 13 14 10 -17 2 2 17 -12-12 -12 12 2-17 -17-2 14-10 -11-13 17 4z" fill="#facc15" stroke="#14213d" stroke-width="2" stroke-linejoin="round"/>
+            </svg>`,
+            tablet: `<svg class="ilus ilus-tablet" viewBox="0 0 320 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                <path d="M196 34 q-6 -10 0 -20 M212 36 q-6 -12 0 -24 M228 34 q-6 -10 0 -20" fill="none" stroke="#14213d" stroke-opacity=".35" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M176 44 L184 140 H258 L266 44" fill="#bbf7d0" fill-opacity=".7" stroke="none"/>
+                <path d="M176 44 L186 142 H256 L266 44" fill="none" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"/>
+                <line x1="178" y1="60" x2="264" y2="60" stroke="#14213d" stroke-width="2" stroke-opacity=".5"/>
+                <g fill="#fff" stroke="#14213d" stroke-width="1.5">
+                    <circle class="gel" cx="205" cy="124" r="4"/><circle class="gel" cx="221" cy="126" r="3"/>
+                    <circle class="gel" cx="236" cy="123" r="4.5"/><circle class="gel" cx="214" cy="120" r="2.5"/>
+                    <circle class="gel" cx="229" cy="128" r="3.2"/><circle class="gel" cx="243" cy="126" r="2.6"/>
+                </g>
+                <ellipse cx="221" cy="133" rx="22" ry="5" fill="#fff" stroke="#14213d" stroke-width="2"/>
+                <g transform="translate(92 72) rotate(-18)">
+                    <rect x="-34" y="-13" width="68" height="26" rx="13" fill="#fff" stroke="#14213d" stroke-width="2.5"/>
+                    <path d="M0 -13 v26" stroke="#14213d" stroke-width="2.5"/>
+                    <rect x="-34" y="-13" width="34" height="26" rx="13" fill="#059669" stroke="#14213d" stroke-width="2.5"/>
+                </g>
+            </svg>`,
+            emisi: `<svg class="ilus ilus-emisi" viewBox="0 0 320 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                <ellipse cx="96" cy="42" rx="56" ry="20" fill="#b45309" fill-opacity=".22"/>
+                <ellipse cx="136" cy="34" rx="40" ry="16" fill="#b45309" fill-opacity=".16"/>
+                <g><circle class="asap" cx="104" cy="98" r="9" fill="#94a3b8" fill-opacity=".7"/>
+                    <circle class="asap" cx="96" cy="94" r="7" fill="#94a3b8" fill-opacity=".7"/>
+                    <circle class="asap" cx="110" cy="92" r="6" fill="#94a3b8" fill-opacity=".7"/></g>
+                <g transform="translate(70 52)"><circle r="8" fill="#3b82f6" stroke="#14213d" stroke-width="2"/><circle cx="13" r="8" fill="#ef4444" stroke="#14213d" stroke-width="2"/></g>
+                <g transform="translate(118 64)"><circle r="7" fill="#3b82f6" stroke="#14213d" stroke-width="2"/><circle cx="-10" cy="7" r="6.5" fill="#ef4444" stroke="#14213d" stroke-width="2"/><circle cx="10" cy="7" r="6.5" fill="#ef4444" stroke="#14213d" stroke-width="2"/></g>
+                <rect x="0" y="126" width="320" height="30" fill="#14213d" fill-opacity=".85"/>
+                <path d="M0 138 h320" stroke="#fff" stroke-width="2" stroke-dasharray="14 12"/>
+                <g class="gerak mobil">
+                    <path d="M126 116 v-14 q0 -6 6 -6 h22 l12 -14 h44 l14 14 h12 q6 0 6 6 v14 z" fill="#7c3aed" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"/>
+                    <path d="M170 94 l8 -9 h14 v9 z M198 94 v-9 h10 l8 9 z" fill="#e0f2fe" stroke="#14213d" stroke-width="2"/>
+                    <circle cx="150" cy="118" r="9" fill="#14213d"/><circle cx="218" cy="118" r="9" fill="#14213d"/>
+                    <circle cx="150" cy="118" r="3.5" fill="#cbd5e1"/><circle cx="218" cy="118" r="3.5" fill="#cbd5e1"/>
+                    <rect x="118" y="108" width="10" height="5" rx="2" fill="#14213d"/>
+                </g>
+            </svg>`
+        };
+
+        const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+        const KATA_ANGKA = ['Nol', 'Satu', 'Dua', 'Tiga', 'Empat', 'Lima', 'Enam', 'Tujuh', 'Delapan', 'Sembilan', 'Sepuluh'];
+
+        function buatKartu() {
+            const wadah = document.getElementById('daftar-kartu');
+            wadah.innerHTML = DAFTAR_LKPD.map((l, i) => {
+                const no = i + 1, dua = String(no).padStart(2, '0');
+                return `<button type="button" id="kartu-${dua}" class="kartu k${(i % 5) + 1}" data-judul="${esc(l.judul)}">
+                    <div class="panggung">
+                        ${ILUSTRASI[l.ilustrasi] || ''}
+                        <span class="waktu"><i class="fa-regular fa-clock"></i> ${esc(l.waktu)}</span>
+                        <span class="nomor" aria-hidden="true">${dua}</span>
+                    </div>
+                    <div class="isi">
+                        <span class="label-lkpd">LKPD ${no} · Pertemuan ${no}</span>
+                        <h3>${esc(l.judul)}</h3>
+                        <p class="masalah"><i class="fa-solid fa-circle-question"></i><small>Permasalahan</small>${esc(l.masalah)}</p>
+                        <div class="konsep">${l.konsep.map(k => `<span>${esc(k)}</span>`).join('')}</div>
+                    </div>
+                    <div class="aksi"><span>Kerjakan LKPD ${no}</span><span class="panah"><i class="fa-solid fa-arrow-right"></i></span></div>
+                </button>`;
+            }).join('');
+
+            const n = DAFTAR_LKPD.length;
+            document.getElementById('jumlah-lkpd').textContent = n;
+            document.getElementById('deskripsi-hero').textContent =
+                `${KATA_ANGKA[n] || n} LKPD berbasis masalah tentang laju reaksi. Kerjakan berurutan dari LKPD 1 sampai LKPD ${n} bersama kelompokmu.`;
+
+            DAFTAR_LKPD.forEach((l, i) => {
+                const el = document.getElementById(`kartu-${String(i + 1).padStart(2, '0')}`);
+                el.addEventListener('click', () => alihkanKeLKPD(l.file, el.dataset.judul, i + 1));
+            });
+        }
+
+        /* ---------- Navigasi kartu ⇄ LKPD ---------- */
+        const menuUtama = document.getElementById('menu-utama');
+        const wadahIframe = document.getElementById('wadah-iframe');
+        const frameKontenLkpd = document.getElementById('frame-konten-lkpd');
+        const judulLkpd = document.getElementById('judul-lkpd');
+        const memuat = document.getElementById('memuat');
+        const tombolLayarPenuh = document.getElementById('tombol-layar-penuh');
+        const footerEl = document.querySelector('footer');
+        let kartuTerakhir = null;
+
+        const dukungLayarPenuh = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
+        const sedangLayarPenuh = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+
+        function masukLayarPenuh() {
+            if (!dukungLayarPenuh || sedangLayarPenuh()) return;
+            const el = document.documentElement;
+            const minta = el.requestFullscreen || el.webkitRequestFullscreen;
+            try { const p = minta.call(el); if (p && p.catch) p.catch(() => { }); } catch (e) { }
+        }
+
+        function keluarLayarPenuh() {
+            if (!sedangLayarPenuh()) return;
+            const keluar = document.exitFullscreen || document.webkitExitFullscreen;
+            try { const p = keluar.call(document); if (p && p.catch) p.catch(() => { }); } catch (e) { }
+        }
+
+        function segarkanTombolLayarPenuh() {
+            const aktif = sedangLayarPenuh();
+            tombolLayarPenuh.innerHTML = `<i class="fa-solid ${aktif ? 'fa-compress' : 'fa-expand'}"></i>`;
+            tombolLayarPenuh.setAttribute('aria-label', aktif ? 'Keluar dari layar penuh' : 'Layar penuh');
+            tombolLayarPenuh.title = aktif ? 'Keluar dari layar penuh' : 'Layar penuh';
+        }
+
+        // Buka file LKPD sesuai kartu yang dipilih (tampil layar penuh)
+        function alihkanKeLKPD(namaFileHTML, judul, nomor) {
+            kartuTerakhir = document.activeElement;
+            memuat.classList.remove('selesai');
+            frameKontenLkpd.src = namaFileHTML;
+            judulLkpd.textContent = `LKPD ${nomor} · ${judul}`;
+            menuUtama.classList.add('hidden');
+            footerEl.classList.add('hidden');
+            wadahIframe.classList.remove('hidden');
+            document.body.classList.add('lkpd-terbuka');
+            masukLayarPenuh();
+            window.scrollTo(0, 0);
+        }
+
+        // Kembali ke daftar kartu dan kosongkan iframe
+        function kembaliKeMenu() {
+            keluarLayarPenuh();
+            wadahIframe.classList.add('hidden');
+            menuUtama.classList.remove('hidden');
+            footerEl.classList.remove('hidden');
+            document.body.classList.remove('lkpd-terbuka');
+            frameKontenLkpd.src = 'about:blank';
+            memuat.classList.add('selesai');
+            if (kartuTerakhir && kartuTerakhir.focus) kartuTerakhir.focus({ preventScroll: false });
+        }
+
+        frameKontenLkpd.addEventListener('load', () => {
+            if (frameKontenLkpd.getAttribute('src') !== 'about:blank') memuat.classList.add('selesai');
+        });
+
+        tombolLayarPenuh.hidden = !dukungLayarPenuh;
+        tombolLayarPenuh.addEventListener('click', () => sedangLayarPenuh() ? keluarLayarPenuh() : masukLayarPenuh());
+        document.addEventListener('fullscreenchange', segarkanTombolLayarPenuh);
+        document.addEventListener('webkitfullscreenchange', segarkanTombolLayarPenuh);
+        segarkanTombolLayarPenuh();
+
+        buatKartu();
+    </script>
+</body>
+
+</html>

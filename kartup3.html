@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembelajaran & Praktikum Laju Reaksi</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons (Untuk ikon kembali) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .beaker {
+            position: relative;
+            width: 120px;
+            height: 140px;
+            border: 4px solid #cbd5e1;
+            border-top: none;
+            border-radius: 0 0 20px 20px;
+            background: rgba(255, 255, 255, 0.8);
+            overflow: hidden;
+        }
+
+        .liquid {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%);
+            transition: height linear;
+            border-radius: 0 0 16px 16px;
+        }
+
+        .bubbles {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            background-image: radial-gradient(#fff 15%, transparent 16%), radial-gradient(#fff 15%, transparent 16%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            animation: bubble-rise 2s linear infinite;
+        }
+
+        @keyframes bubble-rise {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        .reaction-active .bubbles {
+            opacity: 1;
+        }
+
+        /* ===== Penyempurnaan tampilan (tambahan) ===== */
+        body {
+            background-color: #f7fafc;
+            background-image:
+                linear-gradient(rgba(14, 165, 233, .06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(14, 165, 233, .06) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: nowrap;
+        }
+
+        .top-bar>a:first-child {
+            min-width: 0;
+        }
+
+        .btn-dash {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 42px;
+            padding: 0 18px;
+            border-radius: 12px;
+            background: #0f2a44;
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 6px 16px -8px rgba(15, 42, 68, .6);
+            transition: background .15s, transform .15s;
+        }
+
+        .btn-dash:hover {
+            background: #16395c;
+            transform: translateY(-1px);
+        }
+
+        .hero-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: #fff;
+            border: 1px solid #dbe4ee;
+            font-size: 13px;
+            font-weight: 700;
+            color: #0369a1;
+            margin-bottom: 18px;
+        }
+
+        .hero-chip i {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #f59e0b;
+        }
+
+        .step-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 13px;
+            font-weight: 600;
+            color: #3d5670;
+            margin: -32px auto 36px;
+        }
+
+        .step-flow span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            border: 1px solid #dbe4ee;
+            border-radius: 999px;
+            padding: 6px 12px 6px 6px;
+        }
+
+        .step-flow b {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            font-size: 12px;
+        }
+
+        .card-tag {
+            position: absolute;
+            top: 28px;
+            right: 28px;
+            z-index: 10;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .tip-box {
+            max-width: 56rem;
+            margin: 32px auto 0;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 20px;
+            padding: 16px 20px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #78350f;
+        }
+
+        .tip-box svg {
+            flex-shrink: 0;
+            color: #d97706;
+            margin-top: 2px;
+        }
+
+        @media (max-width: 639px) {
+            body {
+                padding-top: 24px !important;
+            }
+
+            .btn-dash {
+                height: 38px;
+                padding: 0 14px;
+                font-size: 13px;
+            }
+
+            .step-flow {
+                margin-top: -36px;
+            }
+
+            .step-flow>svg,
+            .dash-long {
+                display: none;
+            }
+        }
+
+        /* ===================== TAMPILAN BARU ===================== */
+        :root {
+            --biru: #2563eb;
+            --ungu: #9333ea;
+            --tinta: #0f2a44;
+        }
+
+        body {
+            background: #eef4fb;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ---------- Latar: gradasi, heksagon, gumpalan, molekul ---------- */
+        .k3-latar {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cg fill='none' stroke='%232563eb' stroke-opacity='.08' stroke-width='1.2'%3E%3Cpath d='M28 1 L54 16 L54 46 L28 61 L2 46 L2 16 Z'/%3E%3Cpath d='M28 61 L28 97'/%3E%3C/g%3E%3C/svg%3E"),
+                linear-gradient(160deg, #e6f4ff 0%, #f1ecff 48%, #fff3ea 100%);
+        }
+
+        .k3-gumpal {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+            opacity: .55;
+            animation: k3Melayang 18s ease-in-out infinite alternate;
+        }
+
+        .k3-gumpal.g1 {
+            width: 420px;
+            height: 420px;
+            background: #93c5fd;
+            top: -120px;
+            left: -120px;
+        }
+
+        .k3-gumpal.g2 {
+            width: 380px;
+            height: 380px;
+            background: #d8b4fe;
+            top: 30%;
+            right: -140px;
+            animation-delay: -6s;
+        }
+
+        .k3-gumpal.g3 {
+            width: 360px;
+            height: 360px;
+            background: #fdba74;
+            bottom: -140px;
+            left: 20%;
+            animation-delay: -11s;
+            opacity: .4;
+        }
+
+        @keyframes k3Melayang {
+            from {
+                transform: translate(0, 0) scale(1);
+            }
+
+            to {
+                transform: translate(40px, 30px) scale(1.08);
+            }
+        }
+
+        .k3-mol {
+            position: absolute;
+            opacity: .5;
+            animation: k3Apung 14s ease-in-out infinite;
+        }
+
+        .k3-mol.m1 {
+            top: 12%;
+            left: 6%;
+            width: 64px;
+        }
+
+        .k3-mol.m2 {
+            top: 58%;
+            left: 3%;
+            width: 54px;
+            animation-delay: -4s;
+        }
+
+        .k3-mol.m3 {
+            top: 18%;
+            right: 7%;
+            width: 58px;
+            animation-delay: -8s;
+        }
+
+        .k3-mol.m4 {
+            bottom: 10%;
+            right: 9%;
+            width: 70px;
+            animation-delay: -2s;
+        }
+
+        @keyframes k3Apung {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-22px) rotate(14deg);
+            }
+        }
+
+        .k3-isi {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ---------- Bilah atas (navigasi tetap) ---------- */
+        .top-bar {
+            background: rgba(255, 255, 255, .72);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, .9);
+            border-radius: 18px;
+            padding: 10px 10px 10px 18px;
+            box-shadow: 0 10px 30px -22px rgba(15, 42, 68, .6);
+        }
+
+        /* ---------- Hero ---------- */
+        .k3-hero {
+            position: relative;
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        .k3-hero h1 .sorot {
+            background: linear-gradient(90deg, #06b6d4, #2563eb 45%, #9333ea);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .k3-kartu-ke {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 8px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: var(--tinta);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            vertical-align: middle;
+        }
+
+        .k3-faktor-baris {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 26px;
+        }
+
+        .k3-faktor-baris span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px 8px 8px;
+            border-radius: 999px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+            box-shadow: 0 8px 18px -14px rgba(15, 42, 68, .5);
+        }
+
+        .k3-faktor-baris span i {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-style: normal;
+            font-size: 15px;
+            background: var(--w);
+        }
+
+        /* ---------- Urutan belajar ---------- */
+        .step-flow {
+            margin: -24px auto 40px;
+        }
+
+        .step-flow span {
+            box-shadow: 0 8px 18px -14px rgba(15, 42, 68, .55);
+        }
+
+        .step-flow .garis-alur {
+            position: relative;
+            width: 54px;
+            height: 3px;
+            border-radius: 3px;
+            background: #dbe4ee;
+            overflow: hidden;
+        }
+
+        .step-flow .garis-alur::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            width: 40%;
+            border-radius: 3px;
+            background: linear-gradient(90deg, #3b82f6, #a855f7);
+            animation: k3Alir 1.8s ease-in-out infinite;
+        }
+
+        @keyframes k3Alir {
+            from {
+                transform: translateX(-100%);
+            }
+
+            to {
+                transform: translateX(250%);
+            }
+        }
+
+        /* ---------- Kartu ---------- */
+        .k3-kartu {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border-radius: 28px;
+            overflow: hidden;
+            border: 1px solid rgba(226, 232, 240, .9);
+            box-shadow: 0 20px 45px -30px rgba(15, 42, 68, .55);
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+
+        .k3-kartu:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 55px -30px rgba(15, 42, 68, .6);
+        }
+
+        .k3-panggung {
+            position: relative;
+            height: 190px;
+            overflow: hidden;
+            display: grid;
+            place-items: center;
+        }
+
+        .k3-kartu.biru .k3-panggung {
+            background: linear-gradient(135deg, #1d4ed8, #3b82f6 55%, #06b6d4);
+        }
+
+        .k3-kartu.ungu .k3-panggung {
+            background: linear-gradient(135deg, #6d28d9, #9333ea 55%, #db2777);
+        }
+
+        .k3-panggung::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, .22) 1.2px, transparent 1.3px);
+            background-size: 16px 16px;
+        }
+
+        .k3-panggung::after {
+            content: '';
+            position: absolute;
+            left: -10%;
+            right: -10%;
+            bottom: -46px;
+            height: 80px;
+            background: #fff;
+            border-radius: 50%;
+        }
+
+        .k3-nomor {
+            position: absolute;
+            top: 16px;
+            left: 18px;
+            z-index: 3;
+            font-size: 52px;
+            line-height: 1;
+            font-weight: 800;
+            color: rgba(255, 255, 255, .25);
+        }
+
+        .card-tag {
+            top: 18px;
+            right: 18px;
+            box-shadow: 0 6px 14px -8px rgba(0, 0, 0, .5);
+        }
+
+        /* Ilustrasi kartu 1: empat faktor bergantian menyala */
+        .k3-empat {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(4, 64px);
+            gap: 12px;
+            margin-top: -18px;
+        }
+
+        .k3-empat div {
+            height: 76px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .35);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            color: #fff;
+            font-size: 10.5px;
+            font-weight: 700;
+            animation: k3Nyala 6s ease-in-out infinite;
+        }
+
+        .k3-empat div b {
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .k3-empat div:nth-child(2) {
+            animation-delay: 1.5s;
+        }
+
+        .k3-empat div:nth-child(3) {
+            animation-delay: 3s;
+        }
+
+        .k3-empat div:nth-child(4) {
+            animation-delay: 4.5s;
+        }
+
+        @keyframes k3Nyala {
+
+            0%,
+            30%,
+            100% {
+                background: rgba(255, 255, 255, .16);
+                transform: translateY(0);
+                box-shadow: none;
+            }
+
+            10%,
+            20% {
+                background: rgba(255, 255, 255, .95);
+                color: #1d4ed8;
+                transform: translateY(-6px);
+                box-shadow: 0 12px 20px -10px rgba(0, 0, 0, .45);
+            }
+        }
+
+        /* Ilustrasi kartu 2: gelas kimia bergelembung + stopwatch */
+        .k3-lab {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: flex-end;
+            gap: 26px;
+            margin-top: -22px;
+        }
+
+        .k3-lab .beaker {
+            width: 88px;
+            height: 98px;
+            border-color: rgba(255, 255, 255, .85);
+            background: rgba(255, 255, 255, .15);
+        }
+
+        .k3-lab .liquid {
+            background: linear-gradient(180deg, #fde68a 0%, #f59e0b 100%);
+            animation: k3Isi 5s ease-in-out infinite;
+        }
+
+        @keyframes k3Isi {
+
+            0%,
+            100% {
+                height: 30%;
+            }
+
+            50% {
+                height: 72%;
+            }
+        }
+
+        .k3-lab .bubbles {
+            opacity: 1;
+        }
+
+        .k3-jam {
+            width: 74px;
+            height: 74px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .9);
+            position: relative;
+            background: rgba(255, 255, 255, .12);
+        }
+
+        .k3-jam::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            width: 14px;
+            height: 8px;
+            margin-left: -7px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, .9);
+        }
+
+        .k3-jam i {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 3px;
+            height: 26px;
+            margin-left: -1.5px;
+            margin-top: -26px;
+            border-radius: 3px;
+            background: #fff;
+            transform-origin: 50% 100%;
+            animation: k3Putar 3s linear infinite;
+        }
+
+        @keyframes k3Putar {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .k3-badan {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 0 28px 28px;
+            margin-top: -30px;
+        }
+
+        .k3-ikon {
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            border: 4px solid #fff;
+            margin-bottom: 16px;
+        }
+
+        .k3-kartu.biru .k3-ikon {
+            background: #3b82f6;
+            box-shadow: 0 12px 22px -10px rgba(59, 130, 246, .8);
+        }
+
+        .k3-kartu.ungu .k3-ikon {
+            background: #a855f7;
+            box-shadow: 0 12px 22px -10px rgba(168, 85, 247, .8);
+        }
+
+        .k3-chip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 22px;
+        }
+
+        .k3-chip span {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 999px;
+        }
+
+        .k3-kartu.biru .k3-chip span {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .k3-kartu.ungu .k3-chip span {
+            background: #faf5ff;
+            color: #7e22ce;
+        }
+
+        .k3-tombol {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #fff !important;
+            transition: transform .15s, box-shadow .15s, filter .15s !important;
+        }
+
+        .k3-kartu.biru .k3-tombol {
+            background: linear-gradient(135deg, #2563eb, #06b6d4) !important;
+            box-shadow: 0 12px 22px -12px rgba(37, 99, 235, .9);
+        }
+
+        .k3-kartu.ungu .k3-tombol {
+            background: linear-gradient(135deg, #9333ea, #db2777) !important;
+            box-shadow: 0 12px 22px -12px rgba(147, 51, 234, .9);
+        }
+
+        .k3-tombol:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.07);
+        }
+
+        .k3-tombol svg {
+            transition: transform .15s;
+        }
+
+        .k3-tombol:hover svg {
+            transform: translateX(4px);
+        }
+
+        .k3-kartu a:focus-visible,
+        .top-bar a:focus-visible {
+            outline: 3px solid #fbbf24;
+            outline-offset: 3px;
+        }
+
+        /* ---------- Tips ---------- */
+        .tip-box {
+            background: linear-gradient(135deg, #fffbeb, #fff7ed);
+            box-shadow: 0 14px 30px -24px rgba(120, 53, 15, .6);
+        }
+
+        .tip-box .bola-tip {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            background: #fde68a;
+        }
+
+        .tip-box .bola-tip svg {
+            margin-top: 0;
+        }
+
+        /* ---------- Responsif ---------- */
+        @media (max-width: 639px) {
+            .top-bar {
+                padding: 8px 8px 8px 14px;
+            }
+
+            .k3-kartu-ke {
+                display: flex;
+                width: max-content;
+                margin: 10px auto 0;
+            }
+
+            .k3-faktor-baris span {
+                font-size: 12px;
+                padding: 6px 11px 6px 6px;
+            }
+
+            .k3-panggung {
+                height: 170px;
+            }
+
+            .k3-empat {
+                grid-template-columns: repeat(4, 56px);
+                gap: 8px;
+            }
+
+            .k3-empat div {
+                height: 66px;
+                font-size: 9.5px;
+                border-radius: 15px;
+            }
+
+            .k3-empat div b {
+                font-size: 20px;
+            }
+
+            .k3-badan {
+                padding: 0 20px 22px;
+            }
+
+            .k3-mol {
+                display: none;
+            }
+
+            .k3-gumpal {
+                opacity: .4;
+            }
+
+            .step-flow .garis-alur {
+                display: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-[#f8f9fc] text-slate-800 min-h-screen py-16 px-4 sm:px-6 lg:px-8 font-sans">
+
+    <!-- Latar dekoratif -->
+    <div class="k3-latar" aria-hidden="true">
+        <span class="k3-gumpal g1"></span><span class="k3-gumpal g2"></span><span class="k3-gumpal g3"></span>
+        <span class="k3-mol m1"><svg viewBox="0 0 64 64" aria-hidden="true">
+                <line x1="20" y1="32" x2="44" y2="32" stroke="#94a3b8" stroke-width="3" />
+                <circle cx="18" cy="32" r="12" fill="#60a5fa" />
+                <circle cx="46" cy="32" r="10" fill="#f87171" />
+            </svg></span>
+        <span class="k3-mol m2"><svg viewBox="0 0 64 64">
+                <path d="M32 6 L54 19 L54 45 L32 58 L10 45 L10 19 Z" fill="none" stroke="#a78bfa" stroke-width="4" />
+                <circle cx="32" cy="32" r="9" fill="none" stroke="#a78bfa" stroke-width="3" />
+            </svg></span>
+        <span class="k3-mol m3"><svg viewBox="0 0 64 64">
+                <line x1="32" y1="30" x2="14" y2="46" stroke="#94a3b8" stroke-width="3" />
+                <line x1="32" y1="30" x2="50" y2="46" stroke="#94a3b8" stroke-width="3" />
+                <circle cx="32" cy="28" r="13" fill="#f87171" />
+                <circle cx="13" cy="47" r="8" fill="#e2e8f0" />
+                <circle cx="51" cy="47" r="8" fill="#e2e8f0" />
+            </svg></span>
+        <span class="k3-mol m4"><svg viewBox="0 0 64 64" aria-hidden="true">
+                <line x1="20" y1="32" x2="44" y2="32" stroke="#94a3b8" stroke-width="3" />
+                <circle cx="18" cy="32" r="12" fill="#34d399" />
+                <circle cx="46" cy="32" r="10" fill="#f87171" />
+            </svg></span>
+    </div>
+
+    <div class="max-w-5xl mx-auto k3-isi">
+
+        <!-- Tombol Kembali -->
+        <div class="mb-10 top-bar">
+            <a href="kartu-belajar.html"
+                class="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-blue-600 transition-colors">
+                <i class="ph-bold ph-arrow-left text-lg"></i> Kembali ke Menu Utama
+            </a>
+            <!-- Tombol kembali ke dashboard (kanan atas) -->
+            <a href="kartu-belajar.html" class="btn-dash" aria-label="Kembali ke dashboard">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                    <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                    <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                    <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                </svg>
+                <span class="dash-long">Kembali ke</span> Dashboard
+            </a>
+        </div>
+
+        <!-- Header -->
+        <header class="text-center mb-16 k3-hero">
+            <span class="hero-chip"><i></i>Kimia kelas XI, Laju Reaksi</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">Materi <span
+                    class="sorot">Laju Reaksi</span><span class="k3-kartu-ke">Kartu 4</span></h1>
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto">Pelajari konsep dasar dan faktor-faktor yang memengaruhi
+                seberapa cepat sebuah reaksi kimia terjadi! 🚀</p>
+            <div class="k3-faktor-baris" aria-label="Faktor yang dipelajari">
+                <span><i style="--w:#fee2e2">🌡️</i>Suhu</span>
+                <span><i style="--w:#dbeafe">🧪</i>Konsentrasi</span>
+                <span><i style="--w:#e0f2fe">🧊</i>Luas permukaan</span>
+                <span><i style="--w:#dcfce7">⚗️</i>Katalis</span>
+            </div>
+        </header>
+
+        <!-- Urutan belajar -->
+        <div class="step-flow" aria-label="Urutan belajar">
+            <span><b style="background:#3b82f6">1</b>Pelajari faktornya</span>
+            <span class="garis-alur" aria-hidden="true"></span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9fb3c8" stroke-width="2.4"
+                stroke-linecap="round" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+            <span><b style="background:#a855f7">2</b>Buktikan lewat praktikum</span>
+        </div>
+
+        <!-- Cards Container (2 Kartu) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+
+            <!-- Kartu 1: Faktor Laju Reaksi (Tema Biru) -->
+            <article class="k3-kartu biru">
+                <div class="k3-panggung" aria-hidden="true">
+                    <span class="k3-nomor">01</span>
+                    <div class="k3-empat">
+                        <div><b>🌡️</b>Suhu</div>
+                        <div><b>🧪</b>Konsentrasi</div>
+                        <div><b>🧊</b>Luas</div>
+                        <div><b>⚗️</b>Katalis</div>
+                    </div>
+                </div>
+                <span class="card-tag" style="background:#eff6ff;color:#1d4ed8">Materi</span>
+                <div class="k3-badan">
+                    <!-- Ikon -->
+                    <div class="k3-ikon">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
+                            </path>
+                        </svg>
+                    </div>
+
+                    <!-- Konten Teks -->
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">1. Faktor-Faktor yang Mempengaruhi Laju
+                        Reaksi</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-5 flex-grow">Memahami petunjuk, konsep
+                        konsentrasi, luas permukaan, suhu, dan katalis yang menentukan kecepatan suatu reaksi kimia.</p>
+                    <div class="k3-chip" aria-hidden="true"><span>Teori tumbukan</span><span>Energi
+                            aktivasi</span><span>Contoh sehari-hari</span></div>
+
+                    <!-- Tombol -->
+                    <a href="faktorpenentulaju.html"
+                        class="k3-tombol block w-full py-3.5 rounded-2xl text-center font-bold text-sm">
+                        Pelajari Detail <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
+                            <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                    </a>
+                </div>
+            </article>
+
+            <!-- Kartu 2: Praktikum Virtual (Tema Ungu) -->
+            <article class="k3-kartu ungu">
+                <div class="k3-panggung" aria-hidden="true">
+                    <span class="k3-nomor">02</span>
+                    <div class="k3-lab">
+                        <div class="beaker">
+                            <div class="liquid"></div>
+                            <div class="bubbles"></div>
+                        </div>
+                        <div class="k3-jam"><i></i></div>
+                    </div>
+                </div>
+                <span class="card-tag" style="background:#faf5ff;color:#7e22ce">Praktikum</span>
+                <div class="k3-badan">
+                    <!-- Ikon -->
+                    <div class="k3-ikon">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+
+                    <!-- Konten Teks -->
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">2. Modul Praktikum Virtual Laju Reaksi
+                    </h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-5 flex-grow">Lakukan simulasi
+                        eksperimen laju reaksi secara interaktif menggunakan laboratorium virtual yang mudah digunakan.
+                    </p>
+                    <div class="k3-chip" aria-hidden="true"><span>Lab virtual</span><span>Ubah
+                            variabel</span><span>Catat data</span></div>
+
+                    <!-- Tombol -->
+                    <a href="modul.html"
+                        class="k3-tombol block w-full py-3.5 rounded-2xl text-center font-bold text-sm">
+                        Pelajari Detail <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
+                            <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                    </a>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- Tips belajar -->
+        <div class="tip-box">
+            <span class="bola-tip">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path
+                        d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z" />
+                </svg>
+            </span>
+            <p><b>Tips:</b> baca materi faktor-faktor terlebih dahulu, lalu buka modul praktikum. Saat praktikum,
+                ubah satu faktor saja setiap percobaan agar pengaruhnya terlihat jelas.</p>
+        </div>
+    </div>
+
+</body>
+
+</html>

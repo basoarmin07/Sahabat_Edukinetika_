@@ -1,0 +1,3437 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>EduKinetika - Simulasi Lab Full Interaktif</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap');
+
+        /* =========================================
+           1. BASE STYLES & LAYOUT
+           ========================================= */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            box-sizing: border-box;
+            touch-action: pan-y;
+        }
+
+        .device-frame {
+            width: 100%;
+            max-width: 1400px;
+            min-height: calc(100vh - 20px);
+            background-color: #1a1a1a;
+            border-radius: 24px;
+            padding: 12px 16px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            display: flex;
+            gap: 12px;
+            box-sizing: border-box;
+        }
+
+        /* Tablet portrait */
+        @media (max-width: 900px) {
+            body {
+                padding: 6px;
+            }
+
+            .device-frame {
+                flex-direction: column;
+                border-radius: 16px;
+                padding: 10px 10px;
+                gap: 10px;
+                min-height: unset;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            body {
+                padding: 4px;
+            }
+
+            .device-frame {
+                border-radius: 10px;
+                padding: 6px 6px;
+                gap: 8px;
+            }
+        }
+
+        .device-frame::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 36px;
+            background: #333;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 900px) {
+            .device-frame::before {
+                display: none;
+            }
+        }
+
+        /* =========================================
+           2. LAB ROOM (LEFT PANEL) & DECORATIONS
+           ========================================= */
+        .lab-room {
+            flex: 1;
+            min-height: 480px;
+            background-color: #f8fafc;
+            /* Pola Keramik Dinding Lab */
+            background-image:
+                linear-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.15) 1px, transparent 1px);
+            background-size: 30px 30px;
+            border-radius: 16px;
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.15);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            border: 4px solid #334155;
+        }
+
+        @media (max-width: 900px) {
+            .lab-room {
+                min-height: 380px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .lab-room {
+                min-height: 300px;
+                border-radius: 8px;
+                border-width: 2px;
+            }
+        }
+
+        /* Elemen Dekorasi Ruangan */
+        .poster-periodic {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            width: 120px;
+            height: 75px;
+            background: #ffffff;
+            border: 3px solid #cbd5e1;
+            border-radius: 4px;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 5px;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        @media (max-width: 600px) {
+            .poster-periodic {
+                width: 70px;
+                height: 50px;
+                top: 10px;
+                left: 10px;
+            }
+
+            .safety-sign {
+                width: 80px;
+                height: 38px;
+                top: 10px;
+                right: 10px;
+                font-size: 8px;
+            }
+        }
+
+        .pt-grid {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 25px;
+            background-image:
+                linear-gradient(90deg, #ef4444 10%, #f59e0b 10%, #f59e0b 30%, #10b981 30%, #10b981 70%, #3b82f6 70%);
+            background-size: 100% 20%;
+            background-repeat: no-repeat;
+            opacity: 0.8;
+        }
+
+        .pt-grid::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+            background-size: 10px 10px;
+        }
+
+        .poster-periodic span {
+            font-size: 10px;
+            font-weight: 800;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 2;
+        }
+
+        .safety-sign {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 120px;
+            height: 50px;
+            background: #fef08a;
+            border: 3px solid #eab308;
+            border-radius: 6px;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+            font-size: 11px;
+            color: #a16207;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 1;
+        }
+
+        .ventilation {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 20px;
+            background: #e2e8f0;
+            border-bottom: 3px solid #cbd5e1;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .ventilation::before,
+        .ventilation::after {
+            content: '';
+            width: 25%;
+            height: 6px;
+            background: #94a3b8;
+            border-radius: 3px;
+        }
+
+        .fire-extinguisher {
+            position: absolute;
+            bottom: 50%;
+            right: 25px;
+            width: 30px;
+            height: 80px;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .fire-extinguisher .nozzle {
+            width: 10px;
+            height: 15px;
+            background: #334155;
+            border-radius: 2px 2px 0 0;
+        }
+
+        .fire-extinguisher .tank {
+            width: 26px;
+            height: 65px;
+            background: #ef4444;
+            border-radius: 8px;
+            border: 2px solid #b91c1c;
+            position: relative;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .fire-extinguisher .tank::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 5px;
+            right: 5px;
+            height: 20px;
+            background: #fef08a;
+            border-radius: 2px;
+        }
+
+        .wall-title {
+            margin-top: 30px;
+            text-align: center;
+            color: #334155;
+            z-index: 10;
+        }
+
+        .wall-title h1 {
+            font-size: clamp(12px, 2vw, 22px);
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0;
+            background: #ffffff;
+            padding: 4px 18px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 2px solid #e2e8f0;
+            display: inline-block;
+        }
+
+        .cabinet {
+            width: 90%;
+            height: 36%;
+            margin-top: 8px;
+            background-color: #3e2723;
+            border: 8px solid #2d1b15;
+            border-radius: 8px;
+            box-shadow: inset 0 20px 30px rgba(0, 0, 0, 0.8), 0 10px 20px rgba(0, 0, 0, 0.2);
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 3px;
+            padding: 3px;
+            z-index: 5;
+            position: relative;
+        }
+
+        @media (max-width: 600px) {
+            .cabinet {
+                border-width: 4px;
+                gap: 2px;
+                padding: 2px;
+            }
+        }
+
+        /* Efek Kaca Lemari */
+        .cabinet::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.1) 100%);
+            pointer-events: none;
+            z-index: 20;
+            border-radius: 4px;
+        }
+
+        .shelf-slot {
+            background: linear-gradient(180deg, #5c3a21 0%, #4a2f1d 100%);
+            border-bottom: 8px solid #2d1b15;
+            border-right: 2px solid rgba(0, 0, 0, 0.3);
+            border-left: 2px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 5px;
+            position: relative;
+        }
+
+        .workbench-area {
+            width: 100%;
+            height: 48%;
+            position: absolute;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        /* Instalasi Pipa Gas di Meja */
+        .pipe-system {
+            position: absolute;
+            top: -20px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .pipe-main {
+            position: absolute;
+            bottom: 5px;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(to bottom, #cbd5e1, #94a3b8);
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #475569;
+        }
+
+        .valve {
+            position: absolute;
+            bottom: 11px;
+            width: 10px;
+            height: 15px;
+            background: #f59e0b;
+            border-radius: 2px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .valve::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -5px;
+            width: 20px;
+            height: 4px;
+            background: #ef4444;
+            border-radius: 2px;
+        }
+
+        .valve.v1 {
+            left: 20%;
+        }
+
+        .valve.v2 {
+            left: 80%;
+        }
+
+        .workbench-top {
+            flex: 1;
+            background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%);
+            border-top: 4px solid #94a3b8;
+            position: relative;
+            box-shadow: inset 0 10px 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .workbench-front {
+            height: 40px;
+            background: #64748b;
+            border-top: 2px solid #475569;
+            box-shadow: inset 0 10px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        .drawer {
+            width: 18%;
+            height: 24px;
+            background: #475569;
+            border: 2px solid #334155;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .drawer::after {
+            content: '';
+            width: 30px;
+            height: 4px;
+            background: #94a3b8;
+            border-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* =========================================
+           3. LAB ITEMS & INTERACTIONS
+           ========================================= */
+        .lab-item {
+            height: 75%;
+            max-width: 80%;
+            filter: drop-shadow(5px 10px 8px rgba(0, 0, 0, 0.6));
+            transition: transform 0.2s, filter 0.2s, opacity 0.5s ease-in-out;
+            cursor: grab;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .lab-item svg {
+            height: 100%;
+            width: auto;
+            pointer-events: none;
+        }
+
+        .btn-tare {
+            pointer-events: auto !important;
+            cursor: pointer;
+            transition: fill 0.1s;
+        }
+
+        .btn-tare:active {
+            fill: #b91c1c !important;
+        }
+
+        .on-workbench {
+            position: absolute;
+            height: 120px;
+            transform: translateX(-50%);
+            bottom: 20px;
+            z-index: 20;
+            filter: drop-shadow(10px 20px 15px rgba(0, 0, 0, 0.4));
+        }
+
+        .attached-item {
+            position: absolute !important;
+            transform-origin: bottom center;
+            transition: transform 0.2s, bottom 0.2s;
+        }
+
+        .shelf-slot .lab-item:hover {
+            transform: translateY(-5px);
+            z-index: 10;
+        }
+
+        .is-dragging {
+            position: fixed !important;
+            z-index: 9999 !important;
+            pointer-events: none !important;
+            filter: drop-shadow(0 30px 20px rgba(0, 0, 0, 0.5)) !important;
+        }
+
+        .item-ghost {
+            opacity: 0.3;
+            filter: grayscale(100%);
+            pointer-events: none;
+        }
+
+        .no-drag {
+            cursor: default !important;
+        }
+
+        .drop-target-active {
+            filter: drop-shadow(0 0 15px #3b82f6) brightness(1.2) !important;
+        }
+
+        .tooltip {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.8);
+            background: rgba(15, 23, 42, 0.95);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s;
+            z-index: 100;
+        }
+
+        .item-label {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(160deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+            color: #38bdf8;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+            pointer-events: none;
+            border: 1px solid #0284c7;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35), 0 0 8px rgba(2, 132, 199, 0.25);
+            z-index: 30;
+            opacity: 0;
+            transition: opacity 0.4s, transform 0.4s;
+            transform: translateX(-50%) translateY(-4px);
+        }
+
+        .item-label.label-flash {
+            animation: labelFlash 0.6s ease-out;
+        }
+
+        @keyframes labelFlash {
+            0% {
+                box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.9), 0 4px 10px rgba(0, 0, 0, 0.35);
+            }
+
+            100% {
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35), 0 0 8px rgba(2, 132, 199, 0.25);
+            }
+        }
+
+        .on-workbench .item-label {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .lab-item:hover .tooltip {
+            opacity: 1;
+            transform: translateX(-50%) scale(1.2);
+        }
+
+        .stock-badge {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 10px;
+            pointer-events: none;
+            z-index: 30;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* =========================================
+           4. ANIMATIONS & SVG STYLING
+           ========================================= */
+        .liquid-fill {
+            transition: height 0.5s ease-in-out, y 0.5s ease-in-out, fill 0.5s, transform 0.5s;
+        }
+
+        .solid-fill {
+            transition: opacity 0.5s;
+        }
+
+        .anim-dip svg {
+            animation: dip 0.6s ease;
+        }
+
+        .anim-pour svg {
+            animation: pour 0.8s ease;
+        }
+
+        @keyframes dip {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(30%);
+            }
+        }
+
+        @keyframes pour {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            20%,
+            80% {
+                transform: translate(25px, -20px) rotate(-50deg);
+                transform-origin: center center;
+            }
+        }
+
+        @keyframes fastRise {
+            0% {
+                transform: translateY(0) scale(0.4) translateX(0);
+                opacity: 0.9;
+            }
+
+            40% {
+                transform: translateY(-30px) scale(0.85) translateX(3px);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(-75px) scale(1.4) translateX(-2px);
+                opacity: 0;
+            }
+        }
+
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(200, 200, 200, 0.5);
+            border-radius: 50%;
+            animation: fastRise 0.6s linear forwards;
+            z-index: 15;
+            pointer-events: none;
+        }
+
+        .intense-bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(200, 200, 200, 0.9);
+            border-radius: 50%;
+            animation: fastRise 0.35s ease-out forwards;
+            z-index: 15;
+            pointer-events: none;
+        }
+
+        .boil-bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: fastRise 0.5s linear forwards;
+            z-index: 15;
+            pointer-events: none;
+        }
+
+        /* Bubble container untuk clipping */
+        .bubble-zone {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 15;
+        }
+
+        /* Erlenmeyer: clip mengikuti bentuk trapesium erlenmeyer */
+        .erlen-bubble-zone {
+            clip-path: polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
+        }
+
+        /* Beaker: clip persegi lebar */
+        .beaker-bubble-zone {
+            clip-path: polygon(12% 0%, 88% 0%, 88% 100%, 12% 100%);
+        }
+
+        .balance-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: bold;
+            fill: #10b981;
+            transition: fill 0.2s;
+        }
+
+        /* =========================================
+           5. DASHBOARD HUD PANEL (RIGHT PANEL)
+           ========================================= */
+        .side-dashboard {
+            width: 300px;
+            min-width: 260px;
+            max-width: 340px;
+            background: #0f172a;
+            border-radius: 16px;
+            border: 3px solid #334155;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+            max-height: calc(100vh - 24px);
+        }
+
+        @media (max-width: 900px) {
+            .side-dashboard {
+                width: 100%;
+                max-width: 100%;
+                min-width: unset;
+                max-height: none;
+                overflow-y: visible;
+                border-radius: 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .side-dashboard {
+                padding: 10px;
+                gap: 8px;
+                border-radius: 8px;
+                border-width: 2px;
+            }
+        }
+
+        .dash-card {
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .dash-header {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            font-weight: 800;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dash-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            color: #f8fafc;
+            font-weight: bold;
+        }
+
+        .dash-val.emerald {
+            color: #10b981;
+        }
+
+        /* Indikator stopwatch & data logger berjalan sinkron (anti-deviasi waktu) */
+        .dash-val.running {
+            text-shadow: 0 0 12px rgba(16, 185, 129, 0.85), 0 0 2px rgba(16, 185, 129, 0.6);
+            animation: pulseGlow 1s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.75;
+            }
+        }
+
+        .waktu-live {
+            position: relative;
+            box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.6), 0 0 10px rgba(16, 185, 129, 0.35) !important;
+            animation: pulseGlow 1s ease-in-out infinite;
+        }
+
+        .waktu-live::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 6px #10b981;
+        }
+
+        .btn-sw {
+            padding: 8px 15px;
+            font-size: 12px;
+            font-weight: 800;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            color: white;
+            text-transform: uppercase;
+            transition: transform 0.1s;
+            flex: 1;
+            text-align: center;
+        }
+
+        .btn-sw:active {
+            transform: scale(0.95);
+        }
+
+        .btn-sw.start {
+            background: #2563eb;
+        }
+
+        .btn-sw.stop {
+            background: #ef4444;
+        }
+
+        .btn-sw.reset {
+            background: #475569;
+        }
+
+        select option {
+            background-color: #1e293b;
+            color: white;
+        }
+
+        /* =========================================
+           6. KONTROL VARIABEL, MODAL, TABEL DATA
+           ========================================= */
+        .lab-item {
+            touch-action: none;
+        }
+
+        /* Kaca arloji: tinggi khusus agar proporsinya pas di atas piringan neraca */
+        .on-workbench[data-baseid="arloji"] {
+            height: 34px;
+        }
+
+        .temp-badge {
+            position: absolute;
+            top: 16px;
+            left: 2px;
+            font: 700 10px 'JetBrains Mono', monospace;
+            color: #fff;
+            background: #475569;
+            padding: 1px 5px;
+            border-radius: 999px;
+            pointer-events: none;
+            z-index: 25;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .35);
+        }
+
+        .steam {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            width: 30px;
+            height: 24px;
+            transform: translateX(-50%);
+            display: none;
+            pointer-events: none;
+            z-index: 24;
+        }
+
+        .is-hot>.steam {
+            display: block;
+        }
+
+        .steam span {
+            position: absolute;
+            bottom: 0;
+            width: 7px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(148, 163, 184, .6);
+            filter: blur(2px);
+            opacity: 0;
+            animation: steamRise 2.4s ease-in infinite;
+        }
+
+        .steam span:nth-child(1) {
+            left: 2px;
+        }
+
+        .steam span:nth-child(2) {
+            left: 12px;
+            animation-delay: .8s;
+        }
+
+        .steam span:nth-child(3) {
+            left: 22px;
+            animation-delay: 1.6s;
+        }
+
+        @keyframes steamRise {
+            0% {
+                transform: translateY(0) scaleX(1);
+                opacity: 0;
+            }
+
+            30% {
+                opacity: .85;
+            }
+
+            100% {
+                transform: translateY(-24px) scaleX(1.8);
+                opacity: 0;
+            }
+        }
+
+        .is-cold>svg {
+            filter: drop-shadow(0 0 5px rgba(56, 189, 248, .9));
+        }
+
+        .item-label small {
+            display: block;
+            font-size: 9px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-top: 1px;
+            text-align: center;
+        }
+
+        .dose-badge {
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f172a;
+            color: #fde68a;
+            font: 700 9px 'JetBrains Mono', monospace;
+            padding: 1px 5px;
+            border-radius: 6px;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 5;
+        }
+
+        @media (max-width: 600px) {
+            .dose-badge {
+                display: none;
+            }
+        }
+
+        .var-list {
+            display: grid;
+            gap: 6px;
+            margin: 0;
+        }
+
+        .var-row {
+            display: grid;
+            grid-template-columns: 58px 1fr;
+            gap: 8px;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .var-row dt {
+            color: #94a3b8;
+            font-weight: 700;
+        }
+
+        .var-row dd {
+            margin: 0;
+            color: #e2e8f0;
+        }
+
+        .var-tip {
+            margin-top: 10px;
+            font-size: 11px;
+            line-height: 1.45;
+            color: #6ee7b7;
+            background: rgba(16, 185, 129, .08);
+            border: 1px solid rgba(16, 185, 129, .25);
+            border-radius: 8px;
+            padding: 7px 9px;
+        }
+
+        .data-row {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 7px 9px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            color: #cbd5e1;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color .15s;
+        }
+
+        .data-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .data-row:hover {
+            border-color: #3b82f6;
+        }
+
+        .data-row:focus-visible {
+            outline: 2px solid #38bdf8;
+            outline-offset: 2px;
+        }
+
+        .data-row.is-live {
+            border-color: #10b981;
+            box-shadow: 0 0 10px rgba(16, 185, 129, .3);
+        }
+
+        .row-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .row-name {
+            font-weight: 800;
+            font-size: 12px;
+            color: #f1f5f9;
+        }
+
+        .row-time {
+            font: 700 15px 'JetBrains Mono', monospace;
+            color: #10b981;
+            white-space: nowrap;
+        }
+
+        .row-time.muted {
+            color: #64748b;
+            font-size: 11px;
+        }
+
+        .row-cond {
+            display: block;
+            font-size: 10.5px;
+            color: #94a3b8;
+            line-height: 1.4;
+            margin-top: 2px;
+        }
+
+        .row-gas {
+            display: block;
+            font-size: 10.5px;
+            color: #fcd34d;
+            margin-top: 2px;
+        }
+
+        .row-gas:empty {
+            display: none;
+        }
+
+        .data-empty {
+            font-size: 11px;
+            color: #64748b;
+            text-align: center;
+            padding: 8px;
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(2, 6, 23, .62);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-backdrop[hidden] {
+            display: none;
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 380px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: #0f172a;
+            color: #e2e8f0;
+            border: 1px solid #475569;
+            border-radius: 14px;
+            padding: 16px 16px 14px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, .6);
+        }
+
+        .modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-head h2 {
+            font-size: 15px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .modal-sub {
+            font-size: 11px;
+            color: #94a3b8;
+            margin: 2px 0 14px;
+            line-height: 1.45;
+        }
+
+        .modal-x {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: 1px solid #475569;
+            background: #1e293b;
+            color: #cbd5e1;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .field {
+            display: block;
+            margin-bottom: 14px;
+        }
+
+        .field-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+        }
+
+        .field-num {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font: 700 12px 'JetBrains Mono', monospace;
+            color: #10b981;
+        }
+
+        .field-num input {
+            width: 70px;
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 6px;
+            color: #f8fafc;
+            padding: 4px 6px;
+            text-align: right;
+            font: inherit;
+        }
+
+        .field input[type=range] {
+            width: 100%;
+            accent-color: #10b981;
+        }
+
+        .field-hint {
+            font-size: 10.5px;
+            color: #64748b;
+            margin-top: 3px;
+            line-height: 1.4;
+        }
+
+        .field input:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+        }
+
+        .modal-lock {
+            font-size: 11px;
+            line-height: 1.45;
+            color: #fcd34d;
+            background: rgba(245, 158, 11, .1);
+            border: 1px solid rgba(245, 158, 11, .35);
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 14px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 4px;
+        }
+
+        .btn-ghost,
+        .btn-primary {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .btn-ghost {
+            background: #1e293b;
+            border: 1px solid #475569;
+            color: #cbd5e1;
+        }
+
+        .btn-primary {
+            background: #059669;
+            border: 1px solid #10b981;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #047857;
+        }
+
+        .modal-x:focus-visible,
+        .btn-ghost:focus-visible,
+        .btn-primary:focus-visible {
+            outline: 2px solid #38bdf8;
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .steam span {
+                animation: none;
+                opacity: .5;
+            }
+
+            .dash-val.running,
+            .waktu-live {
+                animation: none;
+            }
+        }
+
+        /* =========================================
+           7. PENYEMPURNAAN TAMPILAN
+           ========================================= */
+        body {
+            background:
+                radial-gradient(1100px 600px at 8% -10%, rgba(56, 189, 248, 0.16), transparent 60%),
+                radial-gradient(900px 520px at 105% 110%, rgba(16, 185, 129, 0.13), transparent 60%),
+                linear-gradient(135deg, #1e293b, #0f172a);
+            background-attachment: fixed;
+        }
+
+        .device-frame {
+            background: linear-gradient(160deg, #1f2937 0%, #111827 55%, #0b1220 100%);
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 0 1px rgba(148, 163, 184, 0.12);
+        }
+
+        .lab-room {
+            box-shadow: inset 0 0 60px rgba(15, 23, 42, 0.16), 0 12px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Cahaya lampu langit-langit */
+        .lab-room::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(60% 40% at 50% 0%, rgba(255, 255, 255, 0.75), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .wall-title h1 {
+            background: linear-gradient(180deg, #ffffff, #f1f5f9);
+            color: #0f172a;
+            border-color: #cbd5e1;
+            box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08), inset 0 -2px 0 #e2e8f0;
+        }
+
+        .wall-title h1::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            margin-right: 8px;
+            vertical-align: middle;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+
+        .side-dashboard {
+            background: linear-gradient(180deg, #0f172a 0%, #0b1220 100%);
+            border-color: #1e3a5f;
+            scrollbar-width: thin;
+            scrollbar-color: #334155 transparent;
+        }
+
+        .side-dashboard::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .side-dashboard::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 8px;
+        }
+
+        .dash-card {
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(21, 31, 49, 0.96));
+            border-color: rgba(71, 85, 105, 0.75);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .dash-card:hover {
+            border-color: rgba(59, 130, 246, 0.55);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+        }
+
+        .dash-header {
+            color: #a5b4c8;
+        }
+
+        /* Layar stopwatch bergaya LCD */
+        #sw-display {
+            background: radial-gradient(120% 140% at 50% 0%, #062a1f 0%, #02120d 70%);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            border-radius: 12px;
+            padding: 10px 8px;
+            box-shadow: inset 0 0 18px rgba(16, 185, 129, 0.12), inset 0 2px 6px rgba(0, 0, 0, 0.6);
+            font-variant-numeric: tabular-nums;
+            font-size: clamp(28px, 6vw, 34px);
+            line-height: 1.1;
+        }
+
+        .btn-sw {
+            border-radius: 10px;
+            padding: 10px 12px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 14px -6px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transition: transform 0.1s, filter 0.15s;
+        }
+
+        .btn-sw:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-sw.start {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        .btn-sw.stop {
+            background: linear-gradient(135deg, #f87171, #dc2626);
+        }
+
+        .btn-sw.reset {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+
+        .btn-sw:focus-visible {
+            outline: 2px solid #38bdf8;
+            outline-offset: 2px;
+        }
+
+        /* Lampu REC berkedip saat reaksi sedang direkam */
+        #gas-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 1px 6px !important;
+            border-radius: 999px !important;
+            letter-spacing: 1px;
+        }
+
+        #gas-status.is-rec {
+            background: #dc2626 !important;
+        }
+
+        #gas-status.is-rec::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #fff;
+            animation: recBlink 1s steps(2, start) infinite;
+        }
+
+        @keyframes recBlink {
+            to {
+                visibility: hidden;
+            }
+        }
+
+        /* Baris data */
+        .data-row {
+            border-radius: 10px;
+            transition: border-color .15s, box-shadow .15s, transform .15s;
+        }
+
+        .data-row:hover {
+            transform: translateX(2px);
+        }
+
+        .data-row.is-done {
+            border-color: rgba(16, 185, 129, 0.35);
+        }
+
+        .data-row.is-fastest {
+            border-color: #f59e0b;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.22);
+        }
+
+        .data-row.is-fastest .row-name::after {
+            content: '⚡ tercepat';
+            margin-left: 6px;
+            padding: 1px 6px;
+            border-radius: 999px;
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            font-size: 9px;
+            font-weight: 800;
+            vertical-align: middle;
+        }
+
+        .row-time {
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Cap waktu stopwatch pada setiap baris data */
+        .row-sw {
+            display: block;
+            margin-top: 3px;
+            font: 700 10.5px 'JetBrains Mono', monospace;
+            color: #6ee7b7;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .row-sw:empty {
+            display: none;
+        }
+
+        #hud-msg {
+            background: rgba(2, 6, 23, 0.6);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-radius: 10px;
+            padding: 8px 10px;
+            line-height: 1.5;
+        }
+
+        .modal-backdrop {
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .modal-card {
+            border-color: #334155;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .05);
+        }
+
+        /* Stopwatch mini (HP & tablet): tetap terlihat saat bekerja di meja */
+        .sw-mini {
+            display: none;
+            position: fixed;
+            left: 50%;
+            bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+            transform: translate(-50%, 20px);
+            opacity: 0;
+            z-index: 9000;
+            align-items: center;
+            gap: 10px;
+            background: rgba(2, 6, 23, 0.92);
+            border: 1px solid rgba(16, 185, 129, 0.45);
+            border-radius: 999px;
+            padding: 6px 6px 6px 14px;
+            font: 700 18px 'JetBrains Mono', monospace;
+            font-variant-numeric: tabular-nums;
+            color: #10b981;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.25s, transform 0.25s;
+            pointer-events: none;
+        }
+
+        .sw-mini-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #475569;
+        }
+
+        .sw-mini.running .sw-mini-dot {
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+            animation: pulseGlow 1s ease-in-out infinite;
+        }
+
+        .sw-mini button {
+            pointer-events: auto;
+            font: 700 11px 'Poppins', sans-serif;
+            color: #e2e8f0;
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 999px;
+            padding: 6px 12px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* =========================================
+           8. RESPONSIF
+           ========================================= */
+        @media (max-width: 900px) {
+            .lab-room {
+                min-height: clamp(440px, 64vh, 600px);
+            }
+
+            .sw-mini {
+                display: flex;
+            }
+
+            .sw-mini.tampil {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: max(4px, env(safe-area-inset-top)) 4px max(4px, env(safe-area-inset-bottom));
+            }
+
+            .lab-room {
+                min-height: 470px;
+            }
+
+            .wall-title {
+                margin-top: 12px;
+            }
+
+            .wall-title h1 {
+                font-size: 13px;
+                padding: 4px 12px;
+                letter-spacing: 1.5px;
+            }
+
+            .wall-title h1::before {
+                width: 6px;
+                height: 6px;
+                margin-right: 6px;
+            }
+
+            .poster-periodic {
+                width: 56px;
+                height: 40px;
+                top: 8px;
+                left: 8px;
+                border-width: 2px;
+            }
+
+            .poster-periodic span {
+                font-size: 6px;
+            }
+
+            .safety-sign {
+                width: 64px;
+                height: 30px;
+                top: 8px;
+                right: 8px;
+                font-size: 7px;
+                letter-spacing: 0.5px;
+                border-width: 2px;
+            }
+
+            .fire-extinguisher {
+                display: none;
+            }
+
+            .cabinet {
+                width: 94%;
+                height: 34%;
+                margin-top: 10px;
+            }
+
+            .workbench-front {
+                height: 30px;
+            }
+
+            .drawer {
+                height: 18px;
+            }
+
+            .side-dashboard {
+                padding-bottom: 70px;
+            }
+
+            .btn-sw {
+                padding: 12px 6px;
+            }
+
+            /* Mencegah iPhone zoom otomatis saat mengetik angka di modal */
+            .field-num input {
+                font-size: 16px;
+                width: 80px;
+            }
+
+            .modal-backdrop {
+                align-items: flex-end;
+                padding: 0;
+            }
+
+            .modal-card {
+                max-width: 100%;
+                border-radius: 18px 18px 0 0;
+                max-height: 88vh;
+                max-height: 88dvh;
+                padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+            }
+
+            .modal-actions button {
+                flex: 1;
+                padding: 12px 14px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .safety-sign {
+                display: none;
+            }
+        }
+
+        /* HP diputar mendatar: lab di kiri, panel di kanan */
+        @media (max-width: 900px) and (orientation: landscape) and (max-height: 520px) {
+            body {
+                padding: 4px;
+            }
+
+            .device-frame {
+                flex-direction: row;
+                min-height: calc(100vh - 8px);
+                min-height: calc(100dvh - 8px);
+                padding: 6px;
+                gap: 6px;
+            }
+
+            .lab-room {
+                min-height: calc(100vh - 20px);
+                min-height: calc(100dvh - 20px);
+            }
+
+            .side-dashboard {
+                width: 250px;
+                min-width: 230px;
+                max-width: 260px;
+                max-height: calc(100vh - 20px);
+                max-height: calc(100dvh - 20px);
+                overflow-y: auto;
+                padding: 8px;
+                padding-bottom: 60px;
+            }
+
+            .wall-title {
+                margin-top: 6px;
+            }
+
+            .wall-title h1 {
+                font-size: 12px;
+                padding: 3px 10px;
+            }
+
+            .poster-periodic {
+                width: 56px;
+                height: 40px;
+                top: 6px;
+                left: 8px;
+            }
+
+            .poster-periodic span {
+                font-size: 6px;
+            }
+
+            .safety-sign {
+                width: 70px;
+                height: 28px;
+                top: 6px;
+                right: 8px;
+                font-size: 7px;
+            }
+
+            .fire-extinguisher {
+                display: none;
+            }
+
+            .cabinet {
+                height: 33%;
+                margin-top: 6px;
+            }
+
+            .workbench-front {
+                height: 26px;
+            }
+
+            .drawer {
+                height: 16px;
+            }
+
+            /* Stopwatch mini pindah ke pojok kiri atas agar tidak menutupi meja */
+            .poster-periodic {
+                display: none;
+            }
+
+            .sw-mini {
+                left: 12px;
+                top: 10px;
+                bottom: auto;
+                transform: translate(0, -10px);
+                font-size: 14px;
+                padding: 4px 4px 4px 10px;
+                gap: 8px;
+            }
+
+            .sw-mini.tampil {
+                transform: translate(0, 0);
+            }
+
+            .sw-mini button {
+                padding: 4px 10px;
+                font-size: 10px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            #gas-status.is-rec::before,
+            .sw-mini.running .sw-mini-dot {
+                animation: none;
+            }
+
+            .data-row:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="device-frame">
+
+        <!-- BAGIAN KIRI: RUANG LAB -->
+        <div class="lab-room">
+            <!-- DEKORASI DINDING -->
+            <div class="poster-periodic">
+                <div class="pt-grid"></div>
+                <span>Tabel Periodik</span>
+            </div>
+            <div class="safety-sign">⚠️ SAFETY FIRST</div>
+            <div class="ventilation"></div>
+
+            <!-- ALAT PEMADAM API RINGAN -->
+            <div class="fire-extinguisher">
+                <div class="nozzle"></div>
+                <div class="tank"></div>
+            </div>
+
+            <div class="wall-title">
+                <h1>EduKinetika Lab</h1>
+            </div>
+
+            <!-- RAK LEMARI -->
+            <div class="cabinet" id="cabinet"></div>
+
+            <!-- MEJA KERJA -->
+            <div class="workbench-area">
+                <!-- Instalasi Pipa Gas -->
+                <div class="pipe-system">
+                    <div class="pipe-main"></div>
+                    <div class="valve v1"></div>
+                    <div class="valve v2"></div>
+                </div>
+
+                <div class="workbench-top" id="workbench"></div>
+
+                <!-- Tekstur Laci Depan -->
+                <div class="workbench-front">
+                    <div class="drawer"></div>
+                    <div class="drawer"></div>
+                    <div class="drawer"></div>
+                    <div class="drawer"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BAGIAN KANAN: DASHBOARD PANEL -->
+        <div class="side-dashboard">
+
+            <a href="index.html"
+                class="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white py-2.5 px-4 rounded-xl border border-slate-600 transition-colors text-sm font-bold shadow-sm mb-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m12 19-7-7 7-7" />
+                    <path d="M19 12H5" />
+                </svg>
+                Kembali ke Dashboard
+            </a>
+
+            <!-- PILIH TOPIK EKSPERIMEN -->
+            <div class="dash-card" style="padding: 10px 15px;">
+                <div class="dash-header" style="margin-bottom: 8px;">
+                    <span>🧪 Pilih Eksperimen</span>
+                </div>
+                <select id="mode-select"
+                    class="w-full bg-slate-900 text-slate-200 text-xs p-2 rounded border border-slate-600 outline-none hover:border-blue-400 transition-colors font-bold"
+                    onchange="userChangeMode(this.value)">
+                    <option value="surface">1. Pengaruh Luas Permukaan</option>
+                    <option value="temp">2. Pengaruh Suhu</option>
+                    <option value="conc">3. Pengaruh Konsentrasi</option>
+                    <option value="cat">4. Pengaruh Katalis</option>
+                </select>
+            </div>
+
+            <!-- VARIABEL PERCOBAAN -->
+            <div class="dash-card" style="padding: 10px 15px;">
+                <div class="dash-header" style="margin-bottom: 8px;"><span>🎛️ Variabel Percobaan</span></div>
+                <dl id="var-container" class="var-list"></dl>
+                <p class="var-tip">Ketuk wadah di meja (atau barisnya di tabel data) untuk mengatur konsentrasi, volume,
+                    dan suhu. Ketuk botol padatan untuk mengatur takaran sekali tuang.</p>
+            </div>
+
+            <!-- VISUALISASI PARTIKEL -->
+            <div class="dash-card" style="padding: 10px;">
+                <div class="dash-header" style="margin-bottom: 5px;">
+                    <span>⚗️ Visualisasi Submikroskopis</span>
+                </div>
+                <div id="nano-container"
+                    style="position: relative; width: 100%; height: 110px; background: #020617; border-radius: 8px; border: 1px solid #334155; overflow: hidden;">
+                    <canvas id="nano-canvas" width="280" height="110" style="width: 100%; height: 100%;"></canvas>
+                </div>
+            </div>
+
+            <!-- RUMUS KIMIA -->
+            <div class="dash-card">
+                <div class="dash-header"><span>⚖️ Persamaan Reaksi</span></div>
+                <div id="rumus-container"
+                    class="text-sm font-bold text-center text-slate-200 bg-slate-800 p-2 rounded border border-slate-600"
+                    style="font-family: 'JetBrains Mono', monospace; line-height: 1.6;">
+                    <!-- Konten dinamis dari JS -->
+                </div>
+            </div>
+
+            <!-- DATA WAKTU REAKSI -->
+            <div class="dash-card">
+                <div class="dash-header">
+                    <span>📊 Data Pengamatan</span>
+                    <span class="text-[9px] bg-emerald-600 px-1 rounded text-white" id="gas-status">REC</span>
+                </div>
+                <div id="waktu-container">
+                    <!-- Konten dinamis dari JS -->
+                </div>
+            </div>
+
+            <!-- STOPWATCH -->
+            <div class="dash-card">
+                <div class="dash-header"><span>⏱️ Stopwatch Global</span></div>
+                <div class="dash-val emerald text-3xl text-center mb-3 tracking-widest" id="sw-display">00:00.0</div>
+                <div class="flex gap-2">
+                    <button class="btn-sw start" onclick="manualStartSW()">Start</button>
+                    <button class="btn-sw stop" onclick="manualStopSW()">Stop</button>
+                    <button class="btn-sw reset" onclick="resetSW()">Reset</button>
+                </div>
+            </div>
+
+            <div class="text-xs text-emerald-400 font-mono mt-auto mb-2 text-center" id="hud-msg">Siap memulai
+                eksperimen.</div>
+            <button onclick="resetLab()"
+                class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-lg transition-colors shadow-lg border border-slate-500">
+                🔄 Reset Meja Kerja
+            </button>
+
+        </div>
+    </div>
+
+    <!-- STOPWATCH MINI (tampil di HP/tablet saat stopwatch utama tidak terlihat) -->
+    <div id="sw-mini" class="sw-mini" aria-hidden="true">
+        <span class="sw-mini-dot"></span>
+        <span id="sw-mini-val">00:00.0</span>
+        <button type="button" id="sw-mini-go" tabindex="-1">Lihat data</button>
+    </div>
+
+    <!-- MODAL PENGATURAN KONDISI -->
+    <div id="cond-modal" class="modal-backdrop" hidden>
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div class="modal-head">
+                <h2 id="modal-title">Atur kondisi</h2>
+                <button type="button" class="modal-x" id="modal-x" aria-label="Tutup">✕</button>
+            </div>
+            <p class="modal-sub" id="modal-sub"></p>
+            <div id="modal-body"></div>
+            <div class="modal-actions">
+                <button type="button" class="btn-ghost" id="modal-cancel">Batal</button>
+                <button type="button" class="btn-primary" id="modal-apply">Terapkan</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* =========================================
+           0. UTILITAS
+           ========================================= */
+        const fmt = (x, d = 1) => Number(x).toFixed(d).replace('.', ',');
+        const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+        const fmtMass = (m) => m < 1 ? fmt(m, 2) : fmt(m, 1);
+        const fmtVol = (ml) => ml >= 1000 ? `${fmt(ml / 1000, 2)} L` : `${Math.round(ml)} mL`;
+        // Satu aturan pembulatan untuk stopwatch DAN tabel data: dibulatkan ke 0,1 s terdekat.
+        // (Sebelumnya stopwatch memotong ke bawah, tabel membulatkan, sehingga bisa selisih 0,1 s.)
+        const q10 = (sec) => Math.round(Math.max(0, sec) * 10 + 1e-6) / 10;
+        const fmtClock = (sec) => {
+            const t = Math.round(q10(sec) * 10);
+            const m = Math.floor(t / 600), s = Math.floor((t % 600) / 10), d = t % 10;
+            return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}.${d}`;
+        };
+        function hashStr(s) { let h = 2166136261; for (const ch of s) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+        function rng(seed) { let s = seed || 1; return () => { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s / 4294967296; }; }
+
+        // Gas ideal: 24,5 L/mol pada 25 °C, 1 atm; dikoreksi dengan suhu larutan
+        const gasMlFromMol = (mol, T) => mol * 24.5 * 1000 * (T + 273.15) / 298.15;
+        // Aturan umum: laju reaksi naik ±2 kali setiap kenaikan suhu 10 °C
+        const tempFactor = (T) => Math.pow(2, (25 - T) / 10);
+
+        /* =========================================
+           1. DATA KIMIA
+           ========================================= */
+        const SUBST = {
+            caco3: { name: 'CaCO₃', Mr: 100.1, color: '#f1f5f9', stroke: '#94a3b8', visRef: 2, nano: '#e2e8f0', dose: { def: 2, min: 0.1, max: 5, step: 0.1, dec: 1 } },
+            mg: { name: 'Mg', Mr: 24.3, color: '#cbd5e1', stroke: '#64748b', visRef: 0.1, nano: '#94a3b8', dose: { def: 0.1, min: 0.02, max: 0.5, step: 0.01, dec: 2 } },
+            nahco3: { name: 'NaHCO₃', Mr: 84.0, color: '#ffffff', stroke: '#a8a29e', visRef: 2, nano: '#f8fafc', dose: { def: 2, min: 0.1, max: 5, step: 0.1, dec: 1 } },
+            mno2: { name: 'MnO₂', catalyst: true, activity: 1.0, color: '#1f2937', stroke: '#0f172a', visRef: 0.5, nano: '#64748b', dose: { def: 0.5, min: 0.05, max: 2, step: 0.05, dec: 2 } },
+            ki: { name: 'KI', catalyst: true, activity: 1.6, color: '#f8fafc', stroke: '#cbd5e1', visRef: 0.5, nano: '#c4b5fd', dose: { def: 0.5, min: 0.05, max: 2, step: 0.05, dec: 2 } },
+            fecl3: { name: 'FeCl₃', catalyst: true, activity: 0.5, color: '#a16207', stroke: '#713f12', visRef: 0.5, nano: '#f59e0b', dose: { def: 0.5, min: 0.05, max: 2, step: 0.05, dec: 2 } }
+        };
+
+        function formFactor(sub, form) {
+            if (sub === 'mg') return form === 'serbuk' ? 0.3 : 1;
+            return ({ bongkahan: 4, kepingan: 2, serbuk: 1 })[form] || 1;
+        }
+
+        const LIQUIDS = {
+            hcl: { name: 'HCl', unit: 'M', min: 0.1, max: 3, step: 0.1, dec: 1, def: 1, tint: [125, 211, 252] },
+            ch3cooh: { name: 'CH₃COOH', unit: 'M', min: 0.1, max: 3, step: 0.1, dec: 1, def: 1, tint: [252, 211, 77] },
+            h2o2: { name: 'H₂O₂', unit: '%', min: 1, max: 30, step: 1, dec: 0, def: 5, tint: [147, 197, 253] }
+        };
+
+        // tRef = waktu reaksi (s) pada 1 M, 25 °C, massa mRef, bentuk dengan faktor 1
+        const REACTIONS = {
+            'hcl+caco3': { tRef: 5, mRef: 2, stoich: 2, gas: 'CO₂' },
+            'hcl+mg': { tRef: 20, mRef: 0.1, stoich: 2, gas: 'H₂' },
+            'hcl+nahco3': { tRef: 4, mRef: 2, stoich: 1, gas: 'CO₂' },
+            'ch3cooh+nahco3': { tRef: 20, mRef: 2, stoich: 1, gas: 'CO₂' },
+            'ch3cooh+caco3': { tRef: 40, mRef: 2, stoich: 2, gas: 'CO₂' },
+            'ch3cooh+mg': { tRef: 60, mRef: 0.1, stoich: 2, gas: 'H₂' }
+        };
+        const CAT_TREF = 25; // detik, 0,5 g katalis aktivitas 1, 25 °C
+
+        /* =========================================
+           2. ASET SVG
+           ========================================= */
+        const svgs = {
+            beaker250: `<svg viewBox="0 0 100 120"><path d="M15,10 L15,105 Q15,115 25,115 L75,115 Q85,115 85,105 L85,10 L95,10 L95,5 L5,5 L5,10 Z" fill="rgba(255,255,255,0.2)" stroke="#94a3b8" stroke-width="3"/><rect class="liquid-fill" x="17" y="112" width="66" height="0" fill="transparent" rx="4"/><g class="solid-fill" opacity="0"></g><path d="M15,10 L15,105 Q15,115 25,115 L75,115 Q85,115 85,105 L85,10" fill="url(#glass-grad)"/><line x1="20" y1="40" x2="35" y2="40" stroke="#64748b" stroke-width="2"/><line x1="20" y1="70" x2="45" y2="70" stroke="#64748b" stroke-width="2"/><text x="60" y="75" font-size="12" fill="#64748b" font-weight="bold" class="svg-label">250mL</text></svg>`,
+            erlenmeyer: `<svg viewBox="0 0 100 140">
+                <path d="M40,10 L60,10 L60,40 L90,120 Q95,130 85,130 L15,130 Q5,130 10,120 L40,40 Z" fill="rgba(255,255,255,0.2)" stroke="#94a3b8" stroke-width="3"/>
+                <rect class="liquid-fill" x="0" y="130" width="100" height="0" fill="transparent" clip-path="url(#erlen-clip)"/>
+                <g class="solid-fill" opacity="0"></g>
+                <path d="M40,10 L60,10 L60,40 L90,120 Q95,130 85,130 L15,130 Q5,130 10,120 L40,40 Z" fill="url(#glass-grad)"/>
+                <line x1="30" y1="70" x2="45" y2="70" stroke="#64748b" stroke-width="2"/>
+                <text x="50" y="100" font-size="12" fill="#64748b" font-weight="bold" text-anchor="middle">250mL</text>
+            </svg>`,
+            bottleSolid: (label, sublabel) => `<svg viewBox="0 0 100 140"><path d="M30,35 L30,15 Q30,10 35,10 L65,10 Q70,10 70,15 L70,35 L85,55 L85,130 Q85,140 75,140 L25,140 Q15,140 15,130 L15,55 Z" fill="#78350f" stroke="#451a03" stroke-width="2"/><rect x="18" y="65" width="64" height="50" fill="#fef3c7" stroke="#d97706" rx="3"/><text x="50" y="${sublabel ? 85 : 93}" font-size="${label.length > 8 ? 9 : 11}" font-weight="800" fill="#451a03" text-anchor="middle">${label}</text>${sublabel ? `<text x="50" y="102" font-size="8" font-weight="700" fill="#7c3f00" text-anchor="middle">${sublabel}</text>` : ''}</svg>`,
+            // Neraca digital dengan piringan bundar (permukaan piringan di y≈21 → 74% dari bawah)
+            neraca: `<svg viewBox="0 0 140 80">
+                <rect x="8" y="38" width="124" height="36" rx="7" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+                <rect x="10" y="64" width="120" height="8" rx="4" fill="#cbd5e1"/>
+                <rect x="42" y="45" width="68" height="17" rx="2" fill="#0f172a"/>
+                <text x="76" y="57.5" class="balance-text" text-anchor="middle">0,00 g</text>
+                <rect x="14" y="48" width="22" height="11" fill="#ef4444" rx="2" class="btn-tare"/>
+                <text x="25" y="55.8" font-size="6" font-weight="700" fill="white" text-anchor="middle" pointer-events="none">TARE</text>
+                <rect x="63" y="26" width="14" height="12" fill="#94a3b8"/>
+                <ellipse cx="70" cy="25" rx="46" ry="5" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1.5"/>
+                <ellipse cx="70" cy="23.6" rx="43" ry="3.4" fill="#f1f5f9"/>
+            </svg>`,
+            // Kaca arloji: cekung, tembus pandang, dengan bibir elips dan bayangan
+            watchGlass: `<svg viewBox="0 0 100 34">
+                <ellipse cx="50" cy="32" rx="26" ry="2" fill="rgba(15,23,42,0.18)"/>
+                <path d="M3,9 Q50,51 97,9 Z" fill="rgba(186,230,253,0.35)" stroke="#94a3b8" stroke-width="1.4" stroke-linejoin="round"/>
+                <ellipse cx="50" cy="9" rx="47" ry="3.6" fill="rgba(255,255,255,0.35)" stroke="#94a3b8" stroke-width="1.2"/>
+                <g class="solid-fill" opacity="0"></g>
+                <path d="M12,13 Q28,24 44,27" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M3,9 Q50,51 97,9" fill="none" stroke="rgba(100,116,139,0.55)" stroke-width="1"/>
+            </svg>`,
+            balon: (color) => { const colors = color || { fill: 'rgba(239,68,68,0.88)', stroke: '#b91c1c', neck: '#c0392b', shine: 'rgba(255,255,255,0.55)' }; return `<svg viewBox="0 0 100 160" style="overflow: visible;"><g class="balloon-inflate" style="transform-origin: 50px 138px; transform: scale(0.3); transition: transform 1.8s cubic-bezier(0.34, 1.10, 0.64, 1.0);"><path d="M50,8 C5,8 5,95 42,138 L58,138 C95,95 95,8 50,8 Z" fill="${colors.fill}" stroke="${colors.stroke}" stroke-width="2.5"/><path d="M35,28 C22,48 24,75 28,85" stroke="${colors.shine}" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.8"/><path d="M42,18 C35,26 33,36 34,42" stroke="rgba(255,255,255,0.35)" stroke-width="2.5" fill="none" stroke-linecap="round"/></g><path d="M44,138 Q43,147 42,155 L58,155 Q57,147 56,138 Z" fill="${colors.neck}" /><ellipse cx="50" cy="155" rx="10" ry="3.5" fill="${colors.neck}" /><path d="M46,156 Q50,162 54,156" stroke="${colors.stroke}" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>`; },
+            baraApi: `<svg viewBox="0 0 30 155">
+                <rect x="12" y="25" width="6" height="130" fill="#8B4513" rx="2"/>
+                <path d="M12,25 L15,14 L18,25 Z" fill="#4A2311"/>
+                <circle cx="15" cy="12" r="5" fill="#ff6600" class="bara-glow" />
+                <circle cx="15" cy="12" r="3" fill="#ff2200" />
+                <path d="M15,-12 Q2,5 8,18 Q12,18 15,20 Q18,18 22,18 Q28,5 15,-12 Z" fill="#facc15" opacity="0" class="bara-flame" style="transition: opacity 0.2s; filter: drop-shadow(0 0 4px #f97316);"/>
+                <path d="M15,-4 Q6,8 10,17 Q12,17 15,19 Q18,17 20,17 Q24,8 15,-4 Z" fill="#f97316" opacity="0" class="bara-flame" style="transition: opacity 0.2s;"/>
+                <path d="M15,2 Q10,10 12,16 Q15,17 18,16 Q20,10 15,2 Z" fill="#ef4444" opacity="0" class="bara-flame" style="transition: opacity 0.2s;"/>
+            </svg>`
+        };
+
+        const labInventory = [
+            { id: 'erlen_hcl', svg: svgs.erlenmeyer, name: 'Erlenmeyer berisi HCl', type: 'container', liquid: 'hcl', vol: 250, emptyMass: 110, scale: 1.05, short: 'Erl' },
+            { id: 'erlen_cuka', svg: svgs.erlenmeyer, name: 'Erlenmeyer berisi CH₃COOH', type: 'container', liquid: 'ch3cooh', vol: 250, emptyMass: 110, scale: 1.05, short: 'Erl' },
+            { id: 'beaker_h2o2', svg: svgs.beaker250, name: 'Gelas kimia berisi H₂O₂', type: 'container', liquid: 'h2o2', vol: 250, emptyMass: 50, scale: 1.0, short: 'Bkr' },
+            { id: 'caco3_bongkah', svg: svgs.bottleSolid('Bongkahan', 'CaCO₃'), name: 'CaCO₃ bongkahan (pualam)', type: 'solid_source', sub: 'caco3', form: 'bongkahan', scale: 0.95 },
+            { id: 'caco3_keping', svg: svgs.bottleSolid('Kepingan', 'CaCO₃'), name: 'CaCO₃ kepingan', type: 'solid_source', sub: 'caco3', form: 'kepingan', scale: 0.95 },
+            { id: 'caco3_serbuk', svg: svgs.bottleSolid('Serbuk', 'CaCO₃'), name: 'CaCO₃ serbuk', type: 'solid_source', sub: 'caco3', form: 'serbuk', scale: 0.95 },
+            { id: 'mg_pita', svg: svgs.bottleSolid('Pita Mg', 'Mg (s)'), name: 'Pita magnesium', type: 'solid_source', sub: 'mg', form: 'pita', scale: 0.95 },
+            { id: 'mg_serbuk', svg: svgs.bottleSolid('Serbuk Mg', 'Mg (s)'), name: 'Serbuk magnesium', type: 'solid_source', sub: 'mg', form: 'serbuk', scale: 0.95 },
+            { id: 'nahco3', svg: svgs.bottleSolid('Soda Kue', 'NaHCO₃'), name: 'Soda kue (NaHCO₃)', type: 'solid_source', sub: 'nahco3', form: 'serbuk', scale: 0.95 },
+            { id: 'mno2', svg: svgs.bottleSolid('MnO₂', 'Katalis'), name: 'Katalis mangan dioksida (MnO₂)', type: 'solid_source', sub: 'mno2', form: 'serbuk', scale: 0.95 },
+            { id: 'ki', svg: svgs.bottleSolid('KI', 'Katalis'), name: 'Katalis kalium iodida (KI)', type: 'solid_source', sub: 'ki', form: 'serbuk', scale: 0.95 },
+            { id: 'fecl3', svg: svgs.bottleSolid('FeCl₃', 'Katalis'), name: 'Katalis besi(III) klorida (FeCl₃)', type: 'solid_source', sub: 'fecl3', form: 'serbuk', scale: 0.95 },
+            { id: 'bara_api', svg: svgs.baraApi, name: 'Uji bara api', type: 'tool_tester', scale: 0.8 },
+            { id: 'neraca', svg: svgs.neraca, name: 'Neraca digital', type: 'platform', scale: 0.8 },
+            { id: 'arloji', svg: svgs.watchGlass, name: 'Kaca arloji', type: 'dish', emptyMass: 10, scale: 1 },
+            { id: 'balon', svg: svgs.balon(), name: 'Balon karet', type: 'gas_catcher', scale: 0.65 }
+        ];
+        const inv = (id) => labInventory.find(x => x.id === id);
+
+        /* =========================================
+           3. KONFIGURASI TIAP EKSPERIMEN
+           ========================================= */
+        const MODES = {
+            surface: {
+                container: 'erlen_hcl', defVol: 50,
+                cabinet: ['erlen_hcl', 'caco3_bongkah', 'caco3_keping', 'caco3_serbuk'],
+                presets: [{ x: 14 }, { x: 37 }, { x: 60 }],
+                equation: `CaCO₃(s) + 2HCl(aq) <br><span class="text-slate-400">↓</span><br> CaCl₂(aq) + H₂O(l) + CO₂(g)`,
+                vars: { bebas: 'Ukuran partikel CaCO₃ (bongkahan, kepingan, serbuk)', kontrol: 'Konsentrasi, volume, dan suhu HCl; massa CaCO₃', terikat: 'Waktu reaksi dan volume CO₂' },
+                intro: 'Tekan TARE, timbang CaCO₃ di kaca arloji, lalu tuang ke tiap Erlenmeyer. Gunakan bentuk padatan yang berbeda.'
+            },
+            temp: {
+                container: 'erlen_hcl', defVol: 25,
+                cabinet: ['erlen_hcl', 'mg_pita', 'mg_serbuk'],
+                presets: [{ x: 14, temp: 5 }, { x: 37, temp: 25 }, { x: 60, temp: 45 }],
+                equation: `Mg(s) + 2HCl(aq) <br><span class="text-slate-400">↓</span><br> MgCl₂(aq) + H₂(g)`,
+                vars: { bebas: 'Suhu larutan HCl', kontrol: 'Konsentrasi dan volume HCl; massa dan bentuk Mg', terikat: 'Waktu reaksi dan volume H₂' },
+                intro: 'Atur suhu tiap Erlenmeyer, lalu masukkan pita Mg dengan massa yang sama.'
+            },
+            conc: {
+                container: 'erlen_cuka', defVol: 50,
+                cabinet: ['erlen_cuka', 'nahco3'],
+                presets: [{ x: 14, conc: 1 }, { x: 37, conc: 2 }, { x: 60, conc: 3 }],
+                equation: `NaHCO₃(s) + CH₃COOH(aq) <br><span class="text-slate-400">↓</span><br> CH₃COONa(aq) + H₂O(l) + CO₂(g)`,
+                vars: { bebas: 'Konsentrasi CH₃COOH', kontrol: 'Volume dan suhu larutan; massa NaHCO₃', terikat: 'Waktu reaksi dan volume CO₂' },
+                intro: 'Atur konsentrasi CH₃COOH tiap Erlenmeyer, lalu masukkan soda kue dengan massa yang sama.'
+            },
+            cat: {
+                container: 'beaker_h2o2', defVol: 100,
+                cabinet: ['beaker_h2o2', 'mno2', 'ki', 'fecl3', 'bara_api'],
+                presets: [{ x: 20 }, { x: 50 }],
+                equation: `2H₂O₂(aq) &nbsp;&nbsp;<span style="font-size: 10px; position:relative; top:-5px">katalis</span><br><span class="text-slate-400">―――――→</span><br> 2H₂O(l) + O₂(g)`,
+                vars: { bebas: 'Ada/tidaknya katalis, jenis dan massa katalis', kontrol: 'Konsentrasi dan volume H₂O₂; suhu', terikat: 'Waktu reaksi, volume O₂, nyala bara api' },
+                intro: 'Masukkan katalis ke salah satu gelas, biarkan gelas lain tanpa katalis, lalu uji gasnya dengan bara api.'
+            }
+        };
+
+        /* =========================================
+           4. STATE
+           ========================================= */
+        const labState = { items: {}, env: { time: 0, timerRunning: false, startTimestamp: null, auto: false, session: 0 } };
+        let cabinetStock = {};
+        let currentMode = 'surface';
+        const doses = {};
+        labInventory.forEach(t => { if (t.type === 'solid_source') doses[t.id] = SUBST[t.sub].dose.def; });
+
+        let instCounter = 0;
+        function createItemInstance(baseId) {
+            const t = inv(baseId);
+            const id = `${baseId}_${Date.now().toString(36)}${(instCounter++).toString(36)}`;
+            labState.items[id] = {
+                id, baseId, type: t.type, emptyMass: t.emptyMass || 0,
+                liquid: { type: null, conc: 0, vol: 0, max: t.vol || 0 },
+                temp: 25,
+                solid: { sub: null, form: null, mass: 0, initialMass: 0 },
+                gasVol: 0, attachedTo: null, attachments: [], tareValue: 0,
+                label: null, num: 0,
+                rx: { status: 'idle', startTs: null, endTs: null, lastTs: null, tFull: 0, fraction: 1, progress: 0, gasMl: 0, gasTotal: 0, rate: 0, limiting: false, elapsed: 0, gasName: '', molSolid: 0, swStart: null, session: -1 },
+                bubbleAcc: 0
+            };
+            return id;
+        }
+
+        function calculateTotalMass(itemId) {
+            const item = labState.items[itemId];
+            if (!item) return 0;
+            let mass = item.emptyMass + item.liquid.vol * 1.0 + item.solid.mass;
+            item.attachments.forEach(attId => { mass += calculateTotalMass(attId); });
+            return mass;
+        }
+
+        const isLocked = (s) => s.solid.mass > 0 || s.rx.status !== 'idle';
+
+        const logMsg = (msg) => {
+            const el = document.getElementById('hud-msg');
+            if (el) el.innerText = `> ${msg}`;
+        };
+
+        /* =========================================
+           5. ELEMEN DI MEJA
+           ========================================= */
+        function makeItemEl(id, baseId, svgOverride) {
+            const t = inv(baseId);
+            const el = document.createElement('div');
+            el.className = 'lab-item on-workbench';
+            el.id = id;
+            el.dataset.baseid = baseId;
+            el.dataset.type = t.type;
+            if (t.scale) el.dataset.scale = t.scale;
+            el.innerHTML = `${svgOverride || t.svg}<div class="tooltip">${t.name}</div>`;
+            return el;
+        }
+
+        function spawnItemOnBench(baseId, leftPct, scaleOverride) {
+            const id = createItemInstance(baseId);
+            const t = inv(baseId);
+            const el = makeItemEl(id, baseId);
+            const sc = scaleOverride || t.scale || 1;
+            el.dataset.scale = sc;
+            document.getElementById('workbench').appendChild(el);
+            el.style.left = `${leftPct}%`;
+            el.style.bottom = `20px`;
+            el.style.transform = `translateX(-50%) scale(${sc})`;
+            el.style.opacity = '0';
+            requestAnimationFrame(() => el.style.opacity = '1');
+            return { id, baseId, type: t.type };
+        }
+
+        function nextNum(short) {
+            let max = 0;
+            Object.values(labState.items).forEach(s => {
+                const t = inv(s.baseId);
+                if (t.short === short && s.num > max) max = s.num;
+            });
+            return max + 1;
+        }
+
+        function setupContainer(id, opts = {}) {
+            const s = labState.items[id];
+            const t = inv(s.baseId);
+            const L = LIQUIDS[t.liquid];
+            s.liquid = { type: t.liquid, conc: opts.conc ?? L.def, vol: opts.vol ?? MODES[currentMode].defVol, max: t.vol };
+            s.temp = opts.temp ?? 25;
+            s.num = nextNum(t.short);
+            s.label = `${t.short} ${s.num}`;
+            const el = document.getElementById(id);
+            el.insertAdjacentHTML('beforeend', `<div class="temp-badge"></div><div class="steam"><span></span><span></span><span></span></div><div class="item-label"></div>`);
+            refreshContainerDecor(id);
+        }
+
+        function concStr(s) {
+            const L = LIQUIDS[s.liquid.type];
+            return `${L.name} ${fmt(s.liquid.conc, L.dec)}${L.unit === '%' ? '%' : ' M'}`;
+        }
+
+        function tempColor(T) {
+            if (T <= 12) return '#2563eb';
+            if (T < 35) return '#475569';
+            if (T < 60) return '#dc2626';
+            return '#991b1b';
+        }
+
+        function refreshContainerDecor(id) {
+            const s = labState.items[id];
+            const el = document.getElementById(id);
+            if (!s || !el) return;
+            const lbl = el.querySelector(':scope > .item-label');
+            if (lbl) lbl.innerHTML = `${s.label}<small>${concStr(s)}</small>`;
+            const badge = el.querySelector(':scope > .temp-badge');
+            if (badge) { badge.textContent = `${Math.round(s.temp)}°C`; badge.style.background = tempColor(s.temp); }
+            el.classList.toggle('is-hot', s.temp >= 40);
+            el.classList.toggle('is-cold', s.temp <= 12);
+        }
+
+        function solidName(sol) {
+            const S = SUBST[sol.sub];
+            if (!S) return 'padatan';
+            if (S.catalyst) return S.name;
+            return `${sol.form} ${S.name}`;
+        }
+
+        function condText(s) {
+            let txt = `${concStr(s)}, ${Math.round(s.liquid.vol)} mL, ${Math.round(s.temp)} °C`;
+            const sol = s.solid;
+            const m = sol.initialMass || sol.mass;
+            if (sol.sub) txt += ` + ${solidName(sol)} ${fmtMass(m)} g`;
+            else if (s.liquid.type === 'h2o2') txt += ', tanpa katalis';
+            return txt;
+        }
+
+        /* =========================================
+           6. SETUP UI MODE, LEMARI, KARTU VARIABEL
+           ========================================= */
+        function setupModeUI(mode) {
+            const M = MODES[mode];
+            document.getElementById('rumus-container').innerHTML = M.equation;
+            document.getElementById('var-container').innerHTML = `
+                <div class="var-row"><dt>Bebas</dt><dd>${M.vars.bebas}</dd></div>
+                <div class="var-row"><dt>Kontrol</dt><dd>${M.vars.kontrol}</dd></div>
+                <div class="var-row"><dt>Terikat</dt><dd>${M.vars.terikat}</dd></div>`;
+        }
+
+        function userChangeMode(mode) { changeMode(mode); }
+
+        function changeMode(mode) {
+            closeModal();
+            currentMode = mode;
+            document.getElementById('mode-select').value = mode;
+            setupModeUI(mode);
+
+            const cabinet = document.getElementById('cabinet');
+            cabinet.innerHTML = `<svg width="0" height="0" style="position:absolute"><defs>
+                <linearGradient id="glass-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="rgba(255,255,255,0.4)"/><stop offset="15%" stop-color="rgba(255,255,255,0.8)"/>
+                    <stop offset="30%" stop-color="rgba(255,255,255,0.1)"/><stop offset="100%" stop-color="rgba(255,255,255,0.5)"/>
+                </linearGradient>
+                <clipPath id="erlen-clip"><path d="M42,40 L90,120 Q95,130 85,130 L15,130 Q5,130 10,120 L58,40 Z"/></clipPath>
+            </defs></svg>`;
+
+            cabinetStock = {};
+            const allowed = MODES[mode].cabinet;
+            allowed.forEach(itemId => {
+                const item = inv(itemId);
+                cabinetStock[item.id] = 5;
+                const slot = document.createElement('div');
+                slot.className = 'shelf-slot';
+                const doseHtml = item.type === 'solid_source' ? `<div class="dose-badge" id="dose_${item.id}">${fmtMass(doses[item.id])} g</div>` : '';
+                slot.innerHTML = `
+                    <div class="lab-item" id="cab_${item.id}" data-baseid="${item.id}" data-type="${item.type}" data-scale="${item.scale}">
+                        ${item.svg}
+                        <div class="stock-badge" id="stock_${item.id}">5</div>
+                        ${doseHtml}
+                        <div class="tooltip">${item.name}</div>
+                    </div>`;
+                cabinet.appendChild(slot);
+            });
+            for (let i = allowed.length; i < 18; i++) cabinet.insertAdjacentHTML('beforeend', `<div class="shelf-slot"></div>`);
+
+            resetLab();
+        }
+
+        function updateCabinetStockUI(baseId) {
+            const badge = document.getElementById(`stock_${baseId}`);
+            if (badge) badge.innerText = cabinetStock[baseId];
+            const cabItem = document.getElementById(`cab_${baseId}`);
+            if (cabItem) cabItem.classList.toggle('item-ghost', cabinetStock[baseId] <= 0);
+        }
+
+        function returnToCabinet(id) {
+            const state = labState.items[id];
+            if (!state) return;
+            [...state.attachments].forEach(attId => returnToCabinet(attId));
+            if (state.attachedTo) {
+                const parentState = labState.items[state.attachedTo];
+                if (parentState) parentState.attachments = parentState.attachments.filter(att => att !== id);
+            }
+            if (cabinetStock[state.baseId] !== undefined) {
+                cabinetStock[state.baseId]++;
+                updateCabinetStockUI(state.baseId);
+            }
+            const el = document.getElementById(id);
+            if (el) el.remove();
+            delete labState.items[id];
+        }
+
+        /* =========================================
+           7. MODAL PENGATURAN VARIABEL
+           ========================================= */
+        let modalApply = null;
+        let modalReturnFocus = null;
+
+        function fieldHTML(key, label, unit, min, max, step, val, dec, hint, disabled) {
+            const dis = disabled ? 'disabled' : '';
+            const v = Number(val).toFixed(dec);
+            return `<div class="field">
+                <div class="field-top"><label for="n_${key}">${label}</label>
+                    <span class="field-num"><input type="number" id="n_${key}" min="${min}" max="${max}" step="${step}" value="${v}" ${dis}> ${unit}</span></div>
+                <input type="range" id="r_${key}" min="${min}" max="${max}" step="${step}" value="${v}" aria-label="${label}" ${dis}>
+                ${hint ? `<div class="field-hint">${hint}</div>` : ''}
+            </div>`;
+        }
+
+        function bindField(key, dec) {
+            const n = document.getElementById(`n_${key}`), r = document.getElementById(`r_${key}`);
+            if (!n || !r) return;
+            r.addEventListener('input', () => { n.value = Number(r.value).toFixed(dec); });
+            n.addEventListener('input', () => { if (n.value !== '') r.value = n.value; });
+            n.addEventListener('change', () => {
+                const v = clamp(parseFloat(n.value) || parseFloat(n.min), parseFloat(n.min), parseFloat(n.max));
+                n.value = v.toFixed(dec); r.value = v;
+            });
+        }
+
+        function readField(key, min, max) {
+            const n = document.getElementById(`n_${key}`);
+            return clamp(parseFloat(n.value), min, max);
+        }
+
+        function openModal(title, sub, bodyHTML, onApply, locked) {
+            modalReturnFocus = document.activeElement;
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-sub').innerHTML = sub;
+            document.getElementById('modal-body').innerHTML = bodyHTML;
+            const applyBtn = document.getElementById('modal-apply');
+            applyBtn.hidden = !!locked;
+            document.getElementById('modal-cancel').textContent = locked ? 'Tutup' : 'Batal';
+            modalApply = onApply;
+            document.getElementById('cond-modal').hidden = false;
+            const first = document.querySelector('#modal-body input:not([disabled])') || document.getElementById('modal-cancel');
+            setTimeout(() => first.focus(), 30);
+        }
+
+        function closeModal() {
+            const m = document.getElementById('cond-modal');
+            if (!m || m.hidden) return;
+            m.hidden = true;
+            modalApply = null;
+            if (modalReturnFocus && modalReturnFocus.focus) modalReturnFocus.focus();
+        }
+
+        function openContainerModal(id) {
+            const s = labState.items[id];
+            if (!s || s.type !== 'container') return;
+            const L = LIQUIDS[s.liquid.type];
+            const locked = isLocked(s);
+            const lockNote = locked ? `<div class="modal-lock">Padatan sudah dimasukkan, jadi kondisi wadah ini dikunci. Untuk percobaan baru, tarik wadah ini kembali ke lemari lalu ambil wadah baru.</div>` : '';
+            const body = lockNote +
+                fieldHTML('conc', `Konsentrasi ${L.name}`, L.unit === '%' ? '%' : 'M', L.min, L.max, L.step, s.liquid.conc, L.dec,
+                    L.unit === '%' ? 'Kadar H₂O₂ dalam persen massa per volume.' : 'Molaritas larutan (mol per liter).', locked) +
+                fieldHTML('vol', 'Volume larutan', 'mL', 10, 150, 5, s.liquid.vol, 0, 'Diukur dengan gelas ukur sebelum dituang ke wadah.', locked) +
+                fieldHTML('temp', 'Suhu larutan', '°C', 0, 80, 1, s.temp, 0, 'Dipanaskan dengan penangas air atau didinginkan dengan es.', locked);
+            openModal(`Atur ${s.label}`, `${inv(s.baseId).name}. Atur kondisi sebelum padatan dimasukkan.`, body, () => {
+                s.liquid.conc = readField('conc', L.min, L.max);
+                s.liquid.vol = readField('vol', 10, 150);
+                s.temp = readField('temp', 0, 80);
+                refreshContainerDecor(id);
+                updateVisuals();
+                logMsg(`${s.label} diatur: ${condText(s)}.`);
+            }, locked);
+            bindField('conc', L.dec); bindField('vol', 0); bindField('temp', 0);
+        }
+
+        function openDoseModal(baseId) {
+            const t = inv(baseId);
+            const D = SUBST[t.sub].dose;
+            const body = fieldHTML('dose', 'Takaran sekali tuang', 'g', D.min, D.max, D.step, doses[baseId], D.dec,
+                'Tuang ke kaca arloji di atas neraca untuk memeriksa massanya sebelum dimasukkan ke wadah.', false);
+            openModal(`Takaran ${t.name}`, 'Setiap kali botol dituang, padatan sebanyak takaran ini yang berpindah.', body, () => {
+                doses[baseId] = readField('dose', D.min, D.max);
+                const b = document.getElementById(`dose_${baseId}`);
+                if (b) b.textContent = `${fmtMass(doses[baseId])} g`;
+                logMsg(`Takaran ${t.name} menjadi ${fmtMass(doses[baseId])} g per tuang.`);
+            }, false);
+            bindField('dose', D.dec);
+        }
+
+        function handleTap(item) {
+            const baseId = item.dataset.baseid;
+            const t = inv(baseId);
+            if (!t) return;
+            const fromCab = item.id.startsWith('cab_');
+            if (t.type === 'solid_source') { openDoseModal(baseId); return; }
+            if (fromCab) {
+                if (t.type === 'container') logMsg('Tarik wadah ke meja, lalu ketuk wadah itu untuk mengatur kondisinya.');
+                return;
+            }
+            const s = labState.items[item.id];
+            if (!s) return;
+            if (t.type === 'container') openContainerModal(item.id);
+            else if (baseId === 'balon' && s.attachedTo) openContainerModal(s.attachedTo);
+            else if (baseId === 'arloji') logMsg(s.solid.mass > 0 ? `Di kaca arloji ada ${fmtMass(s.solid.mass)} g ${solidName(s.solid)}.` : 'Kaca arloji masih kosong. Tekan TARE, lalu tuang padatan ke atasnya.');
+            else if (baseId === 'neraca') logMsg('Letakkan kaca arloji di neraca, tekan TARE, lalu tuang padatan untuk menimbang.');
+        }
+
+        /* =========================================
+           8. DRAG, DROP & KETUK
+           ========================================= */
+        const workbench = document.getElementById('workbench');
+        let draggedEl = null;
+        let dragData = null;
+        let isFromCabinet = false;
+        let pending = null;
+
+        function isOverBench(x, y) {
+            const r = document.querySelector('.workbench-area').getBoundingClientRect();
+            return (x >= r.left && x <= r.right && y >= (r.top - 150) && y <= r.bottom + 50);
+        }
+
+        function applyAntiOverlap(instanceId) {
+            const realEl = document.getElementById(instanceId);
+            if (!realEl) return;
+            let pctX = parseFloat(realEl.style.left);
+            const startPctX = pctX;
+            let overlap = true, attempts = 0, dir = -1;
+            while (overlap && attempts < 15) {
+                overlap = false;
+                for (const [id, state] of Object.entries(labState.items)) {
+                    if (id === instanceId || state.attachedTo) continue;
+                    const el = document.getElementById(id);
+                    if (el && el.style.bottom === '20px' && Math.abs(parseFloat(el.style.left) - pctX) < 14) {
+                        overlap = true;
+                        pctX += 15 * dir;
+                        if (pctX < 5) { pctX = startPctX + 15; dir = 1; }
+                        else if (pctX > 95) pctX = 15;
+                        break;
+                    }
+                }
+                attempts++;
+            }
+            realEl.style.left = `${pctX}%`;
+        }
+
+        function findNeraca() {
+            return Object.values(labState.items).find(s => s.baseId === 'neraca');
+        }
+
+        function reattachArloji(arlojiId) {
+            const n = findNeraca();
+            const s = labState.items[arlojiId];
+            if (!n || !s) return false;
+            if (s.attachedTo) return true;
+            if (n.attachments.some(a => labState.items[a] && labState.items[a].baseId === 'arloji')) return false;
+            const prev = isFromCabinet; isFromCabinet = false;
+            attachItem({ id: arlojiId, baseId: 'arloji', type: 'dish' }, n.id, 0, 67, 2, 1);
+            isFromCabinet = prev;
+            const el = document.getElementById(arlojiId);
+            if (el) el.style.opacity = '1';
+            return true;
+        }
+
+        function startDrag(item, x, y) {
+            isFromCabinet = item.id.startsWith('cab_');
+            const baseId = item.dataset.baseid;
+            if (isFromCabinet && cabinetStock[baseId] <= 0) { logMsg('Stok habis!'); return; }
+
+            draggedEl = item.cloneNode(true);
+            draggedEl.removeAttribute('id');
+            draggedEl.classList.add('is-dragging');
+            draggedEl.style.transform = `translate(-50%, -50%) scale(${item.dataset.scale || 1})`;
+            document.body.appendChild(draggedEl);
+
+            if (isFromCabinet) dragData = { id: null, baseId, type: item.dataset.type };
+            else { dragData = { id: item.id, baseId, type: item.dataset.type }; item.style.opacity = '0'; }
+            moveDrag(x, y);
+        }
+
+        document.addEventListener('pointerdown', (e) => {
+            if (!document.getElementById('cond-modal').hidden) return;
+            if (e.target.closest('.btn-tare')) {
+                const neracaEl = e.target.closest('.on-workbench');
+                if (neracaEl && labState.items[neracaEl.id]) {
+                    let totalMass = 0;
+                    labState.items[neracaEl.id].attachments.forEach(attId => { totalMass += calculateTotalMass(attId); });
+                    labState.items[neracaEl.id].tareValue = totalMass;
+                    logMsg('Neraca di-nol-kan (TARE).');
+                    updateVisuals();
+                }
+                return;
+            }
+            const item = e.target.closest('.lab-item');
+            if (!item || item.classList.contains('item-ghost')) return;
+            e.preventDefault();
+            pending = { item, x: e.clientX, y: e.clientY };
+        });
+
+        document.addEventListener('pointermove', (e) => {
+            if (pending && !draggedEl) {
+                const dx = e.clientX - pending.x, dy = e.clientY - pending.y;
+                if (dx * dx + dy * dy > 36) {
+                    const it = pending.item;
+                    pending = null;
+                    if (it.classList.contains('no-drag')) return;
+                    startDrag(it, e.clientX, e.clientY);
+                }
+            }
+            if (!draggedEl) return;
+            moveDrag(e.clientX, e.clientY);
+            document.querySelectorAll('.drop-target-active').forEach(el => el.classList.remove('drop-target-active'));
+            const target = getCollision(e.clientX, e.clientY);
+            if (target) target.classList.add('drop-target-active');
+        });
+
+        document.addEventListener('pointercancel', () => {
+            pending = null;
+            if (!draggedEl) return;
+            if (dragData && dragData.id) { const o = document.getElementById(dragData.id); if (o) o.style.opacity = '1'; }
+            draggedEl.remove(); draggedEl = null; dragData = null; isFromCabinet = false;
+        });
+
+        document.addEventListener('pointerup', (e) => {
+            if (pending) { const it = pending.item; pending = null; handleTap(it); return; }
+            if (!draggedEl) return;
+
+            const target = getCollision(e.clientX, e.clientY);
+            document.querySelectorAll('.drop-target-active').forEach(el => el.classList.remove('drop-target-active'));
+
+            let result = false;
+            if (target) result = handleInteraction(dragData, target.id);
+            let instanceId = dragData.id;
+
+            if (result === 'attached' || result === 'interacted') {
+                if (!isFromCabinet) { const o = document.getElementById(instanceId); if (o) o.style.opacity = '1'; }
+                if (isFromCabinet && result === 'attached') { cabinetStock[dragData.baseId]--; updateCabinetStockUI(dragData.baseId); }
+            } else if (isOverBench(e.clientX, e.clientY) || result === 'poured') {
+                const wRect = workbench.getBoundingClientRect();
+                let pctX;
+                if (target && result === 'poured') {
+                    const tRect = target.getBoundingClientRect();
+                    pctX = ((tRect.left + tRect.width / 2 - wRect.left) / wRect.width) * 100 - 3.5;
+                } else {
+                    pctX = clamp(((e.clientX - wRect.left) / wRect.width) * 100, 5, 95);
+                }
+
+                let realEl;
+                if (isFromCabinet) {
+                    instanceId = createItemInstance(dragData.baseId);
+                    realEl = makeItemEl(instanceId, dragData.baseId);
+                    workbench.appendChild(realEl);
+                    if (inv(dragData.baseId).type === 'container') {
+                        setupContainer(instanceId);
+                        logMsg(`${labState.items[instanceId].label} diletakkan. Ketuk wadah untuk mengatur kondisinya.`);
+                    }
+                    cabinetStock[dragData.baseId]--;
+                    updateCabinetStockUI(dragData.baseId);
+                } else {
+                    realEl = document.getElementById(instanceId);
+                    const state = labState.items[instanceId];
+                    if (state.attachedTo) {
+                        const parentState = labState.items[state.attachedTo];
+                        parentState.attachments = parentState.attachments.filter(id => id !== instanceId);
+                        state.attachedTo = null;
+                        realEl.classList.remove('attached-item');
+                    }
+                    workbench.appendChild(realEl);
+                }
+
+                realEl.style.left = `${pctX}%`;
+                realEl.style.transform = `translateX(-50%) scale(${realEl.dataset.scale || 1})`;
+
+                if (result === 'poured') {
+                    realEl.style.bottom = `85px`;
+                    realEl.style.zIndex = '50';
+                    playAnim(instanceId, 'anim-pour');
+                    const pouredId = instanceId;
+                    setTimeout(() => {
+                        const el = document.getElementById(pouredId);
+                        const st = labState.items[pouredId];
+                        if (!el || !st) return;
+                        if (st.baseId === 'arloji' && reattachArloji(pouredId)) return;
+                        // Botol pereaksi dikembalikan ke lemari setelah dituang agar meja tetap rapi
+                        if (st.type === 'solid_source') {
+                            el.style.opacity = '0';
+                            setTimeout(() => { if (labState.items[pouredId]) returnToCabinet(pouredId); }, 400);
+                            return;
+                        }
+                        el.style.bottom = `20px`;
+                        el.style.zIndex = '20';
+                        applyAntiOverlap(pouredId);
+                    }, 800);
+                } else {
+                    realEl.style.bottom = `20px`;
+                    applyAntiOverlap(instanceId);
+                }
+
+                if (isFromCabinet) { realEl.style.opacity = '0'; requestAnimationFrame(() => realEl.style.opacity = '1'); }
+                else realEl.style.opacity = '1';
+            } else if (!isFromCabinet) {
+                if (dragData.baseId === 'arloji') {
+                    if (!reattachArloji(instanceId)) {
+                        const el = document.getElementById(instanceId);
+                        el.style.opacity = '1'; el.style.left = '50%'; el.style.bottom = '20px';
+                    }
+                    logMsg('Kaca arloji dikembalikan ke neraca.');
+                } else {
+                    returnToCabinet(instanceId);
+                }
+            }
+
+            draggedEl.remove();
+            draggedEl = null; dragData = null; isFromCabinet = false;
+            updateVisuals();
+        });
+
+        function moveDrag(x, y) { draggedEl.style.left = x + 'px'; draggedEl.style.top = y + 'px'; }
+
+        function getCollision(x, y) {
+            draggedEl.style.display = 'none';
+            const el = document.elementFromPoint(x, y);
+            draggedEl.style.display = '';
+            if (!el) return null;
+            const target = el.closest('.on-workbench');
+            if (target && labState.items[target.id] && (!dragData || target.id !== dragData.id)) return target;
+            return null;
+        }
+
+        /* =========================================
+           9. MATRIKS INTERAKSI
+           ========================================= */
+        function handleInteraction(src, tgtId) {
+            const tgt = labState.items[tgtId];
+            if (!tgt) return false;
+            const srcState = isFromCabinet ? null : labState.items[src.id];
+
+            // Uji bara api
+            if (src.type === 'tool_tester' && tgt.type === 'container') {
+                if (isFromCabinet) { logMsg('Letakkan bara api di meja kerja dulu sebelum diuji.'); return false; }
+                const apiEl = document.getElementById(src.id);
+                const flames = apiEl ? apiEl.querySelectorAll('.bara-flame') : [];
+                const glow = apiEl ? apiEl.querySelector('.bara-glow') : null;
+                flames.forEach(f => f.style.opacity = '0');
+                playAnim(src.id, 'anim-dip');
+                setTimeout(() => {
+                    const rx = tgt.rx;
+                    if (tgt.liquid.type !== 'h2o2') { logMsg('Uji bara api dipakai untuk mendeteksi O₂ dari penguraian H₂O₂.'); return; }
+                    if (rx.status === 'running' && rx.rate >= 5) {
+                        logMsg(`🔥 Bara api menyala! O₂ keluar dengan cepat dari ${tgt.label}.`);
+                        flames.forEach(f => f.style.opacity = '1');
+                        if (glow) glow.style.fill = '#ff0000';
+                        setTimeout(() => { flames.forEach(f => f.style.opacity = '0'); if (glow) glow.style.fill = '#ff6600'; }, 3000);
+                    } else if (rx.status === 'running') {
+                        logMsg(`${tgt.label}: bara berpijar sedikit lebih terang, tetapi O₂ yang keluar belum cukup untuk menyalakannya.`);
+                        if (glow) { glow.style.fill = '#ff3300'; setTimeout(() => glow.style.fill = '#ff6600', 1500); }
+                    } else if (rx.status === 'done') {
+                        logMsg(`${tgt.label}: reaksi sudah selesai dan O₂ sudah keluar, bara tetap redup.`);
+                    } else {
+                        logMsg(`${tgt.label}: bara tetap redup. Tanpa katalis, H₂O₂ terurai sangat lambat.`);
+                    }
+                }, 400);
+                return 'interacted';
+            }
+
+            if (tgt.attachments.some(id => labState.items[id] && labState.items[id].baseId === 'balon')) {
+                logMsg('Wadah sudah ditutup balon.');
+                return false;
+            }
+
+            // Penuangan padatan
+            if (tgt.type === 'container' || tgt.type === 'dish') {
+                let pS = null;
+                if (src.type === 'solid_source') {
+                    const t = inv(src.baseId);
+                    pS = { sub: t.sub, form: t.form, mass: doses[src.baseId] };
+                } else if (src.baseId === 'arloji' && srcState && srcState.solid.mass > 0) {
+                    pS = { sub: srcState.solid.sub, form: srcState.solid.form, mass: srcState.solid.mass };
+                }
+                if (pS) {
+                    if (tgt.solid.sub && (tgt.solid.sub !== pS.sub || tgt.solid.form !== pS.form)) {
+                        logMsg('Satu wadah hanya untuk satu jenis padatan agar perbandingannya adil.');
+                        return false;
+                    }
+                    if (tgt.type === 'container' && tgt.rx.status === 'done') {
+                        logMsg(`${tgt.label} sudah selesai bereaksi. Ambil wadah baru untuk percobaan ulang.`);
+                        return false;
+                    }
+                    if (srcState && src.baseId === 'arloji') {
+                        srcState.solid = { sub: null, form: null, mass: 0, initialMass: 0 };
+                    }
+                    setTimeout(() => {
+                        if (!labState.items[tgtId]) return;
+                        tgt.solid.sub = pS.sub;
+                        tgt.solid.form = pS.form;
+                        tgt.solid.mass += pS.mass;
+                        if (tgt.type === 'dish' || tgt.rx.status === 'idle') tgt.solid.initialMass = tgt.solid.mass;
+                        logMsg(`Menuang ${fmtMass(pS.mass)} g ${solidName(pS)}${tgt.label ? ' ke ' + tgt.label : ' ke kaca arloji'}.`);
+
+                        if (tgt.type === 'container') {
+                            const lbl = document.querySelector(`#${tgtId} > .item-label`);
+                            if (lbl) { lbl.classList.remove('label-flash'); void lbl.offsetWidth; lbl.classList.add('label-flash'); }
+                            if (tgt.liquid.type !== 'h2o2') attachBalloon(tgtId);
+                        }
+                        updateVisuals();
+                    }, 350);
+                    return 'poured';
+                }
+            }
+
+            if (src.baseId === 'arloji' && tgt.baseId === 'neraca') {
+                if (tgt.attachments.some(a => labState.items[a] && labState.items[a].baseId === 'arloji')) return false;
+                return attachItem(src, tgtId, 0, 67, 2, 1);
+            }
+            return false;
+        }
+
+        const balloonColors = [
+            { fill: 'rgba(239,68,68,0.88)', stroke: '#b91c1c', neck: '#c0392b', shine: 'rgba(255,255,255,0.55)' },
+            { fill: 'rgba(59,130,246,0.88)', stroke: '#1d4ed8', neck: '#1e40af', shine: 'rgba(255,255,255,0.55)' },
+            { fill: 'rgba(16,185,129,0.88)', stroke: '#059669', neck: '#047857', shine: 'rgba(255,255,255,0.55)' },
+            { fill: 'rgba(245,158,11,0.88)', stroke: '#d97706', neck: '#b45309', shine: 'rgba(255,255,255,0.55)' },
+            { fill: 'rgba(168,85,247,0.88)', stroke: '#7c3aed', neck: '#6d28d9', shine: 'rgba(255,255,255,0.55)' }
+        ];
+
+        function attachBalloon(containerId) {
+            const c = labState.items[containerId];
+            if (!c || c.attachments.some(a => labState.items[a] && labState.items[a].baseId === 'balon')) return;
+            const color = balloonColors[(c.num - 1 + balloonColors.length) % balloonColors.length];
+            const balloonId = createItemInstance('balon');
+            const bEl = makeItemEl(balloonId, 'balon', svgs.balon(color));
+            bEl.dataset.scale = '0.65';
+            bEl.style.opacity = '0';
+            workbench.appendChild(bEl);
+            setTimeout(() => {
+                if (!labState.items[containerId] || !labState.items[balloonId]) return;
+                const prev = isFromCabinet; isFromCabinet = false;
+                attachItem({ id: balloonId, baseId: 'balon', type: 'gas_catcher' }, containerId, 0, 88, 2, 0.65);
+                isFromCabinet = prev;
+                requestAnimationFrame(() => bEl.style.opacity = '1');
+            }, 150);
+        }
+
+        function attachItem(src, parentId, offsetX, offsetY, zIndexMod = 1, scaleOverride = 1) {
+            let id = src.id;
+            if (isFromCabinet) {
+                id = createItemInstance(src.baseId);
+                workbench.appendChild(makeItemEl(id, src.baseId));
+            }
+            const state = labState.items[id];
+            const parentState = labState.items[parentId];
+            state.attachedTo = parentId;
+            parentState.attachments.push(id);
+            const elDom = document.getElementById(id);
+            document.getElementById(parentId).appendChild(elDom);
+            elDom.classList.add('attached-item');
+            elDom.style.left = `calc(50% + ${offsetX}px)`;
+            elDom.style.bottom = `${offsetY}%`;
+            elDom.style.zIndex = 20 + zIndexMod;
+            elDom.style.transform = `translateX(-50%) scale(${scaleOverride})`;
+            return 'attached';
+        }
+
+        function playAnim(srcId, animClass) {
+            const srcEl = document.getElementById(srcId);
+            if (!srcEl) return;
+            srcEl.classList.add(animClass);
+            setTimeout(() => srcEl.classList.remove(animClass), 800);
+        }
+
+        /* =========================================
+           10. VISUAL (CAIRAN, PADATAN, NERACA, BALON)
+           ========================================= */
+        function liquidColor(type, conc) {
+            const L = LIQUIDS[type];
+            if (!L) return 'rgba(200,200,200,0.5)';
+            const a = 0.22 + 0.4 * (conc / L.max);
+            return `rgba(${L.tint.join(',')},${a.toFixed(2)})`;
+        }
+
+        function solidSVG(s) {
+            const sol = s.solid;
+            if (!sol.sub || sol.mass <= 0.0005) return '';
+            const S = SUBST[sol.sub];
+            const isDish = s.baseId === 'arloji';
+            const isBeaker = s.baseId.startsWith('beaker');
+            const cx = 50;
+            const baseY = isDish ? 26 : (isBeaker ? 111 : 127);
+            const halfW = isDish ? 24 : (isBeaker ? 30 : 34);
+            const init = sol.initialMass || sol.mass;
+            const frac = clamp(sol.mass / init, 0, 1);
+            const rel = clamp(Math.cbrt(init / S.visRef), 0.45, 1.7);
+            const r = rng(hashStr(s.id));
+            const col = S.color, stk = S.stroke;
+            let out = '';
+
+            if (sol.form === 'bongkahan') {
+                const n = clamp(Math.round(init / 0.7), 1, 6);
+                const shrink = Math.cbrt(frac);
+                const size = (isDish ? 5 : 8) * clamp(Math.cbrt(init / n / 0.66), 0.7, 1.4) * shrink;
+                const span = halfW * 1.3;
+                for (let i = 0; i < n; i++) {
+                    const x = cx - span / 2 + (i + 0.5) * (span / n) + (r() - 0.5) * 3;
+                    const y = baseY - size * 0.55;
+                    let pts = [];
+                    const k = 6;
+                    for (let j = 0; j < k; j++) {
+                        const ang = (j / k) * Math.PI * 2 + r() * 0.4;
+                        const rad = size * (0.7 + r() * 0.4);
+                        pts.push(`${(x + Math.cos(ang) * rad).toFixed(1)},${(y + Math.sin(ang) * rad * 0.7).toFixed(1)}`);
+                    }
+                    out += `<polygon points="${pts.join(' ')}" fill="${col}" stroke="${stk}" stroke-width="0.8"/>`;
+                }
+            } else if (sol.form === 'kepingan') {
+                const n = clamp(Math.round(init * 4), 3, 14);
+                const size = (isDish ? 2.2 : 3.4) * Math.cbrt(frac);
+                for (let i = 0; i < n; i++) {
+                    const x = cx + (r() - 0.5) * halfW * 1.6;
+                    const y = baseY - size * 0.6 - r() * (isDish ? 2 : 3);
+                    const rot = (r() * 180).toFixed(0);
+                    out += `<rect x="${(x - size).toFixed(1)}" y="${(y - size * 0.6).toFixed(1)}" width="${(size * 2).toFixed(1)}" height="${(size * 1.2).toFixed(1)}" rx="0.6" fill="${col}" stroke="${stk}" stroke-width="0.6" transform="rotate(${rot} ${x.toFixed(1)} ${y.toFixed(1)})"/>`;
+                }
+            } else if (sol.form === 'pita') {
+                const len = Math.max(2, clamp(init / 0.1 * 34, 10, isDish ? 44 : 60) * frac);
+                out += `<rect x="${(cx - len / 2).toFixed(1)}" y="${baseY - 4}" width="${len.toFixed(1)}" height="3" rx="1.5" fill="${col}" stroke="${stk}" stroke-width="0.6" transform="rotate(-6 ${cx} ${baseY - 3})"/>`;
+            } else {
+                // serbuk
+                if (isDish) {
+                    const w = halfW * 0.85 * rel, h = 8.5 * rel;
+                    out += `<path d="M${cx - w},${baseY} Q${cx},${baseY - 2 * h} ${cx + w},${baseY} Z" fill="${col}" stroke="${stk}" stroke-width="0.7"/>`;
+                    for (let i = 0; i < 12; i++) {
+                        const x = cx + (r() - 0.5) * w * 1.2;
+                        out += `<circle cx="${x.toFixed(1)}" cy="${(baseY - 1 - r() * h * 0.8).toFixed(1)}" r="0.7" fill="${stk}" opacity="0.5"/>`;
+                    }
+                } else {
+                    const n = clamp(Math.round((10 + 30 * rel * rel) * frac), frac > 0 ? 3 : 0, 90);
+                    const layerH = 2 + 3 * rel * Math.sqrt(frac);
+                    out += `<ellipse cx="${cx}" cy="${baseY - layerH / 2}" rx="${(halfW * 0.85).toFixed(1)}" ry="${(layerH / 2).toFixed(1)}" fill="${col}" opacity="${S.catalyst ? 0.9 : 0.75}"/>`;
+                    for (let i = 0; i < n; i++) {
+                        const x = cx + (r() - 0.5) * halfW * 1.7;
+                        const y = baseY - 1 - r() * (layerH + 2);
+                        out += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="1.3" fill="${col}" stroke="${stk}" stroke-width="0.3"/>`;
+                    }
+                }
+            }
+            return out;
+        }
+
+        function updateVisuals() {
+            for (const [id, state] of Object.entries(labState.items)) {
+                const el = document.getElementById(id);
+                if (!el) continue;
+
+                const liqRect = el.querySelector(':scope > svg .liquid-fill');
+                if (liqRect) {
+                    const baseMax = state.liquid.max || 250;
+                    const isErlen = state.baseId.includes('erlen');
+                    const baseHeight = isErlen ? 90 : 100;
+                    const bottomY = isErlen ? 130 : 112;
+                    if (state.liquid.type) {
+                        const c = liquidColor(state.liquid.type, state.liquid.conc);
+                        liqRect.setAttribute('fill', c);
+                        liqRect.style.fill = c;
+                    }
+                    const h = state.liquid.vol > 0 ? (state.liquid.vol / baseMax) * baseHeight : 0;
+                    liqRect.setAttribute('height', h);
+                    liqRect.setAttribute('y', bottomY - h);
+                }
+
+                const solGroup = el.querySelector(':scope > svg .solid-fill');
+                if (solGroup) {
+                    const sol = state.solid;
+                    const init = sol.initialMass || sol.mass || 1;
+                    const key = sol.mass > 0.0005 ? `${sol.sub}|${sol.form}|${init.toFixed(3)}|${Math.round(sol.mass / init * 40)}` : 'empty';
+                    if (solGroup.dataset.key !== key) {
+                        solGroup.dataset.key = key;
+                        solGroup.innerHTML = solidSVG(state);
+                        solGroup.style.opacity = key === 'empty' ? '0' : '1';
+                    }
+                }
+
+                if (state.baseId === 'neraca') {
+                    let totalMass = 0;
+                    state.attachments.forEach(attId => { totalMass += calculateTotalMass(attId); });
+                    const disp = el.querySelector('.balance-text');
+                    if (disp) disp.textContent = fmt(Math.max(0, totalMass - state.tareValue), 2) + ' g';
+                }
+
+                if (state.baseId === 'balon') {
+                    const body = el.querySelector('.balloon-inflate');
+                    if (body) {
+                        // Volume balon ∝ r³, jadi skala linear ∝ akar pangkat tiga volume gas
+                        const targetScale = 0.3 + 1.2 * Math.min(1, Math.cbrt(state.gasVol / 600));
+                        const m = body.style.transform.match(/scale\(([^)]+)\)/);
+                        const cur = m ? parseFloat(m[1]) : 0.3;
+                        body.style.transform = `scale(${(cur + (targetScale - cur) * 0.04).toFixed(4)})`;
+                    }
+                }
+            }
+        }
+
+        function spawnBubble(containerId, bubbleClass) {
+            const el = document.getElementById(containerId);
+            const state = labState.items[containerId];
+            if (!el || !state) return;
+            let zone = el.querySelector(':scope > .bubble-zone');
+            if (!zone) {
+                zone = document.createElement('div');
+                zone.className = 'bubble-zone ' + (state.baseId.includes('erlen') ? 'erlen-bubble-zone' : 'beaker-bubble-zone');
+                el.appendChild(zone);
+            }
+            const b = document.createElement('div');
+            b.className = bubbleClass;
+            const size = (Math.random() * 5 + 3) + 'px';
+            b.style.width = size; b.style.height = size;
+            b.style.left = state.baseId.includes('erlen') ? (Math.random() * 30 + 35) + '%' : (Math.random() * 50 + 25) + '%';
+            b.style.bottom = '8px';
+            zone.appendChild(b);
+            setTimeout(() => b.remove(), 800);
+        }
+
+        /* =========================================
+           11. MESIN REAKSI
+           ========================================= */
+        function onReactionStart(now, rx) {
+            const env = labState.env;
+            if (!env.timerRunning) {
+                resetSW();
+                env.timerRunning = true;
+                env.startTimestamp = now;
+                document.getElementById('sw-display').classList.add('running');
+            }
+            // Stopwatch (termasuk yang dinyalakan manual) berhenti tepat saat reaksi terakhir selesai
+            env.auto = true;
+            // Catat pembacaan stopwatch saat reaksi ini mulai, memakai jam yang sama (timestamp frame)
+            if (rx) {
+                rx.session = env.session;
+                rx.swStart = q10((now - env.startTimestamp) / 1000);
+            }
+        }
+
+        function stepReaction(id, s, now) {
+            const liq = s.liquid, sol = s.solid, rx = s.rx;
+            if (!liq.type || liq.vol <= 0) return 0;
+            if (liq.type === 'h2o2') return stepCatalysis(id, s, now);
+            if (rx.status === 'done' || rx.status === 'none') return 0;
+
+            if (rx.status === 'idle') {
+                if (!sol.sub || sol.mass <= 0) return 0;
+                const R = REACTIONS[`${liq.type}+${sol.sub}`];
+                if (!R) {
+                    rx.status = 'none';
+                    logMsg(`${s.label}: tidak ada reaksi yang teramati antara ${LIQUIDS[liq.type].name} dan ${SUBST[sol.sub].name}.`);
+                    return 0;
+                }
+                const S = SUBST[sol.sub];
+                sol.initialMass = sol.mass;
+                const molSolid = sol.mass / S.Mr;
+                const molAcid = liq.conc * liq.vol / 1000;
+                const fraction = clamp(molAcid / (R.stoich * molSolid), 0, 1);
+                const tFull = clamp(R.tRef * formFactor(sol.sub, sol.form) / liq.conc * tempFactor(s.temp) * Math.pow(sol.mass / R.mRef, 0.3), 0.8, 900);
+                Object.assign(rx, {
+                    status: 'running', startTs: now, endTs: null, tFull, fraction, progress: 0,
+                    gasMl: 0, molSolid, limiting: fraction < 0.999, gasName: R.gas, elapsed: 0,
+                    rate: gasMlFromMol(molSolid, s.temp) / tFull
+                });
+                onReactionStart(now, rx);
+                logMsg(`${s.label}: reaksi dimulai, gas ${R.gas} terbentuk.`);
+            }
+
+            const tEff = rx.tFull * rx.fraction;
+            let elapsed = (now - rx.startTs) / 1000;
+            let finished = false;
+            if (elapsed >= tEff) { elapsed = tEff; finished = true; }
+            const p = elapsed / rx.tFull;
+            const prev = rx.gasMl;
+            rx.gasMl = gasMlFromMol(rx.molSolid * p, s.temp);
+            rx.progress = p;
+            rx.elapsed = elapsed;
+            sol.mass = Math.max(0, sol.initialMass * (1 - p));
+            if (finished) {
+                rx.status = 'done';
+                rx.endTs = rx.startTs + tEff * 1000;
+                if (sol.mass < 0.001) sol.mass = 0;
+                if (rx.limiting) logMsg(`${s.label}: asam habis lebih dulu, sebagian padatan tersisa (pereaksi pembatas).`);
+            }
+            return Math.max(0, rx.gasMl - prev);
+        }
+
+        function stepCatalysis(id, s, now) {
+            const sol = s.solid, rx = s.rx, liq = s.liquid;
+            if (rx.status === 'done' || rx.status === 'none') return 0;
+            const S = sol.sub ? SUBST[sol.sub] : null;
+            if (!S || sol.mass <= 0) return 0;
+            if (!S.catalyst) {
+                rx.status = 'none';
+                logMsg(`${s.label}: ${S.name} tidak mempercepat penguraian H₂O₂.`);
+                return 0;
+            }
+            if (rx.status === 'idle') {
+                const molH2O2 = (liq.conc / 100) * liq.vol / 34.01;
+                Object.assign(rx, {
+                    status: 'running', startTs: now, lastTs: now, endTs: null, progress: 0, gasMl: 0,
+                    gasTotal: gasMlFromMol(molH2O2 / 2, s.temp), gasName: 'O₂', limiting: false, fraction: 1, elapsed: 0
+                });
+                onReactionStart(now, rx);
+                logMsg(`${s.label}: ${S.name} ditambahkan, gelembung O₂ terbentuk.`);
+            }
+            const tFull = clamp(CAT_TREF * Math.pow(0.5 / sol.mass, 0.7) / S.activity * tempFactor(s.temp), 1, 900);
+            const dtr = (now - rx.lastTs) / 1000;
+            rx.lastTs = now;
+            rx.tFull = tFull;
+            rx.rate = rx.gasTotal / tFull;
+            rx.progress += dtr / tFull;
+            const prev = rx.gasMl;
+            if (rx.progress >= 1) {
+                const overshoot = (rx.progress - 1) * tFull;
+                rx.progress = 1;
+                rx.status = 'done';
+                rx.endTs = now - overshoot * 1000;
+                rx.elapsed = (rx.endTs - rx.startTs) / 1000;
+            } else {
+                rx.elapsed = (now - rx.startTs) / 1000;
+            }
+            rx.gasMl = rx.gasTotal * rx.progress;
+            return Math.max(0, rx.gasMl - prev);
+        }
+
+        /* =========================================
+           12. VISUALISASI SUBMIKROSKOPIS
+           ========================================= */
+        const nanoStore = {};
+        let nanoKey = '';
+
+        function nanoPanels() {
+            return Object.values(labState.items)
+                .filter(s => s.type === 'container' && s.liquid.type)
+                .sort((a, b) => a.num - b.num).slice(0, 3);
+        }
+
+        function nanoActive(s, anyRunning) {
+            if (s.rx.status === 'running') return true;
+            return s.liquid.type === 'h2o2' && !s.solid.sub && anyRunning;
+        }
+
+        function nanoTag(s) {
+            if (currentMode === 'temp') return `${Math.round(s.temp)}°C`;
+            if (currentMode === 'conc') return `${fmt(s.liquid.conc, 1)} M`;
+            if (currentMode === 'cat') return s.solid.sub ? SUBST[s.solid.sub].name : 'tanpa katalis';
+            return s.solid.form || '';
+        }
+
+        function initNano(s, x0, w) {
+            const r = Math.random;
+            const p = { mol: [], solid: [], gas: [], x0, w };
+            const T = s.temp;
+            const speed = 35 + Math.max(0, T) * 3.2;
+            const isCat = s.liquid.type === 'h2o2';
+            const nMol = isCat ? clamp(Math.round(s.liquid.conc * 4), 6, 50) : clamp(Math.round(s.liquid.conc * 14), 3, 48);
+            for (let i = 0; i < nMol; i++) {
+                p.mol.push({ x: x0 + 4 + r() * (w - 8), y: 16 + r() * 88, vx: (r() - 0.5) * 2 * speed, vy: (r() - 0.5) * 2 * speed, done: false });
+            }
+            const cx = x0 + w / 2;
+            if (isCat) {
+                if (s.solid.sub && SUBST[s.solid.sub].catalyst) {
+                    const n = clamp(Math.round(s.solid.mass / 0.5 * 14), 4, 40);
+                    const cols = Math.ceil(n / 2);
+                    const sp = Math.min(6, (w - 12) / cols);
+                    for (let i = 0; i < n; i++) p.solid.push({ x: cx - (cols - 1) * sp / 2 + (i % cols) * sp, y: 99 + Math.floor(i / cols) * 5, active: true });
+                }
+                p.catProb = s.solid.sub ? clamp(SUBST[s.solid.sub].activity / 1.6, 0.25, 1) : 0;
+            } else {
+                const form = s.solid.form;
+                if (form === 'bongkahan') {
+                    for (let rr = 0; rr < 6; rr++) for (let c = 0; c < 6; c++) p.solid.push({ x: cx - 15 + c * 6, y: 66 + rr * 6, active: true });
+                } else if (form === 'kepingan') {
+                    [[-0.27, 64], [0.27, 64], [-0.27, 92], [0.27, 92]].forEach(([fx, yy]) => {
+                        for (let rr = 0; rr < 3; rr++) for (let c = 0; c < 3; c++) p.solid.push({ x: cx + fx * w - 5 + c * 5, y: yy - 5 + rr * 5, active: true });
+                    });
+                } else if (form === 'pita') {
+                    const sp = Math.min(5, (w - 10) / 10);
+                    for (let rr = 0; rr < 2; rr++) for (let c = 0; c < 10; c++) p.solid.push({ x: cx - 4.5 * sp + c * sp, y: 94 + rr * 5, active: true });
+                } else {
+                    for (let i = 0; i < 36; i++) p.solid.push({ x: x0 + 8 + r() * (w - 16), y: 30 + r() * 74, active: true });
+                }
+                p.pEff = clamp(0.35 * Math.pow(2, (T - 25) / 10), 0.04, 1);
+            }
+            return p;
+        }
+
+        function updateNanoCanvas(dt, anyRunning) {
+            const canvas = document.getElementById('nano-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const dpr = canvas._dpr || 1;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            const W = canvas.width / dpr;
+            ctx.clearRect(0, 0, W, 110);
+
+            const panels = nanoPanels();
+            const key = panels.map(s => s.id).join('|');
+            if (key !== nanoKey) { Object.keys(nanoStore).forEach(k => delete nanoStore[k]); nanoKey = key; }
+
+            if (!panels.length) {
+                ctx.fillStyle = '#64748b'; ctx.font = '10px Poppins'; ctx.textAlign = 'center';
+                ctx.fillText('Belum ada wadah di meja', W / 2, 58);
+                return;
+            }
+            const w = W / panels.length;
+
+            panels.forEach((s, i) => {
+                const x0 = i * w;
+                if (i > 0) { ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.fillRect(x0, 0, 1, 110); }
+                ctx.font = 'bold 9px Poppins';
+                ctx.textAlign = 'left'; ctx.fillStyle = '#cbd5e1'; ctx.fillText(s.label, x0 + 4, 10);
+                ctx.textAlign = 'right'; ctx.fillStyle = '#64748b'; ctx.fillText(nanoTag(s), x0 + w - 4, 10);
+
+                if (!nanoActive(s, anyRunning)) {
+                    nanoStore[s.id] = null;
+                    ctx.fillStyle = '#64748b'; ctx.font = '10px Poppins'; ctx.textAlign = 'center';
+                    ctx.fillText(s.rx.status === 'done' ? 'Reaksi selesai' : 'Menunggu reaksi…', x0 + w / 2, 60);
+                    return;
+                }
+                let p = nanoStore[s.id];
+                if (!p) p = nanoStore[s.id] = initNano(s, x0, w);
+                const isCat = s.liquid.type === 'h2o2';
+                let remaining = 0;
+
+                p.mol.forEach(m => {
+                    m.x += m.vx * dt; m.y += m.vy * dt;
+                    if (m.x < x0 + 2) { m.x = x0 + 2; m.vx *= -1; }
+                    if (m.x > x0 + w - 2) { m.x = x0 + w - 2; m.vx *= -1; }
+                    if (m.y < 15) { m.y = 15; m.vy *= -1; }
+                    if (m.y > 108) { m.y = 108; m.vy *= -1; }
+                    if (isCat) {
+                        if (!m.done) {
+                            remaining++;
+                            // Penguraian alami (tanpa katalis) sangat jarang terjadi
+                            if (Math.random() < 0.02 * Math.pow(2, (s.temp - 25) / 10) * dt) { m.done = true; p.gas.push({ x: m.x, y: m.y, vy: -30 }); }
+                        }
+                        ctx.fillStyle = m.done ? '#1d4ed8' : '#7dd3fc';
+                    } else ctx.fillStyle = '#38bdf8';
+                    ctx.beginPath(); ctx.arc(m.x, m.y, 2, 0, Math.PI * 2); ctx.fill();
+                });
+
+                let activeCount = 0;
+                const solCol = s.solid.sub ? SUBST[s.solid.sub].nano : '#cbd5e1';
+                p.solid.forEach(c => {
+                    if (!c.active) return;
+                    activeCount++;
+                    ctx.fillStyle = solCol;
+                    ctx.beginPath();
+                    if (isCat) ctx.rect(c.x - 2, c.y - 2, 4, 4); else ctx.arc(c.x, c.y, 3.2, 0, Math.PI * 2);
+                    ctx.fill();
+                    for (const m of p.mol) {
+                        const dx = m.x - c.x, dy = m.y - c.y;
+                        if (dx * dx + dy * dy < 25) {
+                            m.vx *= -1; m.vy *= -1; m.x += m.vx * 0.02; m.y += m.vy * 0.02;
+                            if (isCat) {
+                                if (!m.done && Math.random() < p.catProb) { m.done = true; p.gas.push({ x: m.x, y: m.y, vy: -50 }); }
+                            } else if (Math.random() < p.pEff) {
+                                c.active = false;
+                                p.gas.push({ x: c.x, y: c.y, vy: -40 });
+                                break;
+                            }
+                        }
+                    }
+                });
+
+                for (let k = p.gas.length - 1; k >= 0; k--) {
+                    const g = p.gas[k];
+                    g.y += g.vy * dt;
+                    ctx.fillStyle = 'rgba(248,113,113,0.9)';
+                    ctx.beginPath(); ctx.arc(g.x, g.y, 2.5, 0, Math.PI * 2); ctx.fill();
+                    if (g.y < 14) p.gas.splice(k, 1);
+                }
+
+                if ((!isCat && activeCount === 0) || (isCat && remaining === 0)) nanoStore[s.id] = initNano(s, x0, w);
+            });
+        }
+
+        /* =========================================
+           13. TABEL DATA PENGAMATAN
+           ========================================= */
+        function renderDataTable() {
+            const wrap = document.getElementById('waktu-container');
+            const list = Object.values(labState.items).filter(s => s.type === 'container').sort((a, b) => a.num - b.num);
+            if (!list.length) {
+                if (!wrap.querySelector('.data-empty')) wrap.innerHTML = `<div class="data-empty">Belum ada wadah di meja. Tarik wadah dari lemari.</div>`;
+                return;
+            }
+            const empty = wrap.querySelector('.data-empty');
+            if (empty) empty.remove();
+            const ids = new Set(list.map(s => s.id));
+            wrap.querySelectorAll('.data-row').forEach(r => { if (!ids.has(r.dataset.id)) r.remove(); });
+            const anyActivity = list.some(s => s.rx.status === 'running' || s.rx.status === 'done');
+            const selesai = list.filter(s => s.rx.status === 'done');
+            let fastestId = null;
+            if (selesai.length >= 2) fastestId = selesai.reduce((a, b) => (q10(b.rx.elapsed) < q10(a.rx.elapsed) ? b : a)).id;
+
+            list.forEach((s, idx) => {
+                let row = wrap.querySelector(`.data-row[data-id="${s.id}"]`);
+                if (!row) {
+                    row = document.createElement('button');
+                    row.type = 'button';
+                    row.className = 'data-row';
+                    row.dataset.id = s.id;
+                    row.innerHTML = `<span class="row-head"><span class="row-name"></span><span class="row-time"></span></span><span class="row-cond"></span><span class="row-sw"></span><span class="row-gas"></span>`;
+                    row.addEventListener('click', () => openContainerModal(s.id));
+                }
+                if (wrap.children[idx] !== row) wrap.insertBefore(row, wrap.children[idx] || null);
+
+                const rx = s.rx;
+                let t = '-- s', muted = false;
+                if (rx.status === 'running' || rx.status === 'done') t = `${fmt(q10(rx.elapsed), 1)} s`;
+                else if (rx.status === 'none') { t = 'tak bereaksi'; muted = true; }
+                else if (s.liquid.type === 'h2o2' && !s.solid.sub && anyActivity) { t = 'tak teramati'; muted = true; }
+
+                row.querySelector('.row-name').textContent = s.label;
+                const timeEl = row.querySelector('.row-time');
+                timeEl.textContent = t;
+                timeEl.classList.toggle('muted', muted);
+                row.querySelector('.row-cond').textContent = condText(s);
+                row.querySelector('.row-gas').textContent = rx.gasMl > 0.5
+                    ? `V ${rx.gasName} ≈ ${fmtVol(rx.gasMl)}${rx.limiting && rx.status === 'done' ? ' (asam habis lebih dulu)' : ''}`
+                    : '';
+                row.classList.toggle('is-live', rx.status === 'running');
+                row.classList.toggle('is-done', rx.status === 'done');
+                row.classList.toggle('is-fastest', s.id === fastestId);
+                const swEl = row.querySelector('.row-sw');
+                if ((rx.status === 'running' || rx.status === 'done') && rx.swStart != null && rx.session === labState.env.session) {
+                    swEl.textContent = rx.status === 'done'
+                        ? `⏱ ${fmtClock(rx.swStart)} → ${fmtClock(rx.swStart + q10(rx.elapsed))}`
+                        : `⏱ mulai ${fmtClock(rx.swStart)}`;
+                } else swEl.textContent = '';
+                row.setAttribute('aria-label', `${s.label}, ${condText(s)}, waktu ${t}. Ketuk untuk mengatur kondisi.`);
+            });
+        }
+
+        /* =========================================
+           14. GAME LOOP
+           ========================================= */
+        let lastFrameTime = performance.now();
+        let tableTimer = 0;
+
+        function gameLoop(now) {
+            const dt = clamp((now - lastFrameTime) / 1000, 0, 0.1);
+            lastFrameTime = now;
+            let anyRunning = false;
+
+            for (const [id, s] of Object.entries(labState.items)) {
+                if (s.type !== 'container') continue;
+                const gas = stepReaction(id, s, now);
+                if (gas > 0) {
+                    const b = s.attachments.find(a => labState.items[a] && labState.items[a].baseId === 'balon');
+                    if (b) labState.items[b].gasVol += gas;
+                }
+                if (s.rx.status === 'running') {
+                    anyRunning = true;
+                    const bps = Math.min(80, 6 * Math.pow(s.rx.rate, 0.6));
+                    s.bubbleAcc += bps * dt;
+                    let k = 0;
+                    while (s.bubbleAcc >= 1 && k < 4) { spawnBubble(id, s.rx.rate > 30 ? 'intense-bubble' : 'bubble'); s.bubbleAcc -= 1; k++; }
+                    if (s.bubbleAcc > 4) s.bubbleAcc = 0;
+                }
+            }
+
+            const env = labState.env;
+            const wasTiming = env.timerRunning;
+            if (env.timerRunning) {
+                if (env.auto && !anyRunning) {
+                    // Samakan stopwatch dengan akhir reaksi terakhir secara tepat
+                    // Nilai akhir stopwatch = cap waktu selesai reaksi terakhir di tabel (dibulatkan dengan aturan yang sama)
+                    let akhir = null;
+                    Object.values(labState.items).forEach(s => {
+                        const r = s.rx;
+                        if (r.status === 'done' && r.session === env.session && r.swStart != null) akhir = Math.max(akhir ?? 0, r.swStart + q10(r.elapsed));
+                    });
+                    env.time = akhir != null ? akhir : (now - env.startTimestamp) / 1000;
+                    env.timerRunning = false; env.auto = false;
+                    document.getElementById('sw-display').classList.remove('running');
+                    updateStopwatchUI();
+                    logMsg('Semua reaksi telah selesai. Bandingkan hasilnya di tabel data.');
+                } else {
+                    env.time = (now - env.startTimestamp) / 1000;
+                    updateStopwatchUI();
+                }
+            }
+
+            updateNanoCanvas(dt, anyRunning);
+            tableTimer += dt;
+            // Saat stopwatch/reaksi berjalan, tabel diperbarui setiap frame agar selalu sama dengan stopwatch
+            if (anyRunning || wasTiming || tableTimer > 0.1) { tableTimer = 0; renderDataTable(); }
+            document.getElementById('gas-status').classList.toggle('is-rec', anyRunning);
+            syncMiniSW();
+            updateVisuals();
+            requestAnimationFrame(gameLoop);
+        }
+
+        /* =========================================
+           15. STOPWATCH & RESET
+           ========================================= */
+        function manualStartSW() {
+            const env = labState.env;
+            if (!env.timerRunning) {
+                env.timerRunning = true;
+                env.auto = Object.values(labState.items).some(s => s.rx.status === 'running');
+                env.startTimestamp = performance.now() - env.time * 1000;
+                document.getElementById('sw-display').classList.add('running');
+            }
+        }
+        function manualStopSW() {
+            if (labState.env.timerRunning) {
+                labState.env.timerRunning = false;
+                labState.env.auto = false;
+                document.getElementById('sw-display').classList.remove('running');
+            }
+        }
+        function resetSW() {
+            const env = labState.env;
+            env.time = 0; env.timerRunning = false; env.startTimestamp = null; env.auto = false;
+            env.session++;
+            const swEl = document.getElementById('sw-display');
+            swEl.innerText = '00:00.0';
+            swEl.classList.remove('running');
+        }
+        function updateStopwatchUI() {
+            document.getElementById('sw-display').innerText = fmtClock(labState.env.time);
+        }
+
+        /* Stopwatch mini untuk layar kecil */
+        let miniText = '', miniRun = null;
+        function syncMiniSW() {
+            const mini = document.getElementById('sw-mini');
+            if (!mini) return;
+            const txt = document.getElementById('sw-display').innerText;
+            if (txt !== miniText) { miniText = txt; document.getElementById('sw-mini-val').textContent = txt; }
+            const run = labState.env.timerRunning;
+            if (run !== miniRun) { miniRun = run; mini.classList.toggle('running', run); }
+        }
+
+        /* Canvas submikroskopis mengikuti lebar panel agar tidak gepeng/buram */
+        function sizeNanoCanvas() {
+            const canvas = document.getElementById('nano-canvas');
+            const box = document.getElementById('nano-container');
+            if (!canvas || !box) return;
+            const w = Math.max(160, Math.round(box.clientWidth));
+            const dpr = Math.min(2, window.devicePixelRatio || 1);
+            if (canvas._w === w && canvas._dpr === dpr) return;
+            canvas._w = w; canvas._dpr = dpr;
+            canvas.width = w * dpr;
+            canvas.height = 110 * dpr;
+            Object.keys(nanoStore).forEach(k => delete nanoStore[k]);
+            nanoKey = '';
+        }
+
+        function resetLab() {
+            closeModal();
+            labState.items = {};
+            resetSW();
+            workbench.innerHTML = '';
+            document.getElementById('waktu-container').innerHTML = '';
+            Object.keys(nanoStore).forEach(k => delete nanoStore[k]);
+            nanoKey = '';
+            for (const k in cabinetStock) { cabinetStock[k] = 5; updateCabinetStockUI(k); }
+            isFromCabinet = false;
+
+            const M = MODES[currentMode];
+            // Neraca + kaca arloji tersedia di semua percobaan, seperti di lab nyata
+            const nScale = window.innerWidth < 600 ? 0.55 : 0.8;
+            const n = spawnItemOnBench('neraca', 86, nScale);
+            document.getElementById(n.id).classList.add('no-drag');
+            const a = spawnItemOnBench('arloji', 86);
+            attachItem(a, n.id, 0, 67, 2, 1);
+
+            M.presets.forEach(p => {
+                const c = spawnItemOnBench(M.container, p.x);
+                setupContainer(c.id, p);
+            });
+
+            renderDataTable();
+            updateVisuals();
+            logMsg(M.intro);
+        }
+
+        /* =========================================
+           16. INISIALISASI
+           ========================================= */
+        document.getElementById('cond-modal').addEventListener('click', (e) => { if (e.target.id === 'cond-modal') closeModal(); });
+        document.getElementById('modal-cancel').addEventListener('click', closeModal);
+        document.getElementById('modal-x').addEventListener('click', closeModal);
+        document.getElementById('modal-apply').addEventListener('click', () => { if (modalApply) modalApply(); closeModal(); });
+        document.addEventListener('keydown', (e) => {
+            const m = document.getElementById('cond-modal');
+            if (m.hidden) return;
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'Enter' && e.target.tagName === 'INPUT' && !document.getElementById('modal-apply').hidden) {
+                e.target.dispatchEvent(new Event('change'));
+                if (modalApply) modalApply();
+                closeModal();
+            }
+        });
+
+        // Tampilkan stopwatch mini hanya saat kartu stopwatch utama tidak terlihat
+        (function () {
+            const mini = document.getElementById('sw-mini');
+            const kartuSW = document.getElementById('sw-display').closest('.dash-card');
+            if ('IntersectionObserver' in window && kartuSW) {
+                new IntersectionObserver(([e]) => mini.classList.toggle('tampil', !e.isIntersecting), { threshold: 0.3 }).observe(kartuSW);
+            }
+            document.getElementById('sw-mini-go').addEventListener('click', () => {
+                document.getElementById('waktu-container').closest('.dash-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+            sizeNanoCanvas();
+            if ('ResizeObserver' in window) new ResizeObserver(sizeNanoCanvas).observe(document.getElementById('nano-container'));
+            else window.addEventListener('resize', sizeNanoCanvas);
+        })();
+
+        window.addEventListener('load', () => {
+            changeMode('surface');
+            requestAnimationFrame(gameLoop);
+        });
+    </script>
+
+</body>
+
+</html>

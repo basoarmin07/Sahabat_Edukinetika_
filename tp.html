@@ -1,0 +1,2728 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengenalan Virtual Lab & Tujuan Pembelajaran - EduKinetika</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#f8fafc',
+                            blue: '#3b82f6',
+                            green: '#14b8a6',
+                            orange: '#f97316',
+                            purple: '#8b5cf6',
+                            dark: '#1e293b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f4f7f9;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* 3D Flip Card Effect */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+
+        .preserve-3d {
+            transform-style: preserve-3d;
+        }
+
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
+        /* Smooth rotation transition */
+        .card-inner {
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+
+        /* Hide scrollbar for nicer look on the backface */
+        .overflow-y-auto::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-thumb {
+            background-color: rgba(148, 163, 184, 0.5);
+            border-radius: 10px;
+        }
+
+        /* ===== Kartu UNO tujuan pembelajaran ===== */
+        .uno-wrap {
+            height: 560px;
+            outline: none;
+        }
+
+        .uno-wrap:focus-visible .card-inner {
+            box-shadow: 0 0 0 4px #fbbf24;
+        }
+
+        .card-inner {
+            box-shadow: 0 18px 40px -22px rgba(15, 23, 42, .55);
+        }
+
+        .uno-wrap:hover .card-inner:not(.flipped) {
+            transform: translateY(-6px) rotate(-1deg);
+        }
+
+        .uno-back {
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .15);
+            background-image:
+                radial-gradient(circle at 20% 15%, rgba(255, 255, 255, .18), transparent 40%),
+                repeating-linear-gradient(135deg, rgba(255, 255, 255, .06) 0 10px, transparent 10px 20px);
+        }
+
+        .uno-num {
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, .25);
+        }
+
+        .uno-num-dark {
+            text-shadow: 3px 3px 0 #facc15;
+        }
+
+        .uno-ellipse {
+            box-shadow: 0 10px 20px -8px rgba(0, 0, 0, .35);
+        }
+
+        .uno-chip {
+            font-size: 11px;
+            font-weight: 800;
+            background: rgba(255, 255, 255, .2);
+            border: 1px solid rgba(255, 255, 255, .35);
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .uno-tap {
+            position: absolute;
+            left: 50%;
+            bottom: 18px;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            font-size: 11px;
+            font-weight: 800;
+            color: #fff;
+            background: rgba(0, 0, 0, .18);
+            border: 1px solid rgba(255, 255, 255, .3);
+            padding: 5px 12px;
+            border-radius: 999px;
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            transition: opacity .2s;
+        }
+
+        .uno-wrap:hover .uno-tap,
+        .uno-wrap:focus-visible .uno-tap {
+            opacity: 1;
+        }
+
+        @media (hover: none) {
+            .uno-tap {
+                opacity: 1;
+                bottom: 86px;
+            }
+        }
+
+        .tp-num {
+            flex-shrink: 0;
+            min-width: 34px;
+            height: 24px;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            font-size: 11px;
+            font-weight: 800;
+            margin-top: 1px;
+        }
+
+        .keg-chip {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 999px;
+            border-width: 1px;
+        }
+
+        .meet-flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 8px 10px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        .meet-flow span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 999px;
+            padding: 5px 12px 5px 5px;
+        }
+
+        .meet-flow b {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            font-size: 12px;
+        }
+
+        .meet-flow i {
+            color: #94a3b8;
+        }
+
+        @media (max-width: 639px) {
+            .uno-wrap {
+                height: 540px;
+            }
+
+            .meet-flow i {
+                display: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .card-inner {
+                transition: none;
+            }
+        }
+
+        /* ===== Hero ===== */
+        .hero-tp {
+            display: grid;
+            grid-template-columns: 1.25fr 1fr;
+            gap: 40px;
+            align-items: center;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 32px;
+            padding: 48px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px -30px rgba(30, 41, 59, .35);
+        }
+
+        .hero-tp::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(59, 130, 246, .07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, .07) 1px, transparent 1px);
+            background-size: 26px 26px;
+            -webkit-mask-image: radial-gradient(ellipse at 85% 50%, #000 15%, transparent 60%);
+            mask-image: radial-gradient(ellipse at 85% 50%, #000 15%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-text {
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 999px;
+        }
+
+        .hero-tp h1 {
+            font-size: clamp(1.9rem, 4.2vw, 3rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: #1e293b;
+            margin: 16px 0 14px;
+        }
+
+        .hero-grad {
+            background: linear-gradient(90deg, #2563eb, #14b8a6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-tp p {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.75;
+            max-width: 36rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 10px;
+            margin: 24px 0;
+            flex-wrap: wrap;
+        }
+
+        .hero-stats div {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 10px 16px;
+            min-width: 96px;
+        }
+
+        .hero-stats b {
+            display: block;
+            font-size: 22px;
+            font-weight: 800;
+            color: #1e293b;
+            line-height: 1.1;
+        }
+
+        .hero-stats span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-main,
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 48px;
+            padding: 0 22px;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: 14px;
+            transition: transform .15s, background .15s;
+        }
+
+        .btn-main {
+            background: #2563eb;
+            color: #fff;
+            box-shadow: 0 10px 20px -10px rgba(37, 99, 235, .8);
+        }
+
+        .btn-main:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .btn-ghost {
+            border: 2px solid #e2e8f0;
+            color: #334155;
+            background: #fff;
+        }
+
+        .btn-ghost:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+
+        /* Tumpukan kartu UNO mini */
+        .hero-deck {
+            position: relative;
+            height: 320px;
+            display: block;
+        }
+
+        .mini-uno {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 168px;
+            height: 244px;
+            margin: -122px 0 0 -84px;
+            border-radius: 22px;
+            border: 6px solid #fff;
+            box-shadow: 0 18px 30px -14px rgba(15, 23, 42, .5);
+            display: grid;
+            place-items: center;
+            transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+            background-image: repeating-linear-gradient(135deg, rgba(255, 255, 255, .08) 0 8px, transparent 8px 16px);
+        }
+
+        .mini-uno em {
+            position: absolute;
+            top: 8px;
+            left: 12px;
+            color: #fff;
+            font-weight: 900;
+            font-size: 22px;
+            font-style: italic;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, .25);
+        }
+
+        .mini-uno i {
+            width: 128px;
+            height: 84px;
+            background: #fff;
+            border: 5px solid #facc15;
+            border-radius: 50%;
+            transform: rotate(-18deg);
+            display: grid;
+            place-items: center;
+        }
+
+        .mini-uno b {
+            transform: rotate(18deg);
+            font-size: 34px;
+            font-weight: 900;
+            font-style: italic;
+            color: #1e293b;
+            text-shadow: 2px 2px 0 #facc15;
+        }
+
+        .mini-uno.d1 {
+            transform: translateX(-70px) rotate(-14deg);
+        }
+
+        .mini-uno.d2 {
+            transform: translateY(-10px) rotate(0deg);
+            z-index: 2;
+        }
+
+        .mini-uno.d3 {
+            transform: translateX(70px) rotate(14deg);
+            z-index: 1;
+        }
+
+        .hero-deck:hover .d1 {
+            transform: translateX(-100px) rotate(-18deg);
+        }
+
+        .hero-deck:hover .d3 {
+            transform: translateX(100px) rotate(18deg);
+        }
+
+        .hero-deck:hover .d2 {
+            transform: translateY(-22px);
+        }
+
+        /* ===== Alur penggunaan (timeline) ===== */
+        .flow {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 20px;
+            position: relative;
+        }
+
+        .flow::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 12%;
+            right: 12%;
+            height: 3px;
+            background: repeating-linear-gradient(90deg, #cbd5e1 0 10px, transparent 10px 18px);
+        }
+
+        .flow-step {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .flow-dot {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            font-size: 22px;
+            border: 4px solid #f4f7f9;
+            box-shadow: 0 8px 16px -8px rgba(15, 23, 42, .5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .flow-body {
+            margin-top: 14px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 22px;
+            padding: 18px;
+            flex: 1;
+            width: 100%;
+            box-shadow: 0 10px 24px -20px rgba(15, 23, 42, .5);
+        }
+
+        .flow-n {
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .flow-body h3 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #1e293b;
+            margin: 2px 0 6px;
+        }
+
+        .flow-body p {
+            font-size: 13px;
+            line-height: 1.65;
+            color: #64748b;
+        }
+
+        /* ===== Grid kartu UNO ===== */
+        .uno-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 28px;
+        }
+
+        .uno-dots {
+            display: none;
+            justify-content: center;
+            gap: 8px;
+            margin-top: -12px;
+        }
+
+        .uno-dots i {
+            width: 8px;
+            height: 8px;
+            border-radius: 99px;
+            background: #cbd5e1;
+            transition: width .2s, background .2s;
+        }
+
+        .uno-dots i.on {
+            width: 24px;
+            background: #2563eb;
+        }
+
+        /* ===== CTA ===== */
+        .cta-tp::after {
+            content: '';
+            position: absolute;
+            right: -40px;
+            top: -40px;
+            width: 260px;
+            height: 260px;
+            background-image: radial-gradient(rgba(255, 255, 255, .35) 2px, transparent 2.5px);
+            background-size: 22px 22px;
+            -webkit-mask-image: radial-gradient(circle, #000 20%, transparent 70%);
+            mask-image: radial-gradient(circle, #000 20%, transparent 70%);
+        }
+
+        /* ===== Responsif ===== */
+        @media (max-width: 1023px) {
+            .hero-tp {
+                grid-template-columns: 1fr;
+                padding: 36px 32px;
+                text-align: center;
+            }
+
+            .hero-tp p {
+                margin: 0 auto;
+            }
+
+            .hero-stats,
+            .hero-cta {
+                justify-content: center;
+            }
+
+            .hero-deck {
+                height: 280px;
+                order: -1;
+                margin-bottom: -10px;
+            }
+
+            .mini-uno {
+                transform-origin: center;
+                scale: .85;
+            }
+
+            .flow {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .flow::before {
+                display: none;
+            }
+
+            .uno-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 639px) {
+            .hero-tp {
+                padding: 24px 18px 26px;
+                border-radius: 26px;
+                gap: 16px;
+            }
+
+            .hero-deck {
+                height: 220px;
+            }
+
+            .mini-uno {
+                scale: .68;
+            }
+
+            .hero-tp p {
+                font-size: 14px;
+            }
+
+            .hero-stats {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .hero-stats div {
+                min-width: 0;
+                padding: 10px 8px;
+            }
+
+            .hero-stats span {
+                font-size: 11px;
+                display: block;
+                line-height: 1.3;
+            }
+
+            .hero-cta a {
+                flex: 1 1 100%;
+            }
+
+            /* Timeline vertikal di HP */
+            .flow {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .flow::before {
+                display: block;
+                top: 24px;
+                bottom: 24px;
+                left: 24px;
+                right: auto;
+                width: 3px;
+                height: auto;
+                background: repeating-linear-gradient(180deg, #cbd5e1 0 10px, transparent 10px 18px);
+            }
+
+            .flow-step {
+                flex-direction: row;
+                align-items: flex-start;
+                text-align: left;
+                gap: 14px;
+            }
+
+            .flow-dot {
+                flex-shrink: 0;
+            }
+
+            .flow-body {
+                margin-top: 0;
+                padding: 14px 16px;
+            }
+
+            /* Kartu UNO bisa digeser ke samping */
+            .uno-grid {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 14px;
+                margin: 0 -16px;
+                padding: 6px 16px 20px;
+                scrollbar-width: none;
+            }
+
+            .uno-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+            .uno-grid>.uno-wrap {
+                flex: 0 0 86%;
+                scroll-snap-align: center;
+            }
+
+            .uno-dots {
+                display: flex;
+            }
+
+            #tujuan .border-b {
+                align-items: flex-start;
+            }
+
+            .cta-tp h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .mini-uno {
+                transition: none;
+            }
+        }
+
+        /* ================== TAMBAHAN: latar, animasi alur, simulasi kartu UNO ================== */
+        body {
+            background: #eef3ff;
+        }
+
+        .tp-latar {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+            background:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cg fill='none' stroke='%236366f1' stroke-opacity='.08' stroke-width='1.2'%3E%3Cpath d='M28 1 L54 16 L54 46 L28 61 L2 46 L2 16 Z'/%3E%3Cpath d='M28 61 L28 97'/%3E%3C/g%3E%3C/svg%3E"),
+                linear-gradient(180deg, #eef3ff 0%, #f3efff 45%, #ecfbf4 100%);
+        }
+
+        .tp-latar .gumpal {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: .55;
+            animation: tp-melayang 18s ease-in-out infinite;
+        }
+
+        .tp-latar .g1 {
+            width: 420px;
+            height: 420px;
+            left: -120px;
+            top: -100px;
+            background: #93c5fd;
+        }
+
+        .tp-latar .g2 {
+            width: 380px;
+            height: 380px;
+            right: -120px;
+            top: 20%;
+            background: #c4b5fd;
+            animation-delay: -6s;
+        }
+
+        .tp-latar .g3 {
+            width: 440px;
+            height: 440px;
+            left: 20%;
+            bottom: -180px;
+            background: #6ee7b7;
+            animation-delay: -12s;
+        }
+
+        .tp-latar .g4 {
+            width: 260px;
+            height: 260px;
+            right: 18%;
+            bottom: 10%;
+            background: #fdba74;
+            opacity: .35;
+            animation-delay: -3s;
+        }
+
+        .tp-latar .mol {
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            opacity: .35;
+            animation: tp-molekul 14s ease-in-out infinite;
+        }
+
+        .tp-latar .m1 {
+            left: 6%;
+            top: 30%;
+        }
+
+        .tp-latar .m2 {
+            right: 7%;
+            top: 12%;
+            width: 50px;
+            animation-delay: -5s;
+        }
+
+        .tp-latar .m3 {
+            left: 44%;
+            top: 62%;
+            width: 44px;
+            animation-delay: -9s;
+        }
+
+        .tp-latar .m4 {
+            right: 12%;
+            bottom: 14%;
+            width: 56px;
+            animation-delay: -2s;
+        }
+
+        @keyframes tp-melayang {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(40px, 30px) scale(1.08);
+            }
+        }
+
+        @keyframes tp-molekul {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0);
+            }
+
+            50% {
+                transform: translateY(-18px) rotate(14deg);
+            }
+        }
+
+        /* ---------- Alur penggunaan: animasi ---------- */
+        .flow::after {
+            content: '';
+            position: absolute;
+            top: 19px;
+            left: 12%;
+            width: 14px;
+            height: 14px;
+            margin-left: -7px;
+            border-radius: 50%;
+            background: #2563eb;
+            box-shadow: 0 0 0 5px rgba(37, 99, 235, .2), 0 0 14px rgba(37, 99, 235, .7);
+            animation: tp-jalan-alur 8s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes tp-jalan-alur {
+            0% {
+                left: 12%;
+                background: #3b82f6;
+            }
+
+            33% {
+                background: #14b8a6;
+            }
+
+            66% {
+                background: #f97316;
+            }
+
+            90%,
+            100% {
+                left: 88%;
+                background: #8b5cf6;
+            }
+        }
+
+        .flow-dot {
+            animation: tp-denyut 8s ease-in-out infinite;
+        }
+
+        .flow-step:nth-child(2) .flow-dot {
+            animation-delay: 2s;
+        }
+
+        .flow-step:nth-child(3) .flow-dot {
+            animation-delay: 4s;
+        }
+
+        .flow-step:nth-child(4) .flow-dot {
+            animation-delay: 6s;
+        }
+
+        @keyframes tp-denyut {
+
+            0%,
+            20%,
+            100% {
+                transform: scale(1);
+            }
+
+            8% {
+                transform: scale(1.15) rotate(-6deg);
+            }
+        }
+
+        .flow-anim {
+            position: relative;
+            height: 92px;
+            margin: -4px -4px 12px;
+            border-radius: 16px;
+            overflow: hidden;
+            display: grid;
+            place-items: center;
+        }
+
+        /* 1. membaca panduan: buku membalik halaman */
+        .anim-baca {
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+        }
+
+        .anim-baca .buku {
+            position: relative;
+            width: 104px;
+            height: 64px;
+            perspective: 400px;
+        }
+
+        .anim-baca .hal-kiri,
+        .anim-baca .hal-kanan,
+        .anim-baca .hal-balik {
+            position: absolute;
+            top: 0;
+            width: 52px;
+            height: 64px;
+            background: #fff;
+            border: 2px solid #93c5fd;
+            background-image: repeating-linear-gradient(180deg, transparent 0 9px, #bfdbfe 9px 11px);
+            background-size: 70% 100%;
+            background-position: center 8px;
+            background-repeat: no-repeat;
+        }
+
+        .anim-baca .hal-kiri {
+            left: 0;
+            border-radius: 8px 2px 2px 8px;
+        }
+
+        .anim-baca .hal-kanan {
+            right: 0;
+            border-radius: 2px 8px 8px 2px;
+        }
+
+        .anim-baca .hal-balik {
+            right: 0;
+            border-radius: 2px 8px 8px 2px;
+            transform-origin: 0 50%;
+            animation: tp-balik-hal 3s ease-in-out infinite;
+            background-color: #f8fbff;
+        }
+
+        .anim-baca .kaca {
+            position: absolute;
+            right: 18px;
+            bottom: 6px;
+            font-size: 26px;
+            color: #1d4ed8;
+            animation: tp-kaca 3s ease-in-out infinite;
+        }
+
+        @keyframes tp-balik-hal {
+
+            0%,
+            20% {
+                transform: rotateY(0);
+            }
+
+            60%,
+            100% {
+                transform: rotateY(-180deg);
+            }
+        }
+
+        @keyframes tp-kaca {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(-40px, -14px);
+            }
+        }
+
+        /* 2. memahami materi: kartu belajar dikocok */
+        .anim-materi {
+            background: linear-gradient(135deg, #ccfbf1, #f0fdfa);
+        }
+
+        .anim-materi .kb {
+            position: absolute;
+            width: 46px;
+            height: 62px;
+            border-radius: 9px;
+            border: 3px solid #fff;
+            box-shadow: 0 6px 12px -6px rgba(15, 23, 42, .5);
+            display: grid;
+            place-items: center;
+            color: #fff;
+            font-weight: 800;
+            font-size: 12px;
+            animation: tp-kocok 4.5s ease-in-out infinite;
+        }
+
+        .anim-materi .k1 {
+            background: #0d9488;
+        }
+
+        .anim-materi .k2 {
+            background: #2563eb;
+            animation-delay: -1.5s;
+        }
+
+        .anim-materi .k3 {
+            background: #f97316;
+            animation-delay: -3s;
+        }
+
+        @keyframes tp-kocok {
+
+            0%,
+            100% {
+                transform: translateX(-48px) rotate(-12deg);
+                z-index: 1;
+            }
+
+            33% {
+                transform: translateX(0) rotate(0) translateY(-6px);
+                z-index: 3;
+            }
+
+            66% {
+                transform: translateX(48px) rotate(12deg);
+                z-index: 2;
+            }
+        }
+
+        /* 3. praktikum virtual: labu bergelembung */
+        .anim-praktikum {
+            background: linear-gradient(135deg, #ffedd5, #fff7ed);
+        }
+
+        .anim-praktikum svg {
+            width: 120px;
+            height: 80px;
+            overflow: visible;
+        }
+
+        .anim-praktikum .cair {
+            animation: tp-warna 4s ease-in-out infinite;
+        }
+
+        .anim-praktikum .gel {
+            animation: tp-gelembung 1.8s ease-in infinite;
+        }
+
+        .anim-praktikum .gel:nth-of-type(2) {
+            animation-delay: .6s;
+        }
+
+        .anim-praktikum .gel:nth-of-type(3) {
+            animation-delay: 1.2s;
+        }
+
+        .anim-praktikum .api {
+            transform-box: fill-box;
+            transform-origin: 50% 100%;
+            animation: tp-api .4s ease-in-out infinite alternate;
+        }
+
+        @keyframes tp-warna {
+
+            0%,
+            100% {
+                fill: #fb923c;
+            }
+
+            50% {
+                fill: #f472b6;
+            }
+        }
+
+        @keyframes tp-gelembung {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-34px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes tp-api {
+            from {
+                transform: scaleY(.8);
+            }
+
+            to {
+                transform: scaleY(1.15);
+            }
+        }
+
+        /* 4. refleksi: daftar centang */
+        .anim-refleksi {
+            background: linear-gradient(135deg, #ede9fe, #f5f3ff);
+        }
+
+        .anim-refleksi .papan {
+            width: 112px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0 6px 14px -8px rgba(76, 29, 149, .5);
+        }
+
+        .anim-refleksi .baris {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 14px;
+            margin: 3px 0;
+        }
+
+        .anim-refleksi .kotak {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            border: 2px solid #c4b5fd;
+            position: relative;
+        }
+
+        .anim-refleksi .kotak::after {
+            content: '✓';
+            position: absolute;
+            inset: -4px 0 0 1px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #7c3aed;
+            opacity: 0;
+            animation: tp-centang 4s ease-in-out infinite;
+        }
+
+        .anim-refleksi .baris:nth-child(2) .kotak::after {
+            animation-delay: .7s;
+        }
+
+        .anim-refleksi .baris:nth-child(3) .kotak::after {
+            animation-delay: 1.4s;
+        }
+
+        .anim-refleksi .garis {
+            flex: 1;
+            height: 5px;
+            border-radius: 3px;
+            background: #ede9fe;
+        }
+
+        .anim-refleksi .bintang {
+            position: absolute;
+            right: 20px;
+            top: 12px;
+            font-size: 22px;
+            animation: tp-bintang 4s ease-in-out infinite;
+        }
+
+        @keyframes tp-centang {
+
+            0%,
+            15% {
+                opacity: 0;
+                transform: scale(.4);
+            }
+
+            25%,
+            85% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes tp-bintang {
+
+            0%,
+            55% {
+                opacity: 0;
+                transform: scale(.3) rotate(-30deg);
+            }
+
+            65%,
+            90% {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* ---------- Simulasi di dalam kartu UNO ---------- */
+        .uno-sim-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            text-align: center;
+        }
+
+        .uno-back .uno-ellipse {
+            height: 228px;
+        }
+
+        .uno-sim {
+            width: 196px;
+            height: 100px;
+            display: block;
+            border-radius: 14px;
+        }
+
+        .uno-sim-ket {
+            max-width: 210px;
+            min-height: 14px;
+            font-size: 10.5px;
+            font-weight: 800;
+            line-height: 1.25;
+            color: #334155;
+        }
+
+        .uno-sim-no {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .22em;
+            color: #1e293b;
+        }
+
+        .uno-sim-no b {
+            font-size: 22px;
+            font-style: italic;
+            letter-spacing: -.02em;
+            margin-right: 4px;
+            vertical-align: -3px;
+        }
+
+        @media (max-width: 639px) {
+            .flow::after {
+                top: 12%;
+                left: 18px;
+                animation-name: tp-jalan-alur-hp;
+            }
+
+            @keyframes tp-jalan-alur-hp {
+                0% {
+                    top: 5%;
+                    background: #3b82f6;
+                }
+
+                33% {
+                    background: #14b8a6;
+                }
+
+                66% {
+                    background: #f97316;
+                }
+
+                90%,
+                100% {
+                    top: 88%;
+                    background: #8b5cf6;
+                }
+            }
+
+            .flow-anim {
+                height: 76px;
+            }
+
+            .uno-sim {
+                width: 180px;
+                height: 92px;
+            }
+
+            .uno-back .uno-ellipse {
+                height: 212px;
+            }
+        }
+
+        @media (max-width: 1023px) and (min-width: 640px) {
+            .flow::after {
+                display: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .tp-latar .gumpal,
+            .tp-latar .mol,
+            .flow::after,
+            .flow-dot,
+            .anim-baca .hal-balik,
+            .anim-baca .kaca,
+            .anim-materi .kb,
+            .anim-praktikum .cair,
+            .anim-praktikum .gel,
+            .anim-praktikum .api,
+            .anim-refleksi .kotak::after,
+            .anim-refleksi .bintang {
+                animation: none;
+            }
+
+            .anim-refleksi .kotak::after,
+            .anim-refleksi .bintang {
+                opacity: 1;
+            }
+        }
+
+        /* ---------- Kartu UNO bermotif batik ---------- */
+        .uno-back.batik-kawung {
+            background-image:
+                radial-gradient(circle at 20% 15%, rgba(255, 255, 255, .16), transparent 40%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg fill='%23fff' fill-opacity='.07' stroke='%23fff' stroke-opacity='.28' stroke-width='1.4'%3E%3Cellipse cx='22' cy='10' rx='6' ry='10'/%3E%3Cellipse cx='22' cy='34' rx='6' ry='10'/%3E%3Cellipse cx='10' cy='22' rx='10' ry='6'/%3E%3Cellipse cx='34' cy='22' rx='10' ry='6'/%3E%3C/g%3E%3Cg fill='%23fff' fill-opacity='.35'%3E%3Ccircle cx='22' cy='22' r='2.2'/%3E%3Ccircle cx='0' cy='0' r='2.2'/%3E%3Ccircle cx='44' cy='0' r='2.2'/%3E%3Ccircle cx='0' cy='44' r='2.2'/%3E%3Ccircle cx='44' cy='44' r='2.2'/%3E%3Ccircle cx='22' cy='8' r='1'/%3E%3Ccircle cx='22' cy='36' r='1'/%3E%3Ccircle cx='8' cy='22' r='1'/%3E%3Ccircle cx='36' cy='22' r='1'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: auto, 44px 44px;
+        }
+
+        .uno-back.batik-parang {
+            background-image:
+                radial-gradient(circle at 20% 15%, rgba(255, 255, 255, .16), transparent 40%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='.3' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M-4 44 C4 36 2 28 10 26 S18 22 20 14 S28 4 44 -4'/%3E%3C/g%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='.15' stroke-width='1.2'%3E%3Cpath d='M-4 24 C4 18 8 14 16 12 S22 4 24 -4'/%3E%3Cpath d='M16 44 C22 40 26 34 32 32 S40 26 44 16'/%3E%3C/g%3E%3Cg fill='%23fff' fill-opacity='.35'%3E%3Ccircle cx='8' cy='12' r='1.3'/%3E%3Ccircle cx='30' cy='30' r='1.3'/%3E%3Ccircle cx='34' cy='8' r='1'/%3E%3Ccircle cx='6' cy='34' r='1'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: auto, 40px 40px;
+        }
+
+        .uno-back.batik-truntum {
+            background-image:
+                radial-gradient(circle at 20% 15%, rgba(255, 255, 255, .16), transparent 40%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46' viewBox='0 0 46 46'%3E%3Cg fill='%23fff' fill-opacity='.3'%3E%3Ccircle cx='12' cy='12' r='2.4'/%3E%3Ccircle cx='12' cy='5' r='1.5'/%3E%3Ccircle cx='12' cy='19' r='1.5'/%3E%3Ccircle cx='5' cy='12' r='1.5'/%3E%3Ccircle cx='19' cy='12' r='1.5'/%3E%3Ccircle cx='7' cy='7' r='1.2'/%3E%3Ccircle cx='17' cy='7' r='1.2'/%3E%3Ccircle cx='7' cy='17' r='1.2'/%3E%3Ccircle cx='17' cy='17' r='1.2'/%3E%3C/g%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='.28' stroke-width='1.3'%3E%3Cpath d='M34 28 l4 6 l-4 6 l-4 -6 z'/%3E%3Cpath d='M28 34 l6 -4 l6 4 l-6 4 z'/%3E%3C/g%3E%3Ccircle cx='34' cy='34' r='1.6' fill='%23fff' fill-opacity='.45'/%3E%3C/svg%3E");
+            background-size: auto, 46px 46px;
+        }
+
+        /* bingkai batik (isen-isen cecek) di tepi dalam kartu */
+        .uno-back.batik-kawung::before,
+        .uno-back.batik-parang::before,
+        .uno-back.batik-truntum::before {
+            content: '';
+            position: absolute;
+            inset: 9px;
+            border-radius: 2rem;
+            border: 2px dashed rgba(255, 255, 255, .35);
+            pointer-events: none;
+        }
+
+        .uno-back.batik-kawung::after,
+        .uno-back.batik-parang::after,
+        .uno-back.batik-truntum::after {
+            content: '';
+            position: absolute;
+            inset: 16px;
+            border-radius: 1.7rem;
+            background:
+                radial-gradient(circle, rgba(255, 255, 255, .45) 1.3px, transparent 1.8px) top left / 12px 12px repeat-x,
+                radial-gradient(circle, rgba(255, 255, 255, .45) 1.3px, transparent 1.8px) bottom left / 12px 12px repeat-x;
+            pointer-events: none;
+        }
+
+        .batik-label {
+            position: absolute;
+            right: 22px;
+            bottom: 22px;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: .14em;
+            color: rgba(255, 255, 255, .7);
+            text-transform: uppercase;
+            display: none;
+        }
+
+        /* ---------- Kotak materi di bawah kartu ---------- */
+        .uno-kolom {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            min-width: 0;
+        }
+
+        .uno-materi {
+            position: relative;
+            border-radius: 1.6rem;
+            padding: 14px;
+            background: #fff;
+            border: 2px solid var(--c-muda);
+            box-shadow: 0 16px 30px -24px rgba(15, 23, 42, .6);
+        }
+
+        .uno-materi::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: -10px;
+            width: 18px;
+            height: 18px;
+            margin-left: -9px;
+            transform: rotate(45deg);
+            background: #fff;
+            border-left: 2px solid var(--c-muda);
+            border-top: 2px solid var(--c-muda);
+        }
+
+        .uno-materi-kepala {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .uno-materi-kepala .no {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            font-style: italic;
+            font-size: 18px;
+            color: #fff;
+            background: var(--c);
+            box-shadow: 0 6px 12px -6px var(--c);
+        }
+
+        .uno-materi-kepala small {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--c);
+        }
+
+        .uno-materi-kepala b {
+            display: block;
+            font-size: 14px;
+            font-weight: 800;
+            color: #1e293b;
+            line-height: 1.25;
+        }
+
+        .uno-materi a.utama {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 14px;
+            padding: 11px 14px;
+            color: #fff;
+            font-weight: 800;
+            font-size: 14px;
+            text-decoration: none;
+            background: var(--c);
+            box-shadow: 0 10px 18px -12px var(--c);
+            transition: transform .15s, filter .15s;
+        }
+
+        .uno-materi a.utama span {
+            flex: 1;
+        }
+
+        .uno-materi a.utama:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.06);
+        }
+
+        .uno-materi a.utama .ph-arrow-right {
+            transition: transform .15s;
+        }
+
+        .uno-materi a.utama:hover .ph-arrow-right {
+            transform: translateX(3px);
+        }
+
+        .uno-materi .sub {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .uno-materi .sub a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+            text-decoration: none;
+            background: var(--c-muda);
+            transition: background .15s, color .15s;
+        }
+
+        .uno-materi .sub a:hover {
+            color: var(--c);
+            background: #fff;
+            box-shadow: inset 0 0 0 1.5px var(--c);
+        }
+
+        .uno-materi .sub a small {
+            margin-left: auto;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .uno-materi a:focus-visible {
+            outline: 3px solid #fbbf24;
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 639px) {
+            .uno-grid>.uno-kolom {
+                flex: 0 0 86%;
+                scroll-snap-align: center;
+            }
+
+            .uno-kolom .uno-wrap {
+                flex: none;
+            }
+        }
+    </style>
+    <!-- ================== TAMBAHAN: gaya navigasi ================== -->
+    <style>
+        .tpn-link {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            width: 100%;
+            padding: .55rem .8rem;
+            border-radius: .8rem;
+            font-size: .85rem;
+            font-weight: 700;
+            color: #64748b;
+            transition: background .15s, color .15s;
+            white-space: nowrap;
+        }
+
+        .tpn-link:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .tpn-link.aktif {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .tpn-ikon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: .8rem;
+            display: grid;
+            place-items: center;
+            font-size: 1.15rem;
+            color: #334155;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+        }
+
+        .tpn-jejak {
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tpn-jejak::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tpn-remah {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            flex-shrink: 0;
+            font-size: .8rem;
+            font-weight: 800;
+            color: #1d4ed8;
+        }
+
+        .tpn-remah:hover {
+            text-decoration: underline;
+        }
+
+        .tpn-urutan {
+            display: flex;
+            gap: .4rem;
+            flex-shrink: 0;
+        }
+
+        .tpn-urutan a {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            padding: .3rem .7rem .3rem .3rem;
+            border-radius: 999px;
+            font-size: .76rem;
+            font-weight: 700;
+            color: #475569;
+            background: #f1f5f9;
+            white-space: nowrap;
+            transition: background .15s, color .15s;
+        }
+
+        .tpn-urutan a b {
+            width: 1.35rem;
+            height: 1.35rem;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: .7rem;
+            color: #fff;
+            background: #94a3b8;
+        }
+
+        .tpn-urutan a:hover {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .tpn-urutan a.aktif {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .tpn-urutan a.aktif b {
+            background: #fff;
+            color: #2563eb;
+        }
+
+        .tpn-pindah {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .tpn-pindah a {
+            display: flex;
+            align-items: center;
+            gap: .8rem;
+            padding: 1rem 1.2rem;
+            border-radius: 1.2rem;
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            font-weight: 800;
+            color: #1e293b;
+            transition: border-color .15s, transform .15s;
+        }
+
+        .tpn-pindah a:hover {
+            border-color: #93c5fd;
+            transform: translateY(-2px);
+        }
+
+        .tpn-pindah a i {
+            font-size: 1.3rem;
+            color: #2563eb;
+            flex-shrink: 0;
+        }
+
+        .tpn-pindah a small {
+            display: block;
+            font-size: .72rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .tpn-pindah .berikut {
+            justify-content: flex-end;
+            text-align: right;
+            background: #eff6ff;
+            border-color: #bfdbfe;
+        }
+
+        .tpn a:focus-visible,
+        .tpn button:focus-visible,
+        .tpn-pindah a:focus-visible {
+            outline: 3px solid #fbbf24;
+            outline-offset: 2px;
+        }
+
+        .uno-materi .sub a small {
+            white-space: nowrap;
+            padding-left: .4rem;
+        }
+
+        /* navigasi kini dua baris, jadi jarak tujuan gulir ditambah */
+        #alur,
+        #tujuan {
+            scroll-margin-top: 7.5rem;
+        }
+
+        @media (max-width: 639px) {
+            .tpn-pindah {
+                grid-template-columns: 1fr;
+            }
+
+            .tpn-pindah a {
+                padding: .85rem 1rem;
+            }
+        }
+    </style>
+    <!-- ================== TAMBAHAN: judul kartu UNO yang jelas ================== -->
+    <style>
+        .uno-judul {
+            display: inline-block;
+            font-size: 1.05rem;
+            font-weight: 800;
+            line-height: 1.25;
+            color: #fff;
+            background: rgba(15, 23, 42, .38);
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, .28);
+            border-radius: .9rem;
+            padding: .45rem .7rem;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, .45);
+        }
+
+        @media (max-width: 639px) {
+            .uno-judul {
+                font-size: .98rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="text-slate-700 antialiased relative min-h-screen pb-20">
+
+    <!-- Latar belakang animasi -->
+    <div class="tp-latar" aria-hidden="true">
+        <span class="gumpal g1"></span><span class="gumpal g2"></span><span class="gumpal g3"></span><span
+            class="gumpal g4"></span>
+        <svg class="mol m1" viewBox="0 0 64 64">
+            <line x1="32" y1="30" x2="14" y2="46" stroke="#94a3b8" stroke-width="4" />
+            <line x1="32" y1="30" x2="50" y2="46" stroke="#94a3b8" stroke-width="4" />
+            <circle cx="32" cy="28" r="13" fill="#f87171" />
+            <circle cx="13" cy="47" r="8" fill="#e2e8f0" stroke="#94a3b8" />
+            <circle cx="51" cy="47" r="8" fill="#e2e8f0" stroke="#94a3b8" />
+        </svg>
+        <svg class="mol m2" viewBox="0 0 64 64">
+            <line x1="8" y1="32" x2="56" y2="32" stroke="#94a3b8" stroke-width="4" />
+            <circle cx="32" cy="32" r="11" fill="#334155" />
+            <circle cx="10" cy="32" r="9" fill="#f87171" />
+            <circle cx="54" cy="32" r="9" fill="#f87171" />
+        </svg>
+        <svg class="mol m3" viewBox="0 0 64 64">
+            <circle cx="22" cy="32" r="14" fill="#60a5fa" />
+            <circle cx="42" cy="32" r="14" fill="#60a5fa" />
+        </svg>
+        <svg class="mol m4" viewBox="0 0 64 64">
+            <path d="M32 6 L54 19 L54 45 L32 58 L10 45 L10 19 Z" fill="none" stroke="#818cf8" stroke-width="4" />
+            <circle cx="32" cy="32" r="9" fill="none" stroke="#818cf8" stroke-width="3" />
+        </svg>
+    </div>
+
+    <!-- Header / Navigasi Atas (disamakan dengan Kartu Belajar) -->
+    <nav class="tpn bg-white/90 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50"
+        aria-label="Navigasi utama">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+            <a href="index.html" class="flex items-center gap-2 shrink-0" aria-label="EduKinetika, ke dashboard">
+                <span class="bg-blue-600 text-white p-2 rounded-xl flex items-center justify-center">
+                    <i class="ph-fill ph-flask text-lg"></i>
+                </span>
+                <span class="font-extrabold text-slate-800 tracking-tight text-lg">Edu<span
+                        class="text-blue-600">Kinetika</span></span>
+            </a>
+
+            <!-- Menu layar lebar -->
+            <ul class="hidden md:flex items-center gap-1">
+                <li><a href="index.html" class="tpn-link"><i class="ph-bold ph-house"></i>Dashboard</a></li>
+                <li><a href="kartu-belajar.html" class="tpn-link aktif" aria-current="page"><i
+                            class="ph-bold ph-cards"></i>Kartu Belajar</a></li>
+                <li><a href="lab111.html" class="tpn-link"><i class="ph-bold ph-flask"></i>Lab Virtual</a></li>
+                <li><a href="kartulkpd.html" class="tpn-link"><i class="ph-bold ph-clipboard-text"></i>LKPD</a></li>
+                <li><a href="kartu_kuis_edukinetika.html" class="tpn-link"><i class="ph-bold ph-question"></i>Kuis</a>
+                </li>
+            </ul>
+
+            <!-- Tombol HP -->
+            <div class="flex md:hidden items-center gap-2">
+                <a href="kartu-belajar.html" class="tpn-ikon" aria-label="Kembali ke Kartu Belajar"><i
+                        class="ph-bold ph-arrow-left"></i></a>
+                <button type="button" id="tpnTombolMenu" class="tpn-ikon" aria-label="Buka menu" aria-expanded="false"
+                    aria-controls="tpnMenuHp"><i class="ph-bold ph-list"></i></button>
+            </div>
+        </div>
+
+        <!-- Menu turun untuk HP -->
+        <div id="tpnMenuHp" class="md:hidden border-t border-slate-100" hidden>
+            <ul class="max-w-6xl mx-auto px-4 py-3 grid grid-cols-2 gap-2">
+                <li><a href="index.html" class="tpn-link"><i class="ph-bold ph-house"></i>Dashboard</a></li>
+                <li><a href="kartu-belajar.html" class="tpn-link aktif" aria-current="page"><i
+                            class="ph-bold ph-cards"></i>Kartu Belajar</a></li>
+                <li><a href="lab111.html" class="tpn-link"><i class="ph-bold ph-flask"></i>Lab Virtual</a></li>
+                <li><a href="kartulkpd.html" class="tpn-link"><i class="ph-bold ph-clipboard-text"></i>LKPD</a></li>
+                <li class="col-span-2"><a href="kartu_kuis_edukinetika.html" class="tpn-link"><i
+                            class="ph-bold ph-question"></i>Kuis</a></li>
+            </ul>
+        </div>
+
+        <!-- Jejak halaman & urutan kartu belajar -->
+        <div class="border-t border-slate-100 bg-white/70">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 py-2 flex items-center gap-3 tpn-jejak">
+                <a href="kartu-belajar.html" class="tpn-remah"><i class="ph-bold ph-cards"></i>Kartu Belajar</a>
+                <i class="ph-bold ph-caret-right text-slate-300 shrink-0" aria-hidden="true"></i>
+                <ol class="tpn-urutan" aria-label="Urutan kartu belajar">
+                    <li><a href="tp.html" class="aktif" aria-current="page"><b>1</b>Tujuan Pembelajaran</a></li>
+                    <li><a href="materi1.html"><b>2</b>Teori Tumbukan &amp; Energi Aktivasi</a></li>
+                    <li><a href="konsepdasarlajureaksi.html"><b>3</b>Konsep Dasar Laju Reaksi</a></li>
+                    <li><a href="kartup3.html"><b>4</b>Faktor-Faktor Laju Reaksi</a></li>
+                </ol>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 space-y-14 sm:space-y-16">
+
+        <!-- HERO SECTION -->
+        <header class="hero-tp">
+            <div class="hero-text">
+                <span class="hero-badge"><i class="ph-bold ph-sparkle"></i> Modul Pengenalan & Target Capaian</span>
+                <h1>Mari Berpetualang di <span class="hero-grad">Virtual Lab Laju Reaksi</span></h1>
+                <p>
+                    Selamat datang di modul pembelajaran Laju Reaksi! Di halaman ini kamu akan mengenal
+                    <b class="text-blue-600">tujuan pembelajaran</b> yang ingin dicapai bersama EduKinetika. Terdapat
+                    9 tujuan pembelajaran dalam 3 pertemuan: menjelaskan teori tumbukan dan energi aktivasi,
+                    menentukan orde dan merumuskan persamaan laju reaksi, serta menganalisis faktor-faktor yang
+                    memengaruhi laju reaksi. Pahami setiap tujuan agar kamu tahu kemampuan apa yang akan kamu kuasai di
+                    akhir pembelajaran.
+                </p>
+                <div class="hero-stats">
+                    <div><b>3</b><span>Pertemuan</span></div>
+                    <div><b>9</b><span>Tujuan pembelajaran</span></div>
+                    <div><b>4</b><span>Langkah belajar</span></div>
+                </div>
+                <div class="hero-cta">
+                    <a href="#tujuan" class="btn-main"><i class="ph-bold ph-cards"></i> Lihat tujuan pembelajaran</a>
+                    <a href="#alur" class="btn-ghost">Alur belajar</a>
+                </div>
+            </div>
+
+            <!-- Ilustrasi: tumpukan kartu UNO -->
+            <a href="#tujuan" class="hero-deck" aria-label="Lihat kartu tujuan pembelajaran">
+                <span class="mini-uno bg-blue-600 d1"><em>1</em><i><b>01</b></i></span>
+                <span class="mini-uno bg-orange-600 d2"><em>2</em><i><b>02</b></i></span>
+                <span class="mini-uno bg-emerald-600 d3"><em>3</em><i><b>03</b></i></span>
+            </a>
+        </header>
+
+        <!-- SECTION 1: PANDUAN PENGGUNAAN V-LAB (PANDUAN ALUR BELAJAR PESERTA DIDIK) -->
+        <section id="alur" class="space-y-6 scroll-mt-24">
+            <div class="flex items-center gap-3 border-b border-slate-200 pb-4">
+                <div class="bg-teal-100 text-teal-600 p-2.5 rounded-2xl flex items-center justify-center">
+                    <i class="ph-bold ph-compass text-2xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-slate-800">Alur Penggunaan EduKinetika</h2>
+                    <p class="text-xs sm:text-sm text-slate-500">Tahapan sistematis bagi peserta didik untuk menguasai
+                        konsep laju reaksi secara maksimal</p>
+                </div>
+            </div>
+
+            <ol class="flow">
+                <li class="flow-step">
+                    <div class="flow-dot bg-blue-500"><i class="ph-fill ph-book-open"></i></div>
+                    <div class="flow-body">
+                        <div class="flow-anim anim-baca" aria-hidden="true">
+                            <div class="buku"><span class="hal-kiri"></span><span class="hal-kanan"></span><span
+                                    class="hal-balik"></span></div><i class="ph-fill ph-magnifying-glass kaca"></i>
+                        </div>
+                        <span class="flow-n text-blue-600">Langkah 1</span>
+                        <h3>Membaca Panduan</h3>
+                        <p>Peserta didik mengawalinya dengan membaca panduan umum ini untuk memahami alur belajar,
+                            metode kerja, serta kompetensi dasar yang akan dicapai.</p>
+                    </div>
+                </li>
+                <li class="flow-step">
+                    <div class="flow-dot bg-teal-500"><i class="ph-fill ph-brain"></i></div>
+                    <div class="flow-body">
+                        <div class="flow-anim anim-materi" aria-hidden="true"><span class="kb k1">[A]</span><span
+                                class="kb k2">v=k</span><span class="kb k3">Δt</span></div>
+                        <span class="flow-n text-teal-600">Langkah 2</span>
+                        <h3>Memahami Materi</h3>
+                        <p>Mempelajari materi esensial melalui kartu belajar interaktif—dari teori tumbukan dan
+                            energi aktivasi, konsep dasar laju reaksi, hingga faktor-faktor yang memengaruhi laju
+                            reaksi.</p>
+                    </div>
+                </li>
+                <li class="flow-step">
+                    <div class="flow-dot bg-orange-500"><i class="ph-fill ph-flask"></i></div>
+                    <div class="flow-body">
+                        <div class="flow-anim anim-praktikum" aria-hidden="true"><svg viewBox="0 0 120 80">
+                                <path class="api" d="M52 78 Q60 62 68 78 Z" fill="#f97316" />
+                                <rect x="40" y="72" width="40" height="5" rx="2" fill="#475569" />
+                                <path d="M52 6 h16 v16 l18 32 a6 6 0 0 1 -5 9 h-42 a6 6 0 0 1 -5 -9 l18 -32 z"
+                                    fill="#fff" stroke="#fdba74" stroke-width="3" />
+                                <path class="cair" d="M42 44 h36 l6 10 a6 6 0 0 1 -5 9 h-38 a6 6 0 0 1 -5 -9 z"
+                                    fill="#fb923c" />
+                                <circle class="gel" cx="54" cy="50" r="3" fill="#fff" />
+                                <circle class="gel" cx="62" cy="54" r="2.5" fill="#fff" />
+                                <circle class="gel" cx="68" cy="50" r="2" fill="#fff" />
+                            </svg></div>
+                        <span class="flow-n text-orange-600">Langkah 3</span>
+                        <h3>Praktikum Virtual</h3>
+                        <p>Melakukan simulasi mandiri di Virtual Lab dengan mengubah variabel suhu, konsentrasi, luas
+                            permukaan, dan katalis untuk mengamati laju tumbukan secara langsung.</p>
+                    </div>
+                </li>
+                <li class="flow-step">
+                    <div class="flow-dot bg-purple-500"><i class="ph-fill ph-chats-teardrop"></i></div>
+                    <div class="flow-body">
+                        <div class="flow-anim anim-refleksi" aria-hidden="true">
+                            <div class="papan">
+                                <div class="baris"><span class="kotak"></span><span class="garis"></span></div>
+                                <div class="baris"><span class="kotak"></span><span class="garis"></span></div>
+                                <div class="baris"><span class="kotak"></span><span class="garis"></span></div>
+                            </div><span class="bintang">⭐</span>
+                        </div>
+                        <span class="flow-n text-purple-600">Langkah 4</span>
+                        <h3>Refleksi & Evaluasi</h3>
+                        <p>Mengukur pemahaman melalui kuis interaktif, menganalisis kesalahan jawaban, serta
+                            merefleksikan hasil belajar guna memperkuat ingatan konsep jangka panjang.</p>
+                    </div>
+                </li>
+            </ol>
+        </section>
+
+
+        <!-- SECTION 2: ALUR TUJUAN PEMBELAJARAN (INTERAKTIF KARTU UNO) -->
+        <section id="tujuan" class="space-y-8 scroll-mt-24">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="bg-blue-100 text-blue-600 p-2.5 rounded-2xl flex items-center justify-center">
+                        <i class="ph-bold ph-cards text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-slate-800">Capaian & Tujuan Pembelajaran</h2>
+                        <p class="text-xs text-slate-500">Tiga pertemuan, masing-masing dengan tiga tujuan. Ketuk kartu
+                            UNO
+                            untuk membalik dan melihat detailnya.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" id="flip-all"
+                        class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-100 px-3.5 py-2 rounded-full transition-colors">
+                        <i class="ph-bold ph-cards"></i> <span>Buka semua kartu</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Urutan pertemuan -->
+            <div class="meet-flow" aria-hidden="true">
+                <span><b class="bg-blue-600">1</b>Teori tumbukan</span><i class="ph-bold ph-arrow-right"></i>
+                <span><b class="bg-orange-600">2</b>Persamaan laju & orde</span><i class="ph-bold ph-arrow-right"></i>
+                <span><b class="bg-emerald-600">3</b>Faktor laju reaksi</span>
+            </div>
+
+            <div class="uno-grid" id="uno-grid">
+
+                <div class="uno-kolom">
+                    <!-- CARD 1: UNO BLUE (PERTEMUAN 1) -->
+                    <div class="uno-wrap perspective-1000 w-full cursor-pointer" onclick="flipCard(this)" role="button"
+                        tabindex="0" aria-pressed="false"
+                        aria-label="Kartu pertemuan 1: Teori Tumbukan & Energi Aktivasi. Tekan untuk membalik.">
+                        <div class="card-inner relative w-full h-full preserve-3d rounded-[2.5rem]">
+
+                            <!-- UNO CARD BACK (TAMPILAN UTAMA UNO) -->
+                            <div
+                                class="uno-back batik-kawung backface-hidden absolute inset-0 w-full h-full rounded-[2.5rem] bg-blue-600 p-5 flex flex-col justify-between border-[7px] border-white">
+                                <div class="flex items-start justify-between text-white">
+                                    <div class="flex flex-col items-center">
+                                        <span
+                                            class="text-4xl font-black italic tracking-tighter leading-none uno-num">1</span>
+                                        <i class="ph-fill ph-atom text-lg mt-1"></i>
+                                    </div>
+                                    <span class="uno-chip">3 tujuan</span>
+                                </div>
+
+                                <div
+                                    class="uno-ellipse relative w-full h-48 bg-white rounded-[100%] rotate-[-18deg] flex items-center justify-center overflow-hidden border-[6px] border-yellow-400">
+                                    <div class="rotate-[18deg] uno-sim-wrap">
+                                        <canvas class="uno-sim" data-sim="tumbukan" role="img"
+                                            aria-label="Simulasi tumbukan efektif dan tidak efektif antara partikel A dan B"></canvas>
+                                        <p class="uno-sim-ket" data-ket>Partikel A dan B bertumbukan</p>
+                                        <p class="uno-sim-no"><b class="text-blue-600">01</b>PERTEMUAN</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-end justify-between text-white w-full">
+                                    <div class="text-left pl-1 pr-3">
+                                        <h4 class="uno-judul">Teori Tumbukan &amp; Energi Aktivasi</h4>
+                                    </div>
+                                    <div class="flex flex-col items-center rotate-180">
+                                        <span
+                                            class="text-4xl font-black italic tracking-tighter leading-none uno-num">1</span>
+                                        <i class="ph-fill ph-atom text-lg mt-1"></i>
+                                    </div>
+                                </div>
+
+                                <div class="uno-tap">
+                                    <i class="ph-bold ph-hand-tap"></i> Ketuk untuk membuka
+                                </div>
+                            </div>
+
+                            <!-- UNO CARD FRONT (DETAIL TUJUAN PEMBELAJARAN) -->
+                            <div
+                                class="uno-front backface-hidden absolute inset-0 w-full h-full rounded-[2.5rem] bg-white flex flex-col border-[5px] border-blue-500 rotate-y-180 overflow-hidden">
+                                <div
+                                    class="bg-blue-600 text-white px-6 pt-5 pb-4 flex items-center justify-between gap-3">
+                                    <div>
+                                        <span class="text-xs font-bold text-white/80">Pertemuan 1</span>
+                                        <h3 class="text-lg font-extrabold leading-snug">Teori Tumbukan & Energi Aktivasi
+                                        </h3>
+                                    </div>
+                                    <span
+                                        class="w-11 h-11 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
+                                        <i class="ph-bold ph-atom text-2xl"></i>
+                                    </span>
+                                </div>
+                                <div class="flex-1 overflow-y-auto px-6 py-5 space-y-4">
+                                    <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4">
+                                        <div class="flex items-center gap-2 font-bold text-blue-700 mb-1 text-xs">
+                                            <i class="ph-bold ph-target"></i> Fokus materi
+                                        </div>
+                                        <p class="text-sm text-slate-700 leading-relaxed">Teori tumbukan, syarat
+                                            tumbukan
+                                            efektif, energi aktivasi, serta grafik energi dan kompleks teraktivasi.</p>
+                                    </div>
+                                    <p class="text-xs font-bold text-slate-500">Tujuan pembelajaran</p>
+                                    <ul class="space-y-3.5 text-sm text-slate-600">
+                                        <li class="flex gap-3 items-start">
+                                            <span class="tp-num bg-blue-600 text-white">1.1</span>
+                                            <p class="leading-relaxed">Setelah mengamati simulasi molekuler, peserta
+                                                didik
+                                                dapat menjelaskan konsep teori tumbukan dan tumbukan efektif secara
+                                                komprehensif dan benar.</p>
+                                        </li>
+                                        <li class="flex gap-3 items-start">
+                                            <span class="tp-num bg-blue-600 text-white">1.2</span>
+                                            <p class="leading-relaxed">Melalui kegiatan tanya jawab dan diskusi, peserta
+                                                didik dapat menganalisis hubungan antara energi aktivasi dengan laju
+                                                reaksi
+                                                secara logis dan tepat.</p>
+                                        </li>
+                                        <li class="flex gap-3 items-start">
+                                            <span class="tp-num bg-blue-600 text-white">1.3</span>
+                                            <p class="leading-relaxed">Diberikan grafik energi dan diskusi, peserta
+                                                didik
+                                                dapat menentukan letak energi aktivasi dan kompleks teraktivasi dengan
+                                                benar.</p>
+                                        </li>
+                                    </ul>
+                                    <div>
+                                        <p class="text-xs font-bold text-slate-500 mb-2">Kegiatan</p>
+                                        <div class="flex flex-wrap gap-2"><span
+                                                class="keg-chip bg-blue-50 text-blue-700 border-blue-100">Simulasi
+                                                molekuler</span><span
+                                                class="keg-chip bg-blue-50 text-blue-700 border-blue-100">Tanya
+                                                jawab</span><span
+                                                class="keg-chip bg-blue-50 text-blue-700 border-blue-100">Diskusi</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="px-6 py-3 border-t border-slate-100 flex justify-between items-center text-[11px] text-slate-400 font-medium">
+                                    <span>EduKinetika</span>
+                                    <span class="text-blue-600 font-bold flex items-center gap-1">
+                                        <i class="ph-bold ph-arrow-counter-clockwise"></i> Tutup kartu
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <nav class="uno-materi" style="--c:#2563eb;--c-muda:#dbeafe" aria-label="Materi pertemuan 1">
+                        <div class="uno-materi-kepala">
+                            <span class="no">1</span>
+                            <div><small>Materi Pertemuan 1</small><b>Teori Tumbukan &amp; Energi Aktivasi</b></div>
+                        </div>
+                        <a class="utama" href="materi1.html"><i class="ph-fill ph-atom"></i><span>Mulai
+                                materi pertemuan 1</span><i class="ph-bold ph-arrow-right"></i></a>
+                        <div class="sub"><a href="materi1.html"><span aria-hidden="true">💥</span>Teori Tumbukan
+                                &amp; Energi Aktivasi<small>Kartu 2</small></a></div>
+                    </nav>
+                </div>
+
+                <div class="uno-kolom">
+                    <!-- CARD 2: UNO ORANGE (PERTEMUAN 2) -->
+                    <div class="uno-wrap perspective-1000 w-full cursor-pointer" onclick="flipCard(this)" role="button"
+                        tabindex="0" aria-pressed="false"
+                        aria-label="Kartu pertemuan 2: Persamaan Laju & Orde Reaksi. Tekan untuk membalik.">
+                        <div class="card-inner relative w-full h-full preserve-3d rounded-[2.5rem]">
+
+                            <!-- UNO CARD BACK (TAMPILAN UTAMA UNO) -->
+                            <div
+                                class="uno-back batik-truntum backface-hidden absolute inset-0 w-full h-full rounded-[2.5rem] bg-orange-600 p-5 flex flex-col justify-between border-[7px] border-white">
+                                <div class="flex items-start justify-between text-white">
+                                    <div class="flex flex-col items-center">
+                                        <span
+                                            class="text-4xl font-black italic tracking-tighter leading-none uno-num">2</span>
+                                        <i class="ph-fill ph-function text-lg mt-1"></i>
+                                    </div>
+                                    <span class="uno-chip">3 tujuan</span>
+                                </div>
+
+                                <div
+                                    class="uno-ellipse relative w-full h-48 bg-white rounded-[100%] rotate-[-18deg] flex items-center justify-center overflow-hidden border-[6px] border-yellow-400">
+                                    <div class="rotate-[18deg] uno-sim-wrap">
+                                        <canvas class="uno-sim" data-sim="orde" role="img"
+                                            aria-label="Animasi menentukan orde reaksi dari data dan merumuskan persamaan laju"></canvas>
+                                        <p class="uno-sim-ket" data-ket>Menentukan orde dari data</p>
+                                        <p class="uno-sim-no"><b class="text-orange-600">02</b>PERTEMUAN</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-end justify-between text-white w-full">
+                                    <div class="text-left pl-1 pr-3">
+                                        <h4 class="uno-judul">Persamaan Laju &amp; Orde Reaksi</h4>
+                                    </div>
+                                    <div class="flex flex-col items-center rotate-180">
+                                        <span
+                                            class="text-4xl font-black italic tracking-tighter leading-none uno-num">2</span>
+                                        <i class="ph-fill ph-function text-lg mt-1"></i>
+                                    </div>
+                                </div>
+
+                                <div class="uno-tap">
+                                    <i class="ph-bold ph-hand-tap"></i> Ketuk untuk membuka
+                                </div>
+                            </div>
+
+                            <!-- UNO CARD FRONT (DETAIL TUJUAN PEMBELAJARAN) -->
+                            <div
+                                class="uno-front backface-hidden absolute inset-0 w-full h-full rounded-[2.5rem] bg-white flex flex-col border-[5px] border-orange-500 rotate-y-180 overflow-hidden">
+                                <div
+                                    class="bg-orange-600 text-white px-6 pt-5 pb-4 flex items-center justify-between gap-3">
+                                    <div>
+                                        <span class="text-xs font-bold text-white/80">Pertemuan 2</span>
+                                        <h3 class="text-lg font-extrabold leading-snug">Persamaan Laju & Orde Reaksi
+                                        </h3>
+                                    </div>
+                                    <span
+                                        class="w-11 h-11 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
+                                        <i class="ph-bold ph-function text-2xl"></i>
+                                    </span>
+                                </div>
+                                <div class="flex-1 overflow-y-auto px-6 py-5 space-y-4">
+                                    <div class="bg-orange-50 border border-orange-100 rounded-2xl p-4">
+                                        <div class="flex items-center gap-2 font-bold text-orange-700 mb-1 text-xs">
+                                            <i class="ph-bold ph-target"></i> Fokus materi
+                                        </div>
+                                        <p class="text-sm text-slate-700 leading-relaxed">Menentukan orde reaksi dari
+                                            data
+                                            eksperimen dan merumuskan persamaan laju reaksi.</p>
+                                    </div>
+                                    <p class="text-xs font-bold text-slate-500">Tujuan pembelajaran</p>
+                                    <ul class="space-y-3.5 text-sm text-slate-600">
+                                        <li class="flex gap-3 items-start">
+                                            <span class="tp-num bg-orange-600 text-white">2.1</span>
+                                            <p class="leading-relaxed">Diberikan sekumpulan data hasil eksperimen
+                                                kinetika
+                                                kimia, peserta didik dapat menentukan orde reaksi total dari suatu
+                                                reaksi
+                                                kimia dengan perhitungan yang tepat.</p>
+                                        </li>
+                                        <li class="flex gap-3 items-start">
+                                            <span class="tp-num bg-orange-600 text-white">2.2</span>
+                                            <p class="leading-relaxed">Melalui penugasan dan latihan soal, peserta didik
+                                                dapat merumuskan persamaan laju reaksi <span
+                                                    class="font-bold whitespace-nowrap">v =
+                                                    k[A]<sup>x</sup>[B]<sup>y</sup></span> secara benar.</p>
+                                        </li>
+                                        <li class="flex gap-3 items-start">
+                                            <span class="tp-num bg-orange-600 text-white">2.3</span>
+                                            <p class="leading-relaxed">Diberikan sekumpulan data hasil eksperimen
+                                                kinetika
+                                                kimia, peserta didik dapat mempresentasikan perhitungan orde reaksi
+                                                total
+                                                dari suatu reaksi kimia dengan tepat.</p>
+                                        </li>
+                                    </ul>
+                                    <div>
+                                        <p class="text-xs font-bold text-slate-500 mb-2">Kegiatan</p>
+                                        <div class="flex flex-wrap gap-2"><span
+                                                class="keg-chip bg-orange-50 text-orange-700 border-orange-100">Analisis
+                                                data</span><span
+                                                class="keg-chip bg-orange-50 text-orange-700 border-orange-100">Latihan
+                                                soal</span><span
+                                                class="keg-chip bg-orange-50 text-orange-700 border-orange-100">Presentasi</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="px-6 py-3 border-t border-slate-100 flex justify-between items-center text-[11px] text-slate-400 font-medium">
+                                    <span>EduKinetika</span>
+                                    <span class="text-orange-600 font-bold flex items-center gap-1">
+                                        <i class="ph-bold ph-arrow-counter-clockwise"></i> Tutup kartu
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <nav class="uno-materi" style="--c:#ea580c;--c-muda:#ffedd5" aria-label="Materi pertemuan 2">
+                        <div class="uno-materi-kepala">
+                            <span class="no">2</span>
+                            <div><small>Materi Pertemuan 2</small><b>Persamaan Laju &amp; Orde Reaksi</b></div>
+                        </div>
+                        <a class="utama" href="konsepdasarlajureaksi.html"><i
+                                class="ph-fill ph-function"></i><span>Mulai materi pertemuan 2</span><i
+                                class="ph-bold ph-arrow-right"></i></a>
+                        <div class="sub"><a href="konsepdasarlajureaksi.html"><span aria-hidden="true">⏳</span>Konsep
+                                Dasar Laju
+                                Reaksi<small>Kartu 3</small></a><a href="laboratorium-rumus-persamaan-laju.html"><span
+                                    aria-hidden="true">🧮</span>Laboratorium Rumus<small>Pos 3</small></a></div>
+                    </nav>
+                </div>
+
+                <div class="uno-kolom">
+                    <!-- CARD 3: UNO EMERALD (PERTEMUAN 3) -->
+                    <div class="uno-wrap perspective-1000 w-full cursor-pointer" onclick="flipCard(this)" role="button"
+                        tabindex="0" aria-pressed="false"
+                        aria-label="Kartu pertemuan 3: Faktor-Faktor yang Mempengaruhi Laju Reaksi. Tekan untuk membalik.">
+                        <div class="card-inner relative w-full h-full preserve-3d rounded-[2.5rem]">
+
+                            <!-- UNO CARD BACK (TAMPILAN UTAMA UNO) -->
+                            <div
+                                class="uno-back batik-parang backface-hidden absolute inset-0 w-full h-full rounded-[2.5rem] bg-emerald-600 p-5 flex flex-col justify-between border-[7px] border-white">
+                                <div class="flex items-start justify-between text-white">
+                                    <div class="flex flex-col items-center">
+                                        <span
+                                            class="text-4xl font-black italic tracking-tighter leading-none uno-num">3</span>
+                                        <i class="ph-fill ph-flask text-lg mt-1"></i>
+                                    </div>
+                                    <span class="uno-chip">3 tujuan</span>
+                                </div>
+
+                                <div
+                                    class="uno-ellipse relative w-full h-48 bg-white rounded-[100%] rotate-[-18deg] flex items-center justify-center overflow-hidden border-[6px] border-yellow-400">
+                                    <div class="rotate-[18deg] uno-sim-wrap">
+                                        <canvas class="uno-sim" data-sim="faktor" role="img"
+                                            aria-label="Simulasi pengaruh suhu, konsentrasi, luas permukaan, dan katalis"></canvas>
+                                        <p class="uno-sim-ket" data-ket>Membandingkan faktor laju reaksi</p>
+                                        <p class="uno-sim-no"><b class="text-emerald-600">03</b>PERTEMUAN</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-end justify-between text-white w-full">
+                                    <div class="text-left pl-1 pr-3">
+                                        <h4 class="uno-judul">Faktor-Faktor yang Memengaruhi Laju Reaksi</h4>
+                                    </div>
+                                    <div class="flex flex-col items-center rotate-180">
+                                        <span
+                                            class="text-4xl font-black italic tracking-tighter leading-none uno-num">3</span>
+                                        <i class="ph-fill ph-flask text-lg mt-1"></i>
+                                    </div>
+                                </div>
+
+                                <div class="uno-tap">
+                                    <i class="ph-bold ph-hand-tap"></i> Ketuk untuk membuka
+                                </div>
+                            </div>
+
+                            <!-- UNO CARD FRONT (DETAIL TUJUAN PEMBELAJARAN) -->
+                            <div
+                                class="uno-front backface-hidden absolute inset-0 w-full h-full rounded-[2.5rem] bg-white flex flex-col border-[5px] border-emerald-500 rotate-y-180 overflow-hidden">
+                                <div
+                                    class="bg-emerald-600 text-white px-6 pt-5 pb-4 flex items-center justify-between gap-3">
+                                    <div>
+                                        <span class="text-xs font-bold text-white/80">Pertemuan 3</span>
+                                        <h3 class="text-lg font-extrabold leading-snug">Faktor-Faktor yang Mempengaruhi
+                                            Laju
+                                            Reaksi</h3>
+                                    </div>
+                                    <span
+                                        class="w-11 h-11 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
+                                        <i class="ph-bold ph-flask text-2xl"></i>
+                                    </span>
+                                </div>
+                                <div class="flex-1 overflow-y-auto px-6 py-5 space-y-4">
+                                    <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4">
+                                        <div class="flex items-center gap-2 font-bold text-emerald-700 mb-1 text-xs">
+                                            <i class="ph-bold ph-target"></i> Fokus materi
+                                        </div>
+                                        <p class="text-sm text-slate-700 leading-relaxed">Pengaruh luas permukaan,
+                                            konsentrasi, suhu, dan katalis terhadap laju reaksi melalui praktikum
+                                            virtual.
+                                        </p>
+                                    </div>
+                                    <p class="text-xs font-bold text-slate-500">Tujuan pembelajaran</p>
+                                    <ul class="space-y-3.5 text-sm text-slate-600">
+                                        <li class="flex gap-3 items-start">
+                                            <span class="tp-num bg-emerald-600 text-white">3.1</span>
+                                            <p class="leading-relaxed">Melalui diskusi kelompok, peserta didik dapat
+                                                menganalisis pengaruh luas permukaan, konsentrasi, suhu, dan katalis
+                                                terhadap laju reaksi dengan kesimpulan yang benar.</p>
+                                        </li>
+                                        <li class="flex gap-3 items-start">
+                                            <span class="tp-num bg-emerald-600 text-white">3.2</span>
+                                            <p class="leading-relaxed">Melalui praktikum mandiri pada laboratorium
+                                                virtual
+                                                EduKinetika, peserta didik dapat menganalisis pengaruh luas permukaan,
+                                                konsentrasi, suhu, dan katalis terhadap laju reaksi dengan kesimpulan
+                                                yang
+                                                akurat berdasarkan data.</p>
+                                        </li>
+                                        <li class="flex gap-3 items-start">
+                                            <span class="tp-num bg-emerald-600 text-white">3.3</span>
+                                            <p class="leading-relaxed">Setelah melakukan serangkaian eksperimen virtual,
+                                                peserta didik dapat menyajikan kesimpulan hasil percobaan mengenai
+                                                faktor-faktor yang mempengaruhi laju reaksi secara sistematis dan
+                                                komunikatif.</p>
+                                        </li>
+                                    </ul>
+                                    <div>
+                                        <p class="text-xs font-bold text-slate-500 mb-2">Kegiatan</p>
+                                        <div class="flex flex-wrap gap-2"><span
+                                                class="keg-chip bg-emerald-50 text-emerald-700 border-emerald-100">Diskusi
+                                                kelompok</span><span
+                                                class="keg-chip bg-emerald-50 text-emerald-700 border-emerald-100">Lab
+                                                virtual EduKinetika</span><span
+                                                class="keg-chip bg-emerald-50 text-emerald-700 border-emerald-100">Presentasi</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="px-6 py-3 border-t border-slate-100 flex justify-between items-center text-[11px] text-slate-400 font-medium">
+                                    <span>EduKinetika</span>
+                                    <span class="text-emerald-600 font-bold flex items-center gap-1">
+                                        <i class="ph-bold ph-arrow-counter-clockwise"></i> Tutup kartu
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <nav class="uno-materi" style="--c:#059669;--c-muda:#d1fae5" aria-label="Materi pertemuan 3">
+                        <div class="uno-materi-kepala">
+                            <span class="no">3</span>
+                            <div><small>Materi Pertemuan 3</small><b>Faktor-Faktor yang Mempengaruhi Laju Reaksi</b>
+                            </div>
+                        </div>
+                        <a class="utama" href="kartup3.html"><i class="ph-fill ph-flask"></i><span>Mulai
+                                materi pertemuan 3</span><i class="ph-bold ph-arrow-right"></i></a>
+                        <div class="sub"><a href="kartup3.html"><span aria-hidden="true">🧪</span>Faktor-Faktor
+                                Laju Reaksi<small>Kartu 4</small></a><a href="lab111.html"><span
+                                    aria-hidden="true">🔬</span>Lab Virtual<small>Praktikum</small></a></div>
+                    </nav>
+                </div>
+
+            </div>
+            <div class="uno-dots" id="uno-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+        </section>
+
+        <!-- CTA MULAI BELAJAR -->
+        <section
+            class="cta-tp bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-7 sm:p-8 md:p-12 text-white text-center relative overflow-hidden shadow-xl">
+            <!-- Background glow -->
+            <div class="absolute -left-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-teal-400/20 rounded-full blur-2xl"></div>
+
+            <div class="relative z-10 max-w-2xl mx-auto space-y-6">
+                <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight">Siap Melakukan Jelajah Virtual
+                    Pertama?</h2>
+                <p class="text-blue-100 text-sm md:text-base leading-relaxed">
+                    Setelah memahami tujuan pembelajaran, mari lanjutkan ke materi teori tumbukan dan energi aktivasi
+                    pada kartu selanjutnya!
+                </p>
+                <div class="pt-2 flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="materi1.html"
+                        class="px-8 py-3.5 bg-amber-400 text-slate-900 hover:bg-amber-300 font-bold rounded-xl text-sm transition-all shadow-md shadow-slate-900/10 inline-flex items-center justify-center gap-2">
+                        Lanjut ke Kartu 2: Teori Tumbukan <i class="ph-bold ph-arrow-right"></i>
+                    </a>
+                    <a href="kartu-belajar.html"
+                        class="px-8 py-3.5 bg-white text-blue-700 hover:bg-slate-50 font-bold rounded-xl text-sm transition-all shadow-md shadow-slate-900/10">
+                        Buka Kartu Belajar Laju Reaksi
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigasi antar kartu belajar -->
+        <nav class="tpn-pindah" aria-label="Pindah kartu belajar">
+            <a href="kartu-belajar.html" class="sebelum"><i class="ph-bold ph-arrow-left"></i><span><small>Kembali
+                        ke</small>Daftar Kartu Belajar</span></a>
+            <a href="materi1.html" class="berikut"><span><small>Kartu berikutnya (2 dari 4)</small>Teori Tumbukan &amp;
+                    Energi Aktivasi</span><i class="ph-bold ph-arrow-right"></i></a>
+        </nav>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer
+        class="mt-16 text-center text-slate-400 text-xs font-medium border-t border-slate-200 pt-8 max-w-6xl mx-auto px-6">
+        <p class="mb-2">Modul Edukasi Interaktif Kinetika Kimia SMA/MA Kelas XI</p>
+        <p class="text-[10px] text-slate-300">© 2026 EduKinetika Indonesia. Hak Cipta Dilindungi Undang-Undang.</p>
+    </footer>
+
+    <!-- INTERACTIVE CARD FLIP JAVASCRIPT -->
+    <script>
+        function flipCard(cardWrapper) {
+            const innerCard = cardWrapper.querySelector('.card-inner');
+            innerCard.classList.toggle('flipped');
+            cardWrapper.setAttribute('aria-pressed', innerCard.classList.contains('flipped'));
+            syncFlipAll();
+        }
+
+        // Kartu bisa dibalik dengan keyboard (Enter / Spasi)
+        document.querySelectorAll('.uno-wrap').forEach(el => {
+            el.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flipCard(el); }
+            });
+        });
+
+        // Tombol buka / tutup semua kartu
+        const flipAllBtn = document.getElementById('flip-all');
+        function syncFlipAll() {
+            if (!flipAllBtn) return;
+            const semua = [...document.querySelectorAll('.uno-wrap .card-inner')];
+            const terbuka = semua.every(c => c.classList.contains('flipped'));
+            flipAllBtn.querySelector('span').textContent = terbuka ? 'Tutup semua kartu' : 'Buka semua kartu';
+        }
+        // Indikator titik saat kartu digeser (HP)
+        const unoGrid = document.getElementById('uno-grid');
+        const dots = document.querySelectorAll('#uno-dots i');
+        if (unoGrid && dots.length) {
+            unoGrid.addEventListener('scroll', () => {
+                const kartu = unoGrid.querySelectorAll('.uno-wrap');
+                const tengah = unoGrid.scrollLeft + unoGrid.clientWidth / 2;
+                let aktif = 0, jarak = Infinity;
+                kartu.forEach((k, i) => {
+                    const d = Math.abs(k.offsetLeft + k.offsetWidth / 2 - tengah);
+                    if (d < jarak) { jarak = d; aktif = i; }
+                });
+                dots.forEach((d, i) => d.classList.toggle('on', i === aktif));
+            }, { passive: true });
+        }
+
+        if (flipAllBtn) {
+            flipAllBtn.addEventListener('click', () => {
+                const semua = [...document.querySelectorAll('.uno-wrap')];
+                const buka = !semua.every(w => w.querySelector('.card-inner').classList.contains('flipped'));
+                semua.forEach(w => {
+                    w.querySelector('.card-inner').classList.toggle('flipped', buka);
+                    w.setAttribute('aria-pressed', buka);
+                });
+                syncFlipAll();
+            });
+        }
+    </script>
+
+
+    <!-- ================== TAMBAHAN: simulasi di dalam kartu UNO ================== -->
+    <script>
+        (function () {
+            const gerakDikurangi = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const HURUF = '800 10px "Plus Jakarta Sans", sans-serif';
+
+            function siap(kv) {
+                const dpr = Math.min(2, window.devicePixelRatio || 1);
+                const W = kv.clientWidth, H = kv.clientHeight;
+                if (kv.width !== Math.round(W * dpr) || kv.height !== Math.round(H * dpr)) { kv.width = W * dpr; kv.height = H * dpr; }
+                const c = kv.getContext('2d');
+                c.setTransform(dpr, 0, 0, dpr, 0, 0);
+                return { c, W, H };
+            }
+            function bulat(c, x, y, r, warna) {
+                const g = c.createRadialGradient(x - r * .35, y - r * .35, r * .1, x, y, r);
+                g.addColorStop(0, '#fff'); g.addColorStop(.35, warna); g.addColorStop(1, warna);
+                c.beginPath(); c.arc(x, y, r, 0, Math.PI * 2); c.fillStyle = g; c.fill();
+            }
+            function kotakLatar(c, W, H, warna) {
+                c.clearRect(0, 0, W, H);
+                c.fillStyle = warna; c.beginPath();
+                if (c.roundRect) c.roundRect(0, 0, W, H, 14); else c.rect(0, 0, W, H);
+                c.fill();
+            }
+
+            /* ---------- Kartu 1: teori tumbukan & tumbukan efektif ---------- */
+            function simTumbukan(kv, ket) {
+                const R = 6.5;
+                let par = [], efektif = 0, gagal = 0, efek = [];
+                function isi() {
+                    const W = kv.clientWidth || 210, H = kv.clientHeight || 104;
+                    par = [];
+                    for (let i = 0; i < 14; i++) {
+                        const s = Math.random() * Math.PI * 2, v = 38 + Math.random() * 30;
+                        par.push({ x: R + Math.random() * (W - 2 * R), y: R + Math.random() * (H - 2 * R), vx: Math.cos(s) * v, vy: Math.sin(s) * v, j: i % 2 ? 'B' : 'A', hidup: true, jeda: 0 });
+                    }
+                }
+                isi();
+                return function (dt) {
+                    const { c, W, H } = siap(kv);
+                    kotakLatar(c, W, H, '#eff6ff');
+                    par.forEach(p => {
+                        if (!p.hidup) return;
+                        p.x += p.vx * dt; p.y += p.vy * dt; p.jeda = Math.max(0, p.jeda - dt);
+                        if (p.x < R) { p.x = R; p.vx = Math.abs(p.vx); } if (p.x > W - R) { p.x = W - R; p.vx = -Math.abs(p.vx); }
+                        if (p.y < R) { p.y = R; p.vy = Math.abs(p.vy); } if (p.y > H - R) { p.y = H - R; p.vy = -Math.abs(p.vy); }
+                    });
+                    for (let i = 0; i < par.length; i++) for (let k = i + 1; k < par.length; k++) {
+                        const a = par[i], b = par[k];
+                        if (!a.hidup || !b.hidup) continue;
+                        const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy);
+                        if (d > 2 * R || d === 0) continue;
+                        const beda = a.j !== b.j && a.j !== 'C' && b.j !== 'C';
+                        // energi tumbukan dari kecepatan relatif (syarat energi aktivasi) + arah
+                        const ev = Math.hypot(a.vx - b.vx, a.vy - b.vy);
+                        if (beda && ev > 80 && a.jeda === 0 && b.jeda === 0) {
+                            b.hidup = false; a.j = 'C'; a.x = (a.x + b.x) / 2; a.y = (a.y + b.y) / 2;
+                            a.vx *= .5; a.vy *= .5; efektif++;
+                            efek.push({ x: a.x, y: a.y, t: 0, ok: true });
+                        } else {
+                            // tumbukan tidak efektif: memantul
+                            const nx = dx / d, ny = dy / d;
+                            const p = (a.vx - b.vx) * nx + (a.vy - b.vy) * ny;
+                            if (p > 0) { a.vx -= p * nx; a.vy -= p * ny; b.vx += p * nx; b.vy += p * ny; }
+                            const tumpang = 2 * R - d; a.x -= nx * tumpang / 2; a.y -= ny * tumpang / 2; b.x += nx * tumpang / 2; b.y += ny * tumpang / 2;
+                            if (beda && a.jeda === 0) { gagal++; efek.push({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, t: 0, ok: false }); }
+                            a.jeda = b.jeda = .4;
+                        }
+                    }
+                    efek = efek.filter(e => (e.t += dt) < .7);
+                    efek.forEach(e => {
+                        const r = 6 + e.t * 22, al = 1 - e.t / .7;
+                        c.beginPath(); c.arc(e.x, e.y, r, 0, Math.PI * 2);
+                        c.strokeStyle = e.ok ? `rgba(234,179,8,${al})` : `rgba(148,163,184,${al})`; c.lineWidth = 2.5; c.stroke();
+                        if (e.ok) { c.fillStyle = `rgba(254,240,138,${al * .6})`; c.fill(); }
+                    });
+                    par.forEach(p => { if (p.hidup) bulat(c, p.x, p.y, p.j === 'C' ? R * 1.25 : R, p.j === 'A' ? '#e11d48' : p.j === 'B' ? '#2563eb' : '#eab308'); });
+                    ket.innerHTML = `<span style="color:#ca8a04">✨ efektif: ${efektif}</span> · <span style="color:#64748b">💨 tidak efektif: ${gagal}</span>`;
+                    if (!par.some(p => p.hidup && p.j === 'A') || !par.some(p => p.hidup && p.j === 'B')) { isi(); }
+                };
+            }
+
+            /* ---------- Kartu 2: faktor-faktor laju reaksi ---------- */
+            function simFaktor(kv, ket) {
+                const MODE = [
+                    { nama: '🌡️ Suhu', kiri: 'suhu rendah', kanan: 'suhu tinggi' },
+                    { nama: '🧪 Konsentrasi', kiri: 'encer', kanan: 'pekat' },
+                    { nama: '🧊 Luas permukaan', kiri: 'bongkahan', kanan: 'serbuk' },
+                    { nama: '⚗️ Katalis', kiri: 'tanpa katalis', kanan: 'dengan katalis' }
+                ];
+                let m = 0, waktu = 0, sisi = [], hit = [0, 0];
+                const R = 4.5;
+                function atur() {
+                    const W = kv.clientWidth || 210, H = kv.clientHeight || 104, w = W / 2;
+                    hit = [0, 0];
+                    sisi = [0, 1].map(s => {
+                        const n = m === 1 ? (s ? 14 : 5) : 8;
+                        const v = m === 0 ? (s ? 85 : 28) : 45;
+                        const par = Array.from({ length: n }, () => {
+                            const a = Math.random() * Math.PI * 2;
+                            return { x: s * w + 8 + Math.random() * (w - 16), y: 18 + Math.random() * (H - 26), vx: Math.cos(a) * v, vy: Math.sin(a) * v };
+                        });
+                        let balok = [];
+                        if (m === 2) balok = s ? [[.28, .45, 11], [.72, .45, 11], [.28, .78, 11], [.72, .78, 11]] : [[.5, .62, 24]];
+                        return { par, balok, bola: [] };
+                    });
+                }
+                atur();
+                return function (dt) {
+                    const { c, W, H } = siap(kv);
+                    const w = W / 2;
+                    waktu += dt;
+                    if (waktu > 4.2) { waktu = 0; m = (m + 1) % MODE.length; atur(); }
+                    kotakLatar(c, W, H, '#ecfdf5');
+                    c.fillStyle = m === 0 ? 'rgba(248,113,113,.18)' : 'rgba(16,185,129,.12)';
+                    c.fillRect(w, 0, w, H);
+                    c.strokeStyle = '#a7f3d0'; c.setLineDash([3, 3]); c.beginPath(); c.moveTo(w, 14); c.lineTo(w, H - 2); c.stroke(); c.setLineDash([]);
+                    c.font = HURUF; c.textAlign = 'center'; c.fillStyle = '#065f46';
+                    c.fillText(MODE[m].kiri, w / 2, 11); c.fillText(MODE[m].kanan, w * 1.5, 11);
+                    sisi.forEach((S, s) => {
+                        const x0 = s * w + R, x1 = (s + 1) * w - R, y0 = 16 + R, y1 = H - R;
+                        if (m === 3) {
+                            // bukit energi aktivasi: katalis menurunkan bukit
+                            const tinggi = s ? .35 : .75;
+                            const puncak = (x) => { const u = (x - s * w) / w; return y1 - 6 - tinggi * (H - 34) * Math.exp(-Math.pow((u - .5) / .16, 2)); };
+                            c.beginPath(); for (let x = s * w + 2; x <= (s + 1) * w - 2; x += 2) { const y = puncak(x); x === s * w + 2 ? c.moveTo(x, y) : c.lineTo(x, y); }
+                            c.strokeStyle = '#059669'; c.lineWidth = 2.5; c.stroke();
+                            if (Math.random() < dt * 2.2) S.bola.push({ x: s * w + 6, e: Math.random(), arah: 1, lolos: false });
+                            S.bola.forEach(b => {
+                                b.x += b.arah * 55 * dt;
+                                const u = (b.x - s * w) / w;
+                                if (b.arah > 0 && u > .35 && u < .5 && b.e < tinggi * .9 + .05) b.arah = -1;
+                                if (u > .55 && !b.lolos) { b.lolos = true; hit[s]++; }
+                                bulat(c, b.x, puncak(b.x) - 5, 4.5, b.lolos ? '#eab308' : b.arah < 0 ? '#94a3b8' : '#e11d48');
+                            });
+                            S.bola = S.bola.filter(b => b.x > s * w && b.x < (s + 1) * w - 3);
+                            return;
+                        }
+                        S.balok.forEach(([bx, by, ukuran]) => {
+                            c.fillStyle = '#a16207'; c.fillRect(s * w + bx * w - ukuran / 2, by * H - ukuran / 2, ukuran, ukuran);
+                        });
+                        S.par.forEach(p => {
+                            p.x += p.vx * dt; p.y += p.vy * dt;
+                            if (p.x < x0) { p.x = x0; p.vx = Math.abs(p.vx); } if (p.x > x1) { p.x = x1; p.vx = -Math.abs(p.vx); }
+                            if (p.y < y0) { p.y = y0; p.vy = Math.abs(p.vy); } if (p.y > y1) { p.y = y1; p.vy = -Math.abs(p.vy); }
+                            S.balok.forEach(([bx, by, ukuran]) => {
+                                const cx = s * w + bx * w, cy = by * H, h = ukuran / 2 + R;
+                                if (Math.abs(p.x - cx) < h && Math.abs(p.y - cy) < h) {
+                                    hit[s]++;
+                                    if (Math.abs(p.x - cx) > Math.abs(p.y - cy)) { p.vx = Math.sign(p.x - cx) * Math.abs(p.vx); p.x = cx + Math.sign(p.x - cx) * h; }
+                                    else { p.vy = Math.sign(p.y - cy) * Math.abs(p.vy); p.y = cy + Math.sign(p.y - cy) * h; }
+                                    c.beginPath(); c.arc(p.x, p.y, 8, 0, Math.PI * 2); c.fillStyle = 'rgba(250,204,21,.6)'; c.fill();
+                                }
+                            });
+                        });
+                        for (let i = 0; i < S.par.length; i++) for (let k = i + 1; k < S.par.length; k++) {
+                            const a = S.par[i], b = S.par[k], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy);
+                            if (d < 2 * R && d > 0) {
+                                const nx = dx / d, ny = dy / d, pr = (a.vx - b.vx) * nx + (a.vy - b.vy) * ny;
+                                if (pr > 0) {
+                                    a.vx -= pr * nx; a.vy -= pr * ny; b.vx += pr * nx; b.vy += pr * ny; hit[s]++;
+                                    c.beginPath(); c.arc((a.x + b.x) / 2, (a.y + b.y) / 2, 7, 0, Math.PI * 2); c.fillStyle = 'rgba(250,204,21,.7)'; c.fill();
+                                }
+                            }
+                        }
+                        S.par.forEach(p => bulat(c, p.x, p.y, R, m === 0 && s ? '#ef4444' : '#e11d48'));
+                    });
+                    const satuan = m === 3 ? 'berhasil' : 'tumbukan';
+                    ket.innerHTML = `${MODE[m].nama}: ${hit[0]} vs <b style="color:#047857">${hit[1]} ${satuan}</b> → reaksi lebih cepat ⚡`;
+                };
+            }
+
+            /* ---------- Kartu 3: persamaan laju & orde reaksi ---------- */
+            function simOrde(kv, ket) {
+                const DATA = [['0,1', '0,1', '2'], ['0,2', '0,1', '8'], ['0,1', '0,2', '4']];
+                const PESAN = ['Data percobaan dicatat…', 'Data 1 & 2: [A] 2× → v 4× ⇒ 2ˣ = 4, x = 2', 'Data 1 & 3: [B] 2× → v 2× ⇒ 2ʸ = 2, y = 1', 'Persamaan laju: v = k[A]²[B]¹, orde total 3'];
+                let t = 0;
+                return function (dt) {
+                    const { c, W, H } = siap(kv);
+                    t = (t + dt) % 12;
+                    const fase = Math.min(3, Math.floor(t / 3));
+                    kotakLatar(c, W, H, '#fff7ed');
+                    // tabel mini
+                    const kol = [10, 44, 78], lebar = 30;
+                    c.font = HURUF; c.textAlign = 'center';
+                    ['[A]', '[B]', 'v'].forEach((h, i) => { c.fillStyle = '#9a3412'; c.fillText(h, kol[i] + lebar / 2, 14); });
+                    DATA.forEach((r, i) => {
+                        const muncul = Math.min(1, Math.max(0, (t - i * .6) / .5));
+                        const y = 24 + i * 22;
+                        const sorot = (fase === 1 && i < 2) || (fase === 2 && (i === 0 || i === 2));
+                        c.globalAlpha = muncul;
+                        c.fillStyle = sorot ? '#fde68a' : '#ffedd5';
+                        c.fillRect(6, y, 108, 18);
+                        r.forEach((v, j) => {
+                            const beda = (fase === 1 && i === 1 && j === 0) || (fase === 2 && i === 2 && j === 1);
+                            c.fillStyle = beda ? '#b91c1c' : '#431407';
+                            c.font = beda ? '800 11px "Plus Jakarta Sans", sans-serif' : HURUF;
+                            c.fillText(v, kol[j] + lebar / 2, y + 13);
+                        });
+                        c.globalAlpha = 1;
+                    });
+                    // grafik laju vs [A] (orde 2 → parabola)
+                    const gx0 = 126, gx1 = W - 8, gy0 = 14, gy1 = H - 12;
+                    c.strokeStyle = '#fdba74'; c.lineWidth = 1.5;
+                    c.beginPath(); c.moveTo(gx0, gy0); c.lineTo(gx0, gy1); c.lineTo(gx1, gy1); c.stroke();
+                    c.fillStyle = '#9a3412'; c.textAlign = 'left'; c.fillText('v', gx0 + 3, gy0 + 6);
+                    c.textAlign = 'right'; c.fillText('[A]', gx1, gy1 - 3);
+                    const jalan = Math.min(1, t / 9);
+                    c.beginPath();
+                    for (let u = 0; u <= jalan + 1e-6; u += .02) { const x = gx0 + u * (gx1 - gx0), y = gy1 - u * u * (gy1 - gy0 - 4); u ? c.lineTo(x, y) : c.moveTo(x, y); }
+                    c.strokeStyle = '#ea580c'; c.lineWidth = 3; c.lineCap = 'round'; c.stroke();
+                    const ux = jalan, px = gx0 + ux * (gx1 - gx0), py = gy1 - ux * ux * (gy1 - gy0 - 4);
+                    bulat(c, px, py, 4.5, '#ea580c');
+                    if (fase === 3) {
+                        c.fillStyle = 'rgba(234,88,12,.92)';
+                        if (c.roundRect) { c.beginPath(); c.roundRect(gx0 + 4, gy0 + 12, gx1 - gx0 - 8, 22, 8); c.fill(); } else c.fillRect(gx0 + 4, gy0 + 12, gx1 - gx0 - 8, 22);
+                        c.fillStyle = '#fff'; c.textAlign = 'center'; c.font = '800 11px "Plus Jakarta Sans", sans-serif';
+                        c.fillText('v = k[A]²[B]', (gx0 + gx1) / 2, gy0 + 27);
+                    }
+                    ket.textContent = PESAN[fase];
+                };
+            }
+
+            const PEMBUAT = { tumbukan: simTumbukan, faktor: simFaktor, orde: simOrde };
+            document.querySelectorAll('.uno-sim').forEach(kv => {
+                const ket = kv.parentElement.querySelector('[data-ket]');
+                const langkah = PEMBUAT[kv.dataset.sim](kv, ket);
+                let terlihat = false, lalu = performance.now();
+                if ('IntersectionObserver' in window) new IntersectionObserver(es => { terlihat = es[0].isIntersecting; }).observe(kv);
+                else terlihat = true;
+                if (gerakDikurangi) { langkah(1.5); langkah(.016); return; }
+                (function putar(now) {
+                    const dt = Math.min(.05, (now - lalu) / 1000); lalu = now;
+                    if (terlihat) langkah(dt);
+                    requestAnimationFrame(putar);
+                })(lalu);
+            });
+        })();
+    </script>
+    <!-- ================== TAMBAHAN: menu navigasi HP ================== -->
+    <script>
+        (function () {
+            const tombol = document.getElementById('tpnTombolMenu');
+            const menu = document.getElementById('tpnMenuHp');
+            if (!tombol || !menu) return;
+            function atur(buka) {
+                menu.hidden = !buka;
+                tombol.setAttribute('aria-expanded', buka);
+                tombol.setAttribute('aria-label', buka ? 'Tutup menu' : 'Buka menu');
+                tombol.innerHTML = buka ? '<i class="ph-bold ph-x"></i>' : '<i class="ph-bold ph-list"></i>';
+            }
+            tombol.addEventListener('click', () => atur(menu.hidden));
+            menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => atur(false)));
+            document.addEventListener('keydown', e => { if (e.key === 'Escape' && !menu.hidden) { atur(false); tombol.focus(); } });
+            window.addEventListener('resize', () => { if (window.innerWidth >= 768) atur(false); });
+        })();
+    </script>
+</body>
+
+</html>

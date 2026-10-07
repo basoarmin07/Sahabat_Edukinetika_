@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis 1: Teori Tumbukan &amp; Energi Aktivasi | EduKinetika</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        :root {
+            --ungu: #8854c0;
+            --ungu-tua: #6a3aa8;
+            --ungu-muda: #f3e8ff;
+            --ink: #1f1235;
+            --ink-2: #5b5470;
+            --line: #ece6f5;
+            --hijau: #00c985;
+            --hijau-tua: #00a36c;
+            --merah: #ef3c69;
+            --merah-tua: #c9224d;
+            --kuning: #ffc02e;
+            --opsi-0: #2d70ae;
+            --opsi-1: #2d9da6;
+            --opsi-2: #efa929;
+            --opsi-3: #d5546d;
+            --opsi-4: #9a4292;
+            --opsi-0d: #1f5486;
+            --opsi-1d: #1f7a82;
+            --opsi-2d: #c4861a;
+            --opsi-3d: #ad3a52;
+            --opsi-4d: #76306f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body {
+            font-family: 'Nunito', system-ui, sans-serif;
+            color: var(--ink);
+            background: #f4effb;
+            background-image: radial-gradient(circle at 12% 18%, rgba(136, 84, 192, .14) 0 120px, transparent 121px),
+                radial-gradient(circle at 88% 12%, rgba(255, 192, 46, .20) 0 90px, transparent 91px),
+                radial-gradient(circle at 85% 85%, rgba(45, 157, 166, .14) 0 140px, transparent 141px),
+                radial-gradient(circle at 8% 90%, rgba(239, 60, 105, .12) 0 100px, transparent 101px);
+            background-attachment: fixed;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+        }
+
+        .wrap {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 18px 16px 40px;
+        }
+
+        /* TOP BAR */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: #fff;
+            border-radius: 18px;
+            padding: 10px 14px;
+            box-shadow: 0 4px 0 var(--line);
+            margin-bottom: 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 900;
+        }
+
+        .brand .logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: var(--ungu);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 20px;
+            box-shadow: 0 3px 0 var(--ungu-tua);
+        }
+
+        .brand small {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--ink-2);
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 800;
+            font-size: 13px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: var(--ungu-muda);
+            color: var(--ungu-tua);
+        }
+
+        .btn-back {
+            background: #f1ecf8;
+            color: var(--ink);
+            font-weight: 800;
+            font-size: 13px;
+            padding: 9px 14px;
+            border-radius: 12px;
+            box-shadow: 0 3px 0 #ddd3ec;
+            text-decoration: none;
+        }
+
+        .btn-back:hover {
+            background: #e9e0f6;
+        }
+
+        /* START */
+        .hero {
+            background: #fff;
+            border-radius: 28px;
+            padding: 34px 28px;
+            text-align: center;
+            box-shadow: 0 8px 0 var(--line);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 10px;
+            background: linear-gradient(90deg, var(--opsi-0), var(--opsi-1), var(--opsi-2), var(--opsi-3), var(--opsi-4));
+        }
+
+        .hero .emblem {
+            width: 92px;
+            height: 92px;
+            margin: 8px auto 16px;
+            border-radius: 28px;
+            background: var(--ungu);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 46px;
+            box-shadow: 0 6px 0 var(--ungu-tua);
+            transform: rotate(-6deg);
+        }
+
+        .hero h1 {
+            font-size: clamp(24px, 4vw, 34px);
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .hero p.lead {
+            color: var(--ink-2);
+            font-weight: 600;
+            max-width: 560px;
+            margin: 0 auto 22px;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .stat {
+            background: #faf7fe;
+            border: 2px solid var(--line);
+            border-radius: 16px;
+            padding: 12px 18px;
+            min-width: 120px;
+        }
+
+        .stat b {
+            display: block;
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--ungu);
+        }
+
+        .stat span {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--ink-2);
+        }
+
+        .who {
+            margin: 0 auto 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff7e0;
+            border: 2px solid #ffe4a3;
+            padding: 8px 14px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .who.warn {
+            background: #fff0f3;
+            border-color: #ffc9d6;
+            color: var(--merah-tua);
+        }
+
+        .who a {
+            color: var(--ungu-tua);
+            font-weight: 900;
+        }
+
+        .btn-big {
+            background: var(--ungu);
+            color: #fff;
+            font-size: 20px;
+            font-weight: 900;
+            padding: 16px 44px;
+            border-radius: 18px;
+            box-shadow: 0 6px 0 var(--ungu-tua);
+            transition: transform .08s, box-shadow .08s;
+        }
+
+        .btn-big:hover {
+            filter: brightness(1.06);
+        }
+
+        .btn-big:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 var(--ungu-tua);
+        }
+
+        .btn-big.green {
+            background: var(--hijau);
+            box-shadow: 0 6px 0 var(--hijau-tua);
+        }
+
+        .btn-big.green:active {
+            box-shadow: 0 2px 0 var(--hijau-tua);
+        }
+
+        .btn-big.light {
+            background: #fff;
+            color: var(--ungu-tua);
+            box-shadow: 0 6px 0 #ddd3ec;
+            border: 2px solid var(--line);
+        }
+
+        .hint-keys {
+            margin-top: 16px;
+            font-size: 12.5px;
+            color: var(--ink-2);
+            font-weight: 700;
+        }
+
+        kbd {
+            background: #f1ecf8;
+            border: 1px solid #ddd3ec;
+            border-bottom-width: 3px;
+            border-radius: 6px;
+            padding: 1px 6px;
+            font-family: inherit;
+            font-size: 12px;
+        }
+
+        /* QUIZ */
+        .qhead {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .progress {
+            flex: 1;
+            min-width: 160px;
+            height: 14px;
+            background: #fff;
+            border-radius: 999px;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 2px var(--line);
+        }
+
+        .progress i {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, var(--hijau), #36e0a6);
+            border-radius: 999px;
+            transition: width .4s ease;
+        }
+
+        .chip {
+            background: #fff;
+            border-radius: 12px;
+            padding: 7px 12px;
+            font-weight: 900;
+            font-size: 14px;
+            box-shadow: 0 3px 0 var(--line);
+            white-space: nowrap;
+        }
+
+        .chip.streak {
+            color: #e85d04;
+        }
+
+        .chip.skor {
+            color: var(--ungu-tua);
+        }
+
+        .qcard {
+            background: #fff;
+            border-radius: 26px;
+            padding: 22px 24px 24px;
+            box-shadow: 0 8px 0 var(--line);
+            margin-bottom: 16px;
+            animation: pop .35s ease;
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(.97);
+                opacity: 0;
+            }
+
+            to {
+                transform: none;
+                opacity: 1;
+            }
+        }
+
+        .qmeta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .tag {
+            font-size: 11.5px;
+            font-weight: 900;
+            letter-spacing: .03em;
+            padding: 5px 10px;
+            border-radius: 8px;
+            text-transform: uppercase;
+        }
+
+        .tag.no {
+            background: #1f1235;
+            color: #fff;
+        }
+
+        .lv-C2 {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .lv-C3 {
+            background: #ccfbf1;
+            color: #0f766e;
+        }
+
+        .lv-C4 {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .lv-C5 {
+            background: #ffe4e6;
+            color: #be123c;
+        }
+
+        .lv-C6 {
+            background: #f3e8ff;
+            color: #7e22ce;
+        }
+
+        .qtext {
+            font-size: clamp(17px, 2.2vw, 21px);
+            font-weight: 800;
+            line-height: 1.55;
+        }
+
+        .qtext table {
+            font-weight: 700;
+        }
+
+        .opts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .opts.n5 .opt:last-child {
+            grid-column: 1 / -1;
+        }
+
+        .opts.short {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .opts.short .opt:last-child {
+            grid-column: auto;
+        }
+
+        .opt {
+            position: relative;
+            text-align: left;
+            color: #fff;
+            font-weight: 800;
+            font-size: 16px;
+            line-height: 1.45;
+            padding: 16px 16px 16px 58px;
+            border-radius: 18px;
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            transition: transform .08s, box-shadow .08s, opacity .25s, filter .2s;
+        }
+
+        .opts.short .opt {
+            justify-content: center;
+            padding: 16px 10px 16px 46px;
+            font-size: 20px;
+        }
+
+        .opt .key {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .25);
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            font-size: 16px;
+        }
+
+        .opt:hover:not([disabled]) {
+            filter: brightness(1.08);
+            transform: translateY(-2px);
+        }
+
+        .opt:active:not([disabled]) {
+            transform: translateY(4px);
+        }
+
+        .opt[disabled] {
+            cursor: default;
+        }
+
+        .opt.dim {
+            opacity: .35;
+            filter: saturate(.4);
+        }
+
+        .opt.benar {
+            background: var(--hijau) !important;
+            box-shadow: 0 6px 0 var(--hijau-tua) !important;
+            opacity: 1;
+            filter: none;
+        }
+
+        .opt.salah {
+            background: var(--merah) !important;
+            box-shadow: 0 6px 0 var(--merah-tua) !important;
+            opacity: 1;
+            filter: none;
+            animation: shake .4s;
+        }
+
+        .opt .mark {
+            position: absolute;
+            right: 12px;
+            top: 10px;
+            font-size: 20px;
+        }
+
+        @keyframes shake {
+
+            20%,
+            60% {
+                transform: translateX(-6px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(6px);
+            }
+        }
+
+        .katex {
+            font-size: 1.05em;
+        }
+
+        .opt .katex {
+            font-size: 1.08em;
+        }
+
+        /* FEEDBACK */
+        .fb {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 30;
+            transform: translateY(110%);
+            transition: transform .35s cubic-bezier(.2, 1.1, .4, 1);
+        }
+
+        .fb.show {
+            transform: none;
+        }
+
+        .fb-inner {
+            max-width: 980px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 26px 26px 0 0;
+            box-shadow: 0 -10px 40px rgba(31, 18, 53, .18);
+            overflow: hidden;
+        }
+
+        .fb-bar {
+            padding: 14px 22px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .fb.ok .fb-bar {
+            background: var(--hijau);
+        }
+
+        .fb.no .fb-bar {
+            background: var(--merah);
+        }
+
+        .fb-bar h3 {
+            font-size: 22px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .fb-bar .pts {
+            font-weight: 900;
+            background: rgba(255, 255, 255, .25);
+            padding: 6px 12px;
+            border-radius: 10px;
+        }
+
+        .fb-body {
+            padding: 16px 22px 18px;
+            max-height: 42vh;
+            overflow: auto;
+        }
+
+        .fb-body .label {
+            font-size: 12px;
+            font-weight: 900;
+            color: var(--ungu);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: 6px;
+        }
+
+        .fb-body .exp {
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.7;
+            color: #3b3450;
+        }
+
+        .fb-actions {
+            padding: 0 22px 18px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* RESULT */
+        .result {
+            background: #fff;
+            border-radius: 28px;
+            padding: 30px 24px;
+            text-align: center;
+            box-shadow: 0 8px 0 var(--line);
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ring {
+            width: 170px;
+            height: 170px;
+            margin: 4px auto 14px;
+            position: relative;
+        }
+
+        .ring svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .ring .val {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            font-size: 44px;
+            font-weight: 900;
+        }
+
+        .ring .val small {
+            display: block;
+            font-size: 13px;
+            color: var(--ink-2);
+            font-weight: 800;
+            margin-top: -8px;
+        }
+
+        .result h2 {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        .result .msg {
+            color: var(--ink-2);
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .save {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .save.wait {
+            background: #f1ecf8;
+            color: var(--ink-2);
+        }
+
+        .save.ok {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .save.err {
+            background: #ffe4e6;
+            color: #be123c;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .review h3 {
+            font-size: 20px;
+            font-weight: 900;
+            margin: 6px 4px 12px;
+        }
+
+        .rv {
+            background: #fff;
+            border-radius: 20px;
+            padding: 16px 18px;
+            margin-bottom: 12px;
+            box-shadow: 0 5px 0 var(--line);
+            border-left: 8px solid var(--hijau);
+        }
+
+        .rv.x {
+            border-left-color: var(--merah);
+        }
+
+        .rv .rv-top {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .rv .rv-q {
+            font-weight: 800;
+            line-height: 1.55;
+            margin-bottom: 10px;
+        }
+
+        .rv .ans {
+            font-size: 14px;
+            font-weight: 700;
+            margin: 3px 0;
+        }
+
+        .rv .ans.me {
+            color: var(--merah-tua);
+        }
+
+        .rv .ans.key {
+            color: var(--hijau-tua);
+        }
+
+        .rv details {
+            margin-top: 8px;
+            background: #faf7fe;
+            border-radius: 12px;
+            padding: 10px 12px;
+        }
+
+        .rv summary {
+            cursor: pointer;
+            font-weight: 900;
+            color: var(--ungu-tua);
+            font-size: 14px;
+        }
+
+        .rv details .exp {
+            margin-top: 8px;
+            font-size: 14px;
+            line-height: 1.7;
+            font-weight: 600;
+            color: #3b3450;
+        }
+
+        #confetti {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 40;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 640px) {
+
+            .opts,
+            .opts.short {
+                grid-template-columns: 1fr;
+            }
+
+            .opts.short {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .opts.short .opt {
+                padding: 14px 4px 34px;
+                font-size: 17px;
+            }
+
+            .opts.short .opt .key {
+                top: auto;
+                bottom: 6px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 24px;
+                height: 24px;
+                font-size: 12px;
+            }
+
+            .qcard {
+                padding: 18px 16px;
+            }
+
+            .opt {
+                font-size: 15px;
+                min-height: 60px;
+            }
+
+            .brand small {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="confetti"></canvas>
+    <div class="wrap">
+        <div class="topbar">
+            <div class="brand">
+                <div class="logo">⚗️</div>
+                <div>EduKinetika<small>Pertemuan 1 • Kuis 1</small></div>
+            </div>
+            <a class="btn-back" href="kartu_kuis_edukinetika.html">← Menu Kuis</a>
+        </div>
+
+        <!-- START -->
+        <section id="start" class="hero">
+            <div class="emblem">💥</div>
+            <h1>Kuis 1: Teori Tumbukan &amp; Energi Aktivasi</h1>
+            <p class="lead">Uji pemahamanmu tentang teori tumbukan, tumbukan efektif dan tidak efektif, pengertian laju reaksi, energi aktivasi, dan cara membaca grafik energi reaksi.</p>
+            <div class="stats">
+                <div class="stat"><b id="st-jml">–</b><span>Soal</span></div>
+                <div class="stat"><b id="st-no">–</b><span>Nomor kisi-kisi</span></div>
+                <div class="stat"><b id="st-lv">–</b><span>Level kognitif</span></div>
+                <div class="stat"><b>75</b><span>KKM</span></div>
+            </div>
+            <div id="who" class="who">⏳ Memeriksa akun…</div><br>
+            <button class="btn-big" id="btn-start">Mulai Kuis ▶</button>
+            <p class="hint-keys">Pintasan: tekan <kbd>1</kbd>–<kbd>5</kbd> atau <kbd>A</kbd>–<kbd>E</kbd> untuk
+                menjawab, <kbd>Enter</kbd> untuk lanjut.</p>
+        </section>
+
+        <!-- QUIZ -->
+        <section id="quiz" class="hidden">
+            <div class="qhead">
+                <span class="chip" id="q-count">1/–</span>
+                <div class="progress"><i id="q-prog"></i></div>
+                <span class="chip streak" id="q-streak" title="Jawaban benar berturut-turut">🔥 0</span>
+                <span class="chip skor" id="q-score">⭐ 0</span>
+            </div>
+            <div class="qcard" id="qcard">
+                <div class="qmeta"><span class="tag no" id="q-no">Soal 1</span><span class="tag" id="q-lv">C2</span>
+                </div>
+                <div class="qtext" id="q-text"></div>
+            </div>
+            <div class="opts" id="q-opts"></div>
+        </section>
+
+        <!-- RESULT -->
+        <section id="result" class="hidden">
+            <div class="result">
+                <div class="ring">
+                    <svg viewBox="0 0 120 120">
+                        <circle cx="60" cy="60" r="52" fill="none" stroke="#f1ecf8" stroke-width="12" />
+                        <circle id="ring-arc" cx="60" cy="60" r="52" fill="none" stroke="#00c985" stroke-width="12"
+                            stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7"
+                            style="transition:stroke-dashoffset 1.2s ease" />
+                    </svg>
+                    <div class="val">
+                        <div><span id="r-skor">0</span><small>SKOR</small></div>
+                    </div>
+                </div>
+                <h2 id="r-title">Selesai!</h2>
+                <p class="msg" id="r-msg"></p>
+                <div class="stats">
+                    <div class="stat"><b id="r-benar" style="color:var(--hijau-tua)">0</b><span>Benar</span></div>
+                    <div class="stat"><b id="r-salah" style="color:var(--merah)">0</b><span>Salah</span></div>
+                    <div class="stat"><b id="r-waktu">0:00</b><span>Durasi</span></div>
+                    <div class="stat"><b id="r-streak">0</b><span>Streak terbaik</span></div>
+                </div>
+                <div id="r-save" class="save wait">⏳ Menyimpan nilai ke dashboard…</div>
+                <div class="actions">
+                    <button class="btn-big light" id="btn-ulang">↻ Ulangi</button>
+                    <a class="btn-big green" href="kartu_kuis_edukinetika.html" style="text-decoration:none">Kembali ke
+                        Menu Kuis</a>
+                </div>
+            </div>
+            <div class="review">
+                <h3>📖 Pembahasan</h3>
+                <div id="r-list"></div>
+            </div>
+        </section>
+    </div>
+
+    <div class="fb" id="fb">
+        <div class="fb-inner">
+            <div class="fb-bar">
+                <h3 id="fb-title">Benar!</h3><span class="pts" id="fb-pts">+1</span>
+            </div>
+            <div class="fb-body">
+                <div class="label">Pembahasan</div>
+                <div class="exp" id="fb-exp"></div>
+            </div>
+            <div class="fb-actions"><button class="btn-big" id="btn-next"
+                    style="font-size:17px;padding:12px 30px">Lanjut ▶</button></div>
+        </div>
+    </div>
+
+    <script>
+        /* =====================================================================
+           DATA KUIS
+           ===================================================================== */
+        const KUIS = { kode: 'kuis1', judul: 'Kuis 1: Teori Tumbukan & Energi Aktivasi' };
+        const KKM = 75;
+        const quizData = [
+            {
+                no: 1,
+                level: "C2 (Pemahaman)",
+                question: "Menurut teori tumbukan, bagaimanakah suatu reaksi kimia dapat terjadi?",
+                options: [
+                    "Pereaksi berubah menjadi hasil reaksi dengan sendirinya tanpa perlu saling bersentuhan.",
+                    "Partikel-partikel pereaksi saling bertumbukan, dan tumbukan yang memenuhi syarat memutuskan ikatan lama serta membentuk ikatan baru.",
+                    "Partikel pereaksi saling menjauh sehingga ikatan antaratomnya terlepas.",
+                    "Setiap tumbukan antarpartikel pereaksi pasti menghasilkan zat baru.",
+                    "Reaksi hanya terjadi apabila partikel pereaksi berada dalam wujud padat."
+                ],
+                correctIndex: 1,
+                explanation: "Teori tumbukan menyatakan bahwa reaksi kimia terjadi karena <strong>partikel-partikel pereaksi saling bertumbukan</strong>. Tumbukan yang memenuhi syarat akan <strong>memutuskan ikatan lama</strong> pada pereaksi dan <strong>membentuk ikatan baru</strong> pada hasil reaksi. Tidak semua tumbukan menghasilkan reaksi, sehingga pilihan yang menyatakan setiap tumbukan pasti bereaksi tidak tepat."
+            },
+            {
+                no: 2,
+                level: "C2 (Pemahaman)",
+                question: "Tumbukan efektif adalah tumbukan antarpartikel pereaksi yang...",
+                options: [
+                    "terjadi paling sering di dalam wadah reaksi.",
+                    "terjadi antara partikel yang memiliki massa sama.",
+                    "menghasilkan reaksi kimia karena partikel memiliki energi yang cukup (≥ energi aktivasi) dan orientasi (arah) yang tepat.",
+                    "terjadi ketika partikel bergerak sangat lambat sehingga dapat menempel.",
+                    "terjadi antara partikel pereaksi dengan dinding wadah."
+                ],
+                correctIndex: 2,
+                explanation: "Tumbukan efektif adalah tumbukan yang <strong>menghasilkan reaksi</strong>. Syaratnya ada dua: <strong>energi kinetik partikel ≥ energi aktivasi ($E_a$)</strong> dan <strong>orientasi tumbukan tepat</strong>, yaitu bagian partikel yang akan berikatan saling berhadapan."
+            },
+            {
+                no: 3,
+                level: "C2 (Pemahaman)",
+                question: "Dalam simulasi molekuler, dua partikel pereaksi terlihat bertumbukan, tetapi kemudian terpental kembali tanpa membentuk zat baru. Tumbukan tersebut termasuk tumbukan tidak efektif karena...",
+                options: [
+                    "partikel memiliki energi kinetik yang lebih kecil dari energi aktivasi atau orientasi tumbukannya tidak tepat.",
+                    "partikel memiliki energi kinetik yang terlalu besar sehingga ikatannya menjadi lebih kuat.",
+                    "jumlah partikel di dalam wadah terlalu banyak.",
+                    "partikel yang bertumbukan merupakan partikel yang berbeda jenis.",
+                    "tumbukan terjadi pada suhu yang tinggi."
+                ],
+                correctIndex: 0,
+                explanation: "Tumbukan tidak efektif adalah tumbukan yang <strong>tidak menghasilkan reaksi</strong>. Penyebabnya adalah <strong>energi partikel kurang dari energi aktivasi</strong> sehingga ikatan lama tidak dapat putus, <strong>atau orientasi tumbukannya salah</strong>. Akibatnya partikel hanya memantul kembali tanpa membentuk hasil reaksi."
+            },
+            {
+                no: 4,
+                level: "C2 (Pemahaman)",
+                question: "Pernyataan yang paling tepat mengenai pengertian laju reaksi adalah...",
+                options: [
+                    "Jumlah total hasil reaksi yang terbentuk ketika reaksi selesai.",
+                    "Waktu yang dibutuhkan pereaksi untuk mulai bertumbukan.",
+                    "Energi minimum yang dibutuhkan agar reaksi berlangsung.",
+                    "Berkurangnya konsentrasi pereaksi atau bertambahnya konsentrasi hasil reaksi per satuan waktu.",
+                    "Banyaknya katalis yang dibutuhkan untuk mempercepat reaksi."
+                ],
+                correctIndex: 3,
+                explanation: "Laju reaksi adalah <strong>perubahan konsentrasi per satuan waktu</strong>: berkurangnya konsentrasi pereaksi atau bertambahnya konsentrasi hasil reaksi.<br>$v = -\\dfrac{\\Delta[\\text{pereaksi}]}{\\Delta t} = +\\dfrac{\\Delta[\\text{hasil}]}{\\Delta t}$, dengan satuan umum $\\text{M s}^{-1}$."
+            },
+            {
+                no: 5,
+                level: "C2 (Pemahaman)",
+                question: "Energi aktivasi ($E_a$) adalah...",
+                options: [
+                    "energi yang dilepaskan ketika reaksi selesai.",
+                    "energi minimum yang harus dimiliki partikel pereaksi agar tumbukannya dapat menghasilkan reaksi.",
+                    "selisih energi antara hasil reaksi dan pereaksi.",
+                    "energi kinetik rata-rata seluruh partikel dalam wadah.",
+                    "energi yang tersimpan dalam katalis."
+                ],
+                correctIndex: 1,
+                explanation: "Energi aktivasi adalah <strong>energi minimum</strong> yang harus dimiliki partikel pereaksi agar tumbukannya menjadi tumbukan efektif. Selisih energi hasil reaksi dan pereaksi adalah <strong>perubahan entalpi ($\\Delta H$)</strong>, bukan energi aktivasi."
+            },
+            {
+                no: 6,
+                level: "C2 (Pemahaman)",
+                question: "Di antara faktor berikut, manakah yang dapat <strong>mengubah besarnya energi aktivasi</strong> suatu reaksi?",
+                options: [
+                    "Menaikkan suhu reaksi.",
+                    "Memperbesar konsentrasi pereaksi.",
+                    "Memperluas permukaan bidang sentuh pereaksi.",
+                    "Menambahkan katalis ke dalam sistem reaksi.",
+                    "Memperbesar volume wadah reaksi."
+                ],
+                correctIndex: 3,
+                explanation: "Besarnya energi aktivasi ditentukan oleh <strong>jenis pereaksi (kekuatan ikatannya)</strong> dan <strong>jalur reaksi</strong>. Katalis menyediakan jalur reaksi alternatif sehingga <strong>energi aktivasi menjadi lebih rendah</strong>.<br>Suhu, konsentrasi, dan luas permukaan mempercepat reaksi dengan cara lain (menambah energi kinetik atau frekuensi tumbukan), tetapi <strong>tidak mengubah nilai $E_a$</strong>."
+            },
+            {
+                no: 7,
+                level: "C4 (Analisis)",
+                question: "Dua reaksi berlangsung pada suhu dan konsentrasi yang sama. Reaksi X memiliki $E_a = 50\\text{ kJ/mol}$, sedangkan reaksi Y memiliki $E_a = 120\\text{ kJ/mol}$. Analisis yang paling tepat adalah...",
+                options: [
+                    "Reaksi Y lebih cepat karena energi aktivasi yang besar membuat partikel bertumbukan lebih kuat.",
+                    "Kedua reaksi sama cepat karena suhu dan konsentrasinya sama.",
+                    "Reaksi X lebih cepat karena lebih banyak partikel yang memiliki energi ≥ $E_a$, sehingga tumbukan efektifnya lebih banyak.",
+                    "Reaksi X lebih cepat karena partikel reaksi X bergerak lebih cepat daripada partikel reaksi Y.",
+                    "Reaksi Y lebih cepat karena reaksi dengan energi aktivasi besar melepaskan kalor lebih banyak."
+                ],
+                correctIndex: 2,
+                explanation: "Pada suhu yang sama, sebaran energi kinetik partikel kedua reaksi sama. Karena $E_a$ reaksi X lebih rendah, <strong>fraksi partikel yang energinya ≥ $E_a$ lebih besar</strong>, sehingga jumlah <strong>tumbukan efektif lebih banyak</strong> dan reaksi X lebih cepat.<br>Kesimpulan: <strong>semakin kecil energi aktivasi, semakin cepat laju reaksi</strong>."
+            },
+            {
+                no: 8,
+                level: "C3 (Penerapan)",
+                question: "Perhatikan grafik energi reaksi berikut!<svg viewBox=\"0 0 440 260\" xmlns=\"http://www.w3.org/2000/svg\" style=\"width:100%;max-width:440px;display:block;margin:14px auto 4px;background:#f8fafc;border:2px solid #e2e8f0;border-radius:16px\" font-family=\"Inter, sans-serif\"><defs><marker id=\"arpanah\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-reverse\"><path d=\"M0 0L10 5L0 10z\" fill=\"#ea580c\"/></marker></defs><line x1=\"50\" y1=\"225\" x2=\"50\" y2=\"20\" stroke=\"#475569\" stroke-width=\"1.5\"/><line x1=\"50\" y1=\"225\" x2=\"425\" y2=\"225\" stroke=\"#475569\" stroke-width=\"1.5\"/><text x=\"18\" y=\"130\" fill=\"#475569\" font-size=\"11\" transform=\"rotate(-90 18 130)\" text-anchor=\"middle\">Energi (kJ/mol)</text><text x=\"240\" y=\"250\" fill=\"#475569\" font-size=\"11\" text-anchor=\"middle\">Jalannya reaksi</text><path d=\"M70,150 L150,150 C200,150 200,55 230,55 C262,55 262,185 310,185 L410,185\" fill=\"none\" stroke=\"#7c3aed\" stroke-width=\"3.5\"/><text x=\"95\" y=\"167\" fill=\"#1e293b\" font-size=\"10.5\" font-weight=\"700\">Pereaksi</text><text x=\"330\" y=\"202\" fill=\"#1e293b\" font-size=\"10.5\" font-weight=\"700\">Hasil reaksi</text><line x1=\"150\" y1=\"55\" x2=\"130\" y2=\"55\" stroke=\"#94a3b8\" stroke-dasharray=\"3 3\"/><line x1=\"130\" y1=\"55\" x2=\"330\" y2=\"55\" stroke=\"#94a3b8\" stroke-dasharray=\"3 3\"/><line x1=\"130\" y1=\"148\" x2=\"130\" y2=\"57\" stroke=\"#ea580c\" stroke-width=\"2.2\" marker-start=\"url(#arpanah)\" marker-end=\"url(#arpanah)\"/><text x=\"110\" y=\"108\" fill=\"#ea580c\" font-size=\"13\" font-weight=\"800\">I</text><line x1=\"330\" y1=\"183\" x2=\"330\" y2=\"57\" stroke=\"#ea580c\" stroke-width=\"2.2\" marker-start=\"url(#arpanah)\" marker-end=\"url(#arpanah)\"/><text x=\"338\" y=\"125\" fill=\"#ea580c\" font-size=\"13\" font-weight=\"800\">II</text><line x1=\"150\" y1=\"150\" x2=\"385\" y2=\"150\" stroke=\"#94a3b8\" stroke-dasharray=\"3 3\"/><line x1=\"385\" y1=\"152\" x2=\"385\" y2=\"183\" stroke=\"#ea580c\" stroke-width=\"2.2\" marker-start=\"url(#arpanah)\" marker-end=\"url(#arpanah)\"/><text x=\"392\" y=\"172\" fill=\"#ea580c\" font-size=\"13\" font-weight=\"800\">III</text><line x1=\"75\" y1=\"223\" x2=\"75\" y2=\"152\" stroke=\"#ea580c\" stroke-width=\"2.2\" marker-start=\"url(#arpanah)\" marker-end=\"url(#arpanah)\"/><text x=\"82\" y=\"195\" fill=\"#ea580c\" font-size=\"13\" font-weight=\"800\">IV</text></svg>Energi aktivasi untuk reaksi maju (pereaksi → hasil reaksi) ditunjukkan oleh panah nomor...",
+                options: [
+                    "I",
+                    "II",
+                    "III",
+                    "IV",
+                    "II dan III"
+                ],
+                correctIndex: 0,
+                explanation: "Energi aktivasi reaksi maju diukur dari <strong>tingkat energi pereaksi sampai puncak kurva</strong>, yaitu <strong>panah I</strong>.<br>Panah II adalah energi aktivasi reaksi balik (dari hasil reaksi ke puncak), panah III adalah $\\Delta H$ (selisih energi hasil dan pereaksi), dan panah IV adalah energi yang dimiliki pereaksi."
+            },
+            {
+                no: 9,
+                level: "C3 (Penerapan)",
+                question: "Perhatikan grafik energi reaksi berikut!<svg viewBox=\"0 0 440 260\" xmlns=\"http://www.w3.org/2000/svg\" style=\"width:100%;max-width:440px;display:block;margin:14px auto 4px;background:#f8fafc;border:2px solid #e2e8f0;border-radius:16px\" font-family=\"Inter, sans-serif\"><defs><marker id=\"artitik\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-reverse\"><path d=\"M0 0L10 5L0 10z\" fill=\"#ea580c\"/></marker></defs><line x1=\"50\" y1=\"225\" x2=\"50\" y2=\"20\" stroke=\"#475569\" stroke-width=\"1.5\"/><line x1=\"50\" y1=\"225\" x2=\"425\" y2=\"225\" stroke=\"#475569\" stroke-width=\"1.5\"/><text x=\"18\" y=\"130\" fill=\"#475569\" font-size=\"11\" transform=\"rotate(-90 18 130)\" text-anchor=\"middle\">Energi (kJ/mol)</text><text x=\"240\" y=\"250\" fill=\"#475569\" font-size=\"11\" text-anchor=\"middle\">Jalannya reaksi</text><path d=\"M70,150 L150,150 C200,150 200,55 230,55 C262,55 262,185 310,185 L410,185\" fill=\"none\" stroke=\"#7c3aed\" stroke-width=\"3.5\"/><text x=\"95\" y=\"167\" fill=\"#1e293b\" font-size=\"10.5\" font-weight=\"700\">Pereaksi</text><text x=\"330\" y=\"202\" fill=\"#1e293b\" font-size=\"10.5\" font-weight=\"700\">Hasil reaksi</text><circle cx=\"110\" cy=\"150\" r=\"5.5\" fill=\"#db2777\" stroke=\"#fff\" stroke-width=\"1.5\"/><text x=\"118\" y=\"142\" fill=\"#be185d\" font-size=\"13\" font-weight=\"800\">K</text><circle cx=\"196\" cy=\"105\" r=\"5.5\" fill=\"#db2777\" stroke=\"#fff\" stroke-width=\"1.5\"/><text x=\"204\" y=\"97\" fill=\"#be185d\" font-size=\"13\" font-weight=\"800\">L</text><circle cx=\"230\" cy=\"55\" r=\"5.5\" fill=\"#db2777\" stroke=\"#fff\" stroke-width=\"1.5\"/><text x=\"238\" y=\"47\" fill=\"#be185d\" font-size=\"13\" font-weight=\"800\">M</text><circle cx=\"264\" cy=\"120\" r=\"5.5\" fill=\"#db2777\" stroke=\"#fff\" stroke-width=\"1.5\"/><text x=\"272\" y=\"112\" fill=\"#be185d\" font-size=\"13\" font-weight=\"800\">N</text><circle cx=\"365\" cy=\"185\" r=\"5.5\" fill=\"#db2777\" stroke=\"#fff\" stroke-width=\"1.5\"/><text x=\"373\" y=\"177\" fill=\"#be185d\" font-size=\"13\" font-weight=\"800\">O</text></svg>Kompleks teraktivasi pada grafik tersebut terletak pada titik...",
+                options: [
+                    "K",
+                    "L",
+                    "M",
+                    "N",
+                    "O"
+                ],
+                correctIndex: 2,
+                explanation: "Kompleks teraktivasi adalah keadaan transisi saat ikatan lama mulai putus dan ikatan baru mulai terbentuk. Keadaan ini memiliki <strong>energi paling tinggi</strong>, sehingga terletak di <strong>puncak kurva, yaitu titik M</strong>. Titik K adalah pereaksi dan titik O adalah hasil reaksi."
+            },
+            {
+                no: 10,
+                level: "C3 (Penerapan)",
+                question: "Perhatikan grafik energi reaksi berikut!<svg viewBox=\"0 0 440 260\" xmlns=\"http://www.w3.org/2000/svg\" style=\"width:100%;max-width:440px;display:block;margin:14px auto 4px;background:#f8fafc;border:2px solid #e2e8f0;border-radius:16px\" font-family=\"Inter, sans-serif\"><defs><marker id=\"arangka\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-reverse\"><path d=\"M0 0L10 5L0 10z\" fill=\"#ea580c\"/></marker></defs><line x1=\"50\" y1=\"225\" x2=\"50\" y2=\"20\" stroke=\"#475569\" stroke-width=\"1.5\"/><line x1=\"50\" y1=\"225\" x2=\"425\" y2=\"225\" stroke=\"#475569\" stroke-width=\"1.5\"/><text x=\"18\" y=\"130\" fill=\"#475569\" font-size=\"11\" transform=\"rotate(-90 18 130)\" text-anchor=\"middle\">Energi (kJ/mol)</text><text x=\"240\" y=\"250\" fill=\"#475569\" font-size=\"11\" text-anchor=\"middle\">Jalannya reaksi</text><path d=\"M70,150 L150,150 C200,150 200,55 230,55 C262,55 262,185 310,185 L410,185\" fill=\"none\" stroke=\"#7c3aed\" stroke-width=\"3.5\"/><text x=\"95\" y=\"167\" fill=\"#1e293b\" font-size=\"10.5\" font-weight=\"700\">Pereaksi</text><text x=\"330\" y=\"202\" fill=\"#1e293b\" font-size=\"10.5\" font-weight=\"700\">Hasil reaksi</text><line x1=\"46\" y1=\"55\" x2=\"50\" y2=\"55\" stroke=\"#475569\"/><text x=\"43\" y=\"59\" fill=\"#1e293b\" font-size=\"10.5\" text-anchor=\"end\" font-weight=\"700\">150</text><line x1=\"50\" y1=\"55\" x2=\"230\" y2=\"55\" stroke=\"#94a3b8\" stroke-dasharray=\"3 3\"/><line x1=\"46\" y1=\"150\" x2=\"50\" y2=\"150\" stroke=\"#475569\"/><text x=\"43\" y=\"154\" fill=\"#1e293b\" font-size=\"10.5\" text-anchor=\"end\" font-weight=\"700\">40</text><line x1=\"50\" y1=\"150\" x2=\"150\" y2=\"150\" stroke=\"#94a3b8\" stroke-dasharray=\"3 3\"/><line x1=\"46\" y1=\"185\" x2=\"50\" y2=\"185\" stroke=\"#475569\"/><text x=\"43\" y=\"189\" fill=\"#1e293b\" font-size=\"10.5\" text-anchor=\"end\" font-weight=\"700\">10</text><line x1=\"50\" y1=\"185\" x2=\"310\" y2=\"185\" stroke=\"#94a3b8\" stroke-dasharray=\"3 3\"/><text x=\"43\" y=\"229\" fill=\"#1e293b\" font-size=\"10.5\" text-anchor=\"end\">0</text></svg>Berdasarkan grafik tersebut, besar energi aktivasi reaksi maju adalah...",
+                options: [
+                    "$30\\text{ kJ/mol}$",
+                    "$40\\text{ kJ/mol}$",
+                    "$110\\text{ kJ/mol}$",
+                    "$140\\text{ kJ/mol}$",
+                    "$150\\text{ kJ/mol}$"
+                ],
+                correctIndex: 2,
+                explanation: "Energi aktivasi = energi puncak − energi pereaksi<br>$E_a = 150 - 40 = 110\\text{ kJ/mol}$<br>Sebagai pembanding: $\\Delta H = 10 - 40 = -30\\text{ kJ/mol}$ (eksoterm), dan energi aktivasi reaksi balik $= 150 - 10 = 140\\text{ kJ/mol}$."
+            }
+        ];
+
+        /* =====================================================================
+           FIREBASE (penyimpanan nilai)
+           Nilai disimpan ke: kuis/{uid}/{kode}  → dibaca dashboard guru & siswa
+           Riwayat semua percobaan: kuisRiwayat/{uid}/{kode}/{id}
+           ===================================================================== */
+        const FIREBASE_CONFIG = {
+            apiKey: "AIzaSyA_YUPPq0CZgNi5McaTx3-a8LOGW70zIzg",
+            authDomain: "starararrara.firebaseapp.com",
+            databaseURL: "https://starararrara-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "starararrara",
+            storageBucket: "starararrara.firebasestorage.app",
+            messagingSenderId: "1085300087665",
+            appId: "1:1085300087665:web:375eae85042f14ffa7f4d0"
+        };
+        const FB = { ready: null, user: null, db: null, D: null };
+        FB.ready = (async () => {
+            try {
+                const V = '10.12.2';
+                const APP = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
+                const A = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`);
+                const D = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-database.js`);
+                const app = APP.getApps().length ? APP.getApp() : APP.initializeApp(FIREBASE_CONFIG);
+                const auth = A.getAuth(app);
+                FB.user = await new Promise(res => {
+                    const t = setTimeout(() => res(null), 6000);
+                    const off = A.onAuthStateChanged(auth, u => { clearTimeout(t); off(); res(u); });
+                });
+                FB.db = D.getDatabase(app); FB.D = D;
+            } catch (e) { console.warn('Firebase tidak tersedia:', e); }
+            return FB.user;
+        })();
+
+        function sesiLokal() { try { return JSON.parse(localStorage.getItem('activeSession') || 'null'); } catch (_) { return null; } }
+
+        async function simpanNilai(hasil) {
+            // salinan lokal (dipakai dashboard siswa bila offline)
+            try {
+                const semua = JSON.parse(localStorage.getItem('hasilKuis') || '{}');
+                semua[KUIS.kode] = hasil;
+                localStorage.setItem('hasilKuis', JSON.stringify(semua));
+            } catch (_) { }
+            // kabari halaman induk bila kuis dibuka di dalam iframe dashboard
+            try { if (window.parent !== window) window.parent.postMessage({ type: 'kuis-selesai', kuis: KUIS.kode, hasil }, '*'); } catch (_) { }
+
+            const user = await FB.ready;
+            if (!user || !FB.db) return { ok: false, alasan: user ? 'db' : 'login' };
+            const { ref, update, push, set, serverTimestamp } = FB.D;
+            const uid = user.uid;
+            const sesi = sesiLokal();
+            const nama = (sesi && sesi.uid === uid && sesi.name) || user.displayName || (user.email || '').split('@')[0];
+            try {
+                await set(ref(FB.db, `kuis/${uid}/${KUIS.kode}`), hasil);
+                await set(push(ref(FB.db, `kuisRiwayat/${uid}/${KUIS.kode}`)), hasil);
+                await update(ref(FB.db, `siswa/${uid}`), { nama, email: user.email || null, online: true, lastActive: Date.now() }).catch(() => { });
+                await set(push(ref(FB.db, 'aktivitas')), { uid, jenis: 'kuis', pesan: `menyelesaikan ${KUIS.judul} (skor ${hasil.skor})`, waktu: serverTimestamp() }).catch(() => { });
+                return { ok: true };
+            } catch (e) { console.error(e); return { ok: false, alasan: 'db', err: e.code || e.message }; }
+        }
+
+        /* =====================================================================
+           MESIN KUIS
+           ===================================================================== */
+        const $ = s => document.querySelector(s);
+        const HURUF = 'ABCDE';
+        let idx = 0, jawaban = [], streak = 0, bestStreak = 0, mulai = 0, terkunci = false;
+
+        function math(el) {
+            if (window.renderMathInElement) renderMathInElement(el, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false });
+        }
+        function lvClass(lv) { return 'lv-' + (lv.match(/C\d/) || ['C2'])[0]; }
+
+        function tampilSoal() {
+            const q = quizData[idx];
+            terkunci = false;
+            $('#q-count').textContent = `${idx + 1}/${quizData.length}`;
+            $('#q-prog').style.width = `${idx / quizData.length * 100}%`;
+            $('#q-no').textContent = `Soal ${q.no}`;
+            const lv = $('#q-lv'); lv.textContent = q.level; lv.className = 'tag ' + lvClass(q.level);
+            $('#q-text').innerHTML = q.question;
+            const card = $('#qcard'); card.style.animation = 'none'; void card.offsetWidth; card.style.animation = '';
+            const box = $('#q-opts');
+            const pendek = q.options.every(o => o.replace(/\$|\\text\{[^}]*\}/g, '').length <= 6);
+            box.className = 'opts' + (pendek ? ' short' : q.options.length === 5 ? ' n5' : '');
+            box.innerHTML = q.options.map((o, i) =>
+                `<button class="opt" data-i="${i}" style="background:var(--opsi-${i});box-shadow:0 6px 0 var(--opsi-${i}d)"><span class="key">${HURUF[i]}</span><span>${o}</span></button>`).join('');
+            box.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => jawab(+b.dataset.i)));
+            math($('#qcard')); math(box);
+        }
+
+        function jawab(i) {
+            if (terkunci) return;
+            terkunci = true;
+            const q = quizData[idx];
+            const ok = i === q.correctIndex;
+            jawaban[idx] = i;
+            const btns = [...document.querySelectorAll('#q-opts .opt')];
+            btns.forEach((b, k) => {
+                b.disabled = true;
+                if (k === q.correctIndex) { b.classList.add('benar'); b.insertAdjacentHTML('beforeend', '<span class="mark">✔</span>'); }
+                else if (k === i) { b.classList.add('salah'); b.insertAdjacentHTML('beforeend', '<span class="mark">✖</span>'); }
+                else b.classList.add('dim');
+            });
+            if (ok) { streak++; bestStreak = Math.max(bestStreak, streak); } else streak = 0;
+            const benar = jawaban.filter((a, k) => a === quizData[k].correctIndex).length;
+            $('#q-streak').textContent = `🔥 ${streak}`;
+            $('#q-score').textContent = `⭐ ${benar}`;
+            bunyi(ok);
+
+            const fb = $('#fb');
+            fb.className = 'fb ' + (ok ? 'ok' : 'no');
+            $('#fb-title').innerHTML = ok ? (streak >= 3 ? `🔥 Luar biasa! ${streak} beruntun` : '✔ Benar!') : '✖ Belum tepat';
+            $('#fb-pts').textContent = ok ? '+1 benar' : `Kunci: ${HURUF[q.correctIndex]}`;
+            $('#fb-exp').innerHTML = q.explanation;
+            $('#btn-next').textContent = idx === quizData.length - 1 ? 'Lihat Hasil 🏁' : 'Lanjut ▶';
+            math($('#fb-exp'));
+            setTimeout(() => {
+                fb.classList.add('show');
+                // beri ruang di bawah agar pilihan jawaban tidak tertutup panel pembahasan
+                document.body.style.paddingBottom = fb.offsetHeight + 'px';
+                $('#q-opts').scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 350);
+        }
+
+        function lanjut() {
+            if (!terkunci) return;
+            $('#fb').classList.remove('show');
+            document.body.style.paddingBottom = '';
+            idx++;
+            if (idx < quizData.length) setTimeout(tampilSoal, 150);
+            else selesai();
+        }
+
+        async function selesai() {
+            $('#quiz').classList.add('hidden');
+            $('#result').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const total = quizData.length;
+            const benar = jawaban.filter((a, k) => a === quizData[k].correctIndex).length;
+            const skor = Math.round(benar / total * 100);
+            const durasi = Math.round((Date.now() - mulai) / 1000);
+            $('#r-skor').textContent = skor;
+            $('#r-benar').textContent = benar;
+            $('#r-salah').textContent = total - benar;
+            $('#r-waktu').textContent = `${Math.floor(durasi / 60)}:${String(durasi % 60).padStart(2, '0')}`;
+            $('#r-streak').textContent = bestStreak;
+            const arc = $('#ring-arc');
+            arc.style.stroke = skor >= KKM ? '#00c985' : skor >= 50 ? '#ffc02e' : '#ef3c69';
+            requestAnimationFrame(() => arc.style.strokeDashoffset = 326.7 * (1 - skor / 100));
+            if (skor === 100) { $('#r-title').textContent = 'Sempurna! 🏆'; $('#r-msg').textContent = 'Semua jawaban benar. Kamu menguasai materi ini!'; }
+            else if (skor >= KKM) { $('#r-title').textContent = 'Tuntas! 🎉'; $('#r-msg').textContent = `Skormu sudah mencapai KKM (${KKM}). Baca pembahasan soal yang masih salah, ya.`; }
+            else { $('#r-title').textContent = 'Ayo coba lagi! 💪'; $('#r-msg').textContent = `Skormu belum mencapai KKM (${KKM}). Pelajari pembahasan di bawah, lalu ulangi kuis.`; }
+            if (skor >= KKM) confetti();
+
+            $('#r-list').innerHTML = quizData.map((q, k) => {
+                const a = jawaban[k], ok = a === q.correctIndex;
+                return `<div class="rv ${ok ? '' : 'x'}"><div class="rv-top"><span class="tag no">Soal ${q.no}</span><span class="tag ${lvClass(q.level)}">${q.level}</span><span class="tag" style="background:${ok ? '#dcfce7;color:#15803d' : '#ffe4e6;color:#be123c'}">${ok ? '✔ Benar' : '✖ Salah'}</span></div>
+      <div class="rv-q">${q.question}</div>
+      ${ok ? '' : `<div class="ans me">Jawabanmu: ${HURUF[a]}. ${q.options[a]}</div>`}
+      <div class="ans key">Kunci: ${HURUF[q.correctIndex]}. ${q.options[q.correctIndex]}</div>
+      <details ${ok ? '' : 'open'}><summary>Lihat pembahasan</summary><div class="exp">${q.explanation}</div></details></div>`;
+            }).join('');
+            math($('#r-list'));
+
+            const hasil = { skor, benar, total, durasiDetik: durasi, dikerjakanPada: Date.now(), jawaban: jawaban.slice(), judul: KUIS.judul };
+            const sv = $('#r-save');
+            sv.className = 'save wait'; sv.textContent = '⏳ Menyimpan nilai ke dashboard…';
+            const r = await simpanNilai(hasil);
+            if (r.ok) { sv.className = 'save ok'; sv.textContent = '✔ Nilai tersimpan di dashboard siswa dan guru'; }
+            else if (r.alasan === 'login') { sv.className = 'save err'; sv.innerHTML = '⚠ Kamu belum masuk. Nilai hanya tersimpan di perangkat ini. <a href="loging.html" style="color:inherit">Masuk dulu</a>, lalu ulangi kuis.'; }
+            else { sv.className = 'save err'; sv.textContent = '⚠ Nilai gagal tersimpan ke server' + (r.err ? ` (${r.err})` : '') + '. Periksa koneksi internet.'; }
+        }
+
+        function mulaiKuis() {
+            idx = 0; jawaban = []; streak = 0; bestStreak = 0; mulai = Date.now();
+            $('#q-streak').textContent = '🔥 0'; $('#q-score').textContent = '⭐ 0';
+            $('#start').classList.add('hidden'); $('#result').classList.add('hidden'); $('#quiz').classList.remove('hidden');
+            tampilSoal();
+        }
+
+        /* ---------- efek suara & konfeti ---------- */
+        let actx;
+        function bunyi(ok) {
+            try {
+                actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+                const notes = ok ? [523, 659, 784] : [300, 220];
+                notes.forEach((f, i) => {
+                    const o = actx.createOscillator(), g = actx.createGain();
+                    o.type = ok ? 'triangle' : 'sawtooth'; o.frequency.value = f;
+                    g.gain.setValueAtTime(0.0001, actx.currentTime + i * 0.09);
+                    g.gain.exponentialRampToValueAtTime(ok ? 0.18 : 0.08, actx.currentTime + i * 0.09 + 0.02);
+                    g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + i * 0.09 + 0.22);
+                    o.connect(g).connect(actx.destination); o.start(actx.currentTime + i * 0.09); o.stop(actx.currentTime + i * 0.09 + 0.25);
+                });
+            } catch (_) { }
+        }
+        function confetti() {
+            const c = $('#confetti'), x = c.getContext('2d');
+            c.width = innerWidth; c.height = innerHeight;
+            const warna = ['#2d70ae', '#2d9da6', '#efa929', '#d5546d', '#9a4292', '#00c985'];
+            const P = Array.from({ length: 140 }, () => ({ x: Math.random() * c.width, y: -20 - Math.random() * c.height * .5, w: 6 + Math.random() * 6, h: 8 + Math.random() * 8, vy: 2 + Math.random() * 3, vx: -1.5 + Math.random() * 3, r: Math.random() * 6, vr: -.2 + Math.random() * .4, c: warna[Math.floor(Math.random() * warna.length)] }));
+            let t = 0;
+            (function loop() {
+                x.clearRect(0, 0, c.width, c.height);
+                P.forEach(p => { p.x += p.vx; p.y += p.vy; p.r += p.vr; x.save(); x.translate(p.x, p.y); x.rotate(p.r); x.fillStyle = p.c; x.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); x.restore(); });
+                if (++t < 240) requestAnimationFrame(loop); else x.clearRect(0, 0, c.width, c.height);
+            })();
+        }
+
+        /* ---------- mulai ---------- */
+        const nos = quizData.map(q => q.no);
+        $('#st-jml').textContent = quizData.length;
+        $('#st-no').textContent = nos.length > 1 ? `${nos[0]}–${nos[nos.length - 1]}` : nos[0];
+        const lvs = [...new Set(quizData.map(q => (q.level.match(/C\d/) || [''])[0]))].sort();
+        $('#st-lv').textContent = lvs.length > 1 ? `${lvs[0]}–${lvs[lvs.length - 1]}` : lvs[0];
+
+        FB.ready.then(u => {
+            const w = $('#who');
+            const s = sesiLokal();
+            if (u) { w.className = 'who'; w.innerHTML = `👋 Halo, <b>${(s && s.uid === u.uid && s.name) || u.displayName || u.email}</b>! Nilaimu akan tersimpan otomatis.`; }
+            else { w.className = 'who warn'; w.innerHTML = '⚠ Kamu belum masuk, jadi nilai tidak akan terkirim ke guru. <a href="loging.html">Masuk sekarang</a>'; }
+        });
+
+        $('#btn-start').addEventListener('click', mulaiKuis);
+        $('#btn-ulang').addEventListener('click', mulaiKuis);
+        $('#btn-next').addEventListener('click', lanjut);
+        document.addEventListener('keydown', e => {
+            if ($('#quiz').classList.contains('hidden')) return;
+            if (e.key === 'Enter') { if (terkunci) { e.preventDefault(); lanjut(); } return; }
+            if (terkunci) return;
+            const k = e.key.toUpperCase();
+            let i = '12345'.indexOf(k); if (i < 0) i = HURUF.indexOf(k);
+            if (i >= 0 && i < quizData[idx].options.length) jawab(i);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,4096 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Puncak Juara: Uji Pemahaman Laju Reaksi - EduKinetika</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- ============================================================
+         CSS HALAMAN PUNCAK JUARA: UJI PEMAHAMAN
+         Semua kelas diawali "ekp-" agar tidak bentrok dengan gaya lain.
+         ============================================================ -->
+    <style>
+        :root {
+            --ekp-biru: #2563eb;
+            --ekp-biru-tua: #1e3a8a;
+            --ekp-ungu: #6d28d9;
+            --ekp-teks: #1e293b;
+            --ekp-redup: #64748b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            color: #334155;
+            background: #eaf0fb;
+            min-height: 100vh;
+        }
+
+        /* ---------- Latar belakang halaman (tidak putih polos) ---------- */
+        .ekp-latar {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(700px 480px at 0% 0%, rgba(59, 130, 246, .22), transparent 62%),
+                radial-gradient(640px 460px at 100% 8%, rgba(139, 92, 246, .2), transparent 62%),
+                radial-gradient(900px 560px at 50% 105%, rgba(16, 185, 129, .18), transparent 62%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cg fill='none' stroke='%236366f1' stroke-opacity='.09' stroke-width='1.2'%3E%3Cpath d='M28 1 L54 16 L54 46 L28 61 L2 46 L2 16 Z'/%3E%3Cpath d='M28 61 L28 97'/%3E%3C/g%3E%3C/svg%3E"),
+                linear-gradient(180deg, #eef3ff 0%, #f1efff 50%, #ecfbf4 100%);
+        }
+
+        .ekp-wadah {
+            position: relative;
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 2rem 1rem 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            box-sizing: border-box;
+        }
+
+        .ekp-wadah *,
+        .ekp-wadah *::before,
+        .ekp-wadah *::after {
+            box-sizing: border-box;
+        }
+
+        .ekp-ik {
+            width: 1em;
+            height: 1em;
+            display: inline-block;
+            vertical-align: -.125em;
+            flex-shrink: 0;
+        }
+
+        /* ---------- Bilah atas: logo, XP, tombol dashboard ---------- */
+        .ekp-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, .86);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e2e8f0;
+            padding-top: env(safe-area-inset-top, 0px);
+        }
+
+        .ekp-nav-isi {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: .7rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+            box-sizing: border-box;
+        }
+
+        .ekp-logo {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .ekp-logo-ikon {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: .75rem;
+            display: grid;
+            place-items: center;
+            background: #2563eb;
+            color: #fff;
+            font-size: 1.15rem;
+        }
+
+        .ekp-logo-teks {
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: -.01em;
+            color: #1e293b;
+        }
+
+        .ekp-logo-teks b {
+            color: #2563eb;
+        }
+
+        .ekp-xp {
+            flex: 1;
+            max-width: 20rem;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+        }
+
+        .ekp-xp-ikon {
+            width: 2.25rem;
+            height: 2.25rem;
+            flex-shrink: 0;
+            border-radius: .75rem;
+            display: grid;
+            place-items: center;
+            background: #fef3c7;
+            color: #d97706;
+            font-size: 1.1rem;
+        }
+
+        .ekp-xp-teks {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ekp-xp-baris {
+            display: flex;
+            justify-content: space-between;
+            gap: .5rem;
+            font-size: .68rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .ekp-xp-baris span:first-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .ekp-xp-bar {
+            height: .5rem;
+            margin-top: .25rem;
+            border-radius: 999px;
+            overflow: hidden;
+            background: #f1f5f9;
+        }
+
+        .ekp-xp-bar i {
+            display: block;
+            height: 100%;
+            width: 4%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #fbbf24, #f97316);
+            transition: width .6s;
+        }
+
+        .ekp-kembali {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            flex-shrink: 0;
+            text-decoration: none;
+            font-size: .85rem;
+            font-weight: 700;
+            color: #475569;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: .75rem;
+            padding: .5rem .8rem;
+            transition: color .2s, border-color .2s;
+        }
+
+        .ekp-kembali:hover {
+            color: #2563eb;
+            border-color: #93c5fd;
+        }
+
+        .ekp-kembali:focus-visible,
+        .ekp-logo:focus-visible {
+            outline: 3px solid #93c5fd;
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 640px) {
+
+            .ekp-logo-teks,
+            .ekp-kembali span {
+                display: none;
+            }
+        }
+
+
+        /* ================== MATERI POS 1: TAMAN WAKTU ================== */
+        .ekp-wadah [hidden] {
+            display: none !important;
+        }
+
+        .ekp-tombol {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            border: 0;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 800;
+            font-size: .92rem;
+            border-radius: .95rem;
+            padding: .75rem 1.15rem;
+            transition: transform .15s, filter .15s;
+        }
+
+        .ekp-tombol:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+
+        .ekp-tombol:focus-visible,
+        .ekp-pil:focus-visible,
+        .ekp-opsi:focus-visible {
+            outline: 3px solid #93c5fd;
+            outline-offset: 2px;
+        }
+
+        .ekp-tombol.biru {
+            background: #2563eb;
+            color: #fff;
+            box-shadow: 0 8px 16px -10px #2563eb;
+        }
+
+        .ekp-tombol.oranye {
+            background: #f97316;
+            color: #fff;
+            box-shadow: 0 8px 16px -10px #f97316;
+        }
+
+        .ekp-tombol.hijau {
+            background: #059669;
+            color: #fff;
+            box-shadow: 0 8px 16px -10px #059669;
+        }
+
+        .ekp-tombol.abu {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .ekp-tombol.putih {
+            background: #fff;
+            color: #1d4ed8;
+        }
+
+        .ekp-ajakan {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            color: #fff;
+            border-radius: 1.6rem;
+            padding: 1.1rem 1.25rem;
+            background: linear-gradient(135deg, #1d4ed8, #4f46e5 60%, #7c3aed);
+            box-shadow: 0 18px 34px -22px rgba(37, 99, 235, .9);
+        }
+
+        .ekp-ajakan-ikon {
+            width: 3.2rem;
+            height: 3.2rem;
+            border-radius: 1rem;
+            display: grid;
+            place-items: center;
+            font-size: 1.7rem;
+            background: rgba(255, 255, 255, .18);
+            border: 1px solid rgba(255, 255, 255, .3);
+            animation: ekp-ketuk 1.6s ease-in-out infinite;
+        }
+
+        @keyframes ekp-ketuk {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .ekp-ajakan-teks {
+            flex: 1 1 240px;
+            min-width: 0;
+        }
+
+        .ekp-ajakan h3 {
+            margin: 0;
+            font-size: 1.08rem;
+            font-weight: 800;
+        }
+
+        .ekp-ajakan p {
+            margin: .2rem 0 0;
+            font-size: .88rem;
+            color: rgba(255, 255, 255, .88);
+            line-height: 1.55;
+        }
+
+        .ekp-pos {
+            display: flex;
+            flex-direction: column;
+            gap: 1.4rem;
+            scroll-margin-top: 80px;
+        }
+
+        /* Banner */
+        .ekp-banner {
+            position: relative;
+            overflow: hidden;
+            color: #fff;
+            border-radius: 2rem;
+            padding: 1.6rem 1.5rem 1.5rem;
+            min-height: 230px;
+            background:
+                radial-gradient(circle at 12% 20%, rgba(255, 255, 255, .22), transparent 35%),
+                linear-gradient(135deg, #0ea5e9 0%, #2563eb 55%, #4338ca 100%);
+            box-shadow: 0 24px 44px -28px rgba(37, 99, 235, .9);
+        }
+
+        .ekp-banner-taman {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: min(620px, 100%);
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .ekp-jarum-menit {
+            transform-box: fill-box;
+            transform-origin: 0% 50%;
+            animation: ekp-putar 6s linear infinite;
+        }
+
+        .ekp-jarum-jam {
+            transform-box: fill-box;
+            transform-origin: 50% 100%;
+            animation: ekp-putar 72s linear infinite;
+        }
+
+        @keyframes ekp-putar {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .ekp-banner-isi {
+            position: relative;
+            z-index: 1;
+            max-width: 38rem;
+        }
+
+        .ekp-banner-pos {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            margin: 0;
+            font-size: .8rem;
+            font-weight: 800;
+            background: rgba(255, 255, 255, .18);
+            border-radius: 999px;
+            padding: .3rem .75rem;
+        }
+
+        .ekp-banner h2 {
+            margin: .6rem 0 .4rem;
+            font-size: clamp(1.6rem, 4.4vw, 2.3rem);
+            font-weight: 800;
+            letter-spacing: -.02em;
+            line-height: 1.15;
+        }
+
+        .ekp-banner-tujuan {
+            margin: 0;
+            font-size: .9rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, .92);
+        }
+
+        .ekp-sapa {
+            display: flex;
+            align-items: flex-end;
+            gap: .7rem;
+            margin-top: 1rem;
+        }
+
+        .ekp-sapa-tokoh {
+            width: 52px;
+            height: 72px;
+            flex-shrink: 0;
+        }
+
+        .ekp-sapa-tokoh svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .ekp-sapa p {
+            position: relative;
+            margin: 0;
+            color: #334155;
+            background: #fff;
+            border-radius: 1rem 1rem 1rem .3rem;
+            padding: .7rem .9rem;
+            font-size: .86rem;
+            line-height: 1.55;
+            box-shadow: 0 10px 20px -14px rgba(15, 23, 42, .6);
+        }
+
+        .ekp-sapa p strong {
+            color: #1d4ed8;
+        }
+
+        /* Navigasi stasiun */
+        .ekp-stasiun-nav {
+            position: sticky;
+            top: 64px;
+            z-index: 20;
+            display: flex;
+            gap: .45rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: .55rem;
+            border-radius: 1.2rem;
+            background: rgba(255, 255, 255, .88);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid #e0e7ff;
+            box-shadow: 0 10px 22px -18px rgba(30, 58, 138, .7);
+        }
+
+        .ekp-stasiun-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .ekp-stasiun-nav a {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            text-decoration: none;
+            font-size: .8rem;
+            font-weight: 700;
+            color: #475569;
+            border-radius: 999px;
+            padding: .35rem .75rem .35rem .35rem;
+            transition: background .2s, color .2s;
+        }
+
+        .ekp-stasiun-nav a b {
+            width: 1.45rem;
+            height: 1.45rem;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: .72rem;
+            color: #fff;
+            background: #94a3b8;
+        }
+
+        .ekp-stasiun-nav a:hover,
+        .ekp-stasiun-nav a.aktif {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .ekp-stasiun-nav a.aktif b {
+            background: #2563eb;
+        }
+
+        /* Kartu stasiun */
+        .ekp-stasiun {
+            position: relative;
+            scroll-margin-top: 140px;
+            background: #fff;
+            border-radius: 1.8rem;
+            padding: 1.4rem 1.4rem 1.5rem;
+            border: 1px solid #e2e8f0;
+            border-top: 6px solid var(--w);
+            box-shadow: 0 22px 40px -32px rgba(30, 58, 138, .6);
+        }
+
+        .ekp-st-kepala {
+            display: flex;
+            align-items: center;
+            gap: .85rem;
+            margin-bottom: .6rem;
+        }
+
+        .ekp-st-no {
+            width: 2.8rem;
+            height: 2.8rem;
+            flex-shrink: 0;
+            border-radius: 1rem;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #fff;
+            background: var(--w);
+            box-shadow: 0 8px 16px -10px var(--w);
+            transform: rotate(-5deg);
+        }
+
+        .ekp-st-sub {
+            margin: 0;
+            font-size: .75rem;
+            font-weight: 700;
+            color: var(--w);
+        }
+
+        .ekp-st-kepala h3 {
+            margin: .1rem 0 0;
+            font-size: clamp(1.15rem, 3vw, 1.4rem);
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .ekp-paragraf {
+            margin: .4rem 0 1rem;
+            font-size: .95rem;
+            line-height: 1.75;
+            color: #334155;
+            max-width: 62rem;
+        }
+
+        .ekp-kecil {
+            font-size: .8rem;
+            line-height: 1.55;
+            color: #64748b;
+            margin: .5rem 0 0;
+        }
+
+        .ekp-kecil.tengah {
+            text-align: center;
+        }
+
+        .ekp-dua {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .ekp-dua.kecil {
+            margin-top: 1rem;
+        }
+
+        .ekp-baris-tombol {
+            display: flex;
+            gap: .5rem;
+            margin-top: 1rem;
+        }
+
+        .ekp-baris-tombol .ekp-tombol:first-child {
+            flex: 1;
+        }
+
+        /* Stasiun 1 */
+        .ekp-panel-anim {
+            margin: 0;
+            border-radius: 1.3rem;
+            padding: .9rem;
+            background: var(--w-muda);
+            display: flex;
+            flex-direction: column;
+            gap: .7rem;
+        }
+
+        .ekp-anim-judul {
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+            font-weight: 800;
+            font-size: .9rem;
+            color: #1e3a8a;
+        }
+
+        .ekp-jalan-raya {
+            position: relative;
+            height: 120px;
+            border-radius: 1rem;
+            overflow: hidden;
+            background:
+                linear-gradient(180deg, #bae6fd 0 45%, #86efac 45% 58%, #475569 58% 100%);
+        }
+
+        .ekp-jalan-raya::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 78%;
+            height: 3px;
+            background: repeating-linear-gradient(90deg, #fde047 0 16px, transparent 16px 30px);
+        }
+
+        .ekp-patok {
+            position: absolute;
+            left: 6%;
+            right: 6%;
+            top: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: .62rem;
+            font-weight: 800;
+            color: #1e3a8a;
+        }
+
+        .ekp-mobil {
+            position: absolute;
+            left: 0;
+            top: 52%;
+            width: 76px;
+            height: 38px;
+            transform: translateX(0);
+        }
+
+        .ekp-gelas {
+            position: relative;
+            height: 120px;
+            border-radius: .6rem .6rem 1.4rem 1.4rem;
+            border: 3px solid #94a3b8;
+            border-top: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, .7), rgba(186, 230, 253, .7));
+            overflow: hidden;
+        }
+
+        .ekp-gelas span {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #fecdd3, #e11d48);
+            transition: background .5s, transform .5s;
+            animation: ekp-goyang 2.4s ease-in-out infinite;
+        }
+
+        .ekp-gelas span {
+            transition: background .5s, transform .5s, left .6s ease, top .6s ease, opacity .4s .3s;
+        }
+
+        .ekp-gelas span.b {
+            background: radial-gradient(circle at 35% 30%, #bfdbfe, #2563eb);
+        }
+
+        .ekp-gelas span.jadi {
+            background: radial-gradient(circle at 35% 30%, #fef9c3, #eab308);
+            transform: scale(1.3);
+            box-shadow: 0 0 10px rgba(250, 204, 21, .8);
+        }
+
+        .ekp-gelas span.gabung {
+            opacity: 0;
+        }
+
+        .ekp-persamaan-abc {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: .35rem .5rem;
+            padding: .5rem .7rem;
+            border-radius: .9rem;
+            background: #fff;
+            border: 1px solid #bfdbfe;
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: #0f172a;
+        }
+
+        .ekp-persamaan-abc .zat {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+        }
+
+        .ekp-persamaan-abc .op {
+            color: #64748b;
+        }
+
+        .ekp-persamaan-abc .ket-reaksi {
+            flex-basis: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 2.4rem;
+            font-size: .68rem;
+            font-weight: 700;
+        }
+
+        .ekp-persamaan-abc .ket-reaksi em {
+            font-style: normal;
+            border-radius: 999px;
+            padding: .05rem .5rem;
+        }
+
+        .ekp-persamaan-abc .ket-reaksi em:first-child {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .ekp-persamaan-abc .ket-reaksi em:last-child {
+            background: #fef9c3;
+            color: #a16207;
+        }
+
+        .bola {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .bola.a {
+            background: radial-gradient(circle at 35% 30%, #fecdd3, #e11d48);
+        }
+
+        .bola.b {
+            background: radial-gradient(circle at 35% 30%, #bfdbfe, #2563eb);
+        }
+
+        .bola.c {
+            background: radial-gradient(circle at 35% 30%, #fef9c3, #eab308);
+        }
+
+        .ekp-legenda-abc {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .35rem .8rem;
+            font-size: .74rem;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        /* partikel bergerak & tumbukan efektif */
+        .ekp-gelas span.ptk {
+            left: 0;
+            top: 0;
+            animation: none;
+            transition: background .35s, box-shadow .35s, opacity .3s;
+            will-change: transform;
+        }
+
+        .ekp-gelas span.ptk.gabung {
+            opacity: 0;
+            transition: opacity .15s;
+        }
+
+        .ekp-gelas .ledak {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 34px;
+            height: 34px;
+            margin: -17px 0 0 -17px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(254, 240, 138, .95) 0 25%, rgba(250, 204, 21, .5) 45%, transparent 70%);
+            box-shadow: 0 0 0 2px rgba(250, 204, 21, .6);
+            pointer-events: none;
+            animation: ekp-ledak .6s ease-out forwards;
+        }
+
+        @keyframes ekp-ledak {
+            from {
+                transform: var(--pos) scale(.3);
+                opacity: 1;
+            }
+
+            to {
+                transform: var(--pos) scale(1.9);
+                opacity: 0;
+            }
+        }
+
+        .ekp-gelas .teks-tumbukan {
+            position: absolute;
+            left: 0;
+            top: 0;
+            white-space: nowrap;
+            font-size: .62rem;
+            font-weight: 800;
+            color: #92400e;
+            background: #fef9c3;
+            border: 1px solid #facc15;
+            border-radius: 999px;
+            padding: .05rem .4rem;
+            pointer-events: none;
+            animation: ekp-teks-naik 1.1s ease-out forwards;
+        }
+
+        @keyframes ekp-teks-naik {
+            0% {
+                transform: var(--pos) translateY(0);
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: var(--pos) translateY(-22px);
+                opacity: 0;
+            }
+        }
+
+        .ekp-legenda-abc .kilau {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fef08a 0 30%, rgba(250, 204, 21, .5) 50%, transparent 72%);
+            box-shadow: 0 0 0 1.5px #facc15;
+        }
+
+        .ekp-angka4.dalam {
+            margin-top: 0;
+        }
+
+        b.biru {
+            color: #2563eb !important;
+        }
+
+        b.kuning {
+            color: #ca8a04 !important;
+        }
+
+        .ekp-legenda-abc span {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+        }
+
+        @keyframes ekp-goyang {
+
+            0%,
+            100% {
+                translate: 0 0;
+            }
+
+            50% {
+                translate: 3px -4px;
+            }
+        }
+
+        .ekp-angka3,
+        .ekp-angka4 {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: .45rem;
+        }
+
+        .ekp-angka4 {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            margin-top: .8rem;
+        }
+
+        .ekp-angka3 div,
+        .ekp-angka4 div {
+            background: #fff;
+            border-radius: .8rem;
+            padding: .45rem .5rem;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .ekp-angka3 span,
+        .ekp-angka4 span {
+            display: block;
+            font-size: .66rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .ekp-angka3 b,
+        .ekp-angka4 b {
+            font-size: .9rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .ekp-angka3 .sorot,
+        .ekp-angka4 .sorot {
+            background: #1e3a8a;
+            border-color: #1e3a8a;
+        }
+
+        .ekp-angka3 .sorot span,
+        .ekp-angka4 .sorot span {
+            color: #bfdbfe;
+        }
+
+        .ekp-angka3 .sorot b,
+        .ekp-angka4 .sorot b {
+            color: #fff;
+        }
+
+        b.merah {
+            color: #e11d48 !important;
+        }
+
+        b.hijau {
+            color: #059669 !important;
+        }
+
+        .ekp-panel-anim figcaption {
+            font-size: .8rem;
+            line-height: 1.5;
+            color: #334155;
+        }
+
+        .ekp-kotak-pikir,
+        .ekp-kotak-awas {
+            display: flex;
+            gap: .6rem;
+            align-items: flex-start;
+            margin-top: 1rem;
+            border-radius: 1rem;
+            padding: .75rem .9rem;
+            font-size: .88rem;
+        }
+
+        .ekp-kotak-pikir {
+            background: #fefce8;
+            border: 1px dashed #facc15;
+        }
+
+        .ekp-kotak-pikir>.ekp-ik {
+            color: #ca8a04;
+            font-size: 1.3rem;
+        }
+
+        .ekp-kotak-awas {
+            background: #fff1f2;
+            border: 1px dashed #fb7185;
+        }
+
+        .ekp-kotak-awas>.ekp-ik {
+            color: #e11d48;
+            font-size: 1.3rem;
+        }
+
+        .ekp-kotak-pikir p,
+        .ekp-kotak-awas p {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* Stasiun 2 */
+        .ekp-pilih {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem;
+            margin-bottom: .9rem;
+        }
+
+        .ekp-pil {
+            font-family: inherit;
+            cursor: pointer;
+            font-size: .82rem;
+            font-weight: 700;
+            color: #475569;
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: .8rem;
+            padding: .45rem .85rem;
+            transition: all .15s;
+        }
+
+        .ekp-pil:hover {
+            border-color: var(--w, #2563eb);
+        }
+
+        .ekp-pil.aktif {
+            color: #fff;
+            background: var(--w, #2563eb);
+            border-color: var(--w, #2563eb);
+        }
+
+        .ekp-pilih.kecil .ekp-pil {
+            font-size: .76rem;
+            padding: .35rem .7rem;
+        }
+
+        .ekp-dapur {
+            --bola: 20px;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto auto auto minmax(0, 1fr);
+            align-items: end;
+            gap: .5rem;
+            padding: 1rem .8rem 1.1rem;
+            border-radius: 1.3rem;
+            border: 1px solid #fed7aa;
+            background:
+                linear-gradient(90deg, rgba(251, 146, 60, .1) 1px, transparent 1px) 0 0 / 22px 22px,
+                linear-gradient(rgba(251, 146, 60, .1) 1px, transparent 1px) 0 0 / 22px 22px,
+                linear-gradient(180deg, #fffbeb, #ffedd5);
+        }
+
+        .ekp-dapur .zona {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .5rem;
+            min-width: 0;
+        }
+
+        .ekp-dapur .zona-label {
+            font-size: .72rem;
+            font-weight: 800;
+            color: #9a3412;
+            background: #fff;
+            border: 1px solid #fed7aa;
+            border-radius: 999px;
+            padding: .15rem .6rem;
+            white-space: nowrap;
+        }
+
+        .ekp-dapur .panah {
+            color: #fb923c;
+            font-size: 1.2rem;
+            margin-bottom: 2.2rem;
+        }
+
+        .ekp-dapur .isi {
+            display: grid;
+            grid-template-columns: repeat(4, var(--bola));
+            gap: 4px;
+            justify-content: center;
+        }
+
+        .ekp-dapur .mangkuk {
+            width: 100%;
+            max-width: 150px;
+            padding: 8px 8px 22px;
+            background: linear-gradient(180deg, #bae6fd, #7dd3fc);
+            border-radius: 12px 12px 70px 70px / 12px 12px 46px 46px;
+            border-top: 5px solid #38bdf8;
+        }
+
+        .ekp-dapur .adonan {
+            width: var(--bola);
+            height: var(--bola);
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #fffbeb, #fcd34d 70%);
+            border: 1.5px solid #f59e0b;
+            transition: transform .35s, opacity .35s;
+        }
+
+        .ekp-dapur .adonan.habis {
+            transform: scale(.2) translateY(-20px);
+            opacity: 0;
+        }
+
+        .ekp-dapur .nampan {
+            width: 100%;
+            max-width: 150px;
+            padding: 8px;
+            background: #e2e8f0;
+            border: 3px solid #94a3b8;
+            border-radius: 10px;
+        }
+
+        .ekp-dapur .slot {
+            width: var(--bola);
+            height: var(--bola);
+            border-radius: 50%;
+            border: 1.5px dashed #cbd5e1;
+            display: grid;
+            place-items: center;
+        }
+
+        .ekp-dapur .kue {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 30% 35%, #5b3a1e 0 1.6px, transparent 2.2px),
+                radial-gradient(circle at 66% 58%, #5b3a1e 0 1.6px, transparent 2.2px),
+                radial-gradient(circle at 40% 38%, #f6c177, #c47a2c 80%);
+            transform: scale(0);
+            transition: transform .4s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .ekp-dapur .slot.jadi {
+            border-color: transparent;
+        }
+
+        .ekp-dapur .slot.jadi .kue {
+            transform: scale(1);
+        }
+
+        .ekp-dapur .oven {
+            width: 92px;
+            border-radius: 12px;
+            background: #334155;
+            padding: 6px;
+            box-shadow: 0 6px 0 #1e293b;
+            margin-bottom: 6px;
+        }
+
+        .ekp-dapur .oven-panel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .ekp-dapur .oven-panel i {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #94a3b8;
+            border: 2px solid #475569;
+        }
+
+        .ekp-dapur .oven-panel span {
+            font-family: ui-monospace, monospace;
+            font-size: .62rem;
+            font-weight: 700;
+            color: #4ade80;
+            background: #0f172a;
+            border-radius: 4px;
+            padding: 0 4px;
+        }
+
+        .ekp-dapur .jendela {
+            height: 58px;
+            border-radius: 8px;
+            background: #1e293b;
+            border: 3px solid #64748b;
+            display: grid;
+            place-items: center;
+            transition: background .4s;
+        }
+
+        .ekp-dapur .jendela span {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 38%, #fde68a, #f59e0b 80%);
+            opacity: .35;
+        }
+
+        .ekp-dapur .oven.menyala .jendela {
+            background: radial-gradient(circle at 50% 70%, #fdba74, #ea580c 55%, #7c2d12);
+        }
+
+        .ekp-dapur .oven.menyala .jendela span {
+            opacity: 1;
+            animation: ekp-putar 1.6s linear infinite;
+        }
+
+        .ekp-hitungan {
+            margin-top: .8rem;
+            border-radius: 1rem;
+            padding: .8rem .95rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            font-size: .86rem;
+            line-height: 1.65;
+            color: #334155;
+        }
+
+        .ekp-hitungan p {
+            margin: 0;
+        }
+
+        .ekp-hitungan .kode {
+            font-family: ui-monospace, 'SFMono-Regular', monospace;
+            font-size: .82rem;
+        }
+
+        .ekp-padanan {
+            display: grid;
+            gap: .4rem;
+            margin-top: 1rem;
+        }
+
+        .ekp-padanan>div {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+            align-items: center;
+            gap: .5rem;
+            font-size: .82rem;
+        }
+
+        .ekp-padanan>div>.ekp-ik {
+            color: #94a3b8;
+        }
+
+        .ekp-padanan .dp,
+        .ekp-padanan .km {
+            border-radius: .7rem;
+            padding: .4rem .7rem;
+            font-weight: 700;
+        }
+
+        .ekp-padanan .dp {
+            background: #fff7ed;
+            color: #9a3412;
+            border: 1px solid #fed7aa;
+        }
+
+        .ekp-padanan .km {
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        .ekp-padanan .km.merah {
+            background: #fff1f2;
+            color: #be123c;
+            border-color: #fecdd3;
+        }
+
+        .ekp-padanan .km.hijau {
+            background: #f0fdfa;
+            color: #0f766e;
+            border-color: #99f6e4;
+        }
+
+        /* Stasiun 3 */
+        .ekp-definisi {
+            position: relative;
+            border-radius: 1.3rem;
+            padding: 1.2rem 1.3rem 1.2rem 3.4rem;
+            background: linear-gradient(135deg, #f5f3ff, #fff);
+            border: 1.5px solid #ddd6fe;
+        }
+
+        .ekp-kutip {
+            position: absolute;
+            left: .9rem;
+            top: .1rem;
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1;
+            color: #c4b5fd;
+        }
+
+        .ekp-definisi p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.75;
+            color: #1e293b;
+        }
+
+        .ekp-alur-def {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+            align-items: center;
+            gap: .8rem;
+            margin-top: 1rem;
+        }
+
+        .ekp-alur-def .kotak {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .15rem;
+            border-radius: 1.1rem;
+            padding: .8rem;
+            text-align: center;
+        }
+
+        .ekp-alur-def .kotak b {
+            font-size: 1rem;
+        }
+
+        .ekp-alur-def .kotak span {
+            font-size: .78rem;
+        }
+
+        .ekp-alur-def .kotak em {
+            font-style: normal;
+            font-weight: 800;
+            font-size: .82rem;
+        }
+
+        .ekp-alur-def .kotak.merah {
+            background: #fff1f2;
+            color: #9f1239;
+            border: 1.5px solid #fecdd3;
+        }
+
+        .ekp-alur-def .kotak.hijau {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1.5px solid #a7f3d0;
+        }
+
+        .ekp-alur-def .panah-besar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #7c3aed;
+            font-size: 1.8rem;
+        }
+
+        .ekp-alur-def .panah-besar small {
+            font-size: .66rem;
+            font-weight: 800;
+        }
+
+        .ekp-satuan {
+            display: flex;
+            gap: .8rem;
+            align-items: flex-start;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            background: #ecfdf5;
+            border: 1.5px solid #a7f3d0;
+        }
+
+        .ekp-satuan .ikon {
+            width: 2.7rem;
+            height: 2.7rem;
+            flex-shrink: 0;
+            border-radius: .9rem;
+            display: grid;
+            place-items: center;
+            font-size: 1.4rem;
+            color: #fff;
+            background: #10b981;
+        }
+
+        .ekp-satuan p {
+            margin: .2rem 0 0;
+            font-size: .86rem;
+        }
+
+        .ekp-satuan .besar {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #065f46;
+        }
+
+        .ekp-tanda {
+            border-radius: 1.2rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            font-size: .86rem;
+        }
+
+        .ekp-tanda p {
+            margin: .45rem 0 0;
+            line-height: 1.55;
+        }
+
+        .ekp-tanda .catatan {
+            color: #64748b;
+            font-size: .8rem;
+        }
+
+        .lencana {
+            display: inline-grid;
+            place-items: center;
+            width: 1.4rem;
+            height: 1.4rem;
+            border-radius: .45rem;
+            font-weight: 800;
+            color: #fff;
+            margin-right: .25rem;
+        }
+
+        .lencana.merah {
+            background: #e11d48;
+        }
+
+        .lencana.hijau {
+            background: #059669;
+        }
+
+        .ekp-rumus-utama {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: .45rem;
+            margin-top: 1.1rem;
+            padding: 1rem;
+            border-radius: 1.2rem;
+            background: #1e1b4b;
+            color: #fff;
+            font-size: 1.08rem;
+            font-weight: 800;
+            overflow-x: auto;
+        }
+
+        .ekp-rumus-utama.biru {
+            background: #083344;
+        }
+
+        .ekp-rumus-utama.hijau {
+            background: #064e3b;
+        }
+
+        .ekp-rumus-utama.lebar {
+            font-size: .98rem;
+        }
+
+        .ekp-rumus-utama .grup {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            white-space: nowrap;
+        }
+
+        .ekp-kunci b {
+            white-space: nowrap;
+        }
+
+        .pecahan {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            line-height: 1.2;
+        }
+
+        .pecahan i {
+            font-style: normal;
+            padding: 0 .3rem;
+        }
+
+        .pecahan i:first-child {
+            border-bottom: 2px solid currentColor;
+            padding-bottom: .12rem;
+        }
+
+        .pecahan i:last-child {
+            padding-top: .12rem;
+        }
+
+        .pecahan.kecil {
+            font-size: .85em;
+            font-weight: 800;
+        }
+
+        /* Stasiun 4 */
+        .ekp-lab-molar {
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            gap: 1.2rem;
+            align-items: center;
+            margin-top: 1.1rem;
+            padding: 1rem;
+            border-radius: 1.3rem;
+            background: linear-gradient(135deg, #ecfeff, #f0f9ff);
+            border: 1.5px solid #a5f3fc;
+        }
+
+        .ekp-gelas-ukur svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        #ekpCairan {
+            transition: y .3s, height .3s, opacity .3s;
+        }
+
+        .ekp-kendali {
+            display: flex;
+            flex-direction: column;
+            gap: .9rem;
+        }
+
+        .ekp-label-slider {
+            display: flex;
+            justify-content: space-between;
+            gap: .5rem;
+            font-size: .8rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: .35rem;
+        }
+
+        .ekp-label-slider b {
+            color: var(--w, #2563eb);
+        }
+
+        .ekp-wadah input[type="range"] {
+            width: 100%;
+            accent-color: var(--w, #2563eb);
+            height: 1.5rem;
+        }
+
+        .ekp-hasil-molar {
+            border-radius: 1rem;
+            padding: .8rem 1rem;
+            background: #fff;
+            border: 1.5px solid #a5f3fc;
+            font-size: .9rem;
+            line-height: 1.6;
+        }
+
+        .ekp-hasil-molar strong {
+            font-size: 1.3rem;
+            color: #0e7490;
+        }
+
+        .ekp-contoh,
+        .ekp-soal {
+            position: relative;
+            border-radius: 1.2rem;
+            padding: 1.3rem 1rem 1rem;
+            background: #fff;
+            border: 1.5px solid var(--w-muda);
+            font-size: .88rem;
+            line-height: 1.6;
+        }
+
+        .ekp-contoh p,
+        .ekp-soal p {
+            margin: 0;
+        }
+
+        .ekp-contoh-label {
+            position: absolute;
+            top: -.7rem;
+            left: 1rem;
+            font-size: .72rem;
+            font-weight: 800;
+            color: #fff;
+            background: var(--w);
+            border-radius: 999px;
+            padding: .15rem .7rem;
+        }
+
+        .ekp-contoh details {
+            margin-top: .6rem;
+        }
+
+        .ekp-contoh summary {
+            cursor: pointer;
+            font-weight: 800;
+            color: var(--w);
+        }
+
+        .ekp-contoh ol {
+            margin: .4rem 0 0;
+            padding-left: 1.2rem;
+        }
+
+        /* Stasiun 5 */
+        .ekp-reaksi-umum {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: .5rem;
+            margin: .3rem 0 1rem;
+        }
+
+        .ekp-reaksi-umum .zat {
+            font-size: 1.3rem;
+            font-weight: 800;
+            border-radius: 1rem;
+            padding: .45rem .9rem;
+        }
+
+        .ekp-reaksi-umum .zat i {
+            font-style: italic;
+            font-weight: 700;
+            margin-right: .1rem;
+        }
+
+        .ekp-reaksi-umum .zat.merah {
+            background: #fff1f2;
+            color: #be123c;
+            border: 1.5px solid #fecdd3;
+        }
+
+        .ekp-reaksi-umum .zat.hijau {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1.5px solid #a7f3d0;
+        }
+
+        .ekp-reaksi-umum .op {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #64748b;
+        }
+
+        .ekp-reaksi-umum .panah {
+            color: #059669;
+            font-size: 1.6rem;
+        }
+
+        .ekp-tiga-hubungan {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: .6rem;
+        }
+
+        .ekp-tiga-hubungan div {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: .35rem;
+            border-radius: 1rem;
+            padding: .7rem .8rem;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            font-size: .84rem;
+            font-weight: 600;
+        }
+
+        .ekp-tiga-hubungan .no {
+            width: 1.4rem;
+            height: 1.4rem;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: .72rem;
+            font-weight: 800;
+            color: #fff;
+            background: #059669;
+        }
+
+        .ekp-kunci {
+            margin-top: 1rem;
+            text-align: center;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #fef9c3, #fef3c7);
+            border: 2px solid #facc15;
+        }
+
+        .ekp-kunci>span {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            font-size: .72rem;
+            font-weight: 800;
+            color: #a16207;
+            background: #fff;
+            border-radius: 999px;
+            padding: .15rem .6rem;
+        }
+
+        .ekp-kunci p {
+            margin: .5rem 0 .3rem;
+            font-size: .88rem;
+            color: #713f12;
+        }
+
+        .ekp-kunci b {
+            font-size: 1.25rem;
+            color: #422006;
+        }
+
+        .ekp-mesin {
+            margin-top: 1.2rem;
+            border-radius: 1.3rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border: 1.5px solid #d1fae5;
+        }
+
+        .ekp-mesin-kepala {
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+            font-size: 1rem;
+            color: #065f46;
+        }
+
+        .ekp-mesin-kepala .ekp-ik {
+            font-size: 1.3rem;
+        }
+
+        .ekp-mesin .ekp-pilih {
+            margin: .8rem 0;
+        }
+
+        .ekp-mesin-isi {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+            gap: 1rem;
+        }
+
+        #ekpGrafik {
+            width: 100%;
+            height: 240px;
+            display: block;
+            background: #fff;
+            border-radius: 1rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .ekp-legenda {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem .8rem;
+            margin-top: .5rem;
+            font-size: .76rem;
+            font-weight: 700;
+        }
+
+        .ekp-legenda span {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+        }
+
+        .ekp-legenda i {
+            width: 16px;
+            height: 4px;
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        .ekp-batang {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: .5rem;
+            margin-top: .8rem;
+        }
+
+        .ekp-batang>div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .25rem;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: .9rem;
+            padding: .5rem .3rem;
+            font-size: .72rem;
+        }
+
+        .ekp-batang .tiang {
+            height: 80px;
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .ekp-batang .tiang i {
+            display: block;
+            width: 26px;
+            border-radius: 6px 6px 0 0;
+            transition: height .35s;
+        }
+
+        .ekp-batang b {
+            font-size: .8rem;
+        }
+
+        .ekp-batang small {
+            color: #64748b;
+        }
+
+        .ekp-soal {
+            margin-top: 1.4rem;
+        }
+
+        .ekp-langkah-soal {
+            display: grid;
+            gap: .45rem;
+            margin: .8rem 0;
+        }
+
+        .ekp-langkah-soal .lk {
+            display: none;
+            border-radius: .9rem;
+            padding: .6rem .8rem;
+            background: #ecfdf5;
+            border-left: 4px solid #10b981;
+            animation: ekp-muncul .4s ease;
+        }
+
+        .ekp-langkah-soal .lk.tampil {
+            display: block;
+        }
+
+        @keyframes ekp-muncul {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* Stasiun 6 */
+        .ekp-rangkuman {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: .7rem;
+        }
+
+        .ekp-rangkuman div {
+            display: flex;
+            flex-direction: column;
+            gap: .4rem;
+            border-radius: 1.1rem;
+            padding: .85rem;
+            background: #fdf2f8;
+            border: 1px solid #fbcfe8;
+        }
+
+        .ekp-rangkuman .ekp-ik {
+            font-size: 1.5rem;
+            color: #db2777;
+        }
+
+        .ekp-rangkuman p {
+            margin: 0;
+            font-size: .84rem;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        .ekp-kuis {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+
+        .ekp-soal-kuis {
+            border-radius: 1.2rem;
+            padding: 1rem;
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+        }
+
+        .ekp-soal-kuis>p {
+            margin: 0 0 .7rem;
+            font-weight: 700;
+            font-size: .92rem;
+            line-height: 1.55;
+        }
+
+        .ekp-soal-kuis>p b {
+            color: #db2777;
+            margin-right: .3rem;
+        }
+
+        .ekp-opsi-daftar {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: .5rem;
+        }
+
+        .ekp-opsi {
+            font-family: inherit;
+            text-align: left;
+            cursor: pointer;
+            font-size: .86rem;
+            font-weight: 600;
+            color: #334155;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: .9rem;
+            padding: .6rem .8rem;
+            transition: all .15s;
+        }
+
+        .ekp-opsi:hover:not(:disabled) {
+            border-color: #f472b6;
+            background: #fdf2f8;
+        }
+
+        .ekp-opsi.benar {
+            background: #ecfdf5;
+            border-color: #10b981;
+            color: #065f46;
+        }
+
+        .ekp-opsi.salah {
+            background: #fff1f2;
+            border-color: #fb7185;
+            color: #9f1239;
+        }
+
+        .ekp-opsi:disabled {
+            cursor: default;
+        }
+
+        .ekp-umpan {
+            margin-top: .6rem;
+            font-size: .84rem;
+            line-height: 1.55;
+            border-radius: .8rem;
+            padding: .55rem .75rem;
+        }
+
+        .ekp-umpan.benar {
+            background: #ecfdf5;
+            color: #065f46;
+        }
+
+        .ekp-umpan.salah {
+            background: #fff1f2;
+            color: #9f1239;
+        }
+
+        .ekp-skor {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .5rem;
+            font-size: .85rem;
+            font-weight: 700;
+            color: #9d174d;
+        }
+
+        .ekp-hadiah {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.2rem;
+            border-radius: 1.4rem;
+            padding: 1.1rem 1.2rem;
+            color: #fff;
+            background: linear-gradient(135deg, #059669, #0d9488 50%, #2563eb);
+            animation: ekp-muncul .5s ease;
+        }
+
+        .ekp-hadiah>div {
+            flex: 1 1 220px;
+        }
+
+        .ekp-hadiah b {
+            font-size: 1.08rem;
+        }
+
+        .ekp-hadiah p {
+            margin: .2rem 0 0;
+            font-size: .86rem;
+            color: rgba(255, 255, 255, .9);
+        }
+
+        .ekp-hadiah-lencana {
+            width: 3.6rem;
+            height: 3.6rem;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 2rem;
+            color: #f59e0b;
+            background: #fff;
+            box-shadow: 0 0 0 6px rgba(255, 255, 255, .25);
+            animation: ekp-ketuk 1.6s ease-in-out infinite;
+        }
+
+        .ekp-konfeti {
+            position: fixed;
+            top: -12px;
+            z-index: 100;
+            width: 9px;
+            height: 14px;
+            border-radius: 2px;
+            pointer-events: none;
+            animation: ekp-jatuh 2.6s linear forwards;
+        }
+
+        @keyframes ekp-jatuh {
+            to {
+                transform: translateY(105vh) rotate(720deg);
+                opacity: .4;
+            }
+        }
+
+        .ekp-pos-lain {
+            align-items: center;
+            text-align: center;
+            background: #fff;
+            border-radius: 1.8rem;
+            padding: 2rem 1.3rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .ekp-pos-lain h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .ekp-pos-lain p {
+            margin: 0;
+            color: #64748b;
+            max-width: 32rem;
+            line-height: 1.6;
+        }
+
+        .ekp-gembok {
+            width: 3.6rem;
+            height: 3.6rem;
+            border-radius: 1.2rem;
+            display: grid;
+            place-items: center;
+            font-size: 1.9rem;
+            color: #fff;
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
+        }
+
+        /* Responsif materi */
+        @media (max-width: 900px) {
+            .ekp-rangkuman {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .ekp-mesin-isi {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .ekp-dua {
+                grid-template-columns: 1fr;
+            }
+
+            .ekp-stasiun {
+                padding: 1.1rem 1rem 1.2rem;
+                border-radius: 1.4rem;
+            }
+
+            .ekp-banner {
+                padding: 1.2rem 1.1rem;
+                border-radius: 1.5rem;
+            }
+
+            .ekp-banner-taman {
+                opacity: .45;
+            }
+
+            .ekp-lab-molar {
+                grid-template-columns: 1fr;
+            }
+
+            .ekp-gelas-ukur {
+                max-width: 190px;
+                margin: 0 auto;
+            }
+
+            .ekp-angka4 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .ekp-opsi-daftar {
+                grid-template-columns: 1fr;
+            }
+
+            .ekp-alur-def {
+                grid-template-columns: 1fr;
+            }
+
+            .ekp-alur-def .panah-besar {
+                flex-direction: row;
+                gap: .4rem;
+                font-size: 1.4rem;
+            }
+
+            .ekp-alur-def .panah-besar .ekp-ik {
+                transform: rotate(90deg);
+            }
+
+            .ekp-kunci b {
+                font-size: 1rem;
+            }
+
+            .ekp-reaksi-umum {
+                gap: .3rem;
+            }
+
+            .ekp-reaksi-umum .zat {
+                font-size: 1rem;
+                padding: .35rem .6rem;
+            }
+
+            .ekp-reaksi-umum .op {
+                font-size: 1rem;
+            }
+
+            .ekp-definisi {
+                padding-left: 2.6rem;
+            }
+
+            .ekp-definisi p {
+                font-size: .93rem;
+            }
+
+            .ekp-kutip {
+                left: .55rem;
+                font-size: 3.2rem;
+            }
+
+            .ekp-rumus-utama {
+                font-size: .9rem;
+                row-gap: .7rem;
+            }
+
+            .ekp-rumus-utama.lebar {
+                font-size: .82rem;
+            }
+
+            .ekp-stasiun-nav {
+                top: 58px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .ekp-dapur {
+                --bola: 14px;
+                gap: .25rem;
+                padding: .8rem .45rem .9rem;
+            }
+
+            .ekp-dapur .isi {
+                gap: 3px;
+            }
+
+            .ekp-dapur .oven {
+                width: 66px;
+            }
+
+            .ekp-dapur .jendela {
+                height: 42px;
+            }
+
+            .ekp-dapur .panah {
+                font-size: .9rem;
+                margin-bottom: 1.6rem;
+            }
+
+            .ekp-dapur .zona-label {
+                font-size: .62rem;
+                padding: .1rem .4rem;
+            }
+
+            .ekp-rangkuman {
+                grid-template-columns: 1fr;
+            }
+
+            .ekp-padanan>div {
+                font-size: .76rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .ekp-jarum-menit,
+            .ekp-jarum-jam,
+            .ekp-gelas span,
+            .ekp-ajakan-ikon,
+            .ekp-hadiah-lencana,
+            .ekp-dapur .oven.menyala .jendela span {
+                animation: none;
+            }
+        }
+
+        /* ---------- Jejak kembali ke peta ---------- */
+        .ekp-jejak {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: .6rem;
+        }
+
+        .ekp-ke-peta {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            text-decoration: none;
+            font-size: .88rem;
+            font-weight: 800;
+            color: #14532d;
+            background: #fff;
+            border: 2px solid #bbf7d0;
+            border-radius: 999px;
+            padding: .45rem .95rem .45rem .5rem;
+            box-shadow: 0 8px 16px -12px rgba(20, 83, 45, .6);
+            transition: transform .15s, border-color .15s;
+        }
+
+        .ekp-ke-peta:hover {
+            transform: translateY(-2px);
+            border-color: #4ade80;
+        }
+
+        .ekp-ke-peta:focus-visible {
+            outline: 3px solid #93c5fd;
+            outline-offset: 2px;
+        }
+
+        .ekp-ke-peta .bulat {
+            width: 1.8rem;
+            height: 1.8rem;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: #16a34a;
+        }
+
+        .ekp-remah {
+            font-size: .8rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .ekp-remah b {
+            color: #1d4ed8;
+        }
+
+        a.ekp-tombol {
+            text-decoration: none;
+        }
+
+        /* ---------- Komponen umum (tombol, tabel, langkah bertahap) ---------- */
+        .ekp-tombol.kecil {
+            font-size: .84rem;
+            padding: .6rem 1rem;
+        }
+
+        .ekp-tombol.warna {
+            background: var(--w);
+            color: #fff;
+            box-shadow: 0 8px 16px -10px var(--w);
+        }
+
+        .ekp-tombol.indigo {
+            background: #4f46e5;
+            color: #fff;
+            box-shadow: 0 8px 16px -10px #4f46e5;
+        }
+
+        .ekp-mesin.biru {
+            border-color: #bfdbfe;
+        }
+
+        .ekp-mesin.biru .ekp-mesin-kepala {
+            color: #1d4ed8;
+        }
+
+        .ekp-mesin.oranye {
+            border-color: #fed7aa;
+        }
+
+        .ekp-mesin.oranye .ekp-mesin-kepala {
+            color: #9a3412;
+        }
+
+        .ekp-mesin.hijau {
+            border-color: #a7f3d0;
+        }
+
+        .ekp-mesin.indigo {
+            border-color: #c7d2fe;
+        }
+
+        .ekp-mesin.indigo .ekp-mesin-kepala {
+            color: #3730a3;
+        }
+
+        .ekp-lipat {
+            margin-top: .8rem;
+            border-radius: 1rem;
+            padding: .7rem .95rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            font-size: .88rem;
+            line-height: 1.65;
+        }
+
+        .ekp-lipat summary {
+            cursor: pointer;
+            font-weight: 800;
+            color: var(--w, #2563eb);
+        }
+
+        .ekp-lipat ol {
+            margin: .5rem 0 0;
+            padding-left: 1.2rem;
+        }
+
+        .ekp-rujukan {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            margin: 1.2rem 0 0;
+            font-size: .76rem;
+            color: #64748b;
+        }
+
+        /* Tabel */
+        .ekp-tabel-bungkus {
+            overflow-x: auto;
+            border-radius: 1rem;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            margin-top: .8rem;
+        }
+
+        .ekp-tabel {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .86rem;
+            min-width: 380px;
+        }
+
+        .ekp-tabel th {
+            text-align: center;
+            font-size: .74rem;
+            font-weight: 800;
+            color: #1e3a8a;
+            background: #eff6ff;
+            padding: .6rem .5rem;
+        }
+
+        .ekp-tabel td {
+            text-align: center;
+            padding: .55rem .5rem;
+            border-top: 1px solid #f1f5f9;
+            font-weight: 600;
+            transition: background .25s, color .25s;
+        }
+
+        .ekp-tabel.ringkas {
+            min-width: 560px;
+        }
+
+        .ekp-tabel.ringkas b {
+            display: inline-grid;
+            place-items: center;
+            width: 1.6rem;
+            height: 1.6rem;
+            border-radius: 50%;
+            color: #fff;
+        }
+
+        .ekp-tabel .o0 {
+            background: #0891b2;
+        }
+
+        .ekp-tabel .o1 {
+            background: #7c3aed;
+        }
+
+        .ekp-tabel .o2 {
+            background: #db2777;
+        }
+
+        .ekp-tabel tr.pilih td {
+            background: #fefce8;
+        }
+
+        .ekp-tabel td.beda {
+            background: #fde68a !important;
+            color: #78350f;
+            font-weight: 800;
+        }
+
+        .ekp-tabel td.sama {
+            background: #f1f5f9 !important;
+            color: #64748b;
+        }
+
+        .ekp-tabel td.pakai {
+            background: #dcfce7 !important;
+            color: #065f46;
+            font-weight: 800;
+        }
+
+        .ekp-tabel.isian input {
+            width: 100%;
+            max-width: 110px;
+            font-family: inherit;
+            font-size: .88rem;
+            font-weight: 700;
+            text-align: center;
+            border: 1.5px solid #c7d2fe;
+            border-radius: .6rem;
+            padding: .4rem .3rem;
+            background: #f8faff;
+        }
+
+        .ekp-tabel.isian input:focus-visible {
+            outline: 3px solid #a5b4fc;
+            outline-offset: 1px;
+        }
+
+        /* Langkah bertahap */
+        .ekp-langkah-bertahap {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: .45rem;
+            margin: .8rem 0;
+        }
+
+        .ekp-langkah-bertahap .lk,
+        .ekp-derivasi .lk {
+            display: none;
+        }
+
+        .ekp-langkah-bertahap .lk.tampil,
+        .ekp-derivasi .lk.tampil {
+            display: block;
+            animation: ekp-muncul .4s ease;
+        }
+
+        .ekp-langkah-bertahap .lk {
+            border-radius: .9rem;
+            padding: .65rem .85rem;
+            background: var(--w-muda);
+            border-left: 4px solid var(--w);
+            font-size: .9rem;
+            line-height: 1.65;
+            overflow-x: auto;
+        }
+
+        .ekp-langkah-bertahap .rumus-baris {
+            display: block;
+            margin: .3rem 0;
+            font-weight: 800;
+            font-size: .98rem;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        #ekpTebak .ekp-pil:disabled {
+            opacity: 1;
+            cursor: default;
+        }
+
+        .ekp-langkah-bertahap .lk.akhir {
+            background: var(--w);
+            color: #fff;
+            border-left-color: #fde047;
+        }
+
+
+        /* ================== PUNCAK JUARA: UJI PEMAHAMAN ================== */
+        .ekp-banner.puncak {
+            background:
+                radial-gradient(circle at 12% 20%, rgba(255, 255, 255, .22), transparent 35%),
+                linear-gradient(135deg, #f59e0b 0%, #ea580c 45%, #be185d 100%);
+            box-shadow: 0 24px 44px -28px rgba(234, 88, 12, .9);
+        }
+
+        .ekp-banner.puncak .ekp-sapa p strong {
+            color: #ea580c;
+        }
+
+        .ekp-bendera-puncak {
+            transform-box: fill-box;
+            transform-origin: 0 50%;
+            animation: ekp-kibar 1.2s ease-in-out infinite alternate;
+        }
+
+        .ekp-piala {
+            animation: ekp-piala 3s ease-in-out infinite;
+        }
+
+        .ekp-bintang-kecil {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: ekp-kerlip 1.8s ease-in-out infinite;
+        }
+
+        .ekp-bintang-kecil.b2 {
+            animation-delay: .6s;
+        }
+
+        .ekp-bintang-kecil.b3 {
+            animation-delay: 1.2s;
+        }
+
+        @keyframes ekp-kibar {
+            from {
+                transform: scaleX(1);
+            }
+
+            to {
+                transform: scaleX(.75) skewY(4deg);
+            }
+        }
+
+        @keyframes ekp-piala {
+
+            0%,
+            100% {
+                transform: translate(420px, 150px);
+            }
+
+            50% {
+                transform: translate(420px, 144px);
+            }
+        }
+
+        @keyframes ekp-kerlip {
+
+            0%,
+            100% {
+                transform: scale(.6);
+                opacity: .5;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        .ekp-tombol.emas {
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
+            color: #fff;
+            box-shadow: 0 10px 20px -12px #ea580c;
+        }
+
+        .ekp-tombol.lebar {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        a.ekp-tombol {
+            text-decoration: none;
+        }
+
+        .ekp-uji-atas {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 1rem;
+        }
+
+        .ekp-kartu-identitas,
+        .ekp-petunjuk {
+            border-radius: 1.5rem;
+            padding: 1.1rem 1.2rem;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 18px 34px -30px rgba(30, 58, 138, .6);
+        }
+
+        .ekp-kartu-identitas .judul,
+        .ekp-petunjuk .judul {
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+            font-size: 1rem;
+            color: #0f172a;
+            margin-bottom: .7rem;
+        }
+
+        .ekp-kartu-identitas .judul .ekp-ik {
+            color: #2563eb;
+            font-size: 1.3rem;
+        }
+
+        .ekp-petunjuk .judul .ekp-ik {
+            color: #f59e0b;
+            font-size: 1.3rem;
+        }
+
+        .ekp-kartu-identitas label {
+            display: flex;
+            flex-direction: column;
+            gap: .3rem;
+            font-size: .78rem;
+            font-weight: 800;
+            color: #475569;
+            margin-bottom: .6rem;
+        }
+
+        .ekp-kartu-identitas .dua {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .6rem;
+        }
+
+        .ekp-kartu-identitas input {
+            font-family: inherit;
+            font-size: .95rem;
+            font-weight: 600;
+            border: 1.5px solid #cbd5e1;
+            border-radius: .8rem;
+            padding: .6rem .75rem;
+            background: #f8fafc;
+            width: 100%;
+        }
+
+        .ekp-kartu-identitas input:focus-visible {
+            outline: 3px solid #bfdbfe;
+            border-color: #2563eb;
+            background: #fff;
+        }
+
+        .ekp-kartu-identitas input.kurang {
+            border-color: #fb7185;
+            background: #fff1f2;
+        }
+
+        .ekp-petunjuk ul {
+            margin: 0;
+            padding-left: 1.1rem;
+            font-size: .88rem;
+            line-height: 1.75;
+            color: #334155;
+        }
+
+        .ekp-status-simpan {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            margin-top: .7rem;
+            font-size: .78rem;
+            font-weight: 700;
+            color: #065f46;
+            background: #ecfdf5;
+            border-radius: 999px;
+            padding: .3rem .8rem;
+        }
+
+        /* navigasi nomor soal */
+        .ekp-nav-soal {
+            position: sticky;
+            top: 64px;
+            z-index: 20;
+            border-radius: 1.3rem;
+            padding: .7rem .9rem .8rem;
+            background: rgba(255, 255, 255, .92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid #e0e7ff;
+            box-shadow: 0 10px 22px -18px rgba(30, 58, 138, .7);
+        }
+
+        .ekp-nav-soal .baris-atas {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: .82rem;
+            color: #475569;
+        }
+
+        .ekp-nav-soal .waktu {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .ekp-nav-soal .bar {
+            height: 8px;
+            margin: .45rem 0 .6rem;
+            border-radius: 999px;
+            background: #eef2f7;
+            overflow: hidden;
+        }
+
+        .ekp-nav-soal .bar i {
+            display: block;
+            height: 100%;
+            width: 0;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #2563eb, #7c3aed);
+            transition: width .3s;
+        }
+
+        .ekp-nav-soal .nomor {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .35rem;
+        }
+
+        .ekp-nav-soal .nomor a {
+            width: 2rem;
+            height: 2rem;
+            border-radius: .6rem;
+            display: grid;
+            place-items: center;
+            font-size: .78rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: #64748b;
+            background: #f1f5f9;
+            border: 1.5px solid #e2e8f0;
+        }
+
+        .ekp-nav-soal .nomor a.esai {
+            border-style: dashed;
+        }
+
+        .ekp-nav-soal .nomor a.isi {
+            color: #fff;
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .ekp-nav-soal .nomor a.isi.esai {
+            background: #7c3aed;
+            border-color: #7c3aed;
+        }
+
+        .ekp-nav-soal .nomor a.benar {
+            background: #059669;
+            border-color: #059669;
+            color: #fff;
+        }
+
+        .ekp-nav-soal .nomor a.salah {
+            background: #e11d48;
+            border-color: #e11d48;
+            color: #fff;
+        }
+
+        .ekp-nav-soal .nomor a.sebagian {
+            background: #f59e0b;
+            border-color: #f59e0b;
+            color: #fff;
+        }
+
+        .ekp-nav-soal .nomor .pemisah {
+            width: 1px;
+            background: #cbd5e1;
+            margin: 0 .2rem;
+        }
+
+        /* soal pilihan ganda */
+        .ekp-daftar-pg,
+        .ekp-daftar-esai {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1rem;
+        }
+
+        .ekp-topik {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .ekp-soal-uji .teks {
+            min-width: 0;
+        }
+
+        .ekp-soal-uji {
+            scroll-margin-top: 170px;
+            border-radius: 1.2rem;
+            padding: 1rem 1.05rem;
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .ekp-soal-uji.terisi {
+            border-color: var(--w-muda);
+        }
+
+        .ekp-soal-uji .kepala-soal {
+            display: flex;
+            align-items: flex-start;
+            gap: .7rem;
+        }
+
+        .ekp-soal-uji .no {
+            flex-shrink: 0;
+            width: 2rem;
+            height: 2rem;
+            border-radius: .7rem;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: .85rem;
+            color: #fff;
+            background: var(--w);
+        }
+
+        .ekp-soal-uji .teks {
+            flex: 1;
+            font-size: .95rem;
+            line-height: 1.65;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .ekp-soal-uji .topik {
+            display: inline-block;
+            margin-top: .3rem;
+            font-size: .68rem;
+            font-weight: 800;
+            color: var(--w);
+            background: var(--w-muda);
+            border-radius: 999px;
+            padding: .1rem .55rem;
+        }
+
+        .ekp-soal-uji .data-soal {
+            margin-top: .6rem;
+        }
+
+        .ekp-opsi-lima {
+            display: grid;
+            gap: .45rem;
+            margin-top: .8rem;
+        }
+
+        .ekp-opsi-lima label {
+            display: flex;
+            align-items: flex-start;
+            gap: .65rem;
+            cursor: pointer;
+            border-radius: .9rem;
+            padding: .6rem .75rem;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            font-size: .9rem;
+            line-height: 1.5;
+            transition: background .15s, border-color .15s;
+        }
+
+        .ekp-opsi-lima label:hover {
+            border-color: #93c5fd;
+        }
+
+        .ekp-opsi-lima input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .ekp-opsi-lima .huruf {
+            flex-shrink: 0;
+            width: 1.7rem;
+            height: 1.7rem;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: .8rem;
+            color: #475569;
+            background: #fff;
+            border: 1.5px solid #cbd5e1;
+        }
+
+        .ekp-opsi-lima input:checked+.huruf {
+            color: #fff;
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .ekp-opsi-lima label:has(input:checked) {
+            background: #eff6ff;
+            border-color: #2563eb;
+        }
+
+        .ekp-opsi-lima input:focus-visible+.huruf {
+            outline: 3px solid #93c5fd;
+            outline-offset: 2px;
+        }
+
+        .ekp-opsi-lima label.kunci {
+            background: #ecfdf5 !important;
+            border-color: #10b981 !important;
+        }
+
+        .ekp-opsi-lima label.kunci .huruf {
+            background: #059669;
+            border-color: #059669;
+            color: #fff;
+        }
+
+        .ekp-opsi-lima label.keliru {
+            background: #fff1f2 !important;
+            border-color: #fb7185 !important;
+        }
+
+        .ekp-opsi-lima label.keliru .huruf {
+            background: #e11d48 !important;
+            border-color: #e11d48 !important;
+            color: #fff;
+        }
+
+        .ekp-terkunci .ekp-opsi-lima label {
+            cursor: default;
+        }
+
+        .ekp-pembahasan {
+            margin-top: .7rem;
+            border-radius: .9rem;
+            padding: .65rem .8rem;
+            font-size: .86rem;
+            line-height: 1.6;
+            background: #f8fafc;
+            border-left: 4px solid #94a3b8;
+        }
+
+        .ekp-pembahasan.benar {
+            background: #ecfdf5;
+            border-left-color: #10b981;
+        }
+
+        .ekp-pembahasan.salah {
+            background: #fff1f2;
+            border-left-color: #e11d48;
+        }
+
+        .ekp-pembahasan.sebagian {
+            background: #fffbeb;
+            border-left-color: #f59e0b;
+        }
+
+        /* esai */
+        .ekp-soal-uji textarea {
+            width: 100%;
+            min-height: 130px;
+            margin-top: .8rem;
+            font-family: inherit;
+            font-size: .92rem;
+            line-height: 1.6;
+            border: 1.5px solid #ddd6fe;
+            border-radius: .9rem;
+            padding: .7rem .8rem;
+            background: #faf5ff;
+            resize: vertical;
+        }
+
+        .ekp-soal-uji textarea:focus-visible {
+            outline: 3px solid #ddd6fe;
+            border-color: #7c3aed;
+            background: #fff;
+        }
+
+        .ekp-soal-uji textarea[readonly] {
+            background: #f8fafc;
+        }
+
+        .ekp-soal-uji .hitung-kata {
+            margin-top: .3rem;
+            font-size: .74rem;
+            color: #64748b;
+            text-align: right;
+        }
+
+        .ekp-konsep {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .35rem;
+            margin: .4rem 0;
+        }
+
+        .ekp-konsep span {
+            font-size: .74rem;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: .15rem .6rem;
+        }
+
+        .ekp-konsep .ada {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .ekp-konsep .tidak {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .ekp-nav-soal .waktu.kritis {
+            color: #dc2626;
+            font-weight: 800;
+            animation: ekp-kedip-waktu 1s ease-in-out infinite;
+        }
+
+        @keyframes ekp-kedip-waktu {
+            50% {
+                opacity: .45;
+            }
+        }
+
+        .ekp-diagram-soal {
+            margin-top: .6rem;
+            max-width: 420px;
+            border-radius: 1rem;
+            padding: .5rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .ekp-diagram-soal svg {
+            width: 100%;
+            height: auto;
+            display: block;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .ekp-tabel.tp {
+            min-width: 520px;
+        }
+
+        .ekp-tabel.tp td.kiri {
+            text-align: left;
+        }
+
+        .status-tp {
+            display: inline-block;
+            font-size: .74rem;
+            font-weight: 800;
+            border-radius: 999px;
+            padding: .15rem .6rem;
+            white-space: nowrap;
+        }
+
+        .status-tp.ya {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-tp.tidak {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* kumpulkan */
+        .ekp-kumpul {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-radius: 1.5rem;
+            padding: 1.1rem 1.3rem;
+            background: #fff;
+            border: 2px dashed #fdba74;
+        }
+
+        .ekp-kumpul b {
+            font-size: 1.05rem;
+            color: #7c2d12;
+        }
+
+        .ekp-kumpul p {
+            margin: .2rem 0 0;
+            font-size: .86rem;
+            color: #64748b;
+        }
+
+        /* hasil */
+        .ekp-hasil {
+            border-radius: 2rem;
+            padding: 1.4rem;
+            background:
+                radial-gradient(circle at 0 0, #fef3c7, transparent 45%),
+                radial-gradient(circle at 100% 100%, #ffe4e6, transparent 45%),
+                #fff;
+            border: 2px solid #fcd34d;
+            box-shadow: 0 24px 44px -30px rgba(234, 88, 12, .7);
+            animation: ekp-muncul .5s ease;
+        }
+
+        .ekp-hasil-atas {
+            display: grid;
+            grid-template-columns: 170px minmax(0, 1fr);
+            gap: 1.3rem;
+            align-items: center;
+        }
+
+        .ekp-cincin-nilai {
+            position: relative;
+            width: 170px;
+            height: 170px;
+        }
+
+        .ekp-cincin-nilai svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        #ekpBusur {
+            transition: stroke-dashoffset 1.4s cubic-bezier(.3, .8, .3, 1), stroke .4s;
+        }
+
+        .ekp-cincin-nilai .angka {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-content: center;
+            text-align: center;
+        }
+
+        .ekp-cincin-nilai .angka b {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #7c2d12;
+            line-height: 1;
+        }
+
+        .ekp-cincin-nilai .angka span {
+            font-size: .78rem;
+            font-weight: 700;
+            color: #9a3412;
+        }
+
+        .lencana-hasil {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            font-size: .76rem;
+            font-weight: 800;
+            border-radius: 999px;
+            padding: .25rem .75rem;
+        }
+
+        .lencana-hasil.lulus {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .lencana-hasil.belum {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .ekp-hasil-teks h3 {
+            margin: .5rem 0 .2rem;
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .ekp-hasil-teks>p {
+            margin: 0;
+            font-size: .88rem;
+            color: #475569;
+        }
+
+        .ekp-rincian {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: .5rem;
+            margin-top: .9rem;
+        }
+
+        .ekp-rincian div {
+            border-radius: .9rem;
+            padding: .55rem;
+            background: #fff;
+            border: 1px solid #fde68a;
+            text-align: center;
+        }
+
+        .ekp-rincian span {
+            display: block;
+            font-size: .7rem;
+            font-weight: 700;
+            color: #9a3412;
+        }
+
+        .ekp-rincian b {
+            font-size: 1rem;
+            color: #0f172a;
+        }
+
+        .ekp-sub-hasil {
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+            margin: 1.3rem 0 .6rem;
+            font-size: 1rem;
+            font-weight: 800;
+            color: #7c2d12;
+        }
+
+        .ekp-topik {
+            display: grid;
+            gap: .55rem;
+        }
+
+        .ekp-topik .baris-topik {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 2fr) auto;
+            align-items: center;
+            gap: .7rem;
+            font-size: .86rem;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .ekp-topik .batang {
+            height: 12px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            overflow: hidden;
+        }
+
+        .ekp-topik .batang i {
+            display: block;
+            height: 100%;
+            width: 0;
+            border-radius: inherit;
+            transition: width 1.2s ease;
+        }
+
+        .ekp-topik a {
+            font-size: .74rem;
+            font-weight: 800;
+            color: #2563eb;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .ekp-topik a:hover {
+            text-decoration: underline;
+        }
+
+        .tombol-hasil {
+            flex-wrap: wrap;
+        }
+
+        .tombol-hasil .ekp-tombol:first-child {
+            flex: 1 1 200px;
+        }
+
+        .ekp-riwayat {
+            margin-top: .9rem;
+            font-size: .82rem;
+            color: #475569;
+        }
+
+        .ekp-riwayat b {
+            color: #7c2d12;
+        }
+
+        .ekp-riwayat span {
+            display: inline-block;
+            margin: .2rem .3rem 0 0;
+            border-radius: 999px;
+            padding: .15rem .6rem;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+        }
+
+        .catatan-esai {
+            margin-top: .8rem;
+        }
+
+        @media (max-width: 900px) {
+            .ekp-uji-atas {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .ekp-hasil-atas {
+                grid-template-columns: 1fr;
+                justify-items: center;
+                text-align: center;
+            }
+
+            .ekp-rincian {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .ekp-topik .baris-topik {
+                grid-template-columns: 1fr auto;
+            }
+
+            .ekp-topik .batang {
+                grid-column: 1 / -1;
+                grid-row: 2;
+            }
+
+            .ekp-nav-soal {
+                top: 58px;
+            }
+
+            .ekp-nav-soal .nomor a {
+                width: 1.8rem;
+                height: 1.8rem;
+                font-size: .72rem;
+            }
+
+            .ekp-kartu-identitas .dua {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .ekp-bendera-puncak,
+            .ekp-piala,
+            .ekp-bintang-kecil {
+                animation: none;
+            }
+        }
+
+        /* Cetak / simpan PDF */
+        @media print {
+
+            .ekp-latar,
+            .ekp-nav,
+            .ekp-jejak,
+            .ekp-nav-soal,
+            .ekp-kumpul,
+            .tombol-hasil,
+            #ekpKePeta,
+            .ekp-banner-taman,
+            .ekp-sapa {
+                display: none !important;
+            }
+
+            body {
+                background: #fff !important;
+            }
+
+            .ekp-wadah {
+                padding: 0;
+            }
+
+            .ekp-banner {
+                background: #fff !important;
+                color: #0f172a !important;
+                box-shadow: none !important;
+                min-height: 0 !important;
+                border: 1px solid #cbd5e1;
+            }
+
+            .ekp-banner-pos {
+                background: #f1f5f9 !important;
+            }
+
+            .ekp-stasiun,
+            .ekp-hasil,
+            .ekp-soal-uji {
+                box-shadow: none !important;
+                break-inside: avoid;
+            }
+
+            .ekp-hasil {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ekp-latar" aria-hidden="true"></div>
+
+    <!-- ============================================================
+         BILAH ATAS: logo, XP, dan tombol kembali ke dashboard (index.html)
+         ============================================================ -->
+    <nav class="ekp-nav" aria-label="Navigasi utama">
+        <div class="ekp-nav-isi">
+            <a href="index.html" class="ekp-logo" aria-label="EduKinetika, ke dashboard">
+                <span class="ekp-logo-ikon"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 256 256" fill="currentColor">
+                        <path
+                            d="M221.69,199.77,160,96.92V40h8a8,8,0,0,0,0-16H88a8,8,0,0,0,0,16h8V96.92L34.31,199.77A16,16,0,0,0,48,224H208a16,16,0,0,0,13.72-24.23Zm-90.08-42.91c-15.91-8.05-31.05-12.32-45.22-12.81l24.47-40.8A7.93,7.93,0,0,0,112,99.14V40h32V99.14a7.93,7.93,0,0,0,1.14,4.11L183.36,167C171.4,169.34,154.29,168.34,131.61,156.86Z" />
+                    </svg></span>
+                <span class="ekp-logo-teks">Edu<b>Kinetika</b></span>
+            </a>
+            <div class="ekp-xp" aria-label="Poin pengalaman">
+                <span class="ekp-xp-ikon"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 256 256" fill="currentColor">
+                        <path
+                            d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z" />
+                    </svg></span>
+                <div class="ekp-xp-teks">
+                    <div class="ekp-xp-baris"><span id="ekpNamaLevel">Penjelajah Pemula</span><span><span
+                                id="ekpAngkaXP">0</span> XP</span></div>
+                    <div class="ekp-xp-bar"><i id="ekpBarXP"></i></div>
+                </div>
+            </div>
+            <a href="index.html" class="ekp-kembali"><svg aria-hidden="true" class="ekp-ik"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">
+                    <path
+                        d="M224,128a8,8,0,0,1-8,8H120v64a8,8,0,0,1-13.66,5.66l-72-72a8,8,0,0,1,0-11.32l72-72A8,8,0,0,1,120,56v64h96A8,8,0,0,1,224,128Z" />
+                </svg><span>Kembali ke Dashboard</span></a>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+         ISI HALAMAN: Puncak Juara · Uji Pemahaman
+         ============================================================ -->
+    <main class="ekp-wadah">
+
+        <div class="ekp-jejak">
+            <a href="konsepdasarlajureaksi.html" class="ekp-ke-peta"><span class="bulat"><svg aria-hidden="true"
+                        class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">
+                        <path
+                            d="M228.92,49.69a8,8,0,0,0-6.86-1.45L160.93,63.52,99.58,32.84a8,8,0,0,0-5.52-.6l-64,16A8,8,0,0,0,24,56V200a8,8,0,0,0,9.94,7.76l61.13-15.28,61.35,30.68A8.15,8.15,0,0,0,160,224a8,8,0,0,0,1.94-.24l64-16A8,8,0,0,0,232,200V56A8,8,0,0,0,228.92,49.69ZM96,176a8,8,0,0,0-1.94.24L40,189.75V62.25L95.07,48.48l.93.46Zm120,17.75-55.07,13.77-.93-.46V80a8,8,0,0,0,1.94-.23L216,66.25Z" />
+                    </svg></span> Kembali ke Peta Ekspedisi</a>
+            <span class="ekp-remah">Peta Kota Kinetika › <b>Puncak Juara</b></span>
+        </div>
+
+        <section class="ekp-pos" id="ekpPos6" aria-label="Pos Puncak Juara: Uji Pemahaman Laju Reaksi">
+
+            <!-- Banner pos -->
+            <div class="ekp-banner puncak">
+                <svg class="ekp-banner-taman" viewBox="0 0 600 220" preserveAspectRatio="xMaxYMax meet"
+                    aria-hidden="true">
+                    <path d="M300 220 L420 70 L470 120 L520 40 L600 150 V220 Z" fill="#fde68a" opacity=".35" />
+                    <path d="M340 220 L470 90 L530 150 L600 110 V220 Z" fill="#fef3c7" opacity=".55" />
+                    <path d="M520 40 L540 68 L528 64 L520 74 L512 64 L500 68 Z" fill="#fff" />
+                    <line x1="520" y1="40" x2="520" y2="4" stroke="#fff" stroke-width="3" />
+                    <path class="ekp-bendera-puncak" d="M520 4 L556 14 L520 24 Z" fill="#facc15" />
+                    <g class="ekp-piala" transform="translate(420 150)">
+                        <path d="M-18 -30 H18 V-12 A18 18 0 0 1 -18 -12 Z" fill="#facc15" />
+                        <path d="M-18 -26 H-28 A10 10 0 0 0 -18 -10 M18 -26 H28 A10 10 0 0 1 18 -10" fill="none"
+                            stroke="#facc15" stroke-width="4" />
+                        <rect x="-4" y="6" width="8" height="10" fill="#eab308" />
+                        <rect x="-14" y="16" width="28" height="7" rx="2" fill="#ca8a04" />
+                        <text x="0" y="-14" text-anchor="middle" font-size="12" font-weight="800" fill="#92400e"
+                            font-family="Plus Jakarta Sans, sans-serif">1</text>
+                    </g>
+                    <g fill="#fff">
+                        <path class="ekp-bintang-kecil" d="M360 50 l3 7 7 1 -5 5 1 7 -6 -3 -6 3 1 -7 -5 -5 7 -1z" />
+                        <path class="ekp-bintang-kecil b2" d="M575 70 l2 5 5 1 -4 4 1 5 -4 -2 -4 2 1 -5 -4 -4 5 -1z" />
+                        <path class="ekp-bintang-kecil b3" d="M460 30 l2 5 5 1 -4 4 1 5 -4 -2 -4 2 1 -5 -4 -4 5 -1z" />
+                    </g>
+                </svg>
+                <div class="ekp-banner-isi">
+                    <p class="ekp-banner-pos"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 256 256" fill="currentColor">
+                            <path
+                                d="M128,16a88.1,88.1,0,0,0-88,88c0,75.3,80,132.17,83.41,134.55a8,8,0,0,0,9.18,0C136,236.17,216,179.3,216,104A88.1,88.1,0,0,0,128,16Zm0,56a32,32,0,1,1-32,32A32,32,0,0,1,128,72Z" />
+                        </svg> Pos terakhir · Puncak Juara</p>
+                    <h2>Uji Pemahaman Laju Reaksi</h2>
+                    <p class="ekp-banner-tujuan"><strong>Tujuan:</strong> mengukur ketercapaian 9 tujuan pembelajaran
+                        laju
+                        reaksi: teori tumbukan dan energi aktivasi, faktor-faktor laju reaksi, serta persamaan laju dan
+                        orde
+                        reaksi.</p>
+                    <div class="ekp-sapa">
+                        <span class="ekp-sapa-tokoh" aria-hidden="true"><svg viewBox="0 0 48 66"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <ellipse cx="22" cy="63" rx="13" ry="2.6" fill="rgba(15,23,42,.2)" />
+                                <rect x="15" y="48" width="5.5" height="13" rx="2" fill="#334155" />
+                                <rect x="23.5" y="48" width="5.5" height="13" rx="2" fill="#334155" />
+                                <ellipse cx="17" cy="61.5" rx="4.5" ry="2.2" fill="#1e293b" />
+                                <ellipse cx="27" cy="61.5" rx="4.5" ry="2.2" fill="#1e293b" />
+                                <path d="M13 27 Q22 22 31 27 L33 51 Q22 54 11 51 Z" fill="#fff" stroke="#94a3b8"
+                                    stroke-width="1.2" />
+                                <path d="M18.5 25 L22 33 L25.5 25 Z" fill="#3b82f6" />
+                                <path d="M22 33 V50" stroke="#cbd5e1" stroke-width="1" />
+                                <circle cx="22" cy="38" r=".9" fill="#94a3b8" />
+                                <circle cx="22" cy="43" r=".9" fill="#94a3b8" />
+                                <rect x="24.5" y="37" width="5" height="3" rx="1" fill="#2563eb" />
+                                <rect x="14.5" y="42" width="5" height="5" rx="1" fill="none" stroke="#cbd5e1" />
+                                <path d="M13.5 28 L9 41" stroke="#fff" stroke-width="5.5" stroke-linecap="round" />
+                                <path d="M13.5 28 L9 41" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"
+                                    opacity=".25" />
+                                <circle cx="9" cy="42.5" r="2.4" fill="#f5c9a4" />
+                                <path d="M30.5 28 L37 33" stroke="#fff" stroke-width="5.5" stroke-linecap="round" />
+                                <circle cx="38" cy="33.5" r="2.4" fill="#f5c9a4" />
+                                <g class="labu">
+                                    <path
+                                        d="M36 20 h5 v5 l4.5 8 a2.5 2.5 0 0 1 -2.2 3.6 h-9.6 a2.5 2.5 0 0 1 -2.2 -3.6 l4.5 -8 z"
+                                        fill="#ecfeff" stroke="#0891b2" stroke-width="1" />
+                                    <path
+                                        d="M33.2 31 h11.6 l.9 1.7 a2.5 2.5 0 0 1 -2.2 3.6 h-9 a2.5 2.5 0 0 1 -2.2 -3.6 z"
+                                        fill="#34d399" />
+                                    <circle class="gel g1" cx="38" cy="18" r="1.3" fill="#6ee7b7" />
+                                    <circle class="gel g2" cx="40" cy="15" r="1" fill="#6ee7b7" />
+                                </g>
+                                <rect x="19" y="21" width="6" height="5" fill="#f5c9a4" />
+                                <circle cx="22" cy="14" r="9" fill="#f5c9a4" />
+                                <path d="M13 14 Q13 4 22 4.5 Q31 4 31 14 Q29 8.5 22 9 Q15 8.5 13 14 Z" fill="#3f2d23" />
+                                <circle cx="22" cy="4" r="3.3" fill="#3f2d23" />
+                                <path d="M13.5 13 H30.5" stroke="#0ea5e9" stroke-width="1.6" />
+                                <circle cx="18.3" cy="14" r="3" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.3"
+                                    opacity=".95" />
+                                <circle cx="25.7" cy="14" r="3" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.3"
+                                    opacity=".95" />
+                                <circle cx="18.3" cy="14.3" r=".9" fill="#1e293b" />
+                                <circle cx="25.7" cy="14.3" r=".9" fill="#1e293b" />
+                                <path d="M19 18.6 Q22 20.6 25 18.6" stroke="#b45309" stroke-width="1.1" fill="none"
+                                    stroke-linecap="round" />
+                                <circle cx="16" cy="18" r="1.3" fill="#fca5a5" opacity=".7" />
+                                <circle cx="28" cy="18" r="1.3" fill="#fca5a5" opacity=".7" />
+                            </svg></span>
+                        <p><strong>Kak Kina:</strong> Kamu sudah sampai di puncak! Kerjakan soal dengan tenang dan
+                            jujur.
+                            Jawabanmu tersimpan otomatis, jadi tidak akan hilang walaupun halaman tertutup.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Identitas & petunjuk -->
+            <div class="ekp-uji-atas">
+                <div class="ekp-kartu-identitas">
+                    <div class="judul"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 256 256" fill="currentColor">
+                            <path
+                                d="M112,120a16,16,0,1,1-16-16A16,16,0,0,1,112,120ZM232,56V200a16,16,0,0,1-16,16H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216A16,16,0,0,1,232,56ZM135.75,166a39.76,39.76,0,0,0-17.19-23.34,32,32,0,1,0-45.12,0A39.84,39.84,0,0,0,56.25,166a8,8,0,0,0,15.5,4c2.64-10.25,13.06-18,24.25-18s21.62,7.73,24.25,18a8,8,0,1,0,15.5-4ZM200,144a8,8,0,0,0-8-8H152a8,8,0,0,0,0,16h40A8,8,0,0,0,200,144Zm0-32a8,8,0,0,0-8-8H152a8,8,0,0,0,0,16h40A8,8,0,0,0,200,112Z" />
+                        </svg> <b>Identitas peserta</b></div>
+                    <label><span>Nama lengkap</span><input type="text" id="ekpNama" autocomplete="name"
+                            placeholder="Tulis nama lengkapmu"></label>
+                    <div class="dua">
+                        <label><span>Kelas</span><input type="text" id="ekpKelas"
+                                placeholder="contoh: XI MIPA 2"></label>
+                        <label><span>No. absen</span><input type="text" id="ekpAbsen" inputmode="numeric"
+                                placeholder="contoh: 12"></label>
+                    </div>
+                </div>
+                <div class="ekp-petunjuk">
+                    <div class="judul"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 256 256" fill="currentColor">
+                            <path
+                                d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm-4,48a12,12,0,1,1-12,12A12,12,0,0,1,124,72Zm12,112a16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40a8,8,0,0,1,0,16Z" />
+                        </svg> <b>Petunjuk pengerjaan</b></div>
+                    <ul>
+                        <li><b>Bagian A:</b> 20 soal pilihan ganda (A–E), masing-masing bernilai 3.</li>
+                        <li><b>Bagian B:</b> 5 soal esai, masing-masing bernilai 8.</li>
+                        <li>Nilai maksimum <b>100</b>. Batas lulus (KKM) <b>75</b>.</li>
+                        <li>Waktu pengerjaan <b>90 menit</b>, dihitung sejak soal pertama dijawab. Jika waktu habis,
+                            jawaban dikumpulkan otomatis.</li>
+                        <li>Setiap soal diberi label <b>TP</b> sesuai tujuan pembelajaran yang diukur.</li>
+                        <li>Jawaban <b>tersimpan otomatis</b> di perangkat ini.</li>
+                        <li>Tekan <b>Kumpulkan jawaban</b> untuk melihat nilai dan pembahasan.</li>
+                    </ul>
+                    <div class="ekp-status-simpan" id="ekpStatusSimpan"><svg aria-hidden="true" class="ekp-ik"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">
+                            <path
+                                d="M247.93,124.52C246.11,77.54,207.07,40,160.06,40A88.1,88.1,0,0,0,81.29,88.67h0A87.48,87.48,0,0,0,72,127.73,8.18,8.18,0,0,1,64.57,136,8,8,0,0,1,56,128a103.66,103.66,0,0,1,5.34-32.92,4,4,0,0,0-4.75-5.18A64.09,64.09,0,0,0,8,152c0,35.19,29.75,64,65,64H160A88.09,88.09,0,0,0,247.93,124.52Zm-50.27-6.86-48,48a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L144,148.69l42.34-42.35a8,8,0,0,1,11.32,11.32Z" />
+                        </svg> <span>Belum ada jawaban</span></div>
+                </div>
+            </div>
+
+            <!-- Navigasi nomor soal -->
+            <nav class="ekp-nav-soal" id="ekpNavSoal" aria-label="Navigasi nomor soal">
+                <div class="baris-atas">
+                    <span class="progres-teks"><b id="ekpTerjawab">0</b>/25 terjawab</span>
+                    <span class="waktu" id="ekpWaktuKotak"><svg aria-hidden="true" class="ekp-ik"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">
+                            <path
+                                d="M128,40a96,96,0,1,0,96,96A96.11,96.11,0,0,0,128,40Zm45.66,61.66-40,40a8,8,0,0,1-11.32-11.32l40-40a8,8,0,0,1,11.32,11.32ZM96,16a8,8,0,0,1,8-8h48a8,8,0,0,1,0,16H104A8,8,0,0,1,96,16Z" />
+                        </svg> Sisa <b id="ekpWaktu">90:00</b></span>
+                </div>
+                <div class="bar"><i id="ekpBarJawab"></i></div>
+                <div class="nomor" id="ekpNomor"></div>
+            </nav>
+
+            <!-- Bagian A -->
+            <article class="ekp-stasiun" id="ekpBagianA" style="--w:#2563eb;--w-muda:#dbeafe">
+                <header class="ekp-st-kepala">
+                    <span class="ekp-st-no">A</span>
+                    <div>
+                        <p class="ekp-st-sub">Bagian A · 20 soal × 3 poin</p>
+                        <h3>Pilihan ganda</h3>
+                    </div>
+                </header>
+                <p class="ekp-paragraf">Pilih <strong>satu</strong> jawaban yang paling tepat.</p>
+                <div class="ekp-daftar-pg" id="ekpDaftarPG"></div>
+            </article>
+
+            <!-- Bagian B -->
+            <article class="ekp-stasiun" id="ekpBagianB" style="--w:#7c3aed;--w-muda:#ede9fe">
+                <header class="ekp-st-kepala">
+                    <span class="ekp-st-no">B</span>
+                    <div>
+                        <p class="ekp-st-sub">Bagian B · 5 soal × 8 poin</p>
+                        <h3>Esai</h3>
+                    </div>
+                </header>
+                <p class="ekp-paragraf">Jawab dengan kalimatmu sendiri secara lengkap. Nilai esai dihitung otomatis dari
+                    <strong>konsep kunci</strong> yang muncul dalam jawabanmu, sehingga tuliskan istilah kimianya dengan
+                    tepat.
+                </p>
+                <div class="ekp-daftar-esai" id="ekpDaftarEsai"></div>
+            </article>
+
+            <!-- Kumpulkan -->
+            <div class="ekp-kumpul" id="ekpKumpulKotak">
+                <div>
+                    <b>Sudah selesai?</b>
+                    <p id="ekpKumpulInfo">Periksa kembali jawabanmu sebelum dikumpulkan.</p>
+                </div>
+                <button type="button" class="ekp-tombol emas" id="ekpKumpul"><svg aria-hidden="true" class="ekp-ik"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">
+                        <path
+                            d="M231.4,44.34s0,.1,0,.15l-58.2,191.94a15.88,15.88,0,0,1-14,11.51q-.69.06-1.38.06a15.86,15.86,0,0,1-14.42-9.15L107,164.15a4,4,0,0,1,.77-4.58l57.92-57.92a8,8,0,0,0-11.31-11.31L96.43,148.26a4,4,0,0,1-4.58.77L17.08,112.64a16,16,0,0,1,2.49-29.8l191.94-58.2.15,0A16,16,0,0,1,231.4,44.34Z" />
+                    </svg> <span>Kumpulkan jawaban</span></button>
+            </div>
+
+            <!-- Hasil -->
+            <section class="ekp-hasil" id="ekpHasil" hidden aria-live="polite">
+                <div class="ekp-hasil-atas">
+                    <div class="ekp-cincin-nilai" id="ekpCincin">
+                        <svg viewBox="0 0 120 120" aria-hidden="true">
+                            <circle cx="60" cy="60" r="52" fill="none" stroke="#fef3c7" stroke-width="12" />
+                            <circle id="ekpBusur" cx="60" cy="60" r="52" fill="none" stroke="#f59e0b" stroke-width="12"
+                                stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7"
+                                transform="rotate(-90 60 60)" />
+                        </svg>
+                        <div class="angka"><b id="ekpNilai">0</b><span>nilai</span></div>
+                    </div>
+                    <div class="ekp-hasil-teks">
+                        <span class="lencana-hasil" id="ekpLencanaHasil"></span>
+                        <h3 id="ekpJudulHasil"></h3>
+                        <p id="ekpIdentitasHasil"></p>
+                        <div class="ekp-rincian">
+                            <div><span>Pilihan ganda</span><b id="ekpSkorPG">0/60</b></div>
+                            <div><span>Esai</span><b id="ekpSkorEsai">0/40</b></div>
+                            <div><span>Benar PG</span><b id="ekpBenarPG">0/20</b></div>
+                            <div><span>Waktu</span><b id="ekpWaktuHasil">–</b></div>
+                        </div>
+                    </div>
+                </div>
+                <h4 class="ekp-sub-hasil"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 256 256" fill="currentColor">
+                        <path
+                            d="M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1,0-16h8V136a8,8,0,0,1,8-8H72a8,8,0,0,1,8,8v64H96V88a8,8,0,0,1,8-8h32a8,8,0,0,1,8,8V200h16V40a8,8,0,0,1,8-8h40a8,8,0,0,1,8,8V200h8A8,8,0,0,1,232,208Z" />
+                    </svg> Penguasaan tiap materi</h4>
+                <div class="ekp-topik" id="ekpTopik"></div>
+                <h4 class="ekp-sub-hasil"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 256 256" fill="currentColor">
+                        <path
+                            d="M221.87,83.16A104.1,104.1,0,1,1,195.67,49l22.67-22.68a8,8,0,0,1,11.32,11.32L167.6,99.71h0l-37.71,37.71-23.95,23.95a40,40,0,0,0,62-35.67,8,8,0,1,1,16-.9,56,56,0,0,1-95.5,42.79h0a56,56,0,0,1,73.13-84.43L184.3,60.39a87.88,87.88,0,1,0,23.13,29.67,8,8,0,0,1,14.44-6.9Z" />
+                    </svg> Ketercapaian tujuan pembelajaran</h4>
+                <div class="ekp-tabel-bungkus" id="ekpTPHasil"></div>
+                <div class="ekp-baris-tombol tombol-hasil">
+                    <button type="button" class="ekp-tombol biru" id="ekpUnduh"><svg aria-hidden="true" class="ekp-ik"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">
+                            <path
+                                d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40A8,8,0,0,0,168,96H136V32a8,8,0,0,0-16,0V96H88a8,8,0,0,0-5.66,13.66Z" />
+                        </svg> <span>Unduh hasil</span></button>
+                    <button type="button" class="ekp-tombol abu" id="ekpCetak"><svg aria-hidden="true" class="ekp-ik"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">
+                            <path
+                                d="M240,96v80a8,8,0,0,1-8,8H200v32a8,8,0,0,1-8,8H64a8,8,0,0,1-8-8V184H24a8,8,0,0,1-8-8V96c0-13.23,11.36-24,25.33-24H56V40a8,8,0,0,1,8-8H192a8,8,0,0,1,8,8V72h14.67C228.64,72,240,82.77,240,96ZM72,72H184V48H72Zm112,88H72v48H184Zm16-44a12,12,0,1,0-12,12A12,12,0,0,0,200,116Z" />
+                        </svg> <span>Cetak / simpan PDF</span></button>
+                    <button type="button" class="ekp-tombol abu" id="ekpUlang"><svg aria-hidden="true" class="ekp-ik"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">
+                            <path
+                                d="M240,56v48a8,8,0,0,1-8,8H184a8,8,0,0,1-5.66-13.66l17-17-10.55-9.65-.25-.24a80,80,0,1,0-1.67,114.78,8,8,0,1,1,11,11.63A95.44,95.44,0,0,1,128,224h-1.32A96,96,0,1,1,195.75,60l10.93,10L226.34,50.3A8,8,0,0,1,240,56Z" />
+                        </svg> <span>Kerjakan ulang</span></button>
+                </div>
+                <div class="ekp-riwayat" id="ekpRiwayat"></div>
+                <a href="konsepdasarlajureaksi.html" class="ekp-tombol emas lebar" id="ekpKePeta"><svg
+                        aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
+                        fill="currentColor">
+                        <path
+                            d="M228.92,49.69a8,8,0,0,0-6.86-1.45L160.93,63.52,99.58,32.84a8,8,0,0,0-5.52-.6l-64,16A8,8,0,0,0,24,56V200a8,8,0,0,0,9.94,7.76l61.13-15.28,61.35,30.68A8.15,8.15,0,0,0,160,224a8,8,0,0,0,1.94-.24l64-16A8,8,0,0,0,232,200V56A8,8,0,0,0,228.92,49.69ZM96,176a8,8,0,0,0-1.94.24L40,189.75V62.25L95.07,48.48l.93.46Zm120,17.75-55.07,13.77-.93-.46V80a8,8,0,0,0,1.94-.23L216,66.25Z" />
+                    </svg> <span>Kembali ke Peta Ekspedisi</span></a>
+                <p class="ekp-kecil catatan-esai">Catatan: nilai esai dihitung otomatis berdasarkan kata kunci sehingga
+                    bersifat
+                    perkiraan. Guru dapat meninjau ulang jawaban esai pada file hasil yang diunduh.</p>
+            </section>
+        </section>
+
+    </main>
+
+    <!-- ============================================================
+         JAVASCRIPT HALAMAN UJI PEMAHAMAN
+         - Progres (XP, lencana) disimpan di localStorage
+           'ekspedisiLajuReaksi_v1', sama dengan halaman peta.
+         ============================================================ -->
+    <script>
+        (function () {
+            const gerakDikurangi = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const KUNCI = 'ekspedisiLajuReaksi_v1';
+            let prog = { selesai: [], pos: 6, xp: 0 };
+            try { prog = Object.assign(prog, JSON.parse(localStorage.getItem(KUNCI) || '{}')); } catch (e) { }
+            const simpan = () => { try { localStorage.setItem(KUNCI, JSON.stringify(prog)); } catch (e) { } };
+            const fmt = (x, d = 2) => Number(x).toFixed(d).replace('.', ',');
+            const fmtP = x => String(parseFloat(Number(x).toFixed(3))).replace('.', ',');
+            const $ = id => document.getElementById(id);
+
+            // XP & level di bilah atas
+            function renderXP() {
+                const LEVEL = [[0, 'Penjelajah Pemula'], [200, 'Pengamat Laju'], [400, 'Perumus Muda'], [600, 'Analis Orde'], [800, 'Juara Kinetika']];
+                const xp = +prog.xp || 0;
+                let idx = 0;
+                LEVEL.forEach((l, i) => { if (xp >= l[0]) idx = i; });
+                const bawah = LEVEL[idx][0], atas = LEVEL[idx + 1] ? LEVEL[idx + 1][0] : bawah + 200;
+                document.getElementById('ekpNamaLevel').textContent = LEVEL[idx][1];
+                document.getElementById('ekpAngkaXP').textContent = xp;
+                document.getElementById('ekpBarXP').style.width = Math.max(4, Math.min(100, (xp - bawah) / (atas - bawah) * 100)) + '%';
+            }
+            renderXP();
+
+            prog.pos = 6; simpan();
+
+            /* ================== DATA SOAL ================== */
+            const TOPIK = {
+                dasar: { nama: 'Konsep dasar laju reaksi', link: 'taman-waktu-laju-reaksi.html', warna: '#2563eb' },
+                tumbukan: { nama: 'Teori tumbukan & energi aktivasi', link: 'arena-cepat-lambat.html', warna: '#e11d48' },
+                faktor: { nama: 'Faktor-faktor laju reaksi', link: 'arena-cepat-lambat.html#ekpA5', warna: '#059669' },
+                orde: { nama: 'Persamaan laju & orde reaksi', link: 'laboratorium-rumus-persamaan-laju.html', warna: '#ea580c' }
+            };
+            const TABEL = (kepala, isi) => `<div class="ekp-tabel-bungkus data-soal"><table class="ekp-tabel data"><thead><tr>${kepala.map(k => `<th>${k}</th>`).join('')}</tr></thead><tbody>${isi.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+            const PG = [
+                { topik: 'dasar', t: 'Laju reaksi didefinisikan sebagai …', o: ['perubahan konsentrasi pereaksi atau hasil reaksi per satuan waktu', 'jumlah mol pereaksi yang tersedia di awal reaksi', 'waktu yang diperlukan hingga reaksi selesai', 'perubahan massa hasil reaksi pada akhir reaksi', 'energi yang dilepaskan selama reaksi berlangsung'], b: 0, p: 'Laju reaksi adalah besarnya perubahan konsentrasi pereaksi atau hasil reaksi setiap satuan waktu.' },
+                { topik: 'dasar', t: 'Satuan laju reaksi yang tepat adalah …', o: ['mol', 'M', 'M/detik', 'detik/M', 'M · detik'], b: 2, p: 'Laju = perubahan konsentrasi (M) dibagi waktu (detik), sehingga satuannya M/detik atau mol L⁻¹ detik⁻¹.' },
+                { topik: 'dasar', t: 'Sebanyak 0,2 mol NaOH dilarutkan dalam air hingga volumenya 500 mL. Molaritas larutan tersebut adalah …', o: ['0,1 M', '0,2 M', '0,4 M', '1,0 M', '2,5 M'], b: 2, p: 'M = mol ÷ liter = 0,2 ÷ 0,5 = 0,4 M. Jangan lupa mengubah 500 mL menjadi 0,5 L.' },
+                { topik: 'dasar', t: 'Pada reaksi N₂ + 3H₂ → 2NH₃, laju pembentukan NH₃ adalah 0,2 M/detik. Laju berkurangnya H₂ adalah …', o: ['0,1 M/detik', '0,2 M/detik', '0,3 M/detik', '0,4 M/detik', '0,6 M/detik'], b: 2, p: 'v(H₂) : v(NH₃) = 3 : 2, sehingga v(H₂) = 3/2 × 0,2 = 0,3 M/detik.' },
+                { topik: 'tumbukan', t: 'Reaksi berikut yang tergolong berlangsung cepat adalah …', o: ['perkaratan besi', 'fermentasi tape', 'pembentukan minyak bumi', 'pengendapan AgCl saat AgNO₃ dicampur NaCl', 'pelapukan kayu'], b: 3, p: 'Endapan AgCl langsung terbentuk begitu kedua larutan bercampur, sedangkan yang lain berlangsung lambat.' },
+                { topik: 'tumbukan', t: 'Tumbukan efektif adalah tumbukan antarpartikel yang …', o: ['terjadi paling sering', 'terjadi antara partikel sejenis', 'menghasilkan reaksi karena energinya cukup dan arahnya tepat', 'terjadi pada suhu rendah', 'tidak memerlukan energi'], b: 2, p: 'Tumbukan efektif memiliki energi ≥ energi aktivasi dan orientasi yang tepat sehingga menghasilkan zat baru.' },
+                { topik: 'tumbukan', t: 'Energi aktivasi adalah …', o: ['energi yang dilepaskan saat reaksi selesai', 'energi minimum yang harus dimiliki partikel agar reaksi dapat berlangsung', 'energi kinetik rata-rata semua partikel', 'energi yang tersimpan dalam hasil reaksi', 'selisih energi pereaksi dan hasil reaksi'], b: 1, p: 'Energi aktivasi (Ea) adalah energi minimum agar tumbukan menghasilkan reaksi.' },
+                { topik: 'tumbukan', t: 'Pada grafik energi, puncak kurva yang harus dilewati partikel pereaksi disebut …', o: ['hasil reaksi', 'entalpi reaksi', 'kompleks teraktivasi', 'katalis', 'energi kinetik'], b: 2, p: 'Puncak kurva energi adalah keadaan transisi atau kompleks teraktivasi. Jarak dari pereaksi ke puncak adalah energi aktivasi.' },
+                { topik: 'faktor', t: 'Katalis dapat mempercepat laju reaksi karena …', o: ['menaikkan suhu sistem', 'menambah konsentrasi pereaksi', 'memperbesar energi aktivasi', 'menurunkan energi aktivasi reaksi', 'mengubah jenis hasil reaksi'], b: 3, p: 'Katalis memberikan jalur reaksi lain dengan energi aktivasi lebih rendah, sehingga tumbukan efektif lebih banyak.' },
+                { topik: 'faktor', t: 'Kenaikan suhu mempercepat laju reaksi karena …', o: ['energi aktivasi reaksi menjadi lebih kecil', 'energi kinetik partikel meningkat sehingga tumbukan efektif lebih sering', 'jumlah partikel pereaksi bertambah', 'luas permukaan zat bertambah', 'reaksi berubah menjadi eksoterm'], b: 1, p: 'Suhu tinggi membuat partikel bergerak lebih cepat dan lebih banyak yang memiliki energi ≥ Ea.' },
+                { topik: 'faktor', t: 'Gula halus lebih cepat larut daripada gula batu dengan massa sama karena …', o: ['massa gula halus lebih kecil', 'suhu gula halus lebih tinggi', 'luas permukaan bidang sentuh gula halus lebih besar', 'konsentrasi gula halus lebih rendah', 'gula halus mengandung katalis'], b: 2, p: 'Makin kecil ukuran partikel, makin luas permukaan bidang sentuh sehingga tumbukan makin sering.' },
+                { topik: 'orde', t: 'Persamaan laju suatu reaksi adalah v = k [A]² [B]. Orde reaksi totalnya adalah …', o: ['1', '2', '3', '4', '5'], b: 2, p: 'Orde total = jumlah pangkat = 2 + 1 = 3.' },
+                { topik: 'orde', t: 'Jika [A] dinaikkan 2 kali (zat lain tetap), laju reaksi naik 8 kali. Orde reaksi terhadap A adalah …', o: ['0', '1', '2', '3', '4'], b: 3, p: '2ˣ = 8 ⇒ x = 3.' },
+                {
+                    topik: 'orde', t: 'Perhatikan data berikut untuk reaksi P + Q → hasil. Persamaan laju reaksinya adalah …',
+                    data: TABEL(['No.', '[P] (M)', '[Q] (M)', 'v (M/detik)'], [['1', '0,1', '0,1', '2 × 10⁻³'], ['2', '0,2', '0,1', '4 × 10⁻³'], ['3', '0,1', '0,3', '1,8 × 10⁻²']]),
+                    o: ['v = k [P] [Q]', 'v = k [P]² [Q]', 'v = k [P] [Q]²', 'v = k [P]² [Q]²', 'v = k [Q]²'], b: 2, p: 'Data 1 & 2: 2ˣ = 2 ⇒ x = 1. Data 1 & 3: 3ʸ = 9 ⇒ y = 2. Jadi v = k [P] [Q]².'
+                },
+                { topik: 'orde', t: 'Mekanisme suatu reaksi: tahap 1 (lambat) A + B → AB; tahap 2 (cepat) AB + B → AB₂. Persamaan laju reaksinya adalah …', o: ['v = k [A] [B]²', 'v = k [A] [B]', 'v = k [AB] [B]', 'v = k [A]² [B]', 'v = k [AB₂]'], b: 1, p: 'Orde mengikuti koefisien pada tahap paling lambat (tahap 1): v = k [A] [B].' }
+            ];
+            // Soal tambahan untuk melengkapi seluruh tujuan pembelajaran
+            const DIAGRAM_ENERGI = `<div class="ekp-diagram-soal"><svg viewBox="0 0 320 170" role="img" aria-label="Diagram energi: pereaksi 40 kJ, puncak 110 kJ, hasil reaksi 10 kJ">
+                <line x1="40" y1="10" x2="40" y2="150" stroke="#94a3b8" stroke-width="2"/><line x1="40" y1="150" x2="310" y2="150" stroke="#94a3b8" stroke-width="2"/>
+                <text x="12" y="16" font-size="10" font-weight="700" fill="#64748b">E (kJ)</text><text x="250" y="165" font-size="10" font-weight="700" fill="#64748b">jalannya reaksi</text>
+                <path d="M50 100 H100 C140 100 140 30 170 30 C200 30 200 130 240 130 H300" fill="none" stroke="#2563eb" stroke-width="3"/>
+                <line x1="40" y1="100" x2="50" y2="100" stroke="#94a3b8" stroke-dasharray="3 3"/><line x1="40" y1="30" x2="170" y2="30" stroke="#94a3b8" stroke-dasharray="3 3"/><line x1="40" y1="130" x2="240" y2="130" stroke="#94a3b8" stroke-dasharray="3 3"/>
+                <text x="34" y="104" text-anchor="end" font-size="10" font-weight="800" fill="#334155">40</text><text x="34" y="34" text-anchor="end" font-size="10" font-weight="800" fill="#334155">110</text><text x="34" y="134" text-anchor="end" font-size="10" font-weight="800" fill="#334155">10</text>
+                <text x="70" y="94" font-size="10" font-weight="700" fill="#e11d48">pereaksi</text><text x="250" y="124" font-size="10" font-weight="700" fill="#059669">hasil reaksi</text>
+                <circle cx="170" cy="30" r="4" fill="#f59e0b"/><text x="178" y="24" font-size="10" font-weight="700" fill="#b45309">X</text></svg></div>`;
+            PG.push(
+                { topik: 'tumbukan', t: 'Pada suhu yang sama, reaksi P memiliki energi aktivasi 50 kJ/mol dan reaksi Q memiliki energi aktivasi 120 kJ/mol. Pernyataan yang tepat adalah …', o: ['reaksi Q lebih cepat karena energinya lebih besar', 'reaksi P lebih cepat karena lebih banyak partikel yang mencapai energi aktivasinya', 'kedua reaksi sama cepat karena suhunya sama', 'reaksi P lebih lambat karena energi aktivasinya kecil', 'laju reaksi tidak dipengaruhi energi aktivasi'], b: 1, p: 'Makin rendah energi aktivasi, makin banyak partikel yang energinya cukup sehingga tumbukan efektif lebih banyak dan reaksi lebih cepat.' },
+                { topik: 'tumbukan', t: 'Perhatikan diagram energi berikut. Besarnya energi aktivasi reaksi tersebut dan nama titik X adalah …', data: DIAGRAM_ENERGI, o: ['30 kJ; hasil reaksi', '40 kJ; pereaksi', '70 kJ; kompleks teraktivasi', '100 kJ; kompleks teraktivasi', '110 kJ; energi aktivasi'], b: 2, p: 'Ea = energi puncak − energi pereaksi = 110 − 40 = 70 kJ. Titik puncak X adalah kompleks teraktivasi.' },
+                {
+                    topik: 'faktor', t: 'Seorang siswa mereaksikan pualam (CaCO₃) dengan larutan HCl di laboratorium virtual. Percobaan yang berlangsung paling cepat adalah …',
+                    data: TABEL(['Percobaan', 'Bentuk CaCO₃', '[HCl] (M)', 'Suhu (°C)'], [['1', 'bongkahan', '1', '25'], ['2', 'serbuk', '1', '25'], ['3', 'bongkahan', '2', '40'], ['4', 'serbuk', '2', '40'], ['5', 'serbuk', '2', '25']]),
+                    o: ['1', '2', '3', '4', '5'], b: 3, p: 'Percobaan 4 memiliki luas permukaan terbesar (serbuk), konsentrasi terbesar (2 M), dan suhu tertinggi (40 °C).'
+                },
+                {
+                    topik: 'faktor', t: 'Data percobaan logam seng dengan HCl 1 M berikut: pada 25 °C gas berhenti terbentuk setelah 80 detik, sedangkan pada 35 °C setelah 40 detik (massa dan bentuk seng sama). Kesimpulan yang paling tepat adalah …',
+                    o: ['kenaikan suhu 10 °C mempercepat laju reaksi sekitar 2 kali', 'kenaikan suhu memperlambat laju reaksi', 'suhu tidak berpengaruh terhadap laju reaksi', 'laju reaksi hanya dipengaruhi konsentrasi HCl', 'waktu reaksi bertambah jika suhu dinaikkan'], b: 0, p: 'Waktu berkurang dari 80 menjadi 40 detik, sehingga laju naik 2 kali (v ∝ 1/t) saat suhu dinaikkan 10 °C.'
+                },
+                { topik: 'orde', t: 'Saat mempresentasikan penentuan orde reaksi dari data percobaan, urutan langkah yang benar adalah …', o: ['menjumlahkan orde → menulis bentuk umum → membandingkan data', 'menulis bentuk umum v = k[A]ˣ[B]ʸ → memilih dua data dengan satu zat tetap → menghitung pangkat → menjumlahkan orde', 'menghitung k → memilih data → menulis bentuk umum', 'memilih data yang kedua konsentrasinya berubah → menghitung k → menentukan orde', 'menentukan orde dari koefisien reaksi → menghitung k'], b: 1, p: 'Langkah runtut: tulis bentuk umum, pilih pasangan data dengan satu zat dikunci, hitung pangkat (orde) tiap zat, lalu jumlahkan menjadi orde total.' }
+            );
+            const TP = {
+                'P': 'Prasyarat: konsep dasar laju reaksi',
+                '1.1': 'Menjelaskan teori tumbukan dan tumbukan efektif',
+                '1.2': 'Menganalisis hubungan energi aktivasi dengan laju reaksi',
+                '1.3': 'Menentukan letak energi aktivasi dan kompleks teraktivasi pada grafik energi',
+                '2.1': 'Menganalisis pengaruh luas permukaan, konsentrasi, suhu, dan katalis',
+                '2.2': 'Menganalisis faktor laju reaksi berdasarkan data percobaan',
+                '2.3': 'Menyajikan kesimpulan hasil percobaan faktor laju reaksi',
+                '3.1': 'Menentukan orde reaksi total dari data percobaan',
+                '3.2': 'Merumuskan persamaan laju reaksi v = k[A]ˣ[B]ʸ',
+                '3.3': 'Mempresentasikan perhitungan orde reaksi'
+            };
+            const TP_PG = ['P', 'P', 'P', 'P', 'P', '1.1', '1.2', '1.3', '2.1', '2.1', '2.1', '3.2', '3.1', '3.2', '3.2', '1.2', '1.3', '2.2', '2.3', '3.3'];
+            PG.forEach((s, i) => { s.tp = TP_PG[i]; });
+            const ESAI = [
+                {
+                    topik: 'tumbukan', tp: '1.2', t: 'Jelaskan hubungan antara energi aktivasi dengan laju reaksi. Tunjukkan pula letak energi aktivasi dan kompleks teraktivasi pada grafik energi suatu reaksi.',
+                    konsep: [
+                        { nama: 'energi aktivasi', pola: ['aktivasi|\\bea\\b'] },
+                        { nama: 'Ea rendah → reaksi cepat', pola: ['(rendah|kecil|turun).{0,60}(cepat|besar|meningkat|bertambah)', '(cepat).{0,60}(rendah|kecil)'] },
+                        { nama: 'tumbukan efektif lebih banyak', pola: ['tumbuk\\w*.{0,20}efektif|efektif'] },
+                        { nama: 'kompleks teraktivasi di puncak', pola: ['kompleks teraktivasi|keadaan transisi|puncak'] },
+                        { nama: 'Ea = selisih puncak dan pereaksi', pola: ['selisih|jarak|puncak.{0,40}pereaksi|pereaksi.{0,40}puncak|dari energi pereaksi'] }
+                    ],
+                    model: 'Energi aktivasi (Ea) adalah energi minimum agar tumbukan menghasilkan reaksi. Makin rendah energi aktivasi, makin banyak partikel yang memiliki energi cukup sehingga tumbukan efektif makin banyak dan laju reaksi makin cepat; sebaliknya Ea tinggi membuat reaksi lambat. Pada grafik energi, kompleks teraktivasi terletak di puncak kurva, sedangkan energi aktivasi adalah selisih energi antara puncak kurva dan energi pereaksi.'
+                },
+                {
+                    topik: 'tumbukan', tp: '1.1', t: 'Jelaskan teori tumbukan dan sebutkan syarat terjadinya tumbukan efektif.',
+                    konsep: [
+                        { nama: 'partikel bertumbukan', pola: ['tumbuk|tabrak'] },
+                        { nama: 'energi cukup', pola: ['energi'] },
+                        { nama: 'energi aktivasi/minimum', pola: ['aktivasi|minimum|minimal'] },
+                        { nama: 'arah/orientasi tepat', pola: ['arah|orientasi|posisi|sudut'] },
+                        { nama: 'menghasilkan reaksi', pola: ['efektif|menghasilkan|produk|zat baru|hasil reaksi|bereaksi'] }
+                    ],
+                    model: 'Menurut teori tumbukan, reaksi terjadi karena partikel-partikel pereaksi saling bertumbukan. Tumbukan efektif (menghasilkan reaksi) terjadi jika partikel memiliki energi yang cukup, yaitu sama dengan atau lebih besar dari energi aktivasi, dan bertumbukan dengan arah (orientasi) yang tepat.'
+                },
+                {
+                    topik: 'faktor', tp: '2.1', t: 'Jelaskan pengaruh kenaikan suhu terhadap laju reaksi berdasarkan teori tumbukan, dan berikan satu contoh dalam kehidupan sehari-hari.',
+                    konsep: [
+                        { nama: 'suhu naik', pola: ['suhu|temperatur|panas'] },
+                        { nama: 'energi kinetik/gerak partikel', pola: ['energi kinetik|bergerak (lebih|makin|semakin) cepat|gerak(an)? partikel|kecepatan partikel|gerak lebih cepat'] },
+                        { nama: 'tumbukan lebih sering', pola: ['tumbuk\\w*.{0,50}(sering|banyak|frekuensi|meningkat|bertambah)|(sering|banyak|frekuensi).{0,50}tumbuk'] },
+                        { nama: 'energi aktivasi/tumbukan efektif', pola: ['aktivasi|efektif'] },
+                        { nama: 'contoh sehari-hari', pola: ['kulkas|lemari es|merebus|memasak|masak|busuk|basi|air panas|teh|gula|panci|oven|kompor|nasi'] }
+                    ],
+                    model: 'Kenaikan suhu membuat energi kinetik partikel bertambah sehingga partikel bergerak lebih cepat. Akibatnya tumbukan makin sering dan makin banyak partikel yang energinya melampaui energi aktivasi, sehingga tumbukan efektif bertambah dan laju reaksi meningkat. Contoh: makanan lebih cepat basi di suhu ruang daripada di dalam kulkas.'
+                },
+                {
+                    topik: 'orde', tp: '3.1', t: 'Pada reaksi A + B → C diperoleh data berikut. Tentukan orde terhadap A, orde terhadap B, persamaan laju reaksi, dan orde totalnya. Tuliskan langkahnya.',
+                    data: TABEL(['No.', '[A] (M)', '[B] (M)', 'v (M/detik)'], [['1', '0,1', '0,1', '4 × 10⁻³'], ['2', '0,2', '0,1', '1,6 × 10⁻²'], ['3', '0,1', '0,2', '8 × 10⁻³']]),
+                    konsep: [
+                        { nama: 'orde A = 2', pola: ['(orde\\(?a\\)?|ordeterhadap\\[?a\\]?|ordereaksiterhadap\\[?a\\]?|x)(=|adalah|yaitu|ialah|:|sebesar|nya)*2(?![0-9.])', '2\\^?x=4'] },
+                        { nama: 'orde B = 1', pola: ['(orde\\(?b\\)?|ordeterhadap\\[?b\\]?|ordereaksiterhadap\\[?b\\]?|y)(=|adalah|yaitu|ialah|:|sebesar|nya)*1(?![0-9.])', '2\\^?y=2'] },
+                        { nama: 'v = k[A]²[B]', pola: ['v=k\\[a\\]\\^?2\\[b\\]'] },
+                        { nama: 'orde total 3', pola: ['ordetotal(=|adalah|yaitu|ialah|:|sebesar|nya)*3', '2\\+1=3'] }
+                    ],
+                    model: 'Data 1 dan 2 ([B] tetap): (0,2/0,1)ˣ = (1,6 × 10⁻²)/(4 × 10⁻³) ⇒ 2ˣ = 4 ⇒ x = 2. Data 1 dan 3 ([A] tetap): (0,2/0,1)ʸ = (8 × 10⁻³)/(4 × 10⁻³) ⇒ 2ʸ = 2 ⇒ y = 1. Persamaan laju: v = k [A]² [B]. Orde total = 2 + 1 = 3.'
+                },
+                {
+                    topik: 'orde', tp: '3.2', t: 'Menggunakan data pada soal nomor 24, hitunglah nilai tetapan laju (k) beserta satuannya.',
+                    konsep: [
+                        { nama: 'rumus k = v/([A]²[B])', pola: ['k=[^=]*/', 'k=v'] },
+                        { nama: 'substitusi data', pola: ['0\\.01|\\(0\\.1\\)\\^?2|0\\.1\\^?2|10-2'] },
+                        { nama: 'nilai k = 4', pola: ['(k=|kadalah|nilaik=?|nilaikadalah|kyaitu|=)4(?![0-9]|\\.[0-9]|x10|e)'] },
+                        { nama: 'satuan M⁻²', pola: ['m-2|mol-2|mol\\^?-2|m\\^-2|l2mol-2|l\\^?2mol\\^?-2'] },
+                        { nama: 'satuan detik⁻¹', pola: ['detik-1|s-1|/detik|/s(?![a-z])|det-1|sekon-1|det\\^-1'] }
+                    ],
+                    model: 'Dengan data nomor 1: k = v ÷ ([A]²[B]) = 4 × 10⁻³ ÷ ((0,1)² × 0,1) = 4 × 10⁻³ ÷ 10⁻³ = 4. Karena orde total 3, satuan k = M⁻² detik⁻¹. Jadi k = 4 M⁻² detik⁻¹.'
+                }
+            ];
+            const POIN_PG = 3, POIN_ESAI = 8, KKM = 75, HURUF = 'ABCDE';
+            const JML_PG = PG.length, TOTAL = PG.length + ESAI.length, NO_ESAI = JML_PG + 1;
+            const DURASI = 90 * 60 * 1000; // 90 menit
+            const KUNCI_UJI = 'ekspedisiUjiPuncak_v1';
+
+            /* ================== PENYIMPANAN ================== */
+            let uji = { nama: '', kelas: '', absen: '', pg: {}, esai: {}, mulai: null, dikumpul: false, hasil: null, riwayat: [] };
+            try { uji = Object.assign(uji, JSON.parse(localStorage.getItem(KUNCI_UJI) || '{}')); } catch (e) { }
+            const jam = d => d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            function simpanUji(tampil = true) {
+                try {
+                    localStorage.setItem(KUNCI_UJI, JSON.stringify(uji));
+                    if (tampil) $('ekpStatusSimpan').querySelector('span').textContent = 'Tersimpan otomatis · ' + jam(new Date());
+                } catch (e) { $('ekpStatusSimpan').querySelector('span').textContent = 'Gagal menyimpan di perangkat ini'; }
+            }
+
+            /* ================== TAMPILKAN SOAL ================== */
+            $('ekpDaftarPG').innerHTML = PG.map((s, i) => `<div class="ekp-soal-uji" id="ekpS${i + 1}">
+                <div class="kepala-soal"><span class="no">${i + 1}</span><div class="teks">${s.t}<br><span class="topik">TP ${s.tp === 'P' ? 'prasyarat' : s.tp} · ${TOPIK[s.topik].nama}</span></div></div>
+                ${s.data || ''}
+                <div class="ekp-opsi-lima" role="radiogroup" aria-label="Pilihan jawaban soal ${i + 1}">
+                    ${s.o.map((o, j) => `<label><input type="radio" name="pg${i}" value="${j}"><span class="huruf">${HURUF[j]}</span><span>${o}</span></label>`).join('')}
+                </div><div class="tempat-bahas"></div></div>`).join('');
+            $('ekpDaftarEsai').innerHTML = ESAI.map((s, j) => `<div class="ekp-soal-uji" id="ekpS${NO_ESAI + j}">
+                <div class="kepala-soal"><span class="no">${NO_ESAI + j}</span><div class="teks">${s.t}<br><span class="topik">TP ${s.tp} · ${TOPIK[s.topik].nama}</span></div></div>
+                ${s.data || ''}
+                <textarea data-e="${j}" aria-label="Jawaban esai nomor ${NO_ESAI + j}" placeholder="Tulis jawabanmu di sini…"></textarea>
+                <div class="hitung-kata" data-hk="${j}">0 kata</div><div class="tempat-bahas"></div></div>`).join('');
+            $('ekpNomor').innerHTML = PG.map((_, i) => `<a href="#ekpS${i + 1}" data-n="${i + 1}">${i + 1}</a>`).join('') + '<span class="pemisah"></span>' +
+                ESAI.map((_, j) => `<a href="#ekpS${NO_ESAI + j}" class="esai" data-n="${NO_ESAI + j}">${NO_ESAI + j}</a>`).join('');
+
+            // hasil dari versi soal lama (jumlah soal berbeda) tidak dipakai lagi; jawaban tetap dipertahankan
+            if (uji.hasil && (!uji.hasil.pg || uji.hasil.pg.length !== PG.length)) { uji.dikumpul = false; uji.hasil = null; simpanUji(false); }
+            // isi ulang dari penyimpanan
+            ['nama', 'kelas', 'absen'].forEach(k => { $('ekp' + k[0].toUpperCase() + k.slice(1)).value = uji[k] || ''; });
+            Object.entries(uji.pg).forEach(([i, j]) => { const r = document.querySelector(`input[name="pg${i}"][value="${j}"]`); if (r) r.checked = true; });
+            document.querySelectorAll('textarea[data-e]').forEach(ta => { ta.value = uji.esai[ta.dataset.e] || ''; });
+
+            const jumlahKata = s => (s.trim().match(/\S+/g) || []).length;
+            function perbaruiProgres() {
+                let n = 0;
+                PG.forEach((_, i) => { const ada = uji.pg[i] !== undefined; if (ada) n++; document.querySelector(`#ekpNomor a[data-n="${i + 1}"]`).classList.toggle('isi', ada); $('ekpS' + (i + 1)).classList.toggle('terisi', ada); });
+                ESAI.forEach((_, j) => {
+                    const teks = uji.esai[j] || '', ada = jumlahKata(teks) >= 3; if (ada) n++;
+                    document.querySelector(`#ekpNomor a[data-n="${NO_ESAI + j}"]`).classList.toggle('isi', ada);
+                    $('ekpS' + (NO_ESAI + j)).classList.toggle('terisi', ada);
+                    document.querySelector(`[data-hk="${j}"]`).textContent = jumlahKata(teks) + ' kata';
+                });
+                $('ekpTerjawab').textContent = n;
+                $('ekpBarJawab').style.width = (n / TOTAL * 100) + '%';
+                $('ekpKumpulInfo').textContent = n < TOTAL ? `Masih ada ${TOTAL - n} soal yang belum dijawab.` : 'Semua soal sudah dijawab. Periksa kembali sebelum dikumpulkan.';
+                return n;
+            }
+            function mulaiJikaPerlu() { if (!uji.mulai) uji.mulai = Date.now(); }
+
+            ['Nama', 'Kelas', 'Absen'].forEach(k => $('ekp' + k).addEventListener('input', e => { uji[k.toLowerCase()] = e.target.value; e.target.classList.remove('kurang'); simpanUji(); }));
+            document.querySelectorAll('.ekp-opsi-lima input').forEach(r => r.addEventListener('change', () => {
+                if (uji.dikumpul) return;
+                mulaiJikaPerlu(); uji.pg[+r.name.slice(2)] = +r.value; simpanUji(); perbaruiProgres();
+            }));
+            document.querySelectorAll('textarea[data-e]').forEach(ta => ta.addEventListener('input', () => {
+                if (uji.dikumpul) return;
+                mulaiJikaPerlu(); uji.esai[ta.dataset.e] = ta.value; simpanUji(); perbaruiProgres();
+            }));
+
+            // penunjuk waktu
+            function formatDurasi(ms) { const s = Math.max(0, Math.floor(ms / 1000)); const m = Math.floor(s / 60); return String(m).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+            function perbaruiWaktu() {
+                if (!uji.mulai) { $('ekpWaktu').textContent = formatDurasi(DURASI); return; }
+                const akhir = uji.dikumpul && uji.hasil ? uji.hasil.selesai : Date.now();
+                const sisa = DURASI - (akhir - uji.mulai);
+                $('ekpWaktu').textContent = uji.dikumpul ? 'selesai' : formatDurasi(sisa);
+                $('ekpWaktuKotak').classList.toggle('kritis', !uji.dikumpul && sisa <= 10 * 60 * 1000);
+                if (!uji.dikumpul && sisa <= 0) kumpulkan(true);
+            }
+            setInterval(perbaruiWaktu, 1000);
+
+            /* ================== PENILAIAN ================== */
+            function normal(s) {
+                const peta = { '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁻': '-', 'ˣ': 'x', 'ʸ': 'y', '×': 'x', '−': '-', '–': '-', '÷': '/' };
+                const t = s.toLowerCase().replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻ˣʸ×−–÷]/g, c => peta[c]).replace(/(\d),(\d)/g, '$1.$2').replace(/\^/g, '').replace(/\s+/g, ' ');
+                return { spasi: t, rapat: t.replace(/\s+/g, '') };
+            }
+            function nilaiEsai(j, teks) {
+                const n = normal(teks || '');
+                const hasil = ESAI[j].konsep.map(k => ({ nama: k.nama, ada: k.pola.some(p => new RegExp(p).test(n.spasi) || new RegExp(p).test(n.rapat)) }));
+                const cocok = hasil.filter(h => h.ada).length;
+                let skor = Math.round(POIN_ESAI * cocok / hasil.length);
+                if (jumlahKata(teks || '') < 3) skor = 0;
+                return { skor, hasil };
+            }
+            function hitung() {
+                const pg = PG.map((s, i) => ({ jawab: uji.pg[i], benar: uji.pg[i] === s.b }));
+                const esai = ESAI.map((_, j) => nilaiEsai(j, uji.esai[j]));
+                const skorPG = pg.filter(x => x.benar).length * POIN_PG;
+                const skorEsai = esai.reduce((a, e) => a + e.skor, 0);
+                const topik = {};
+                Object.keys(TOPIK).forEach(k => topik[k] = { dapat: 0, maks: 0 });
+                PG.forEach((s, i) => { topik[s.topik].maks += POIN_PG; if (pg[i].benar) topik[s.topik].dapat += POIN_PG; });
+                ESAI.forEach((s, j) => { topik[s.topik].maks += POIN_ESAI; topik[s.topik].dapat += esai[j].skor; });
+                const tp = {};
+                Object.keys(TP).forEach(k => tp[k] = { dapat: 0, maks: 0 });
+                PG.forEach((s, i) => { tp[s.tp].maks += POIN_PG; if (pg[i].benar) tp[s.tp].dapat += POIN_PG; });
+                ESAI.forEach((s, j) => { tp[s.tp].maks += POIN_ESAI; tp[s.tp].dapat += esai[j].skor; });
+                return { pg, esai, skorPG, skorEsai, nilai: skorPG + skorEsai, benarPG: pg.filter(x => x.benar).length, topik, tp, selesai: Date.now(), tanggal: new Date().toLocaleString('id-ID') };
+            }
+
+            /* ================== MODE PEMBAHASAN ================== */
+            function tampilPembahasan(h) {
+                document.querySelector('.ekp-pos').classList.add('ekp-terkunci');
+                PG.forEach((s, i) => {
+                    const kotak = $('ekpS' + (i + 1));
+                    kotak.querySelectorAll('input').forEach(r => r.disabled = true);
+                    const label = [...kotak.querySelectorAll('.ekp-opsi-lima label')];
+                    label[s.b].classList.add('kunci');
+                    if (h.pg[i].jawab !== undefined && !h.pg[i].benar) label[h.pg[i].jawab].classList.add('keliru');
+                    const status = h.pg[i].jawab === undefined ? 'salah' : h.pg[i].benar ? 'benar' : 'salah';
+                    kotak.querySelector('.tempat-bahas').innerHTML = `<div class="ekp-pembahasan ${status}"><strong>${h.pg[i].jawab === undefined ? 'Tidak dijawab.' : h.pg[i].benar ? `Benar (+${POIN_PG}).` : 'Belum tepat.'}</strong> Kunci: <strong>${HURUF[s.b]}</strong>. ${s.p}</div>`;
+                    document.querySelector(`#ekpNomor a[data-n="${i + 1}"]`).classList.add(h.pg[i].benar ? 'benar' : 'salah');
+                });
+                ESAI.forEach((s, j) => {
+                    const kotak = $('ekpS' + (NO_ESAI + j)), e = h.esai[j];
+                    kotak.querySelector('textarea').readOnly = true;
+                    const status = e.skor >= POIN_ESAI * .75 ? 'benar' : e.skor > 0 ? 'sebagian' : 'salah';
+                    kotak.querySelector('.tempat-bahas').innerHTML = `<div class="ekp-pembahasan ${status}"><strong>Skor esai: ${e.skor}/${POIN_ESAI}</strong>
+                        <div class="ekp-konsep">${e.hasil.map(k => `<span class="${k.ada ? 'ada' : 'tidak'}">${k.ada ? '✓' : '✗'} ${k.nama}</span>`).join('')}</div>
+                        <strong>Contoh jawaban:</strong> ${s.model}</div>`;
+                    document.querySelector(`#ekpNomor a[data-n="${NO_ESAI + j}"]`).classList.add(status);
+                });
+                $('ekpKumpulKotak').hidden = true;
+                // hasil
+                $('ekpHasil').hidden = false;
+                const lulus = h.nilai >= KKM;
+                $('ekpLencanaHasil').className = 'lencana-hasil ' + (lulus ? 'lulus' : 'belum');
+                $('ekpLencanaHasil').innerHTML = lulus ? '🏆 Lulus KKM' : '📚 Belum mencapai KKM';
+                $('ekpJudulHasil').textContent = lulus ? (h.nilai >= 90 ? 'Luar biasa, Juara Kinetika!' : 'Selamat, kamu mencapai puncak!') : 'Tetap semangat, coba lagi ya!';
+                $('ekpIdentitasHasil').textContent = `${uji.nama || 'Tanpa nama'} · ${uji.kelas || '–'}${uji.absen ? ' · No. ' + uji.absen : ''} · ${h.tanggal}`;
+                $('ekpSkorPG').textContent = `${h.skorPG}/60`;
+                $('ekpSkorEsai').textContent = `${h.skorEsai}/40`;
+                $('ekpBenarPG').textContent = `${h.benarPG}/${JML_PG}`;
+                $('ekpWaktuHasil').textContent = uji.mulai ? formatDurasi(h.selesai - uji.mulai) : '–';
+                $('ekpBusur').style.stroke = lulus ? '#10b981' : '#f59e0b';
+                const tampilNilai = () => {
+                    $('ekpBusur').style.strokeDashoffset = (326.7 * (1 - h.nilai / 100)).toFixed(1);
+                    const t0 = performance.now();
+                    (function naik(now) {
+                        const r = Math.min(1, (now - t0) / 1200);
+                        $('ekpNilai').textContent = Math.round(h.nilai * r);
+                        if (r < 1) requestAnimationFrame(naik);
+                    })(t0);
+                };
+                requestAnimationFrame(tampilNilai);
+                $('ekpTopik').innerHTML = Object.entries(TOPIK).map(([k, T]) => {
+                    const d = h.topik[k], persen = d.maks ? Math.round(d.dapat / d.maks * 100) : 0;
+                    return `<div class="baris-topik"><span>${T.nama}</span><div class="batang"><i style="background:${T.warna}" data-w="${persen}"></i></div>
+                        <span>${persen}% ${persen < 70 ? `<a href="${T.link}">pelajari lagi →</a>` : '✅'}</span></div>`;
+                }).join('');
+                requestAnimationFrame(() => $('ekpTopik').querySelectorAll('i').forEach(i => i.style.width = i.dataset.w + '%'));
+                if (h.tp) $('ekpTPHasil').innerHTML = `<table class="ekp-tabel tp"><thead><tr><th>TP</th><th>Tujuan pembelajaran</th><th>Skor</th><th>Status</th></tr></thead><tbody>${Object.entries(TP).filter(([k]) => h.tp[k].maks).map(([k, nama]) => {
+                    const d = h.tp[k], persen = Math.round(d.dapat / d.maks * 100), ok = persen >= 70;
+                    return `<tr><td><b>${k === 'P' ? '–' : k}</b></td><td class="kiri">${nama}</td><td>${d.dapat}/${d.maks} (${persen}%)</td><td><span class="status-tp ${ok ? 'ya' : 'tidak'}">${ok ? 'Tercapai' : 'Belum tercapai'}</span></td></tr>`;
+                }).join('')}</tbody></table>`;
+                $('ekpRiwayat').innerHTML = uji.riwayat.length ? '<b>Riwayat nilai:</b> ' + uji.riwayat.map((r, i) => `<span>#${i + 1} · ${r.nilai} (${r.tanggal})</span>`).join('') : '';
+            }
+
+            function kumpulkan(otomatis) {
+                if (uji.dikumpul) return;
+                if (otomatis) ['Nama', 'Kelas'].forEach(k => { if (!$('ekp' + k).value.trim()) { $('ekp' + k).value = 'Tanpa ' + k.toLowerCase(); uji[k.toLowerCase()] = $('ekp' + k).value; } });
+                const kurang = ['Nama', 'Kelas'].filter(k => !$('ekp' + k).value.trim());
+                if (kurang.length) {
+                    kurang.forEach(k => $('ekp' + k).classList.add('kurang'));
+                    $('ekp' + kurang[0]).focus();
+                    $('ekpKumpulInfo').textContent = 'Isi nama dan kelas terlebih dahulu.';
+                    $('ekpNama').scrollIntoView({ behavior: gerakDikurangi ? 'auto' : 'smooth', block: 'center' });
+                    return;
+                }
+                const n = perbaruiProgres();
+                if (!otomatis && n < TOTAL && !confirm(`Masih ada ${TOTAL - n} soal yang belum dijawab. Tetap kumpulkan?`)) return;
+                mulaiJikaPerlu();
+                const h = hitung();
+                uji.dikumpul = true; uji.hasil = h;
+                uji.riwayat = (uji.riwayat || []).concat({ nilai: h.nilai, tanggal: h.tanggal });
+                simpanUji();
+                if (h.nilai >= KKM && !prog.selesai.includes(6)) { prog.selesai.push(6); prog.xp = (+prog.xp || 0) + 100; simpan(); renderXP(); }
+                tampilPembahasan(h);
+                $('ekpHasil').scrollIntoView({ behavior: gerakDikurangi ? 'auto' : 'smooth', block: 'start' });
+                if (h.nilai >= KKM) konfeti();
+                if (otomatis) alert('Waktu pengerjaan habis. Jawabanmu sudah dikumpulkan otomatis.');
+            }
+            $('ekpKumpul').addEventListener('click', () => kumpulkan(false));
+
+            $('ekpUlang').addEventListener('click', () => {
+                if (!confirm('Kerjakan ulang? Jawaban sebelumnya akan dihapus, tetapi riwayat nilai tetap tersimpan.')) return;
+                uji.pg = {}; uji.esai = {}; uji.mulai = null; uji.dikumpul = false; uji.hasil = null;
+                simpanUji(false);
+                location.reload();
+            });
+
+            $('ekpCetak').addEventListener('click', () => window.print());
+
+            $('ekpUnduh').addEventListener('click', () => {
+                const h = uji.hasil; if (!h) return;
+                const esc = s => String(s == null ? '' : s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+                const barisPG = PG.map((s, i) => `<tr><td>${i + 1}</td><td>${h.pg[i].jawab === undefined ? '–' : HURUF[h.pg[i].jawab]}</td><td>${HURUF[s.b]}</td><td>${h.pg[i].benar ? '✓ (' + POIN_PG + ')' : '✗ (0)'}</td></tr>`).join('');
+                const barisEsai = ESAI.map((s, j) => `<div class="esai"><p><b>${NO_ESAI + j}. ${s.t}</b></p><p class="jawab">${esc(uji.esai[j] || '(tidak dijawab)').replace(/\n/g, '<br>')}</p>
+                    <p>Skor otomatis: <b>${h.esai[j].skor}/${POIN_ESAI}</b> · Konsep: ${h.esai[j].hasil.map(k => (k.ada ? '✓ ' : '✗ ') + k.nama).join(', ')}</p>
+                    <p>Skor guru: ______ / ${POIN_ESAI}</p></div>`).join('');
+                const topik = Object.entries(TOPIK).map(([k, T]) => `<tr><td>${T.nama}</td><td>${h.topik[k].dapat}/${h.topik[k].maks}</td></tr>`).join('');
+                const barisTP = h.tp ? Object.entries(TP).filter(([k]) => h.tp[k].maks).map(([k, nama]) => { const d = h.tp[k], p = Math.round(d.dapat / d.maks * 100); return `<tr><td>${k === 'P' ? '–' : k}</td><td style="text-align:left">${nama}</td><td>${d.dapat}/${d.maks} (${p}%)</td><td>${p >= 70 ? 'Tercapai' : 'Belum tercapai'}</td></tr>`; }).join('') : '';
+                const html = `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Hasil Uji Pemahaman Laju Reaksi - ${esc(uji.nama)}<\/title>
+                    <style>body{font-family:system-ui,sans-serif;max-width:820px;margin:24px auto;padding:0 16px;color:#1e293b;line-height:1.6}h1{font-size:1.4rem;margin:0}table{border-collapse:collapse;width:100%;margin:8px 0 18px}td,th{border:1px solid #cbd5e1;padding:6px 8px;text-align:center}th{background:#f1f5f9}.nilai{font-size:2.4rem;font-weight:800;color:${h.nilai >= KKM ? '#059669' : '#dc2626'}}.esai{border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;margin:10px 0}.jawab{background:#f8fafc;border-radius:8px;padding:8px}<\/style><\/head><body>
+                    <h1>Hasil Uji Pemahaman Laju Reaksi · EduKinetika</h1>
+                    <p>Nama: <b>${esc(uji.nama)}</b> · Kelas: <b>${esc(uji.kelas)}</b> · No. absen: <b>${esc(uji.absen || '–')}</b><br>Waktu pengumpulan: ${h.tanggal} · Lama mengerjakan: ${uji.mulai ? formatDurasi(h.selesai - uji.mulai) : '–'}</p>
+                    <p>Nilai: <span class="nilai">${h.nilai}</span> / 100 (${h.nilai >= KKM ? 'Lulus KKM ' + KKM : 'Belum mencapai KKM ' + KKM})<br>Pilihan ganda: ${h.skorPG}/${JML_PG * POIN_PG} (${h.benarPG} benar) · Esai: ${h.skorEsai}/40</p>
+                    <h2>Penguasaan materi</h2><table><tr><th>Materi</th><th>Skor</th></tr>${topik}</table>
+                    ${barisTP ? `<h2>Ketercapaian tujuan pembelajaran</h2><table><tr><th>TP</th><th>Tujuan pembelajaran</th><th>Skor</th><th>Status</th></tr>${barisTP}</table>` : ''}
+                    <h2>Bagian A · Pilihan ganda</h2><table><tr><th>No.</th><th>Jawaban</th><th>Kunci</th><th>Hasil</th></tr>${barisPG}</table>
+                    <h2>Bagian B · Esai</h2>${barisEsai}
+                    <p style="color:#64748b;font-size:.85rem">Skor esai dihitung otomatis berdasarkan kata kunci dan dapat ditinjau ulang oleh guru.</p><\/body><\/html>`;
+                const blob = new Blob([html], { type: 'text/html' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'hasil-uji-laju-reaksi-' + (uji.nama || 'peserta').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.html';
+                document.body.appendChild(a); a.click(); a.remove();
+                setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+            });
+
+            function konfeti() {
+                if (gerakDikurangi) return;
+                const w = ['#f43f5e', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899'];
+                for (let i = 0; i < 90; i++) {
+                    const k = document.createElement('span');
+                    k.className = 'ekp-konfeti';
+                    k.style.left = Math.random() * 100 + 'vw';
+                    k.style.background = w[i % w.length];
+                    k.style.animationDelay = Math.random() * .6 + 's';
+                    k.style.animationDuration = 2 + Math.random() * 1.5 + 's';
+                    document.body.appendChild(k);
+                    setTimeout(() => k.remove(), 4500);
+                }
+            }
+
+            // mulai
+            perbaruiProgres();
+            perbaruiWaktu();
+            if (Object.keys(uji.pg).length || Object.keys(uji.esai).length) $('ekpStatusSimpan').querySelector('span').textContent = 'Jawaban sebelumnya dipulihkan';
+            if (uji.dikumpul && uji.hasil) tampilPembahasan(uji.hasil);
+        })();
+    </script>
+</body>
+
+</html>

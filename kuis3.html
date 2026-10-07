@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis 3: Orde &amp; Persamaan Laju Reaksi | EduKinetika</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        :root {
+            --ungu: #8854c0;
+            --ungu-tua: #6a3aa8;
+            --ungu-muda: #f3e8ff;
+            --ink: #1f1235;
+            --ink-2: #5b5470;
+            --line: #ece6f5;
+            --hijau: #00c985;
+            --hijau-tua: #00a36c;
+            --merah: #ef3c69;
+            --merah-tua: #c9224d;
+            --kuning: #ffc02e;
+            --opsi-0: #2d70ae;
+            --opsi-1: #2d9da6;
+            --opsi-2: #efa929;
+            --opsi-3: #d5546d;
+            --opsi-4: #9a4292;
+            --opsi-0d: #1f5486;
+            --opsi-1d: #1f7a82;
+            --opsi-2d: #c4861a;
+            --opsi-3d: #ad3a52;
+            --opsi-4d: #76306f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body {
+            font-family: 'Nunito', system-ui, sans-serif;
+            color: var(--ink);
+            background: #f4effb;
+            background-image: radial-gradient(circle at 12% 18%, rgba(136, 84, 192, .14) 0 120px, transparent 121px),
+                radial-gradient(circle at 88% 12%, rgba(255, 192, 46, .20) 0 90px, transparent 91px),
+                radial-gradient(circle at 85% 85%, rgba(45, 157, 166, .14) 0 140px, transparent 141px),
+                radial-gradient(circle at 8% 90%, rgba(239, 60, 105, .12) 0 100px, transparent 101px);
+            background-attachment: fixed;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+        }
+
+        .wrap {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 18px 16px 40px;
+        }
+
+        /* TOP BAR */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: #fff;
+            border-radius: 18px;
+            padding: 10px 14px;
+            box-shadow: 0 4px 0 var(--line);
+            margin-bottom: 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 900;
+        }
+
+        .brand .logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: var(--ungu);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 20px;
+            box-shadow: 0 3px 0 var(--ungu-tua);
+        }
+
+        .brand small {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--ink-2);
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 800;
+            font-size: 13px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: var(--ungu-muda);
+            color: var(--ungu-tua);
+        }
+
+        .btn-back {
+            background: #f1ecf8;
+            color: var(--ink);
+            font-weight: 800;
+            font-size: 13px;
+            padding: 9px 14px;
+            border-radius: 12px;
+            box-shadow: 0 3px 0 #ddd3ec;
+            text-decoration: none;
+        }
+
+        .btn-back:hover {
+            background: #e9e0f6;
+        }
+
+        /* START */
+        .hero {
+            background: #fff;
+            border-radius: 28px;
+            padding: 34px 28px;
+            text-align: center;
+            box-shadow: 0 8px 0 var(--line);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 10px;
+            background: linear-gradient(90deg, var(--opsi-0), var(--opsi-1), var(--opsi-2), var(--opsi-3), var(--opsi-4));
+        }
+
+        .hero .emblem {
+            width: 92px;
+            height: 92px;
+            margin: 8px auto 16px;
+            border-radius: 28px;
+            background: var(--ungu);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 46px;
+            box-shadow: 0 6px 0 var(--ungu-tua);
+            transform: rotate(-6deg);
+        }
+
+        .hero h1 {
+            font-size: clamp(24px, 4vw, 34px);
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .hero p.lead {
+            color: var(--ink-2);
+            font-weight: 600;
+            max-width: 560px;
+            margin: 0 auto 22px;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .stat {
+            background: #faf7fe;
+            border: 2px solid var(--line);
+            border-radius: 16px;
+            padding: 12px 18px;
+            min-width: 120px;
+        }
+
+        .stat b {
+            display: block;
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--ungu);
+        }
+
+        .stat span {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--ink-2);
+        }
+
+        .who {
+            margin: 0 auto 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff7e0;
+            border: 2px solid #ffe4a3;
+            padding: 8px 14px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .who.warn {
+            background: #fff0f3;
+            border-color: #ffc9d6;
+            color: var(--merah-tua);
+        }
+
+        .who a {
+            color: var(--ungu-tua);
+            font-weight: 900;
+        }
+
+        .btn-big {
+            background: var(--ungu);
+            color: #fff;
+            font-size: 20px;
+            font-weight: 900;
+            padding: 16px 44px;
+            border-radius: 18px;
+            box-shadow: 0 6px 0 var(--ungu-tua);
+            transition: transform .08s, box-shadow .08s;
+        }
+
+        .btn-big:hover {
+            filter: brightness(1.06);
+        }
+
+        .btn-big:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 var(--ungu-tua);
+        }
+
+        .btn-big.green {
+            background: var(--hijau);
+            box-shadow: 0 6px 0 var(--hijau-tua);
+        }
+
+        .btn-big.green:active {
+            box-shadow: 0 2px 0 var(--hijau-tua);
+        }
+
+        .btn-big.light {
+            background: #fff;
+            color: var(--ungu-tua);
+            box-shadow: 0 6px 0 #ddd3ec;
+            border: 2px solid var(--line);
+        }
+
+        .hint-keys {
+            margin-top: 16px;
+            font-size: 12.5px;
+            color: var(--ink-2);
+            font-weight: 700;
+        }
+
+        kbd {
+            background: #f1ecf8;
+            border: 1px solid #ddd3ec;
+            border-bottom-width: 3px;
+            border-radius: 6px;
+            padding: 1px 6px;
+            font-family: inherit;
+            font-size: 12px;
+        }
+
+        /* QUIZ */
+        .qhead {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .progress {
+            flex: 1;
+            min-width: 160px;
+            height: 14px;
+            background: #fff;
+            border-radius: 999px;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 2px var(--line);
+        }
+
+        .progress i {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, var(--hijau), #36e0a6);
+            border-radius: 999px;
+            transition: width .4s ease;
+        }
+
+        .chip {
+            background: #fff;
+            border-radius: 12px;
+            padding: 7px 12px;
+            font-weight: 900;
+            font-size: 14px;
+            box-shadow: 0 3px 0 var(--line);
+            white-space: nowrap;
+        }
+
+        .chip.streak {
+            color: #e85d04;
+        }
+
+        .chip.skor {
+            color: var(--ungu-tua);
+        }
+
+        .qcard {
+            background: #fff;
+            border-radius: 26px;
+            padding: 22px 24px 24px;
+            box-shadow: 0 8px 0 var(--line);
+            margin-bottom: 16px;
+            animation: pop .35s ease;
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(.97);
+                opacity: 0;
+            }
+
+            to {
+                transform: none;
+                opacity: 1;
+            }
+        }
+
+        .qmeta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .tag {
+            font-size: 11.5px;
+            font-weight: 900;
+            letter-spacing: .03em;
+            padding: 5px 10px;
+            border-radius: 8px;
+            text-transform: uppercase;
+        }
+
+        .tag.no {
+            background: #1f1235;
+            color: #fff;
+        }
+
+        .lv-C2 {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .lv-C3 {
+            background: #ccfbf1;
+            color: #0f766e;
+        }
+
+        .lv-C4 {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .lv-C5 {
+            background: #ffe4e6;
+            color: #be123c;
+        }
+
+        .lv-C6 {
+            background: #f3e8ff;
+            color: #7e22ce;
+        }
+
+        .qtext {
+            font-size: clamp(17px, 2.2vw, 21px);
+            font-weight: 800;
+            line-height: 1.55;
+        }
+
+        .qtext table {
+            font-weight: 700;
+        }
+
+        .opts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .opts.n5 .opt:last-child {
+            grid-column: 1 / -1;
+        }
+
+        .opts.short {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .opts.short .opt:last-child {
+            grid-column: auto;
+        }
+
+        .opt {
+            position: relative;
+            text-align: left;
+            color: #fff;
+            font-weight: 800;
+            font-size: 16px;
+            line-height: 1.45;
+            padding: 16px 16px 16px 58px;
+            border-radius: 18px;
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            transition: transform .08s, box-shadow .08s, opacity .25s, filter .2s;
+        }
+
+        .opts.short .opt {
+            justify-content: center;
+            padding: 16px 10px 16px 46px;
+            font-size: 20px;
+        }
+
+        .opt .key {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .25);
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            font-size: 16px;
+        }
+
+        .opt:hover:not([disabled]) {
+            filter: brightness(1.08);
+            transform: translateY(-2px);
+        }
+
+        .opt:active:not([disabled]) {
+            transform: translateY(4px);
+        }
+
+        .opt[disabled] {
+            cursor: default;
+        }
+
+        .opt.dim {
+            opacity: .35;
+            filter: saturate(.4);
+        }
+
+        .opt.benar {
+            background: var(--hijau) !important;
+            box-shadow: 0 6px 0 var(--hijau-tua) !important;
+            opacity: 1;
+            filter: none;
+        }
+
+        .opt.salah {
+            background: var(--merah) !important;
+            box-shadow: 0 6px 0 var(--merah-tua) !important;
+            opacity: 1;
+            filter: none;
+            animation: shake .4s;
+        }
+
+        .opt .mark {
+            position: absolute;
+            right: 12px;
+            top: 10px;
+            font-size: 20px;
+        }
+
+        @keyframes shake {
+
+            20%,
+            60% {
+                transform: translateX(-6px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(6px);
+            }
+        }
+
+        .katex {
+            font-size: 1.05em;
+        }
+
+        .opt .katex {
+            font-size: 1.08em;
+        }
+
+        /* FEEDBACK */
+        .fb {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 30;
+            transform: translateY(110%);
+            transition: transform .35s cubic-bezier(.2, 1.1, .4, 1);
+        }
+
+        .fb.show {
+            transform: none;
+        }
+
+        .fb-inner {
+            max-width: 980px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 26px 26px 0 0;
+            box-shadow: 0 -10px 40px rgba(31, 18, 53, .18);
+            overflow: hidden;
+        }
+
+        .fb-bar {
+            padding: 14px 22px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .fb.ok .fb-bar {
+            background: var(--hijau);
+        }
+
+        .fb.no .fb-bar {
+            background: var(--merah);
+        }
+
+        .fb-bar h3 {
+            font-size: 22px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .fb-bar .pts {
+            font-weight: 900;
+            background: rgba(255, 255, 255, .25);
+            padding: 6px 12px;
+            border-radius: 10px;
+        }
+
+        .fb-body {
+            padding: 16px 22px 18px;
+            max-height: 42vh;
+            overflow: auto;
+        }
+
+        .fb-body .label {
+            font-size: 12px;
+            font-weight: 900;
+            color: var(--ungu);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: 6px;
+        }
+
+        .fb-body .exp {
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.7;
+            color: #3b3450;
+        }
+
+        .fb-actions {
+            padding: 0 22px 18px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* RESULT */
+        .result {
+            background: #fff;
+            border-radius: 28px;
+            padding: 30px 24px;
+            text-align: center;
+            box-shadow: 0 8px 0 var(--line);
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ring {
+            width: 170px;
+            height: 170px;
+            margin: 4px auto 14px;
+            position: relative;
+        }
+
+        .ring svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .ring .val {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            font-size: 44px;
+            font-weight: 900;
+        }
+
+        .ring .val small {
+            display: block;
+            font-size: 13px;
+            color: var(--ink-2);
+            font-weight: 800;
+            margin-top: -8px;
+        }
+
+        .result h2 {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        .result .msg {
+            color: var(--ink-2);
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .save {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .save.wait {
+            background: #f1ecf8;
+            color: var(--ink-2);
+        }
+
+        .save.ok {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .save.err {
+            background: #ffe4e6;
+            color: #be123c;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .review h3 {
+            font-size: 20px;
+            font-weight: 900;
+            margin: 6px 4px 12px;
+        }
+
+        .rv {
+            background: #fff;
+            border-radius: 20px;
+            padding: 16px 18px;
+            margin-bottom: 12px;
+            box-shadow: 0 5px 0 var(--line);
+            border-left: 8px solid var(--hijau);
+        }
+
+        .rv.x {
+            border-left-color: var(--merah);
+        }
+
+        .rv .rv-top {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .rv .rv-q {
+            font-weight: 800;
+            line-height: 1.55;
+            margin-bottom: 10px;
+        }
+
+        .rv .ans {
+            font-size: 14px;
+            font-weight: 700;
+            margin: 3px 0;
+        }
+
+        .rv .ans.me {
+            color: var(--merah-tua);
+        }
+
+        .rv .ans.key {
+            color: var(--hijau-tua);
+        }
+
+        .rv details {
+            margin-top: 8px;
+            background: #faf7fe;
+            border-radius: 12px;
+            padding: 10px 12px;
+        }
+
+        .rv summary {
+            cursor: pointer;
+            font-weight: 900;
+            color: var(--ungu-tua);
+            font-size: 14px;
+        }
+
+        .rv details .exp {
+            margin-top: 8px;
+            font-size: 14px;
+            line-height: 1.7;
+            font-weight: 600;
+            color: #3b3450;
+        }
+
+        #confetti {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 40;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 640px) {
+
+            .opts,
+            .opts.short {
+                grid-template-columns: 1fr;
+            }
+
+            .opts.short {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .opts.short .opt {
+                padding: 14px 4px 34px;
+                font-size: 17px;
+            }
+
+            .opts.short .opt .key {
+                top: auto;
+                bottom: 6px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 24px;
+                height: 24px;
+                font-size: 12px;
+            }
+
+            .qcard {
+                padding: 18px 16px;
+            }
+
+            .opt {
+                font-size: 15px;
+                min-height: 60px;
+            }
+
+            .brand small {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="confetti"></canvas>
+    <div class="wrap">
+        <div class="topbar">
+            <div class="brand">
+                <div class="logo">⚗️</div>
+                <div>EduKinetika<small>Pertemuan 3 • Kuis 3</small></div>
+            </div>
+            <a class="btn-back" href="kartu_kuis_edukinetika.html">← Menu Kuis</a>
+        </div>
+
+        <!-- START -->
+        <section id="start" class="hero">
+            <div class="emblem">📈</div>
+            <h1>Kuis 3: Orde &amp; Persamaan Laju Reaksi</h1>
+            <p class="lead">Tentukan orde reaksi, rumuskan persamaan laju, dan hitung tetapan laju reaksi berdasarkan
+                data eksperimen.</p>
+            <div class="stats">
+                <div class="stat"><b id="st-jml">–</b><span>Soal</span></div>
+                <div class="stat"><b id="st-no">–</b><span>Nomor kisi-kisi</span></div>
+                <div class="stat"><b id="st-lv">–</b><span>Level kognitif</span></div>
+                <div class="stat"><b>75</b><span>KKM</span></div>
+            </div>
+            <div id="who" class="who">⏳ Memeriksa akun…</div><br>
+            <button class="btn-big" id="btn-start">Mulai Kuis ▶</button>
+            <p class="hint-keys">Pintasan: tekan <kbd>1</kbd>–<kbd>5</kbd> atau <kbd>A</kbd>–<kbd>E</kbd> untuk
+                menjawab, <kbd>Enter</kbd> untuk lanjut.</p>
+        </section>
+
+        <!-- QUIZ -->
+        <section id="quiz" class="hidden">
+            <div class="qhead">
+                <span class="chip" id="q-count">1/–</span>
+                <div class="progress"><i id="q-prog"></i></div>
+                <span class="chip streak" id="q-streak" title="Jawaban benar berturut-turut">🔥 0</span>
+                <span class="chip skor" id="q-score">⭐ 0</span>
+            </div>
+            <div class="qcard" id="qcard">
+                <div class="qmeta"><span class="tag no" id="q-no">Soal 1</span><span class="tag" id="q-lv">C2</span>
+                </div>
+                <div class="qtext" id="q-text"></div>
+            </div>
+            <div class="opts" id="q-opts"></div>
+        </section>
+
+        <!-- RESULT -->
+        <section id="result" class="hidden">
+            <div class="result">
+                <div class="ring">
+                    <svg viewBox="0 0 120 120">
+                        <circle cx="60" cy="60" r="52" fill="none" stroke="#f1ecf8" stroke-width="12" />
+                        <circle id="ring-arc" cx="60" cy="60" r="52" fill="none" stroke="#00c985" stroke-width="12"
+                            stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7"
+                            style="transition:stroke-dashoffset 1.2s ease" />
+                    </svg>
+                    <div class="val">
+                        <div><span id="r-skor">0</span><small>SKOR</small></div>
+                    </div>
+                </div>
+                <h2 id="r-title">Selesai!</h2>
+                <p class="msg" id="r-msg"></p>
+                <div class="stats">
+                    <div class="stat"><b id="r-benar" style="color:var(--hijau-tua)">0</b><span>Benar</span></div>
+                    <div class="stat"><b id="r-salah" style="color:var(--merah)">0</b><span>Salah</span></div>
+                    <div class="stat"><b id="r-waktu">0:00</b><span>Durasi</span></div>
+                    <div class="stat"><b id="r-streak">0</b><span>Streak terbaik</span></div>
+                </div>
+                <div id="r-save" class="save wait">⏳ Menyimpan nilai ke dashboard…</div>
+                <div class="actions">
+                    <button class="btn-big light" id="btn-ulang">↻ Ulangi</button>
+                    <a class="btn-big green" href="kartu_kuis_edukinetika.html" style="text-decoration:none">Kembali ke
+                        Menu Kuis</a>
+                </div>
+            </div>
+            <div class="review">
+                <h3>📖 Pembahasan</h3>
+                <div id="r-list"></div>
+            </div>
+        </section>
+    </div>
+
+    <div class="fb" id="fb">
+        <div class="fb-inner">
+            <div class="fb-bar">
+                <h3 id="fb-title">Benar!</h3><span class="pts" id="fb-pts">+1</span>
+            </div>
+            <div class="fb-body">
+                <div class="label">Pembahasan</div>
+                <div class="exp" id="fb-exp"></div>
+            </div>
+            <div class="fb-actions"><button class="btn-big" id="btn-next"
+                    style="font-size:17px;padding:12px 30px">Lanjut ▶</button></div>
+        </div>
+    </div>
+
+    <script>
+        /* =====================================================================
+           DATA KUIS
+           ===================================================================== */
+        const KUIS = { kode: 'kuis3', judul: 'Kuis 3: Orde & Persamaan Laju Reaksi' };
+        const KKM = 75;
+        const quizData = [
+            {
+                no: 19,
+                level: "C3 (Penerapan)",
+                question: "Diberikan data eksperimen reaksi $A + 2B \\rightarrow C$ berikut:<div style=\"overflow-x:auto;margin:12px 0 4px\"><table style=\"width:100%;border-collapse:collapse;background:#fff;border:2px solid #e9d5ff;border-radius:14px;overflow:hidden;font-family:inherit;color:#1e293b\"><thead><tr><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">Percobaan</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">[A] (M)</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">[B] (M)</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">Laju (M s⁻¹)</th></tr></thead><tbody><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,012</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,024</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">3</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,048</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">4</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,3</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,108</td></tr></tbody></table></div>Orde reaksi terhadap pereaksi A adalah...",
+                options: [
+                    "0",
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                ],
+                correctIndex: 2,
+                explanation: "Pilih percobaan dengan <strong>[B] tetap</strong>, yaitu percobaan 1 dan 3:<br>$\\left(\\dfrac{0{,}2}{0{,}1}\\right)^x = \\dfrac{0{,}048}{0{,}012} \\Rightarrow 2^x = 4 \\Rightarrow x = 2$<br>Cek dengan percobaan 1 dan 4: $3^x = 9 \\Rightarrow x = 2$ ✓. Jadi, <strong>orde terhadap A = 2</strong>."
+            },
+            {
+                no: 20,
+                level: "C3 (Penerapan)",
+                question: "Diberikan data eksperimen reaksi $A + 2B \\rightarrow C$ berikut:<div style=\"overflow-x:auto;margin:12px 0 4px\"><table style=\"width:100%;border-collapse:collapse;background:#fff;border:2px solid #e9d5ff;border-radius:14px;overflow:hidden;font-family:inherit;color:#1e293b\"><thead><tr><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">Percobaan</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">[A] (M)</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">[B] (M)</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">Laju (M s⁻¹)</th></tr></thead><tbody><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,012</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,024</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">3</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,048</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">4</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,3</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,108</td></tr></tbody></table></div>Orde reaksi terhadap pereaksi B adalah...",
+                options: [
+                    "0",
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                ],
+                correctIndex: 1,
+                explanation: "Pilih percobaan dengan <strong>[A] tetap</strong>, yaitu percobaan 1 dan 2:<br>$\\left(\\dfrac{0{,}2}{0{,}1}\\right)^y = \\dfrac{0{,}024}{0{,}012} \\Rightarrow 2^y = 2 \\Rightarrow y = 1$<br>Jadi, <strong>orde terhadap B = 1</strong>. Orde reaksi ditentukan dari data percobaan, <strong>bukan dari koefisien reaksi</strong> (koefisien B = 2)."
+            },
+            {
+                no: 21,
+                level: "C3 (Penerapan)",
+                question: "Diberikan data eksperimen reaksi $A + 2B \\rightarrow C$ berikut:<div style=\"overflow-x:auto;margin:12px 0 4px\"><table style=\"width:100%;border-collapse:collapse;background:#fff;border:2px solid #e9d5ff;border-radius:14px;overflow:hidden;font-family:inherit;color:#1e293b\"><thead><tr><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">Percobaan</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">[A] (M)</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">[B] (M)</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">Laju (M s⁻¹)</th></tr></thead><tbody><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,012</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,024</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">3</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,048</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">4</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,3</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,108</td></tr></tbody></table></div>Orde reaksi total dari reaksi tersebut adalah...",
+                options: [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                ],
+                correctIndex: 2,
+                explanation: "Orde total = orde A + orde B<br>$= 2 + 1 = 3$<br>Jika dihitung dari jumlah koefisien reaksi ($1 + 2 = 3$), hasilnya kebetulan sama, tetapi cara itu tidak benar. Orde total harus dihitung dari orde masing-masing pereaksi berdasarkan data."
+            },
+            {
+                no: 22,
+                level: "C6 (Mencipta)",
+                question: "Diberikan data eksperimen reaksi $A + 2B \\rightarrow C$ berikut:<div style=\"overflow-x:auto;margin:12px 0 4px\"><table style=\"width:100%;border-collapse:collapse;background:#fff;border:2px solid #e9d5ff;border-radius:14px;overflow:hidden;font-family:inherit;color:#1e293b\"><thead><tr><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">Percobaan</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">[A] (M)</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">[B] (M)</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">Laju (M s⁻¹)</th></tr></thead><tbody><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,012</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,024</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">3</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,048</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">4</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,3</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,108</td></tr></tbody></table></div>Berdasarkan orde reaksi yang telah diperoleh, rumusan persamaan laju reaksi yang tepat adalah...",
+                options: [
+                    "$v = k[A][B]$",
+                    "$v = k[A][B]^2$",
+                    "$v = k[A]^2[B]$",
+                    "$v = k[A]^2[B]^2$",
+                    "$v = k[A]^3$"
+                ],
+                correctIndex: 2,
+                explanation: "Bentuk umum: $v = k[A]^x[B]^y$<br>Dengan $x = 2$ dan $y = 1$, maka $v = k[A]^2[B]$.<br>Pilihan $v = k[A][B]^2$ adalah jebakan karena disusun dari <strong>koefisien reaksi</strong> ($A + 2B$), padahal pangkat pada persamaan laju adalah <strong>orde hasil percobaan</strong>."
+            },
+            {
+                no: 23,
+                level: "C3 (Penerapan)",
+                question: "Diberikan data eksperimen reaksi $A + 2B \\rightarrow C$ berikut:<div style=\"overflow-x:auto;margin:12px 0 4px\"><table style=\"width:100%;border-collapse:collapse;background:#fff;border:2px solid #e9d5ff;border-radius:14px;overflow:hidden;font-family:inherit;color:#1e293b\"><thead><tr><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">Percobaan</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">[A] (M)</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">[B] (M)</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">Laju (M s⁻¹)</th></tr></thead><tbody><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,012</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,024</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">3</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,048</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">4</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,3</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,108</td></tr></tbody></table></div>Dengan persamaan laju $v = k[A]^2[B]$, nilai tetapan laju reaksi ($k$) beserta satuannya adalah...",
+                options: [
+                    "$0{,}12\\text{ M}^{-2}\\text{s}^{-1}$",
+                    "$1{,}2\\text{ M}^{-2}\\text{s}^{-1}$",
+                    "$12\\text{ M}^{-1}\\text{s}^{-1}$",
+                    "$12\\text{ M}^{-2}\\text{s}^{-1}$",
+                    "$120\\text{ M}^{-2}\\text{s}^{-1}$"
+                ],
+                correctIndex: 3,
+                explanation: "Gunakan data percobaan 1:<br>$0{,}012 = k(0{,}1)^2(0{,}1) = k \\times 0{,}001$<br>$k = \\dfrac{0{,}012}{0{,}001} = 12$<br>Satuan: $\\dfrac{\\text{M s}^{-1}}{\\text{M}^3} = \\text{M}^{-2}\\text{s}^{-1}$ (reaksi orde total 3).<br>Jadi, $k = 12\\text{ M}^{-2}\\text{s}^{-1}$."
+            },
+            {
+                no: 24,
+                level: "C5 (Evaluasi)",
+                question: "Data eksperimen reaksi $P + Q \\rightarrow R$:<div style=\"overflow-x:auto;margin:12px 0 4px\"><table style=\"width:100%;border-collapse:collapse;background:#fff;border:2px solid #e9d5ff;border-radius:14px;overflow:hidden;font-family:inherit;color:#1e293b\"><thead><tr><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">Percobaan</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">[P] (M)</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">[Q] (M)</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">Laju (M s⁻¹)</th></tr></thead><tbody><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">2 × 10⁻³</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">4 × 10⁻³</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">3</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">1,6 × 10⁻²</td></tr></tbody></table></div>Empat peserta didik menyajikan perhitungan orde reaksi totalnya. Penyajian yang paling <strong>tepat dan runtut</strong> adalah...",
+                options: [
+                    "Orde P dari percobaan 1 dan 2: $2^x = 2$, $x = 1$. Orde Q dari percobaan 1 dan 3: $2^y = 8$, $y = 3$. Orde total = 4.",
+                    "Orde P dari percobaan 1 dan 2 ([Q] tetap): $2^x = 2$, $x = 1$. Orde Q dari percobaan 2 dan 3 ([P] tetap): $2^y = 4$, $y = 2$. Orde total = 3.",
+                    "Orde total = jumlah koefisien reaksi = $1 + 1 = 2$.",
+                    "Orde Q dari percobaan 2 dan 3: $2^y = 4$, $y = 2$. Orde P dari percobaan 1 dan 3: $2^x = 8$, $x = 3$. Orde total = 5.",
+                    "Orde P dari percobaan 1 dan 2: $x = 2$. Orde Q dari percobaan 2 dan 3: $y = 2$. Orde total = 4."
+                ],
+                correctIndex: 1,
+                explanation: "Langkah yang benar:<br>1. <strong>Orde P</strong>: percobaan 1 & 2 ([Q] tetap) → $2^x = \\dfrac{4\\times10^{-3}}{2\\times10^{-3}} = 2$ → $x = 1$<br>2. <strong>Orde Q</strong>: percobaan 2 & 3 ([P] tetap) → $2^y = \\dfrac{1{,}6\\times10^{-2}}{4\\times10^{-3}} = 4$ → $y = 2$<br>3. <strong>Orde total</strong> $= 1 + 2 = 3$<br>Percobaan 1 & 3 tidak boleh dipakai karena [P] dan [Q] berubah bersamaan."
+            },
+            {
+                no: 25,
+                level: "C5 (Evaluasi)",
+                question: "Data eksperimen reaksi $X + Y \\rightarrow Z$:<div style=\"overflow-x:auto;margin:12px 0 4px\"><table style=\"width:100%;border-collapse:collapse;background:#fff;border:2px solid #e9d5ff;border-radius:14px;overflow:hidden;font-family:inherit;color:#1e293b\"><thead><tr><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">Percobaan</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">[X] (M)</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">[Y] (M)</th><th style=\"padding:8px 12px;text-align:center;background:#f3e8ff;border-bottom:2px solid #e9d5ff;color:#6b21a8;font-size:12px;font-weight:800\">Laju (M s⁻¹)</th></tr></thead><tbody><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,005</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,2</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,020</td></tr><tr><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">3</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,1</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,3</td><td style=\"padding:7px 12px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:13.5px\">0,005</td></tr></tbody></table></div>Presentasi hasil analisis persamaan laju manakah yang paling <strong>tepat dan sistematis</strong>?",
+                options: [
+                    "Orde X = 2 dan orde Y = 1, sehingga $v = k[X]^2[Y]$ dan $k = 5\\text{ M}^{-2}\\text{s}^{-1}$.",
+                    "Orde X = 2 dan orde Y = 0, sehingga $v = k[X]^2$. Karena Y tidak muncul di persamaan laju, Y tidak ikut bereaksi.",
+                    "Orde X = 1 dan orde Y = 0, sehingga $v = k[X]$ dan $k = 0{,}05\\text{ s}^{-1}$.",
+                    "Orde X = 2 dan orde Y = 0, sehingga $v = k[X]^2$ dengan $k = 0{,}5\\text{ M}^{-1}\\text{s}^{-1}$. Artinya, jika [X] dijadikan 2 kali, laju menjadi 4 kali, sedangkan perubahan [Y] tidak memengaruhi laju.",
+                    "Orde X = 2 dan orde Y = 0, sehingga $v = k[X]^2$ dengan $k = 0{,}5\\text{ M}^{-2}\\text{s}^{-1}$."
+                ],
+                correctIndex: 3,
+                explanation: "1. Orde X (percobaan 1 & 2): $2^x = 4$ → $x = 2$<br>2. Orde Y (percobaan 1 & 3): $3^y = 1$ → $y = 0$<br>3. Persamaan laju: $v = k[X]^2[Y]^0 = k[X]^2$<br>4. $k = \\dfrac{0{,}005}{(0{,}1)^2} = 0{,}5\\text{ M}^{-1}\\text{s}^{-1}$ (orde total 2)<br>5. Makna: [X] 2 kali → laju $2^2 = 4$ kali; [Y] tidak memengaruhi laju.<br>Orde 0 <strong>bukan berarti Y tidak bereaksi</strong>; Y tetap pereaksi, hanya konsentrasinya tidak memengaruhi laju."
+            }
+        ];
+
+        /* =====================================================================
+           FIREBASE (penyimpanan nilai)
+           Nilai disimpan ke: kuis/{uid}/{kode}  → dibaca dashboard guru & siswa
+           Riwayat semua percobaan: kuisRiwayat/{uid}/{kode}/{id}
+           ===================================================================== */
+        const FIREBASE_CONFIG = {
+            apiKey: "AIzaSyA_YUPPq0CZgNi5McaTx3-a8LOGW70zIzg",
+            authDomain: "starararrara.firebaseapp.com",
+            databaseURL: "https://starararrara-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "starararrara",
+            storageBucket: "starararrara.firebasestorage.app",
+            messagingSenderId: "1085300087665",
+            appId: "1:1085300087665:web:375eae85042f14ffa7f4d0"
+        };
+        const FB = { ready: null, user: null, db: null, D: null };
+        FB.ready = (async () => {
+            try {
+                const V = '10.12.2';
+                const APP = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
+                const A = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`);
+                const D = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-database.js`);
+                const app = APP.getApps().length ? APP.getApp() : APP.initializeApp(FIREBASE_CONFIG);
+                const auth = A.getAuth(app);
+                FB.user = await new Promise(res => {
+                    const t = setTimeout(() => res(null), 6000);
+                    const off = A.onAuthStateChanged(auth, u => { clearTimeout(t); off(); res(u); });
+                });
+                FB.db = D.getDatabase(app); FB.D = D;
+            } catch (e) { console.warn('Firebase tidak tersedia:', e); }
+            return FB.user;
+        })();
+
+        function sesiLokal() { try { return JSON.parse(localStorage.getItem('activeSession') || 'null'); } catch (_) { return null; } }
+
+        async function simpanNilai(hasil) {
+            // salinan lokal (dipakai dashboard siswa bila offline)
+            try {
+                const semua = JSON.parse(localStorage.getItem('hasilKuis') || '{}');
+                semua[KUIS.kode] = hasil;
+                localStorage.setItem('hasilKuis', JSON.stringify(semua));
+            } catch (_) { }
+            // kabari halaman induk bila kuis dibuka di dalam iframe dashboard
+            try { if (window.parent !== window) window.parent.postMessage({ type: 'kuis-selesai', kuis: KUIS.kode, hasil }, '*'); } catch (_) { }
+
+            const user = await FB.ready;
+            if (!user || !FB.db) return { ok: false, alasan: user ? 'db' : 'login' };
+            const { ref, update, push, set, serverTimestamp } = FB.D;
+            const uid = user.uid;
+            const sesi = sesiLokal();
+            const nama = (sesi && sesi.uid === uid && sesi.name) || user.displayName || (user.email || '').split('@')[0];
+            try {
+                await set(ref(FB.db, `kuis/${uid}/${KUIS.kode}`), hasil);
+                await set(push(ref(FB.db, `kuisRiwayat/${uid}/${KUIS.kode}`)), hasil);
+                await update(ref(FB.db, `siswa/${uid}`), { nama, email: user.email || null, online: true, lastActive: Date.now() }).catch(() => { });
+                await set(push(ref(FB.db, 'aktivitas')), { uid, jenis: 'kuis', pesan: `menyelesaikan ${KUIS.judul} (skor ${hasil.skor})`, waktu: serverTimestamp() }).catch(() => { });
+                return { ok: true };
+            } catch (e) { console.error(e); return { ok: false, alasan: 'db', err: e.code || e.message }; }
+        }
+
+        /* =====================================================================
+           MESIN KUIS
+           ===================================================================== */
+        const $ = s => document.querySelector(s);
+        const HURUF = 'ABCDE';
+        let idx = 0, jawaban = [], streak = 0, bestStreak = 0, mulai = 0, terkunci = false;
+
+        function math(el) {
+            if (window.renderMathInElement) renderMathInElement(el, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false });
+        }
+        function lvClass(lv) { return 'lv-' + (lv.match(/C\d/) || ['C2'])[0]; }
+
+        function tampilSoal() {
+            const q = quizData[idx];
+            terkunci = false;
+            $('#q-count').textContent = `${idx + 1}/${quizData.length}`;
+            $('#q-prog').style.width = `${idx / quizData.length * 100}%`;
+            $('#q-no').textContent = `Soal ${q.no}`;
+            const lv = $('#q-lv'); lv.textContent = q.level; lv.className = 'tag ' + lvClass(q.level);
+            $('#q-text').innerHTML = q.question;
+            const card = $('#qcard'); card.style.animation = 'none'; void card.offsetWidth; card.style.animation = '';
+            const box = $('#q-opts');
+            const pendek = q.options.every(o => o.replace(/\$|\\text\{[^}]*\}/g, '').length <= 6);
+            box.className = 'opts' + (pendek ? ' short' : q.options.length === 5 ? ' n5' : '');
+            box.innerHTML = q.options.map((o, i) =>
+                `<button class="opt" data-i="${i}" style="background:var(--opsi-${i});box-shadow:0 6px 0 var(--opsi-${i}d)"><span class="key">${HURUF[i]}</span><span>${o}</span></button>`).join('');
+            box.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => jawab(+b.dataset.i)));
+            math($('#qcard')); math(box);
+        }
+
+        function jawab(i) {
+            if (terkunci) return;
+            terkunci = true;
+            const q = quizData[idx];
+            const ok = i === q.correctIndex;
+            jawaban[idx] = i;
+            const btns = [...document.querySelectorAll('#q-opts .opt')];
+            btns.forEach((b, k) => {
+                b.disabled = true;
+                if (k === q.correctIndex) { b.classList.add('benar'); b.insertAdjacentHTML('beforeend', '<span class="mark">✔</span>'); }
+                else if (k === i) { b.classList.add('salah'); b.insertAdjacentHTML('beforeend', '<span class="mark">✖</span>'); }
+                else b.classList.add('dim');
+            });
+            if (ok) { streak++; bestStreak = Math.max(bestStreak, streak); } else streak = 0;
+            const benar = jawaban.filter((a, k) => a === quizData[k].correctIndex).length;
+            $('#q-streak').textContent = `🔥 ${streak}`;
+            $('#q-score').textContent = `⭐ ${benar}`;
+            bunyi(ok);
+
+            const fb = $('#fb');
+            fb.className = 'fb ' + (ok ? 'ok' : 'no');
+            $('#fb-title').innerHTML = ok ? (streak >= 3 ? `🔥 Luar biasa! ${streak} beruntun` : '✔ Benar!') : '✖ Belum tepat';
+            $('#fb-pts').textContent = ok ? '+1 benar' : `Kunci: ${HURUF[q.correctIndex]}`;
+            $('#fb-exp').innerHTML = q.explanation;
+            $('#btn-next').textContent = idx === quizData.length - 1 ? 'Lihat Hasil 🏁' : 'Lanjut ▶';
+            math($('#fb-exp'));
+            setTimeout(() => {
+                fb.classList.add('show');
+                // beri ruang di bawah agar pilihan jawaban tidak tertutup panel pembahasan
+                document.body.style.paddingBottom = fb.offsetHeight + 'px';
+                $('#q-opts').scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 350);
+        }
+
+        function lanjut() {
+            if (!terkunci) return;
+            $('#fb').classList.remove('show');
+            document.body.style.paddingBottom = '';
+            idx++;
+            if (idx < quizData.length) setTimeout(tampilSoal, 150);
+            else selesai();
+        }
+
+        async function selesai() {
+            $('#quiz').classList.add('hidden');
+            $('#result').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const total = quizData.length;
+            const benar = jawaban.filter((a, k) => a === quizData[k].correctIndex).length;
+            const skor = Math.round(benar / total * 100);
+            const durasi = Math.round((Date.now() - mulai) / 1000);
+            $('#r-skor').textContent = skor;
+            $('#r-benar').textContent = benar;
+            $('#r-salah').textContent = total - benar;
+            $('#r-waktu').textContent = `${Math.floor(durasi / 60)}:${String(durasi % 60).padStart(2, '0')}`;
+            $('#r-streak').textContent = bestStreak;
+            const arc = $('#ring-arc');
+            arc.style.stroke = skor >= KKM ? '#00c985' : skor >= 50 ? '#ffc02e' : '#ef3c69';
+            requestAnimationFrame(() => arc.style.strokeDashoffset = 326.7 * (1 - skor / 100));
+            if (skor === 100) { $('#r-title').textContent = 'Sempurna! 🏆'; $('#r-msg').textContent = 'Semua jawaban benar. Kamu menguasai materi ini!'; }
+            else if (skor >= KKM) { $('#r-title').textContent = 'Tuntas! 🎉'; $('#r-msg').textContent = `Skormu sudah mencapai KKM (${KKM}). Baca pembahasan soal yang masih salah, ya.`; }
+            else { $('#r-title').textContent = 'Ayo coba lagi! 💪'; $('#r-msg').textContent = `Skormu belum mencapai KKM (${KKM}). Pelajari pembahasan di bawah, lalu ulangi kuis.`; }
+            if (skor >= KKM) confetti();
+
+            $('#r-list').innerHTML = quizData.map((q, k) => {
+                const a = jawaban[k], ok = a === q.correctIndex;
+                return `<div class="rv ${ok ? '' : 'x'}"><div class="rv-top"><span class="tag no">Soal ${q.no}</span><span class="tag ${lvClass(q.level)}">${q.level}</span><span class="tag" style="background:${ok ? '#dcfce7;color:#15803d' : '#ffe4e6;color:#be123c'}">${ok ? '✔ Benar' : '✖ Salah'}</span></div>
+      <div class="rv-q">${q.question}</div>
+      ${ok ? '' : `<div class="ans me">Jawabanmu: ${HURUF[a]}. ${q.options[a]}</div>`}
+      <div class="ans key">Kunci: ${HURUF[q.correctIndex]}. ${q.options[q.correctIndex]}</div>
+      <details ${ok ? '' : 'open'}><summary>Lihat pembahasan</summary><div class="exp">${q.explanation}</div></details></div>`;
+            }).join('');
+            math($('#r-list'));
+
+            const hasil = { skor, benar, total, durasiDetik: durasi, dikerjakanPada: Date.now(), jawaban: jawaban.slice(), judul: KUIS.judul };
+            const sv = $('#r-save');
+            sv.className = 'save wait'; sv.textContent = '⏳ Menyimpan nilai ke dashboard…';
+            const r = await simpanNilai(hasil);
+            if (r.ok) { sv.className = 'save ok'; sv.textContent = '✔ Nilai tersimpan di dashboard siswa dan guru'; }
+            else if (r.alasan === 'login') { sv.className = 'save err'; sv.innerHTML = '⚠ Kamu belum masuk. Nilai hanya tersimpan di perangkat ini. <a href="loging.html" style="color:inherit">Masuk dulu</a>, lalu ulangi kuis.'; }
+            else { sv.className = 'save err'; sv.textContent = '⚠ Nilai gagal tersimpan ke server' + (r.err ? ` (${r.err})` : '') + '. Periksa koneksi internet.'; }
+        }
+
+        function mulaiKuis() {
+            idx = 0; jawaban = []; streak = 0; bestStreak = 0; mulai = Date.now();
+            $('#q-streak').textContent = '🔥 0'; $('#q-score').textContent = '⭐ 0';
+            $('#start').classList.add('hidden'); $('#result').classList.add('hidden'); $('#quiz').classList.remove('hidden');
+            tampilSoal();
+        }
+
+        /* ---------- efek suara & konfeti ---------- */
+        let actx;
+        function bunyi(ok) {
+            try {
+                actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+                const notes = ok ? [523, 659, 784] : [300, 220];
+                notes.forEach((f, i) => {
+                    const o = actx.createOscillator(), g = actx.createGain();
+                    o.type = ok ? 'triangle' : 'sawtooth'; o.frequency.value = f;
+                    g.gain.setValueAtTime(0.0001, actx.currentTime + i * 0.09);
+                    g.gain.exponentialRampToValueAtTime(ok ? 0.18 : 0.08, actx.currentTime + i * 0.09 + 0.02);
+                    g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + i * 0.09 + 0.22);
+                    o.connect(g).connect(actx.destination); o.start(actx.currentTime + i * 0.09); o.stop(actx.currentTime + i * 0.09 + 0.25);
+                });
+            } catch (_) { }
+        }
+        function confetti() {
+            const c = $('#confetti'), x = c.getContext('2d');
+            c.width = innerWidth; c.height = innerHeight;
+            const warna = ['#2d70ae', '#2d9da6', '#efa929', '#d5546d', '#9a4292', '#00c985'];
+            const P = Array.from({ length: 140 }, () => ({ x: Math.random() * c.width, y: -20 - Math.random() * c.height * .5, w: 6 + Math.random() * 6, h: 8 + Math.random() * 8, vy: 2 + Math.random() * 3, vx: -1.5 + Math.random() * 3, r: Math.random() * 6, vr: -.2 + Math.random() * .4, c: warna[Math.floor(Math.random() * warna.length)] }));
+            let t = 0;
+            (function loop() {
+                x.clearRect(0, 0, c.width, c.height);
+                P.forEach(p => { p.x += p.vx; p.y += p.vy; p.r += p.vr; x.save(); x.translate(p.x, p.y); x.rotate(p.r); x.fillStyle = p.c; x.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); x.restore(); });
+                if (++t < 240) requestAnimationFrame(loop); else x.clearRect(0, 0, c.width, c.height);
+            })();
+        }
+
+        /* ---------- mulai ---------- */
+        const nos = quizData.map(q => q.no);
+        $('#st-jml').textContent = quizData.length;
+        $('#st-no').textContent = nos.length > 1 ? `${nos[0]}–${nos[nos.length - 1]}` : nos[0];
+        const lvs = [...new Set(quizData.map(q => (q.level.match(/C\d/) || [''])[0]))].sort();
+        $('#st-lv').textContent = lvs.length > 1 ? `${lvs[0]}–${lvs[lvs.length - 1]}` : lvs[0];
+
+        FB.ready.then(u => {
+            const w = $('#who');
+            const s = sesiLokal();
+            if (u) { w.className = 'who'; w.innerHTML = `👋 Halo, <b>${(s && s.uid === u.uid && s.name) || u.displayName || u.email}</b>! Nilaimu akan tersimpan otomatis.`; }
+            else { w.className = 'who warn'; w.innerHTML = '⚠ Kamu belum masuk, jadi nilai tidak akan terkirim ke guru. <a href="loging.html">Masuk sekarang</a>'; }
+        });
+
+        $('#btn-start').addEventListener('click', mulaiKuis);
+        $('#btn-ulang').addEventListener('click', mulaiKuis);
+        $('#btn-next').addEventListener('click', lanjut);
+        document.addEventListener('keydown', e => {
+            if ($('#quiz').classList.contains('hidden')) return;
+            if (e.key === 'Enter') { if (terkunci) { e.preventDefault(); lanjut(); } return; }
+            if (terkunci) return;
+            const k = e.key.toUpperCase();
+            let i = '12345'.indexOf(k); if (i < 0) i = HURUF.indexOf(k);
+            if (i >= 0 && i < quizData[idx].options.length) jawab(i);
+        });
+    </script>
+</body>
+
+</html>

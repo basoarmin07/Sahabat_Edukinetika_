@@ -1,0 +1,2135 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Faktor-Faktor Yang Mempengaruhi Laju Reaksi - EduKinetika</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&family=Caveat:wght@600;700&family=JetBrains+Mono:wght@500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            background-color: #f5f7fa;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 32px 32px;
+            overflow-x: hidden;
+        }
+
+
+        /* ===== Gaya huruf: judul, subjudul, dan teks contoh dibedakan ===== */
+        h1,
+        h2,
+        h3,
+        .kartu-faktor>span.font-extrabold,
+        .judul-kartu {
+            font-family: 'Bricolage Grotesque', 'Plus Jakarta Sans', system-ui, sans-serif;
+            letter-spacing: -.015em;
+        }
+
+        .sub-judul {
+            font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+            font-weight: 700;
+            letter-spacing: 0;
+        }
+
+
+        /* Tabel kesimpulan: berubah menjadi kartu bertumpuk di layar kecil */
+        @media (max-width: 639px) {
+
+            .tabel-kes,
+            .tabel-kes tbody {
+                display: block;
+                min-width: 0 !important;
+            }
+
+            .tabel-kes thead {
+                display: none;
+            }
+
+            .tabel-kes tr {
+                display: block;
+                padding: .85rem 1rem;
+            }
+
+            .tabel-kes td {
+                display: block;
+                padding: .2rem 0 !important;
+            }
+
+            .tabel-kes td[data-l]::before {
+                content: attr(data-l);
+                display: block;
+                font-size: .65rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: .05em;
+                color: #94a3b8;
+            }
+        }
+
+
+        /* ===== Rumus: variabel miring, subskrip, pecahan ===== */
+        .fx {
+            font-family: Georgia, 'Times New Roman', serif;
+        }
+
+        .fx i {
+            font-style: italic;
+        }
+
+        i.fx {
+            font-size: 1.12em;
+        }
+
+        .fx sub,
+        .fx sup {
+            font-size: .7em;
+            line-height: 0;
+        }
+
+        .pecahan {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            line-height: 1.2;
+            margin: 0 .2em;
+            text-align: center;
+        }
+
+        .pecahan>span:first-child {
+            padding: 0 .3em .08em;
+            border-bottom: 1.5px solid currentColor;
+        }
+
+        .pecahan>span:last-child {
+            padding: .08em .3em 0;
+        }
+
+        .rumus-kotak {
+            text-align: center;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #0f172a;
+            background: #fff;
+            border: 1px dashed #cbd5e1;
+            border-radius: .9rem;
+            padding: .6rem .75rem;
+            overflow-x: auto;
+        }
+
+        .contoh-teks {
+            font-family: 'Caveat', 'Plus Jakarta Sans', cursive;
+            font-weight: 600;
+            font-size: 1.2rem;
+            line-height: 1.15;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
+        }
+
+        section.faktor {
+            scroll-margin-top: 128px;
+        }
+
+        canvas.kv {
+            display: block;
+            width: 100%;
+            border-radius: 1rem;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 999px;
+            background: #dbe3ee;
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--thumb, #2563eb);
+            border: 3px solid #fff;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, .3);
+            cursor: pointer;
+        }
+
+        input[type=range]::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--thumb, #2563eb);
+            border: 3px solid #fff;
+            cursor: pointer;
+        }
+
+        .pil {
+            padding: .5rem .8rem;
+            border-radius: .75rem;
+            font-weight: 700;
+            font-size: .8rem;
+            border: 2px solid #e2e8f0;
+            background: #fff;
+            color: #334155;
+            transition: background .15s, border-color .15s, color .15s;
+        }
+
+        .pil:hover {
+            border-color: var(--warna, #93c5fd);
+        }
+
+        .pil.aktif {
+            background: var(--warna, #2563eb);
+            border-color: var(--warna, #2563eb);
+            color: #fff;
+        }
+
+        /* Tab faktor */
+        .tab-faktor {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            padding: .5rem .85rem;
+            border-radius: 999px;
+            font-size: .8rem;
+            font-weight: 700;
+            color: #475569;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            white-space: nowrap;
+            transition: all .2s;
+        }
+
+        .tab-faktor .no {
+            width: 1.35rem;
+            height: 1.35rem;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            font-size: .7rem;
+            font-weight: 800;
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .tab-faktor.aktif {
+            color: #fff;
+            background: var(--warna);
+            border-color: var(--warna);
+            box-shadow: 0 8px 16px -8px var(--warna);
+        }
+
+        .tab-faktor.aktif .no {
+            background: rgba(255, 255, 255, .25);
+            color: #fff;
+        }
+
+        .panel-label {
+            font-size: .72rem;
+            font-weight: 800;
+        }
+
+        .stat {
+            background: #f8fafc;
+            border: 1px solid #eef2f7;
+            border-radius: .8rem;
+            padding: .45rem .55rem;
+            text-align: center;
+        }
+
+        .stat .n {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: .95rem;
+            color: #0f172a;
+        }
+
+        .stat .k {
+            font-size: .65rem;
+            font-weight: 700;
+            color: #64748b;
+            line-height: 1.2;
+        }
+
+        .hasil {
+            min-height: 3rem;
+        }
+
+        .opsi {
+            width: 100%;
+            text-align: left;
+            padding: .75rem .9rem;
+            border-radius: .9rem;
+            border: 2px solid #e2e8f0;
+            background: #fff;
+            font-weight: 600;
+            font-size: .9rem;
+            color: #334155;
+            transition: border-color .15s, background .15s;
+        }
+
+        .opsi:hover:not(:disabled) {
+            border-color: #93c5fd;
+        }
+
+        .opsi.benar {
+            border-color: #10b981;
+            background: #ecfdf5;
+            color: #065f46;
+        }
+
+        .opsi.salah {
+            border-color: #f43f5e;
+            background: #fff1f2;
+            color: #9f1239;
+        }
+
+        @keyframes goyang {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25%,
+            75% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+        }
+
+        .goyang {
+            animation: goyang .35s ease;
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible {
+            outline: 3px solid #93c5fd;
+            outline-offset: 2px;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .tabs-scroll {
+            scrollbar-width: none;
+        }
+
+        .tabs-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* ===== RESPONSIF ===== */
+        @media (max-width: 768px) {
+            .stat {
+                padding: .35rem .45rem;
+            }
+
+            .stat .n {
+                font-size: .82rem;
+            }
+
+            .stat .k {
+                font-size: .6rem;
+            }
+
+            .tab-faktor {
+                font-size: .72rem;
+                padding: .4rem .7rem;
+            }
+
+            .opsi {
+                font-size: .82rem;
+                padding: .6rem .75rem;
+                border-radius: .75rem;
+            }
+
+            .panel-label {
+                font-size: .65rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tab-faktor {
+                font-size: .68rem;
+                padding: .35rem .6rem;
+            }
+
+            .tab-faktor .no {
+                width: 1.15rem;
+                height: 1.15rem;
+                font-size: .6rem;
+            }
+
+            .pil {
+                font-size: .72rem;
+                padding: .4rem .65rem;
+            }
+
+            .opsi {
+                font-size: .78rem;
+                padding: .55rem .7rem;
+            }
+
+            canvas.kv {
+                border-radius: .75rem;
+            }
+        }
+
+
+        /* ===== LATAR VISUAL (BARU) ===== */
+        html {
+            background: #eaf2fb;
+        }
+
+        body {
+            background: transparent !important;
+        }
+
+        #latar {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(900px 520px at 8% -6%, rgba(56, 189, 248, .22), transparent 62%),
+                radial-gradient(760px 520px at 100% 18%, rgba(139, 92, 246, .14), transparent 60%),
+                radial-gradient(820px 520px at 30% 108%, rgba(16, 185, 129, .13), transparent 60%),
+                linear-gradient(180deg, #f4f9ff 0%, #eaf2fb 55%, #e9f0f9 100%);
+        }
+
+        #latar::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%2364748b' stroke-opacity='.13' stroke-width='1'/%3E%3Cpath d='M28 0L28 34L0 50L0 84L28 100L56 84L56 50L28 34' fill='none' stroke='%2364748b' stroke-opacity='.08' stroke-width='1'/%3E%3C/svg%3E");
+            -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, rgba(0, 0, 0, .55) 45%, transparent 85%);
+            mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, rgba(0, 0, 0, .55) 45%, transparent 85%);
+        }
+
+        #kvLatar {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Hero */
+        .hero-kinetika {
+            background:
+                radial-gradient(120% 90% at 88% 0%, rgba(37, 99, 235, .55) 0%, transparent 55%),
+                radial-gradient(80% 90% at 0% 100%, rgba(8, 145, 178, .5) 0%, transparent 60%),
+                linear-gradient(160deg, #0b1b36 0%, #0f2547 60%, #142c55 100%);
+            box-shadow: 0 30px 60px -30px rgba(11, 27, 54, .65);
+            isolation: isolate;
+        }
+
+        .hero-kinetika::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%23ffffff' stroke-opacity='.06' stroke-width='1'/%3E%3C/svg%3E");
+        }
+
+        .hero-kabut {
+            z-index: 1;
+            background: linear-gradient(90deg, rgba(11, 27, 54, .88) 0%, rgba(11, 27, 54, .45) 50%, rgba(11, 27, 54, .05) 100%);
+        }
+
+        .hero-isi {
+            z-index: 2;
+        }
+
+        .hero-kaca {
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .16);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 1023px) {
+            .hero-kabut {
+                background: linear-gradient(180deg, rgba(11, 27, 54, .82) 0%, rgba(11, 27, 54, .55) 60%, rgba(11, 27, 54, .35) 100%);
+            }
+        }
+
+        /* Kartu peta faktor */
+        .kartu-faktor {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: .2rem;
+            padding: 1rem;
+            border-radius: 1.25rem;
+            background: rgba(255, 255, 255, .9);
+            border: 1px solid #e2e8f0;
+            transition: border-color .2s, transform .2s, box-shadow .2s;
+        }
+
+        .kartu-faktor::after {
+            content: '';
+            position: absolute;
+            right: -28px;
+            top: -28px;
+            width: 86px;
+            height: 86px;
+            border-radius: 999px;
+            background: var(--warna);
+            opacity: .09;
+        }
+
+        .kartu-faktor:hover {
+            border-color: var(--warna);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 26px -18px var(--warna);
+        }
+
+        .kartu-faktor .ik {
+            width: 2.4rem;
+            height: 2.4rem;
+            border-radius: .8rem;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: var(--warna);
+            margin-bottom: .45rem;
+        }
+
+        /* Kartu rujukan buku */
+        .rumus {
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
+            font-weight: 700;
+            font-size: .82rem;
+            color: #0f172a;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: .8rem;
+            padding: .6rem .8rem;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .buku-isi .grid>*,
+        .buku-isi .space-y-3>*,
+        .buku-isi .space-y-4>* {
+            min-width: 0;
+        }
+
+        .tab-jenis {
+            padding: .45rem .8rem;
+            border-radius: 999px;
+            font-size: .78rem;
+            font-weight: 700;
+            color: #5b21b6;
+            background: #f5f3ff;
+            border: 1px solid #ddd6fe;
+            white-space: nowrap;
+        }
+
+        .tab-jenis.aktif {
+            background: #7c3aed;
+            border-color: #7c3aed;
+            color: #fff;
+        }
+
+        .masuk {
+            animation: masuk .35s ease;
+        }
+
+        @keyframes masuk {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .langkah-meka {
+            transition: background .3s, border-color .3s, color .3s;
+        }
+
+        .langkah-meka.nyala {
+            background: #ede9fe;
+            border-color: #8b5cf6;
+            color: #4c1d95;
+        }
+
+        /* Animasi enzim kunci-gembok */
+        .enz-sub {
+            animation: enzSub 7s infinite ease-in-out;
+        }
+
+        .enz-p1 {
+            opacity: 0;
+            animation: enzP1 7s infinite ease-in-out;
+        }
+
+        .enz-p2 {
+            opacity: 0;
+            animation: enzP2 7s infinite ease-in-out;
+        }
+
+        .enz-c1 {
+            animation: enzC1 7s infinite;
+        }
+
+        .enz-c2 {
+            opacity: 0;
+            animation: enzC2 7s infinite;
+        }
+
+        .enz-c3 {
+            opacity: 0;
+            animation: enzC3 7s infinite;
+        }
+
+        @keyframes enzSub {
+            0% {
+                transform: translate(-120px, -30px);
+                opacity: 0;
+            }
+
+            8% {
+                opacity: 1;
+            }
+
+            32% {
+                transform: translate(0, 0);
+            }
+
+            58% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+
+            59%,
+            100% {
+                transform: translate(0, 0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes enzP1 {
+
+            0%,
+            58% {
+                transform: translate(0, 0);
+                opacity: 0;
+            }
+
+            59% {
+                opacity: 1;
+            }
+
+            92% {
+                transform: translate(-105px, -40px);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-115px, -44px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes enzP2 {
+
+            0%,
+            58% {
+                transform: translate(0, 0);
+                opacity: 0;
+            }
+
+            59% {
+                opacity: 1;
+            }
+
+            92% {
+                transform: translate(105px, -40px);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(115px, -44px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes enzC1 {
+
+            0%,
+            32% {
+                opacity: 1;
+            }
+
+            34%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes enzC2 {
+
+            0%,
+            33% {
+                opacity: 0;
+            }
+
+            35%,
+            58% {
+                opacity: 1;
+            }
+
+            60%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes enzC3 {
+
+            0%,
+            59% {
+                opacity: 0;
+            }
+
+            61%,
+            98% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .tabel-buku th {
+            text-align: left;
+            font-weight: 700;
+            padding: .55rem .75rem;
+            background: #f8fafc;
+            color: #64748b;
+            font-size: .72rem;
+        }
+
+        .tabel-buku td {
+            padding: .55rem .75rem;
+            border-top: 1px solid #f1f5f9;
+            vertical-align: top;
+        }
+
+        .input-kalk {
+            width: 100%;
+            padding: .5rem .6rem;
+            border-radius: .7rem;
+            border: 2px solid #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: #0f172a;
+            background: #fff;
+        }
+
+        .input-kalk:focus {
+            outline: none;
+            border-color: #f87171;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="text-slate-700 antialiased min-h-screen">
+    <div id="latar" aria-hidden="true"><canvas id="kvLatar"></canvas></div>
+
+    <!-- ================= NAVIGASI ================= -->
+    <header class="sticky top-0 z-50 bg-white/85 backdrop-blur-md border-b border-slate-100">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2 min-w-0">
+                <span class="bg-blue-600 text-white w-9 h-9 rounded-xl grid place-items-center shrink-0"><i
+                        data-lucide="flask-conical" class="w-5 h-5"></i></span>
+                <span class="font-extrabold text-slate-800 truncate">Edu<span
+                        class="text-blue-600">Kinetika</span></span>
+            </div>
+            <a href="kartu-belajar.html"
+                class="flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-blue-600 bg-white border border-slate-200 rounded-xl px-3 py-2 transition-colors">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i><span class="hidden sm:inline">Kembali ke
+                    Dashboard</span>
+            </a>
+        </div>
+        <nav class="max-w-6xl mx-auto px-4 sm:px-6 pb-2.5 flex gap-2 overflow-x-auto tabs-scroll"
+            aria-label="Daftar faktor" id="tabFaktor">
+            <a href="#luas" class="tab-faktor" data-id="luas" style="--warna:#059669"><span class="no">1</span>Luas
+                Permukaan</a>
+            <a href="#konsentrasi" class="tab-faktor" data-id="konsentrasi" style="--warna:#2563eb"><span
+                    class="no">2</span>Konsentrasi</a>
+            <a href="#suhu" class="tab-faktor" data-id="suhu" style="--warna:#dc2626"><span class="no">3</span>Suhu</a>
+            <a href="#katalis" class="tab-faktor" data-id="katalis" style="--warna:#7c3aed"><span
+                    class="no">4</span>Katalis</a>
+            <a href="#aduk" class="tab-faktor" data-id="aduk" style="--warna:#0891b2"><span
+                    class="no">5</span>Pengadukan</a>
+            <a href="#ringkasan" class="tab-faktor" data-id="ringkasan" style="--warna:#0f172a"><span class="no"><i
+                        data-lucide="check" class="w-3 h-3"></i></span>Kesimpulan</a>
+        </nav>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 space-y-12 sm:space-y-16">
+
+        <!-- ================= PEMBUKA ================= -->
+        <section class="hero-kinetika relative overflow-hidden rounded-[2rem] text-white">
+            <div class="hero-kabut absolute inset-0 pointer-events-none"></div>
+            <div
+                class="hero-isi relative grid gap-8 p-6 sm:p-10 lg:px-12 lg:py-16 items-center justify-items-center text-center">
+                <div class="space-y-5 max-w-2xl">
+                    <span
+                        class="inline-flex items-center gap-1.5 bg-white/10 border border-white/15 text-cyan-100 text-xs font-bold px-3 py-1.5 rounded-full"><i
+                            data-lucide="gauge" class="w-3.5 h-3.5"></i> Kartu Belajar: Laju Reaksi</span>
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.08]">
+                        Faktor-Faktor Yang Mempengaruhi Laju Reaksi</h1>
+                    <p class="text-slate-200 leading-relaxed">
+                        Gula halus lebih cepat larut daripada gula batu, dan makanan di kulkas lebih awet. Semua itu
+                        bisa
+                        dijelaskan dengan satu ide:
+                        reaksi terjadi saat partikel <strong class="text-white">bertumbukan dengan energi yang
+                            cukup</strong>. Lima faktor
+                        berikut mengubah seberapa sering, dan seberapa kuat, tumbukan itu terjadi.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid lg:grid-cols-5 gap-6 items-stretch">
+            <div
+                class="lg:col-span-2 bg-white/90 rounded-[2rem] border border-slate-100 shadow-sm p-5 sm:p-6 flex flex-col">
+                <p class="text-sm font-bold text-slate-800 mb-4 sub-judul">Dua Syarat Agar Tumbukan Menghasilkan Reaksi
+                </p>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-3 flex-1">
+                    <div class="rounded-2xl bg-sky-50 border border-sky-100 p-4">
+                        <div class="w-10 h-10 rounded-xl bg-sky-500 text-white grid place-items-center mb-2"><i
+                                data-lucide="repeat" class="w-5 h-5"></i></div>
+                        <p class="font-bold text-sky-900 sub-judul">Frekuensi Tumbukan</p>
+                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">Makin sering partikel bertemu, makin
+                            banyak peluang bereaksi.</p>
+                    </div>
+                    <div class="rounded-2xl bg-orange-50 border border-orange-100 p-4">
+                        <div class="w-10 h-10 rounded-xl bg-orange-500 text-white grid place-items-center mb-2"><i
+                                data-lucide="zap" class="w-5 h-5"></i></div>
+                        <p class="font-bold text-orange-900 sub-judul">Energi ≥ Ea</p>
+                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">Hanya tumbukan dengan energi minimal
+                            sebesar energi aktivasi (Ea) yang berhasil.</p>
+                    </div>
+                </div>
+            </div>
+            <nav class="lg:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-3" id="petaFaktor" aria-label="Pilih faktor">
+            </nav>
+        </section>
+
+        <!-- Kerangka setiap faktor diisi oleh JavaScript agar seragam -->
+        <div id="wadahFaktor" class="space-y-12 sm:space-y-16"></div>
+
+        <!-- ================= KESIMPULAN ================= -->
+        <section id="ringkasan" class="faktor space-y-6">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-slate-900 text-white grid place-items-center"><i
+                        data-lucide="list-checks" class="w-6 h-6"></i></div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Kesimpulan</h2>
+                    <p class="text-sm text-slate-500">Semua faktor bermuara pada tumbukan efektif.</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="tabel-kes w-full text-sm min-w-[620px]">
+                        <thead class="bg-slate-50 text-slate-500 text-xs">
+                            <tr>
+                                <th class="text-left font-bold px-5 py-3">Faktor</th>
+                                <th class="text-left font-bold px-5 py-3">Yang Diubah</th>
+                                <th class="text-left font-bold px-5 py-3">Pengaruh Pada Tumbukan</th>
+                                <th class="text-left font-bold px-5 py-3">Laju</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100" id="tabelRingkasan"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-5 sm:p-8">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+                    <h3 class="text-xl font-extrabold text-slate-900 flex items-center gap-2"><i
+                            data-lucide="circle-help" class="w-5 h-5 text-blue-600"></i> Cek pemahaman</h3>
+                    <span
+                        class="text-sm font-bold text-slate-600 bg-slate-50 border border-slate-200 rounded-full px-3 py-1">Skor
+                        <span id="skorKuis">0</span>/<span id="jmlSoal">5</span></span>
+                </div>
+                <div class="max-w-2xl">
+                    <div class="flex gap-1.5 mb-5" id="kuisProgres"></div>
+                    <div id="kuisWadah"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= DAFTAR REFERENSI ================= -->
+        <section id="referensi" class="space-y-6">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 shrink-0 rounded-2xl bg-slate-900 text-white grid place-items-center"><i
+                        data-lucide="book-marked" class="w-6 h-6"></i></div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Daftar Referensi</h2>
+                    <p class="text-sm text-slate-500">Sumber yang dipakai dalam kartu belajar ini.</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-5 sm:p-8">
+                <!-- Lengkapi dengan nama penulis, penerbit, kota, dan tahun terbit buku sebelum dipublikasikan. -->
+                <ol class="space-y-5 text-sm sm:text-base text-slate-700 leading-relaxed">
+                    <li style="padding-left:2rem;text-indent:-2rem"><em class="sub-judul not-italic">Jelajah Kimia 2
+                            SMA/MA Kelas XI.</em>
+                        Bab 6: Kinetika Kimia, hlm. 259–271.
+                        <ul class="mt-3 grid sm:grid-cols-2 gap-x-6 gap-y-1.5 text-xs sm:text-sm text-slate-600"
+                            style="text-indent:0">
+                            <li><strong class="text-slate-800">Luas Permukaan:</strong> hlm. 259–260 (Gambar 6.7 dan
+                                6.8)</li>
+                            <li><strong class="text-slate-800">Konsentrasi:</strong> hlm. 264–265 (Gambar 6.12–6.13)
+                            </li>
+                            <li><strong class="text-slate-800">Suhu:</strong> hlm. 260–264 (Aktivitas 6.4–6.5, Contoh
+                                Soal 6.4, Praktikum 6.3)</li>
+                            <li><strong class="text-slate-800">Katalis:</strong> hlm. 266–271 (Gambar 6.14–6.18, Tabel
+                                6.2–6.3)</li>
+                            <li class="sm:col-span-2"><strong class="text-slate-800">Pengadukan:</strong> pengayaan;
+                                buku membahas empat faktor dan pengadukan ditambahkan sebagai faktor kelima.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-16 text-center text-slate-400 text-xs font-medium border-t border-slate-200 py-8 px-6">
+        <p>Modul Edukasi Interaktif Kinetika Kimia SMA/MA Kelas XI · © 2026 EduKinetika</p>
+    </footer>
+
+    <script>
+        /* =====================================================
+           UTILITAS
+           ===================================================== */
+        const $ = id => document.getElementById(id);
+        const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+        const fmt = (n, d = 1) => Number(n).toFixed(d).replace('.', ',');
+        const kurangiGerak = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const ikon = () => { if (window.lucide) lucide.createIcons(); };
+
+        // Kanvas tajam & responsif (rasio = tinggi/lebar)
+        function kanvas(el, rasio, minH, maxH) {
+            const c = typeof el === 'string' ? $(el) : el;
+            const o = { c, ctx: c.getContext('2d'), W: 0, H: 0, onUkur: null };
+            o.ukur = () => {
+                const w = c.parentElement.clientWidth;
+                if (!w) return;
+                const mx = typeof maxH === 'function' ? maxH() : maxH;
+                const h = Math.round(clamp(w * rasio, minH, Math.max(minH, mx)));
+                if (w === o.W && h === o.H) return;
+                const dpr = Math.min(2, window.devicePixelRatio || 1);
+                c.width = w * dpr; c.height = h * dpr; c.style.height = h + 'px';
+                o.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                o.W = w; o.H = h;
+                if (o.onUkur) o.onUkur();
+            };
+            if ('ResizeObserver' in window) new ResizeObserver(o.ukur).observe(c.parentElement);
+            window.addEventListener('resize', o.ukur);
+            o.ukur();
+            return o;
+        }
+
+        // Animasi tambahan: hanya berjalan saat elemennya terlihat
+        const ANIM = [];
+        let ioAnim = null;
+        function daftarAnim(el, fn) {
+            const a = { el, fn, terlihat: true };
+            ANIM.push(a);
+            if ('IntersectionObserver' in window) {
+                if (!ioAnim) ioAnim = new IntersectionObserver(es => es.forEach(e => ANIM.forEach(q => { if (q.el === e.target) q.terlihat = e.isIntersecting; })), { rootMargin: '80px' });
+                ioAnim.observe(el);
+            }
+            return a;
+        }
+        const gauss = () => (Math.random() + Math.random() + Math.random() - 1.5) * 2;
+        function kotakBulat(ctx, x, y, w, h, r) {
+            r = Math.min(r, w / 2, h / 2);
+            ctx.beginPath();
+            ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
+        }
+
+        /* =====================================================
+           LATAR BELAKANG: molekul melayang pelan
+           ===================================================== */
+        (function latarMolekul() {
+            const c = $('kvLatar'); if (!c) return;
+            const ctx = c.getContext('2d');
+            let W = 0, H = 0;
+            const CETAK = [
+                { a: [[0, 0, 7, '#ef4444'], [-10, 7, 4.5, '#94a3b8'], [10, 7, 4.5, '#94a3b8']] },            // H2O
+                { a: [[0, 0, 6.5, '#334155'], [-13, 0, 6, '#ef4444'], [13, 0, 6, '#ef4444']] },               // CO2
+                { a: [[0, 0, 7, '#334155'], [0, -12, 4.5, '#94a3b8'], [11, 6, 4.5, '#94a3b8'], [-11, 6, 4.5, '#94a3b8']] }, // CH4
+                { a: [[-6, 0, 6.5, '#22c55e'], [6, 0, 6.5, '#22c55e']] },                                      // Cl2
+                { a: [[0, 0, 7, '#2563eb'], [0, -12, 4.5, '#94a3b8'], [11, 6, 4.5, '#94a3b8'], [-11, 6, 4.5, '#94a3b8']] }  // NH3
+            ];
+            let mol = [];
+            function ukur() {
+                W = window.innerWidth; H = window.innerHeight;
+                c.width = W; c.height = H;
+                const n = Math.round(clamp(W * H / 52000, 10, 26));
+                mol = Array.from({ length: n }, (_, i) => ({
+                    x: Math.random() * W, y: Math.random() * H, s: 0.9 + Math.random() * 1.1,
+                    vx: (Math.random() - .5) * 10, vy: (Math.random() - .5) * 10,
+                    rot: Math.random() * 6.28, vr: (Math.random() - .5) * .3, t: CETAK[i % CETAK.length]
+                }));
+                gambar();
+            }
+            function gambar() {
+                ctx.clearRect(0, 0, W, H);
+                mol.forEach(m => {
+                    ctx.save(); ctx.translate(m.x, m.y); ctx.rotate(m.rot); ctx.scale(m.s, m.s);
+                    ctx.globalAlpha = 0.16;
+                    ctx.strokeStyle = '#475569'; ctx.lineWidth = 2;
+                    m.t.a.slice(1).forEach(([x, y]) => { ctx.beginPath(); ctx.moveTo(m.t.a[0][0], m.t.a[0][1]); ctx.lineTo(x, y); ctx.stroke(); });
+                    m.t.a.forEach(([x, y, r, w]) => { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fillStyle = w; ctx.fill(); });
+                    ctx.restore();
+                });
+            }
+            function langkah(dt) {
+                mol.forEach(m => {
+                    m.x += m.vx * dt; m.y += m.vy * dt; m.rot += m.vr * dt;
+                    if (m.x < -30) m.x = W + 30; if (m.x > W + 30) m.x = -30;
+                    if (m.y < -30) m.y = H + 30; if (m.y > H + 30) m.y = -30;
+                });
+                gambar();
+            }
+            window.addEventListener('resize', ukur);
+            ukur();
+            if (!kurangiGerak) daftarAnim(c, langkah);
+        })();
+
+        // Energi rata-rata partikel sebagai fungsi suhu (ilustratif)
+        const energiRata = T => 0.6 + (T - 10) * (1.4 / 60);
+
+        /* =====================================================
+           DATA FAKTOR
+           ===================================================== */
+        /* Ilustrasi contoh sehari-hari (SVG sebaris, urutan sama dengan daftar contoh tiap faktor) */
+        const GAMBAR = {
+            luas: [
+                `<svg viewBox="0 0 160 120" class="w-full h-full" aria-hidden="true"><ellipse cx="46" cy="100" rx="32" ry="5" fill="#0f172a" opacity=".1"/><rect x="14" y="68" width="30" height="30" rx="5" fill="#fff" stroke="#94a3b8" stroke-width="2"/><rect x="46" y="68" width="30" height="30" rx="5" fill="#fff" stroke="#94a3b8" stroke-width="2"/><rect x="30" y="38" width="30" height="30" rx="5" fill="#fff" stroke="#94a3b8" stroke-width="2"/><path d="M20 76h8M52 76h8M36 46h8" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round"/><ellipse cx="118" cy="100" rx="34" ry="5" fill="#0f172a" opacity=".1"/><path d="M86 98Q118 30 150 98Z" fill="#fff" stroke="#94a3b8" stroke-width="2"/><circle cx="110" cy="74" r="1.8" fill="#94a3b8"/><circle cx="120" cy="66" r="1.8" fill="#94a3b8"/><circle cx="126" cy="80" r="1.8" fill="#94a3b8"/><circle cx="100" cy="88" r="1.8" fill="#94a3b8"/><circle cx="116" cy="90" r="1.8" fill="#94a3b8"/><circle cx="134" cy="90" r="1.8" fill="#94a3b8"/><circle cx="108" cy="60" r="1.8" fill="#94a3b8"/><circle cx="124" cy="92" r="1.8" fill="#94a3b8"/><circle cx="142" cy="96" r="1.8" fill="#94a3b8"/><circle cx="94" cy="96" r="1.8" fill="#94a3b8"/><path d="M136 36l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#fbbf24"/></svg>`,
+                `<svg viewBox="0 0 160 120" class="w-full h-full" aria-hidden="true"><ellipse cx="42" cy="100" rx="36" ry="5" fill="#0f172a" opacity=".1"/><rect x="10" y="62" width="58" height="34" rx="8" fill="#b7791f"/><path d="M18 72h40M16 84h44" stroke="#92580f" stroke-width="2" stroke-linecap="round" opacity=".6"/><ellipse cx="68" cy="79" rx="10" ry="17" fill="#f6d28b" stroke="#92580f" stroke-width="2"/><ellipse cx="68" cy="79" rx="4.5" ry="9" fill="none" stroke="#b7791f" stroke-width="2"/><path d="M88 98q10-24 22-6t18-8M92 86q10-18 20-4t22-6M90 104q14-12 26-2t26-2" fill="none" stroke="#e0b169" stroke-width="5" stroke-linecap="round"/><path d="M118 62C104 50 112 36 118 26c3 11 16 18 11 31-2 5-7 7-11 5z" fill="#f97316"/><path d="M118 60c-6-5-3-12 0-17 2 5 8 8 5 14-1 3-3 4-5 3z" fill="#fde047"/></svg>`,
+                `<svg viewBox="0 0 160 120" class="w-full h-full" aria-hidden="true"><ellipse cx="42" cy="102" rx="26" ry="5" fill="#0f172a" opacity=".1"/><circle cx="42" cy="76" r="26" fill="#fff" stroke="#94a3b8" stroke-width="2.5"/><path d="M18 76h48" stroke="#cbd5e1" stroke-width="3"/><path d="M92 54l44-4-4 46H96z" fill="#fff" stroke="#94a3b8" stroke-width="2.5" stroke-linejoin="round"/><path d="M92 54l22 20 22-24" fill="none" stroke="#cbd5e1" stroke-width="2"/><ellipse cx="116" cy="102" rx="26" ry="6" fill="#fbcfe8"/><circle cx="100" cy="102" r="1.6" fill="#f472b6"/><circle cx="108" cy="98" r="1.6" fill="#f472b6"/><circle cx="118" cy="104" r="1.6" fill="#f472b6"/><circle cx="128" cy="100" r="1.6" fill="#f472b6"/><circle cx="134" cy="103" r="1.6" fill="#f472b6"/><circle cx="112" cy="106" r="1.6" fill="#f472b6"/></svg>`
+            ],
+            konsentrasi: [
+                `<svg viewBox="0 0 160 120" class="w-full h-full" aria-hidden="true"><path d="M14 30V92q0 8 8 8h36q8 0 8-8V30" fill="none" stroke="#64748b" stroke-width="3" stroke-linecap="round"/><rect x="17" y="54" width="52" height="40" rx="6" fill="#bfdbfe" opacity=".8"/><circle cx="30" cy="66" r="3.2" fill="#2563eb"/><circle cx="46" cy="78" r="3.2" fill="#2563eb"/><circle cx="36" cy="84" r="3.2" fill="#2563eb"/><rect x="31" y="86" width="18" height="9" rx="3" fill="#fff" stroke="#94a3b8" stroke-width="1.5" transform="rotate(-8 40 90)"/><path d="M94 30V92q0 8 8 8h36q8 0 8-8V30" fill="none" stroke="#64748b" stroke-width="3" stroke-linecap="round"/><rect x="97" y="54" width="52" height="40" rx="6" fill="#bfdbfe" opacity=".8"/><circle cx="98" cy="60" r="3.2" fill="#2563eb"/><circle cx="108" cy="64" r="3.2" fill="#2563eb"/><circle cx="120" cy="60" r="3.2" fill="#2563eb"/><circle cx="130" cy="66" r="3.2" fill="#2563eb"/><circle cx="102" cy="72" r="3.2" fill="#2563eb"/><circle cx="114" cy="74" r="3.2" fill="#2563eb"/><circle cx="126" cy="76" r="3.2" fill="#2563eb"/><circle cx="136" cy="82" r="3.2" fill="#2563eb"/><circle cx="100" cy="82" r="3.2" fill="#2563eb"/><circle cx="112" cy="86" r="3.2" fill="#2563eb"/><circle cx="122" cy="68" r="3.2" fill="#2563eb"/><circle cx="94" cy="70" r="3.2" fill="#2563eb"/><rect x="111" y="86" width="18" height="9" rx="3" fill="#fff" stroke="#94a3b8" stroke-width="1.5" transform="rotate(-8 120 90)"/><text x="40" y="22" text-anchor="middle" font-size="12" font-weight="800" fill="#1e3a8a">0,5 M</text><text x="120" y="22" text-anchor="middle" font-size="12" font-weight="800" fill="#1e3a8a">2 M</text></svg>`,
+                `<svg viewBox="0 0 160 120" class="w-full h-full" aria-hidden="true"><ellipse cx="40" cy="104" rx="26" ry="5" fill="#0f172a" opacity=".1"/><rect x="34" y="26" width="12" height="22" rx="2" fill="#92400e"/><rect x="31" y="20" width="18" height="9" rx="3" fill="#475569"/><rect x="18" y="46" width="44" height="56" rx="10" fill="#b45309"/><rect x="24" y="62" width="32" height="24" rx="4" fill="#fef3c7"/><path d="M30 70h20M30 78h14" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/><rect x="88" y="30" width="56" height="14" rx="6" fill="#94a3b8"/><rect x="128" y="30" width="16" height="30" rx="6" fill="#94a3b8"/><rect x="124" y="56" width="24" height="8" rx="3" fill="#64748b"/><circle cx="100" cy="37" r="5" fill="#f1f5f9" stroke="#cbd5e1"/><circle cx="114" cy="36" r="4" fill="#f1f5f9" stroke="#cbd5e1"/><circle cx="130" cy="52" r="4.5" fill="#f1f5f9" stroke="#cbd5e1"/><path d="M136 72q-6 10 0 14 6-4 0-14z" fill="#7dd3fc"/><path d="M136 94q-5 8 0 11 5-3 0-11z" fill="#7dd3fc"/></svg>`,
+                `<svg viewBox="0 0 160 120" class="w-full h-full" aria-hidden="true"><ellipse cx="46" cy="104" rx="34" ry="5" fill="#0f172a" opacity=".1"/><path d="M16 56h60l-6 46H22z" fill="#1d4ed8"/><ellipse cx="46" cy="56" rx="30" ry="6" fill="#60a5fa"/><path d="M20 56q26-34 52 0" fill="none" stroke="#475569" stroke-width="3"/><ellipse cx="116" cy="104" rx="34" ry="5" fill="#0f172a" opacity=".1"/><path d="M86 56h60l-6 46H92z" fill="#bfdbfe"/><ellipse cx="116" cy="56" rx="30" ry="6" fill="#dbeafe"/><path d="M90 56q26-34 52 0" fill="none" stroke="#94a3b8" stroke-width="3"/><circle cx="34" cy="38" r="5" fill="#fff" stroke="#93c5fd" stroke-width="2"/><circle cx="52" cy="28" r="7" fill="#fff" stroke="#93c5fd" stroke-width="2"/><circle cx="64" cy="42" r="3.5" fill="#fff" stroke="#93c5fd" stroke-width="2"/></svg>`
+            ],
+            suhu: [
+                `<svg viewBox="0 0 160 120" class="w-full h-full" aria-hidden="true"><ellipse cx="80" cy="110" rx="34" ry="5" fill="#0f172a" opacity=".1"/><rect x="48" y="10" width="64" height="98" rx="10" fill="#e0f2fe" stroke="#7dd3fc" stroke-width="3"/><path d="M48 46h64" stroke="#7dd3fc" stroke-width="3"/><rect x="100" y="20" width="4" height="18" rx="2" fill="#64748b"/><rect x="100" y="56" width="4" height="26" rx="2" fill="#64748b"/><g stroke="#0ea5e9" stroke-width="3" stroke-linecap="round"><path d="M72 62v38M72 62l-12 8M72 62l12 8M72 100l-12-8M72 100l12-8M54 81h36"/></g><path d="M16 100q-8-22 14-26 4 14-14 26z" fill="#ef4444"/><circle cx="22" cy="96" r="14" fill="#ef4444"/><path d="M22 82q0-8 6-10" stroke="#16a34a" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`,
+                `<svg viewBox="0 0 160 120" class="w-full h-full" aria-hidden="true"><ellipse cx="80" cy="106" rx="50" ry="5" fill="#0f172a" opacity=".1"/><rect x="34" y="62" width="92" height="40" rx="9" fill="#94a3b8"/><rect x="22" y="72" width="14" height="8" rx="3" fill="#475569"/><rect x="124" y="72" width="14" height="8" rx="3" fill="#475569"/><path d="M30 64Q80 22 130 64z" fill="#cbd5e1" stroke="#94a3b8" stroke-width="2"/><rect x="76" y="32" width="8" height="12" rx="2" fill="#dc2626"/><path d="M72 28q-6-8 0-14M80 26q-6-9 0-17M88 28q-6-8 0-14" fill="none" stroke="#fca5a5" stroke-width="3" stroke-linecap="round"/></svg>`,
+                `<svg viewBox="0 0 160 120" class="w-full h-full" aria-hidden="true"><ellipse cx="68" cy="108" rx="40" ry="5" fill="#0f172a" opacity=".1"/><path d="M34 56h68v28q0 20-20 20H54q-20 0-20-20z" fill="#fff" stroke="#94a3b8" stroke-width="3"/><ellipse cx="68" cy="56" rx="34" ry="6" fill="#b45309"/><path d="M102 64h8q12 0 12 12t-12 12h-8" fill="none" stroke="#94a3b8" stroke-width="4"/><path d="M52 44q-6-9 0-17M68 42q-6-9 0-17M84 44q-6-9 0-17" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round"/><rect x="132" y="22" width="10" height="64" rx="5" fill="#fff" stroke="#94a3b8" stroke-width="2.5"/><circle cx="137" cy="92" r="10" fill="#dc2626"/><rect x="135" y="40" width="4" height="50" rx="2" fill="#dc2626"/></svg>`
+            ],
+            katalis: [
+                `<svg viewBox="0 0 160 120" class="w-full h-full" aria-hidden="true"><ellipse cx="46" cy="106" rx="32" ry="5" fill="#0f172a" opacity=".1"/><path d="M14 74h64q-2 28-32 28T14 74z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2.5"/><ellipse cx="46" cy="74" rx="32" ry="9" fill="#fff" stroke="#cbd5e1" stroke-width="2"/><ellipse cx="34" cy="70" rx="4" ry="2" fill="#e2e8f0" transform="rotate(20 34 70)"/><ellipse cx="46" cy="66" rx="4" ry="2" fill="#e2e8f0" transform="rotate(-15 46 66)"/><ellipse cx="58" cy="70" rx="4" ry="2" fill="#e2e8f0" transform="rotate(30 58 70)"/><ellipse cx="40" cy="76" rx="4" ry="2" fill="#e2e8f0" transform="rotate(-20 40 76)"/><ellipse cx="54" cy="76" rx="4" ry="2" fill="#e2e8f0" transform="rotate(10 54 76)"/><path d="M112 52L134 36A22 22 0 1 0 134 68z" fill="#8b5cf6"/><circle cx="116" cy="38" r="3.5" fill="#fff"/><circle cx="117" cy="38" r="1.6" fill="#1e1b4b"/><circle cx="96" cy="98" r="7" fill="#fbbf24"/><circle cx="111" cy="98" r="7" fill="#fbbf24"/><circle cx="135" cy="98" r="7" fill="#fbbf24"/><circle cx="150" cy="98" r="5" fill="#fbbf24"/></svg>`,
+                `<svg viewBox="0 0 160 120" class="w-full h-full" aria-hidden="true"><ellipse cx="80" cy="100" rx="64" ry="5" fill="#0f172a" opacity=".1"/><rect x="6" y="56" width="42" height="20" rx="5" fill="#94a3b8"/><rect x="112" y="56" width="42" height="20" rx="5" fill="#94a3b8"/><rect x="42" y="40" width="76" height="52" rx="16" fill="#cbd5e1" stroke="#64748b" stroke-width="3"/><path d="M60 49l6 3.5v7l-6 3.5-6-3.5v-7z" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"/><path d="M72 49l6 3.5v7l-6 3.5-6-3.5v-7z" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"/><path d="M84 49l6 3.5v7l-6 3.5-6-3.5v-7z" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"/><path d="M96 49l6 3.5v7l-6 3.5-6-3.5v-7z" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"/><path d="M66 63l6 3.5v7l-6 3.5-6-3.5v-7z" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"/><path d="M78 63l6 3.5v7l-6 3.5-6-3.5v-7z" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"/><path d="M90 63l6 3.5v7l-6 3.5-6-3.5v-7z" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"/><path d="M102 63l6 3.5v7l-6 3.5-6-3.5v-7z" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"/><circle cx="14" cy="42" r="8" fill="#78716c"/><circle cx="28" cy="34" r="10" fill="#57534e"/><circle cx="140" cy="42" r="7" fill="#bbf7d0"/><circle cx="152" cy="34" r="8" fill="#86efac"/></svg>`,
+                `<svg viewBox="0 0 160 120" class="w-full h-full" aria-hidden="true"><ellipse cx="80" cy="108" rx="30" ry="5" fill="#0f172a" opacity=".1"/><path d="M62 16v70a18 18 0 0 0 36 0V16" fill="#f0f9ff" stroke="#64748b" stroke-width="3" stroke-linecap="round"/><path d="M63.5 50h33v36a16.5 16.5 0 0 1-33 0z" fill="#bae6fd"/><ellipse cx="80" cy="96" rx="12" ry="6" fill="#1f2937"/><circle cx="72" cy="44" r="7" fill="#fff" stroke="#bae6fd" stroke-width="2"/><circle cx="86" cy="40" r="8" fill="#fff" stroke="#bae6fd" stroke-width="2"/><circle cx="78" cy="30" r="6" fill="#fff" stroke="#bae6fd" stroke-width="2"/><circle cx="74" cy="72" r="3.5" fill="#fff" stroke="#7dd3fc" stroke-width="1.5"/><circle cx="86" cy="64" r="4.5" fill="#fff" stroke="#7dd3fc" stroke-width="1.5"/><circle cx="80" cy="82" r="3" fill="#fff" stroke="#7dd3fc" stroke-width="1.5"/><path d="M122 60l4 8 8 4-8 4-4 8-4-8-8-4 8-4z" fill="#a78bfa"/></svg>`
+            ],
+            aduk: [
+                `<svg viewBox="0 0 160 120" class="w-full h-full" aria-hidden="true"><ellipse cx="78" cy="110" rx="36" ry="5" fill="#0f172a" opacity=".1"/><path d="M44 34h68l-6 66q-1 8-9 8H59q-8 0-9-8z" fill="#fef3c7" stroke="#94a3b8" stroke-width="3"/><path d="M47 52h62l-4 48q-1 6-8 6H59q-7 0-8-6z" fill="#d97706" opacity=".85"/><path d="M62 74q16-14 32 0" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path d="M90 70l5 5-8 2" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M108 10L84 84" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/><ellipse cx="82" cy="88" rx="9" ry="6" fill="#94a3b8"/><rect x="62" y="92" width="7" height="7" rx="1.5" fill="#fff"/><rect x="74" y="97" width="6" height="6" rx="1.5" fill="#fff"/></svg>`,
+                `<svg viewBox="0 0 160 120" class="w-full h-full" aria-hidden="true"><ellipse cx="80" cy="112" rx="46" ry="4" fill="#0f172a" opacity=".1"/><rect x="34" y="10" width="92" height="100" rx="12" fill="#e2e8f0" stroke="#94a3b8" stroke-width="3"/><path d="M34 34h92" stroke="#94a3b8" stroke-width="3"/><circle cx="50" cy="22" r="5" fill="#0891b2"/><circle cx="66" cy="22" r="5" fill="#94a3b8"/><rect x="92" y="18" width="22" height="8" rx="4" fill="#fff" stroke="#94a3b8"/><circle cx="80" cy="73" r="30" fill="#bae6fd" stroke="#64748b" stroke-width="5"/><path d="M52 76q28 14 56 0v2a28 28 0 0 1-56 0z" fill="#38bdf8" opacity=".6"/><path d="M66 64q14-12 26 2t-12 18-14-20z" fill="#fff" opacity=".85"/><circle cx="90" cy="82" r="4" fill="#fff"/><circle cx="68" cy="84" r="3" fill="#fff"/><circle cx="96" cy="64" r="3" fill="#fff"/></svg>`,
+                `<svg viewBox="0 0 160 120" class="w-full h-full" aria-hidden="true"><ellipse cx="80" cy="110" rx="52" ry="4" fill="#0f172a" opacity=".1"/><rect x="8" y="46" width="34" height="8" fill="#94a3b8"/><rect x="118" y="86" width="34" height="8" fill="#94a3b8"/><rect x="38" y="30" width="84" height="76" rx="12" fill="#e0f2fe" stroke="#64748b" stroke-width="3"/><rect x="41" y="54" width="78" height="49" rx="9" fill="#67e8f9" opacity=".75"/><rect x="66" y="4" width="28" height="14" rx="3" fill="#0891b2"/><rect x="78" y="18" width="4" height="64" fill="#475569"/><rect x="58" y="76" width="44" height="6" rx="3" fill="#475569"/><rect x="64" y="60" width="32" height="5" rx="2.5" fill="#475569"/><path d="M54 90q8 8 18 4M106 68q-8-8-18-4" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>`
+            ]
+        };
+
+        const FAKTOR = [
+            {
+                id: 'luas', no: 1, judul: 'Luas Permukaan', ikon: 'boxes', warna: '#059669', tint: 'emerald',
+                efek: ['Frekuensi Tumbukan'],
+                inti: 'Makin kecil ukuran kepingan zat padat, makin luas total permukaan yang bersentuhan dengan pereaksi. Tumbukan menjadi lebih sering, sehingga laju reaksi naik.',
+                poin: [
+                    'Reaksi zat padat hanya terjadi di <strong>permukaannya</strong>, bagian dalam bongkahan terlindung.',
+                    'Memecah bongkahan menjadi serbuk membuka sisi-sisi baru tanpa menambah massa.',
+                    'Massa sama, tetapi <strong>serbuk</strong> punya bidang sentuh jauh lebih luas.'
+                ],
+                contoh: ['Gula pasir lebih cepat larut daripada gula batu', 'Kayu serutan lebih cepat terbakar daripada kayu gelondong', 'Obat puyer lebih cepat bekerja daripada tablet'],
+                ekstra: `<div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
+                        <p class="text-sm font-bold text-emerald-900 mb-1 sub-judul">Kubus Yang Dipotong-Potong</p>
+                        <p class="text-xs text-slate-600 mb-3">Kotak hijau adalah zat padat yang dilihat dari depan. Geser slider untuk memotongnya menjadi kubus-kubus kecil.</p>
+                        <div class="flex items-end gap-4">
+                            <div class="grid place-items-center" id="kubusVisual"></div>
+                            <div class="flex-1 space-y-2">
+                                <input type="range" id="potongKubus" min="1" max="4" step="1" value="1" style="--thumb:#059669" aria-label="Jumlah potongan per sisi">
+                                <p class="text-xs text-slate-600 leading-relaxed" id="teksKubus"></p>
+                            </div>
+                        </div>
+                    </div>`
+            },
+            {
+                id: 'konsentrasi', no: 2, judul: 'Konsentrasi', ikon: 'droplets', warna: '#2563eb', tint: 'blue',
+                efek: ['Frekuensi Tumbukan'],
+                inti: 'Konsentrasi tinggi berarti jumlah partikel pereaksi dalam volume yang sama lebih banyak. Partikel makin berdesakan, tumbukan makin sering, dan laju reaksi naik.',
+                poin: [
+                    'Konsentrasi (molaritas, M) adalah jumlah mol zat terlarut dalam setiap liter larutan.',
+                    'Volume sama, partikel lebih banyak → jarak antarpartikel lebih dekat.',
+                    'Peluang menumbuk zat padat per detik ikut bertambah.'
+                ],
+                contoh: ['HCl 2 M melarutkan pualam lebih cepat daripada HCl 0,5 M', 'Cuka pekat lebih cepat menghilangkan kerak', 'Pembersih lantai pekat bekerja lebih cepat daripada yang diencerkan'],
+                ekstra: `<div class="rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm text-slate-700 leading-relaxed space-y-5">
+                        <div class="space-y-2">
+                            <p class="font-bold text-blue-900 sub-judul">Rumus Molaritas</p>
+                            <p class="rumus-kotak fx"><i>M</i> = <span class="pecahan"><span><i>n</i></span><span><i>V</i></span></span></p>
+                            <p class="text-xs text-slate-600"><i class="fx">M</i> adalah molaritas (mol/L), <i class="fx">n</i> adalah jumlah mol zat terlarut (mol), dan <i class="fx">V</i> adalah volume larutan (L).</p>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="font-bold text-blue-900 sub-judul">Hubungannya Dengan Persamaan Laju</p>
+                            <p class="rumus-kotak fx"><i>v</i> = <i>k</i>[A]<sup><i>x</i></sup></p>
+                            <p class="text-xs text-slate-600"><i class="fx">v</i> adalah laju reaksi, <i class="fx">k</i> adalah tetapan laju reaksi, [A] adalah konsentrasi pereaksi A, dan <i class="fx">x</i> adalah orde reaksi. Jika konsentrasi dinaikkan 2×, laju reaksi naik 2<sup><i>x</i></sup> kali.</p>
+                        </div>
+                    </div>`
+            },
+            {
+                id: 'suhu', no: 3, judul: 'Suhu', ikon: 'thermometer-sun', warna: '#dc2626', tint: 'red',
+                efek: ['Frekuensi Tumbukan', 'Energi ≥ Ea'],
+                inti: 'Suhu naik membuat energi kinetik partikel bertambah. Partikel bergerak lebih cepat sehingga lebih sering bertumbukan, dan lebih banyak partikel yang energinya melewati Ea.',
+                poin: [
+                    'Partikel hanya bereaksi jika energinya ≥ Ea; tumbukan dengan energi di bawah Ea tidak menghasilkan reaksi.',
+                    'Naiknya suhu terutama memperbanyak partikel berenergi ≥ Ea (tumbukan efektif).',
+                    'Sebagai patokan umum, laju reaksi naik sekitar 2× setiap kenaikan suhu 10 °C.'
+                ],
+                contoh: ['Makanan di kulkas lebih awet karena reaksi pembusukan melambat', 'Panci presto memasak lebih cepat karena suhunya lebih tinggi', 'Teh lebih cepat larut di air panas'],
+                ekstra: `<div class="rounded-2xl border border-red-100 bg-red-50 p-4">
+                        <p class="text-sm font-bold text-red-900 mb-2 sub-judul">Sebaran Energi Partikel</p>
+                        <canvas class="kv bg-white" id="kvSebaranSuhu" aria-label="Grafik sebaran energi partikel pada dua suhu"></canvas>
+                        <div class="flex flex-wrap gap-x-4 gap-y-1.5 mt-2 text-[11px] font-semibold text-slate-600">
+                            <span class="flex items-center gap-1.5"><span class="w-5 h-1 rounded-full bg-slate-500"></span>Suhu 15 °C</span>
+                            <span class="flex items-center gap-1.5"><span class="w-5 h-1 rounded-full bg-red-600"></span>Suhu 55 °C</span>
+                            <span class="flex items-center gap-1.5"><span class="w-5 border-t-2 border-dashed border-slate-900"></span>Batas Ea</span>
+                        </div>
+                        <p class="text-xs text-slate-600 mt-2">Sumbu datar: energi kinetik partikel; tinggi kurva: banyaknya partikel dengan energi itu. Area berwarna di kanan garis Ea adalah partikel yang energinya cukup untuk bereaksi. Pada suhu tinggi, areanya lebih luas.</p>
+                    </div>`
+            },
+            {
+                id: 'katalis', no: 4, judul: 'Katalis', ikon: 'sparkles', warna: '#7c3aed', tint: 'violet',
+                efek: ['Menurunkan Ea'],
+                judulInti: 'Pengertian Katalis',
+                inti: 'Laju reaksi dapat dipercepat dengan dua cara, yaitu meningkatkan energi kinetik dan menurunkan energi aktivasi. Energi kinetik dapat ditingkatkan dengan cara menaikkan suhu reaksi, sedangkan energi aktivasi dapat diturunkan dengan cara menambahkan katalis ke dalam campuran reaksi.',
+                poin: [
+                    'Katalis menyediakan jalur reaksi lain dengan energi aktivasi (Ea) yang lebih rendah, sehingga lebih banyak partikel berenergi cukup. Katalis tidak ikut habis di akhir reaksi.',
+                    'Katalis tidak mengubah suhu; yang berubah hanya besar Ea.',
+                    'Ea turun → jauh lebih banyak partikel yang energinya cukup untuk bereaksi.'
+                ],
+                contoh: ['Enzim amilase di mulut mempercepat pemecahan nasi', 'Konverter katalitik di knalpot mengubah gas beracun', 'MnO₂ mempercepat penguraian H₂O₂'],
+                ekstra: `<div class="rounded-2xl border border-violet-100 bg-violet-50 p-4">
+                        <p class="text-sm font-bold text-violet-900 mb-2 sub-judul">Diagram Energi</p>
+                        <svg class="w-full h-auto" viewBox="0 0 240 125" role="img" aria-label="Diagram energi dengan dan tanpa katalis">
+                            <line x1="20" y1="108" x2="226" y2="108" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" />
+                            <line x1="20" y1="12" x2="20" y2="108" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" />
+                            <text x="226" y="119" font-size="7" font-weight="700" fill="#64748b" text-anchor="end">Jalur reaksi</text>
+                            <text x="15" y="14" font-size="7" font-weight="700" fill="#64748b" transform="rotate(-90 15 14)" text-anchor="end">Energi</text>
+                            <line x1="20" y1="85" x2="60" y2="85" stroke="#94a3b8" stroke-dasharray="2 2" />
+                            <line x1="180" y1="100" x2="226" y2="100" stroke="#94a3b8" stroke-dasharray="2 2" />
+                            <text x="24" y="81" font-size="6.5" font-weight="700" fill="#475569">Reaktan</text>
+                            <text x="200" y="96" font-size="6.5" font-weight="700" fill="#475569">Produk</text>
+                            <path d="M 35,85 Q 110,-15 195,100" fill="none" stroke="#f87171" stroke-width="2.5" stroke-linecap="round" />
+                            <path d="M 35,85 Q 110,40 195,100" fill="none" stroke="#8b5cf6" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5 3" />
+                            <text x="110" y="24" font-size="6.5" font-weight="800" fill="#dc2626" text-anchor="middle">Ea tanpa katalis</text>
+                            <text x="110" y="56" font-size="6.5" font-weight="800" fill="#7c3aed" text-anchor="middle">Ea dengan katalis</text>
+                            <circle r="4" fill="#ef4444" stroke="#fff" stroke-width="1"><animateMotion dur="3.5s" repeatCount="indefinite" path="M 35,85 Q 110,-15 195,100" /></circle>
+                            <circle r="4" fill="#8b5cf6" stroke="#fff" stroke-width="1"><animateMotion dur="1.4s" repeatCount="indefinite" path="M 35,85 Q 110,40 195,100" /></circle>
+                        </svg>
+                        <div class="flex flex-wrap gap-x-4 gap-y-1.5 mt-1 text-[11px] font-semibold text-slate-600">
+                            <span class="flex items-center gap-1.5"><span class="w-5 h-1 rounded-full bg-red-400"></span>Jalur tanpa katalis</span>
+                            <span class="flex items-center gap-1.5"><span class="w-5 border-t-2 border-dashed border-violet-500"></span>Jalur dengan katalis</span>
+                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-violet-500"></span>Partikel yang bereaksi</span>
+                        </div>
+                        <p class="text-xs text-slate-600 mt-1.5">Tinggi bukit adalah energi aktivasi (Ea). Dengan katalis bukitnya lebih rendah, sehingga partikel lebih mudah dan lebih cepat melewatinya.</p>
+                    </div>`
+            },
+            {
+                id: 'aduk', no: 5, judul: 'Pengadukan', ikon: 'refresh-cw', warna: '#0891b2', tint: 'cyan',
+                efek: ['Frekuensi Tumbukan', 'Pencampuran Merata'],
+                inti: 'Tanpa diaduk, partikel pereaksi di sekitar zat padat cepat terpakai dan hanya diganti perlahan. Pengadukan terus membawa partikel segar ke permukaan zat padat, sehingga tumbukan lebih sering dan laju naik.',
+                poin: [
+                    'Partikel pereaksi yang sudah terpakai tidak bisa bereaksi lagi.',
+                    'Tanpa pengadukan, partikel terpakai menumpuk di dekat zat padat.',
+                    'Pengadukan meratakan campuran dan mempercepat datangnya partikel segar.'
+                ],
+                contoh: ['Mengaduk teh membuat gula cepat larut', 'Mesin cuci memutar air agar deterjen bekerja merata', 'Pabrik memakai tangki berpengaduk untuk mempercepat reaksi'],
+                ekstra: ''
+            }
+        ];
+
+        /* =====================================================
+           RUJUKAN BUKU (Jelajah Kimia 2 SMA/MA Kelas XI, Bab 6, hlm. 259–271)
+           Ditampilkan sebagai kartu lebar di bawah setiap faktor.
+           ===================================================== */
+        const itemBuku = (ikonL, warna, judul, isi) => `<li class="flex gap-3 rounded-2xl border border-slate-100 bg-slate-50/70 p-3.5">
+            <span class="shrink-0 w-9 h-9 rounded-xl grid place-items-center text-white" style="background:${warna}"><i data-lucide="${ikonL}" class="w-4 h-4"></i></span>
+            <span class="text-xs text-slate-600 leading-relaxed"><strong class="block text-[13px] text-slate-800">${judul}</strong>${isi}</span></li>`;
+
+        const BUKU = {
+            luas: {
+                judul: 'Luas Permukaan Bidang Sentuh',
+                sumber: 'Jelajah Kimia 2 SMA/MA Kelas XI, hlm. 259–260 (Gambar 6.7 dan 6.8)',
+                isi: `<div class="grid lg:grid-cols-2 gap-6">
+                    <div class="space-y-3">
+                        <p class="text-sm text-slate-600 leading-relaxed">Reaksi yang melibatkan zat padat berlangsung di permukaannya. Pada percobaan pualam dengan asam klorida, CaCO₃ <strong>serbuk</strong> habis paling cepat dan <strong>bongkahan</strong> paling lambat, karena serbuk punya bidang sentuh paling luas.</p>
+                        <div class="rumus">CaCO₃(s) + 2HCl(aq) → CaCl₂(aq) + H₂O(l) + CO₂(g)</div>
+                        <canvas class="kv bg-white border border-slate-100" id="kvTabungLuas" aria-label="Animasi tiga tabung berisi CaCO3 bongkahan, kepingan, dan serbuk dalam HCl"></canvas>
+                        <p class="text-xs text-slate-500">Massa CaCO₃ dan konsentrasi HCl di ketiga tabung sama. Bandingkan banyaknya gelembung CO₂ dan kapan padatannya habis.</p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-800 mb-3 sub-judul">Penerapan Luas Permukaan Dalam Kehidupan</p>
+                        <ul class="grid sm:grid-cols-2 gap-3">
+                            ${itemBuku('utensils', '#059669', 'Mengunyah makanan', 'Makanan dikunyah halus agar mudah dicerna di lambung dan sarinya lebih banyak terserap.')}
+                            ${itemBuku('soup', '#0d9488', 'Pedagang makanan', 'Gula merah diiris sebelum dicampur ke bubur kacang hijau; kacang goreng digerus untuk bumbu gado-gado.')}
+                            ${itemBuku('factory', '#0891b2', 'Industri semen', 'Batu kapur dihancurkan hingga halus sebelum dicampur dengan bahan lain.')}
+                            ${itemBuku('pickaxe', '#475569', 'Tambang besi', 'Mineral pirit yang berbutir besar dan kasar dihancurkan dahulu hingga halus.')}
+                        </ul>
+                        <div class="mt-4 rounded-2xl border border-emerald-100 bg-emerald-50 p-4 text-sm text-emerald-900 leading-relaxed">
+                            <strong>Kesimpulan:</strong> makin luas permukaan bidang sentuh, makin cepat laju reaksi. Volume total kubus-kubus kecil sama dengan kubus utuh, tetapi luas permukaannya lebih besar.
+                        </div>
+                    </div>
+                </div>`
+            },
+            konsentrasi: {
+                judul: 'Konsentrasi',
+                sumber: 'Jelajah Kimia 2 SMA/MA Kelas XI, hlm. 264–265 (Gambar 6.12–6.13)',
+                isi: `<div class="max-w-3xl mx-auto">
+                    <div class="space-y-3">
+                        <p class="text-sm text-slate-600 leading-relaxed">Kapur tulis (CaCO₃) dimasukkan ke HCl dengan konsentrasi berbeda. Dalam waktu yang sama, <strong>HCl 4 M</strong> menghasilkan gelembung CO₂ paling banyak, disusul HCl 2 M, lalu HCl 1 M.</p>
+                        <canvas class="kv bg-white border border-slate-100" id="kvTabungKons" aria-label="Animasi kapur tulis dalam HCl 1 M, 2 M, dan 4 M"></canvas>
+                        <p class="text-xs text-slate-500">Warna larutan yang lebih tua menandakan partikel HCl yang lebih rapat.</p>
+                    </div>
+                </div>`
+            },
+            suhu: {
+                judul: 'Suhu',
+                sumber: 'Jelajah Kimia 2 SMA/MA Kelas XI, hlm. 260–264 (Aktivitas 6.4–6.5, Contoh Soal 6.4, Praktikum 6.3)',
+                isi: `<div class="grid lg:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="rounded-2xl border border-red-100 bg-red-50/60 p-4">
+                            <p class="text-sm font-bold text-red-900 mb-2 sub-judul">Persamaan Arrhenius</p>
+                            <p class="text-xs text-slate-600 mb-2">Persamaan Arrhenius adalah persamaan yang menyatakan hubungan antara tetapan laju reaksi dan suhu.</p>
+                            <p class="rumus-kotak fx text-2xl sm:text-3xl"><i>k</i> = <i>A</i> · <i>e</i><sup>−<i>E</i><sub>a</sub>/<i>RT</i></sup></p>
+                            <div class="overflow-x-auto"><table class="tabel-buku w-full text-xs mt-2 bg-white rounded-xl overflow-hidden">
+                                <tr><th>Lambang</th><th>Arti</th></tr>
+                                <tr><td class="fx font-bold"><i>k</i></td><td>tetapan laju reaksi</td></tr>
+                                <tr><td class="fx font-bold"><i>A</i></td><td>faktor frekuensi tumbukan</td></tr>
+                                <tr><td class="fx font-bold"><i>R</i></td><td>tetapan gas (8,314 J mol⁻¹ K⁻¹)</td></tr>
+                                <tr><td class="fx font-bold"><i>T</i></td><td>suhu (kelvin)</td></tr>
+                                <tr><td class="fx font-bold"><i>E</i><sub>a</sub></td><td>energi aktivasi</td></tr>
+                            </table></div>
+                            <p class="text-xs text-slate-600 mt-2 leading-relaxed">Jika <i class="fx">T</i> makin besar, nilai −<i class="fx">E</i><sub>a</sub>/<i class="fx">RT</i> makin mendekati nol sehingga <i class="fx">k</i> makin besar dan reaksi makin cepat.</p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 bg-white p-4">
+                            <p class="text-sm font-bold text-slate-800 mb-1 flex items-center gap-2 sub-judul"><i data-lucide="calculator" class="w-4 h-4 text-red-600"></i> Kalkulator Aturan Kelipatan Suhu</p>
+                            <p class="text-xs text-slate-500 mb-3">Setiap kenaikan ΔT °C, laju menjadi n kali. Isian awal memakai Contoh Soal 6.4.</p>
+                            <div class="grid grid-cols-4 gap-2">
+                                <label class="text-[11px] font-bold text-slate-600">n<input class="input-kalk mt-1" id="kn" type="number" value="2" min="1" step="0.5"></label>
+                                <label class="text-[11px] font-bold text-slate-600">ΔT (°C)<input class="input-kalk mt-1" id="kdT" type="number" value="10" min="1"></label>
+                                <label class="text-[11px] font-bold text-slate-600">T₁ (°C)<input class="input-kalk mt-1" id="kT1" type="number" value="20"></label>
+                                <label class="text-[11px] font-bold text-slate-600">T₂ (°C)<input class="input-kalk mt-1" id="kT2" type="number" value="80"></label>
+                            </div>
+                            <div class="mt-3 rounded-xl bg-red-50 border border-red-100 p-3 text-sm text-slate-700 leading-relaxed" id="kHasil" aria-live="polite"></div>
+                            <div class="mt-3 space-y-2">
+                                <p class="rumus-kotak fx !text-base"><i>v</i><sub>2</sub> = <i>v</i><sub>1</sub> × <i>n</i><sup>(<i>T</i><sub>2</sub> − <i>T</i><sub>1</sub>)/Δ<i>T</i></sup></p>
+                                <p class="rumus-kotak fx !text-base"><i>t</i><sub>2</sub> = <i>t</i><sub>1</sub> × (<span class="pecahan"><span>1</span><span><i>n</i></span></span>)<sup>(<i>T</i><sub>2</sub> − <i>T</i><sub>1</sub>)/Δ<i>T</i></sup></p>
+                                <p class="text-[11px] text-slate-500"><i class="fx">v</i> adalah laju reaksi, <i class="fx">t</i> adalah waktu reaksi, <i class="fx">n</i> adalah kelipatan laju, dan Δ<i class="fx">T</i> adalah kenaikan suhu.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="rounded-2xl border border-slate-200 bg-white p-4">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                                <p class="text-sm font-bold text-slate-800 flex items-center gap-2 sub-judul"><i data-lucide="x" class="w-4 h-4 text-red-600"></i> Uji Coba Simulasi</p>
+                                <span class="text-[11px] font-bold text-slate-500">dilihat dari atas gelas</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-3">15 mL Na₂S₂O₃ 0,5 M dipanaskan, diletakkan di atas kertas bertanda ×, lalu ditambah 15 mL HCl 1 M. Endapan belerang membuat larutan keruh sampai tanda × tidak terlihat.</p>
+                            <div class="rumus mb-3">Na₂S₂O₃(aq) + 2HCl(aq) → SO₂(g) + S(s) + 2NaCl(aq) + H₂O(l)</div>
+                            <canvas class="kv bg-white" id="kvSilang" aria-label="Animasi tiga gelas pada 35, 45, dan 55 derajat Celsius menjadi keruh"></canvas>
+                            <div class="flex gap-2 mt-3">
+                                <button type="button" id="silangMulai" class="flex-1 text-white font-bold rounded-xl py-2.5 bg-red-600 flex items-center justify-center gap-2 active:scale-[.98] transition-transform"><i data-lucide="beaker" class="w-4 h-4"></i> Tuang HCl dan mulai</button>
+                                <button type="button" id="silangUlang" class="px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold" aria-label="Ulangi praktikum"><i data-lucide="rotate-ccw" class="w-4 h-4"></i></button>
+                            </div>
+                            <div class="overflow-x-auto mt-3"><table class="tabel-buku w-full text-xs min-w-[320px]">
+                                <tr><th>Gelas</th><th>T (°C)</th><th>T (K)</th><th>Waktu (s)</th><th><i>v</i> = 1/<i>t</i> (s⁻¹)</th></tr>
+                                ${[35, 45, 55].map((T, i) => `<tr><td class="font-bold">${i + 1}</td><td>${T}</td><td>${T + 273}</td><td class="mono" id="silangW${i}">…</td><td class="mono" id="silangV${i}">…</td></tr>`).join('')}
+                            </table></div>
+                            <p class="text-[11px] text-slate-500 mt-2" id="silangCatatan">Waktu ilustratif, mengikuti aturan laju 2× setiap naik 10 °C. Animasi dipercepat 4×.</p>
+                        </div>
+                        <ul class="grid sm:grid-cols-2 gap-3">
+                            ${itemBuku('cup-soda', '#dc2626', 'Aktivitas 6.4', 'Gula lebih cepat larut di air panas daripada di air dingin.')}
+                            ${itemBuku('egg-fried', '#ea580c', 'Aktivitas 6.5', 'Telur lebih cepat matang digoreng: suhu minyak jauh di atas air mendidih (±100 °C).')}
+                            ${itemBuku('refrigerator', '#0284c7', 'Lemari es', 'Pada suhu rendah pembusukan melambat, sehingga sayuran lebih tahan lama (Gambar 6.11).')}
+                            ${itemBuku('chart-spline', '#7c3aed', 'Gambar 6.10', 'Pada T₂ > T₁ lebih banyak molekul yang energinya melewati batas Ea.')}
+                        </ul>
+                    </div>
+                </div>`
+            },
+            katalis: {
+                judul: 'Katalis',
+                sumber: 'Jelajah Kimia 2 SMA/MA Kelas XI, hlm. 266–271 (Gambar 6.14–6.18, Tabel 6.2–6.3)',
+                isi: `<div class="space-y-6">
+                    <div class="grid gap-6">
+                        <div>
+                            <p class="text-sm font-bold text-slate-800 mb-3 sub-judul">Ciri Katalis</p>
+                            <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-sm text-slate-600">
+                                <li class="flex gap-2"><i data-lucide="circle-check" class="w-4 h-4 mt-0.5 shrink-0 text-violet-600"></i><span>Mempercepat reaksi; zat yang memperlambat disebut <strong>inhibitor</strong>.</span></li>
+                                <li class="flex gap-2"><i data-lucide="circle-check" class="w-4 h-4 mt-0.5 shrink-0 text-violet-600"></i><span>Mengubah mekanisme: tahapnya lebih banyak, tetapi tiap tahap ber-Ea lebih rendah.</span></li>
+                                <li class="flex gap-2"><i data-lucide="circle-check" class="w-4 h-4 mt-0.5 shrink-0 text-violet-600"></i><span>Tidak mengalami perubahan kimia permanen dan diperlukan dalam jumlah sedikit.</span></li>
+                                <li class="flex gap-2"><i data-lucide="circle-check" class="w-4 h-4 mt-0.5 shrink-0 text-violet-600"></i><span>Jenisnya: homogen, heterogen, enzim (biokatalis), dan autokatalis.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="rounded-2xl border border-violet-100 bg-white p-4 sm:p-5">
+                        <div class="flex gap-2 overflow-x-auto tabs-scroll pb-1" role="tablist" aria-label="Jenis katalis" id="tabJenis">
+                            <button type="button" class="tab-jenis aktif" data-jenis="homogen" role="tab">Katalis Homogen</button>
+                            <button type="button" class="tab-jenis" data-jenis="heterogen" role="tab">Katalis Heterogen</button>
+                            <button type="button" class="tab-jenis" data-jenis="enzim" role="tab">Enzim</button>
+                            <button type="button" class="tab-jenis" data-jenis="auto" role="tab">Autokatalis</button>
+                        </div>
+
+                        <div class="panel-jenis mt-4" data-panel="homogen">
+                            <div class="grid lg:grid-cols-2 gap-5">
+                                <div>
+                                    <p class="text-sm text-slate-600 leading-relaxed mb-3">Wujud katalis <strong>sama</strong> dengan pereaksi dan berperan sebagai zat perantara. Katalis dipakai lalu terbentuk kembali.</p>
+                                    <div class="overflow-x-auto"><table class="tabel-buku w-full text-xs min-w-[300px]">
+                                        <tr><th>Tanpa katalis</th><th>Dengan katalis K</th></tr>
+                                        <tr><td class="mono">A + B → AB (lambat)</td><td class="mono leading-relaxed">A + K → AK<br>AK + B → A–B–K<br>A–B–K → AB + K</td></tr>
+                                    </table></div>
+                                    <p class="text-xs text-slate-500 mt-2">Contoh lain: penguraian N₂O dengan katalis Cl₂ (Cl₂ + 2N₂O → 2N₂ + 2ClO; 2ClO → Cl₂ + O₂).</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-800 mb-1 sub-judul">Mekanisme Pembuatan SO₃ Dengan Katalis NO₂</p>
+                                    <p class="text-xs text-slate-500 mb-2">Reaksi berlangsung melalui dua tahap elementer.</p>
+                                    <div class="space-y-2" id="mekaSO3">
+                                        <div class="langkah-meka rounded-xl border border-slate-200 px-3 py-2"><p class="text-[11px] font-bold">Tahap 1</p><p class="mono text-xs font-bold">2SO₂ + 2NO₂ → 2SO₃ + 2NO</p><p class="text-[11px]">Katalis (NO₂) bereaksi dan membentuk zat antara (NO).</p></div>
+                                        <div class="langkah-meka rounded-xl border border-slate-200 px-3 py-2"><p class="text-[11px] font-bold">Tahap 2</p><p class="mono text-xs font-bold">2NO + O₂ → 2NO₂</p><p class="text-[11px]">Zat antara (NO) habis bereaksi dan katalis (NO₂) terbentuk kembali.</p></div>
+                                        <div class="langkah-meka rounded-xl border border-slate-200 px-3 py-2"><p class="text-[11px] font-bold">Reaksi Total (Tahap 1 + Tahap 2)</p><p class="mono text-xs font-bold">2SO₂ + O₂ → 2SO₃</p><p class="text-[11px]">NO₂ dan NO saling meniadakan sehingga tidak muncul pada reaksi total.</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-jenis mt-4 hidden" data-panel="heterogen">
+                            <div class="grid lg:grid-cols-2 gap-5 items-center">
+                                <div>
+                                    <p class="text-sm text-slate-600 leading-relaxed mb-2">Wujud katalis <strong>berbeda</strong> dengan pereaksi; reaksi terjadi di permukaan katalis. Contoh: hidrogenasi etena dengan logam nikel (Gambar 6.16).</p>
+                                    <div class="rumus mb-3">C₂H₄(g) + H₂(g) → C₂H₆(g) &nbsp; (katalis Ni padat)</div>
+                                    <div class="flex gap-1.5 mb-2" id="heteroTitik"></div>
+                                    <p class="text-sm text-slate-700 leading-relaxed min-h-[3rem]" id="heteroTeks"></p>
+                                </div>
+                                <div class="rounded-2xl bg-slate-50 border border-slate-100 p-2" id="heteroSvg"></div>
+                            </div>
+                        </div>
+
+                        <div class="panel-jenis mt-4 hidden" data-panel="enzim">
+                            <div class="grid lg:grid-cols-2 gap-5 items-center">
+                                <div>
+                                    <p class="text-sm text-slate-600 leading-relaxed mb-2">Enzim adalah <strong>biokatalis</strong>: protein besar dengan sisi aktif tempat substrat menempel. Cara kerjanya dijelaskan dengan <strong>model kunci dan gembok</strong> (Emil Fischer, 1894).</p>
+                                    <ul class="space-y-1.5 text-xs text-slate-600">
+                                        <li>Substrat masuk ke sisi aktif yang bentuknya cocok (spesifik).</li>
+                                        <li>Terbentuk kompleks enzim–substrat.</li>
+                                        <li>Substrat berubah menjadi produk; enzim lepas dan bisa dipakai lagi.</li>
+                                    </ul>
+                                </div>
+                                <div class="rounded-2xl bg-violet-50 border border-violet-100 p-2">
+                                    <svg viewBox="0 0 320 180" class="w-full h-auto" role="img" aria-label="Animasi model kunci dan gembok enzim">
+                                        <g class="enz-c1"><text x="160" y="22" text-anchor="middle" font-size="12" font-weight="800" fill="#5b21b6">Substrat mendekati sisi aktif</text></g>
+                                        <g class="enz-c2"><text x="160" y="22" text-anchor="middle" font-size="12" font-weight="800" fill="#5b21b6">Kompleks enzim–substrat</text></g>
+                                        <g class="enz-c3"><text x="160" y="22" text-anchor="middle" font-size="12" font-weight="800" fill="#5b21b6">Produk lepas, enzim bebas kembali</text></g>
+                                        <path d="M60 165 Q 38 108 92 96 L 138 96 L 160 124 L 182 96 L 228 96 Q 282 108 260 165 Z" fill="#c4b5fd" stroke="#7c3aed" stroke-width="2.5" stroke-linejoin="round" />
+                                        <text x="160" y="152" text-anchor="middle" font-size="12" font-weight="800" fill="#4c1d95">Enzim</text>
+                                        <g class="enz-sub">
+                                            <path d="M141 95 L 179 95 L 160 120 Z" fill="#f472b6" stroke="#be185d" stroke-width="2" stroke-linejoin="round" />
+                                            <rect x="147" y="68" width="26" height="26" rx="4" fill="#fbbf24" stroke="#b45309" stroke-width="2" />
+                                        </g>
+                                        <g class="enz-p1"><path d="M141 95 L 179 95 L 160 120 Z" fill="#f472b6" stroke="#be185d" stroke-width="2" stroke-linejoin="round" /></g>
+                                        <g class="enz-p2"><rect x="147" y="68" width="26" height="26" rx="4" fill="#fbbf24" stroke="#b45309" stroke-width="2" /></g>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-jenis mt-4 hidden" data-panel="auto">
+                            <div class="grid lg:grid-cols-2 gap-5">
+                                <div>
+                                    <p class="text-sm text-slate-600 leading-relaxed mb-2"><strong>Autokatalis</strong> adalah hasil reaksi yang berfungsi sebagai katalis, sehingga reaksi makin lama makin cepat. Contoh: KMnO₄ dengan asam oksalat; MnSO₄ yang terbentuk mempercepat reaksinya sendiri.</p>
+                                    <div class="rumus mb-3 text-[11px]">2KMnO₄ + 5H₂C₂O₄ + 3H₂SO₄ → 2MnSO₄ + 10CO₂ + K₂SO₄ + 8H₂O</div>
+                                    <p class="text-xs text-slate-600 leading-relaxed">Pada Gambar 6.18, gelas yang sejak awal ditambah MnSO₄ berubah dari ungu menjadi hampir bening dalam ±1,5 menit, sedangkan gelas tanpa MnSO₄ butuh ±5,5 menit. Contoh autokatalis lain: perusakan lapisan ozon.</p>
+                                </div>
+                                <div>
+                                    <canvas class="kv bg-white border border-slate-100" id="kvAuto" aria-label="Animasi dua gelas KMnO4 memudar, dengan dan tanpa MnSO4"></canvas>
+                                    <button type="button" id="autoUlang" class="mt-2 w-full sm:w-auto px-4 py-2.5 rounded-xl bg-violet-600 text-white text-sm font-bold flex items-center justify-center gap-2"><i data-lucide="rotate-ccw" class="w-4 h-4"></i> Ulangi animasi</button>
+                                    <p class="text-[11px] text-slate-500 mt-1.5">Kurva berbentuk S: awalnya lambat, lalu makin cepat setelah MnSO₄ terbentuk. Ini ciri khas autokatalis.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <details class="rounded-2xl border border-slate-200 bg-white group">
+                        <summary class="cursor-pointer select-none list-none flex items-center justify-between gap-2 px-4 py-3 text-sm font-bold text-slate-800">
+                            <span class="flex items-center gap-2"><i data-lucide="factory" class="w-4 h-4 text-violet-600"></i> Katalis di industri dan enzim (Tabel 6.2 dan 6.3)</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform group-open:rotate-180"></i>
+                        </summary>
+                        <div class="px-4 pb-4 space-y-4">
+                            <div class="overflow-x-auto"><table class="tabel-buku w-full text-xs min-w-[560px]">
+                                <tr><th>Industri</th><th>Reaksi</th><th>Katalis</th></tr>
+                                <tr><td>Asam etanoat</td><td class="mono">CH₃OH + CO → CH₃COOH</td><td>rodium atau iridium</td></tr>
+                                <tr><td>Mentega</td><td>Hidrogenasi ikatan rangkap C=C menjadi ikatan tunggal C–C</td><td>nikel</td></tr>
+                                <tr><td>Asam nitrat</td><td class="mono">4NH₃ + 5O₂ → 4NO + 6H₂O; 2NO + O₂ → 2NO₂</td><td>90% platina + 10% rodium</td></tr>
+                                <tr><td>Asam sulfat (proses kontak)</td><td class="mono">2SO₂ + O₂ → 2SO₃; SO₃ + H₂O → H₂SO₄</td><td>V₂O₅</td></tr>
+                                <tr><td>Amonia (Haber-Bosch)</td><td class="mono">N₂ + 3H₂ → 2NH₃</td><td>Fe</td></tr>
+                                <tr><td>Minyak bumi: cracking</td><td class="mono">C₁₅H₃₂ → 2C₂H₄ + C₃H₆ + C₈H₁₈</td><td>zeolit</td></tr>
+                                <tr><td>Minyak bumi: isomerisasi</td><td>oktana → 2,2,4-trimetilpentana</td><td>Pt atau zeolit</td></tr>
+                                <tr><td>Minyak bumi: reforming</td><td>sikloheksana → benzena + 3H₂</td><td>Pt dalam aluminium oksida</td></tr>
+                            </table></div>
+                            <div class="overflow-x-auto"><table class="tabel-buku w-full text-xs min-w-[480px]">
+                                <tr><th>Enzim</th><th>Kegunaan</th><th>Aplikasi industri</th></tr>
+                                <tr><td class="font-bold">Amilase</td><td>Menghidrolisis kanji (amilum) menjadi maltosa</td><td>Pembuatan kertas; bahan detergen</td></tr>
+                                <tr><td class="font-bold">Lipase</td><td>Menguraikan lipid menjadi gliserol dan asam lemak</td><td>Industri keju</td></tr>
+                                <tr><td class="font-bold">Protease</td><td>Menguraikan protein menjadi peptida dan asam amino</td><td>Industri roti dan fotografi</td></tr>
+                            </table></div>
+                            <p class="text-[11px] text-slate-500 leading-relaxed">Catatan koreksi dari ringkasan: buku menulis "katalase" untuk penguraian lipid, padahal enzim yang tepat adalah <strong>lipase</strong> (katalase menguraikan H₂O₂). Tahap akhir pembuatan asam nitrat yang standar adalah 3NO₂ + H₂O → 2HNO₃ + NO. Diskusikan dengan guru.</p>
+                        </div>
+                    </details>
+                </div>`
+            },
+            aduk: {
+                judul: 'Mengapa Pengadukan Mempercepat Reaksi?',
+                sumber: 'Pengayaan: bab di buku (hlm. 259–271) membahas empat faktor, pengadukan ditambahkan sebagai faktor kelima',
+                isi: `<div class="space-y-5">
+                    <div class="grid lg:grid-cols-5 gap-6">
+                        <div class="lg:col-span-3 space-y-3">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <p class="text-sm font-bold text-slate-800 flex items-center gap-2 sub-judul"><i data-lucide="cup-soda" class="w-4 h-4 text-cyan-600"></i> Gula Batu Dalam Teh</p>
+                                <p class="text-[11px] text-slate-500">Titik oranye adalah molekul gula yang sudah larut</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3 text-[11px] font-extrabold">
+                                <p class="text-slate-500">Gelas A · Tanpa diaduk</p>
+                                <p class="text-cyan-700">Gelas B · Diaduk</p>
+                            </div>
+                            <canvas class="kv bg-white border border-slate-100" id="kvTeh" aria-label="Animasi gula batu larut dalam teh tanpa diaduk dan diaduk"></canvas>
+                            <div class="flex gap-2">
+                                <button type="button" id="tehMulai" class="flex-1 text-white font-bold rounded-xl py-3 bg-cyan-600 flex items-center justify-center gap-2 active:scale-[.98] transition-transform"><i data-lucide="play" class="w-4 h-4"></i> Masukkan gula</button>
+                                <button type="button" id="tehUlang" class="px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold" aria-label="Ulangi animasi teh"><i data-lucide="rotate-ccw" class="w-4 h-4"></i></button>
+                            </div>
+                            <div class="text-sm leading-relaxed rounded-2xl px-4 py-3 bg-slate-50 border border-slate-100 text-slate-600" id="tehHasil">Tekan <strong>Masukkan gula</strong>. Perhatikan awan oranye pekat yang menumpuk di sekitar gula pada gelas A.</div>
+                            <div class="grid grid-cols-2 gap-3">
+                                ${['A', 'B'].map(g => `<div class="grid grid-cols-2 gap-1.5">
+                                    <div class="stat"><div class="n" id="teh${g}larut">0%</div><div class="k">Gula larut</div></div>
+                                    <div class="stat"><div class="n" id="teh${g}pekat">0%</div><div class="k">Kepekatan di dekat gula</div></div>
+                                </div>`).join('')}
+                            </div>
+                        </div>
+                        <div class="lg:col-span-2 space-y-3">
+                            <p class="text-sm font-bold text-slate-800 sub-judul">Urutan Kejadiannya</p>
+                            <ol class="space-y-3">
+                                <li class="flex gap-3 rounded-2xl border border-slate-100 bg-slate-50/70 p-3.5"><span class="shrink-0 w-7 h-7 rounded-lg bg-cyan-600 text-white grid place-items-center text-xs font-extrabold">1</span><span class="text-xs text-slate-600 leading-relaxed"><strong class="block text-[13px] text-slate-800">Lapisan di permukaan menjadi pekat</strong>Tanpa diaduk, zat yang sudah larut (atau pereaksi yang sudah terpakai) menumpuk di dekat permukaan zat padat.</span></li>
+                                <li class="flex gap-3 rounded-2xl border border-slate-100 bg-slate-50/70 p-3.5"><span class="shrink-0 w-7 h-7 rounded-lg bg-cyan-600 text-white grid place-items-center text-xs font-extrabold">2</span><span class="text-xs text-slate-600 leading-relaxed"><strong class="block text-[13px] text-slate-800">Pengadukan menyapu lapisan itu</strong>Arus putar membawa lapisan pekat menjauh dan meratakannya ke seluruh larutan.</span></li>
+                                <li class="flex gap-3 rounded-2xl border border-slate-100 bg-slate-50/70 p-3.5"><span class="shrink-0 w-7 h-7 rounded-lg bg-cyan-600 text-white grid place-items-center text-xs font-extrabold">3</span><span class="text-xs text-slate-600 leading-relaxed"><strong class="block text-[13px] text-slate-800">Partikel segar terus datang</strong>Permukaan zat padat selalu bertemu larutan segar, sehingga frekuensi tumbukan tetap tinggi dan laju naik.</span></li>
+                            </ol>
+                            <div class="rounded-2xl border border-cyan-100 bg-cyan-50 p-4 text-xs text-cyan-950 leading-relaxed">
+                                <strong class="block text-[13px] mb-1">Hati-hati dengan miskonsepsi</strong>
+                                Pengadukan <strong>tidak menurunkan Ea</strong> dan tidak menambah jumlah zat. Pengaruhnya paling terasa pada campuran heterogen (padat–cair) atau campuran yang belum merata; larutan yang sudah homogen tidak banyak terpengaruh.
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+            }
+        };
+        function htmlBuku(f) {
+            const b = f.buku;
+            return `<div class="bg-white/95 rounded-[1.75rem] border border-slate-100 shadow-sm overflow-hidden">
+                <div class="flex items-center gap-3 px-5 sm:px-6 py-4 border-b border-slate-100" style="background:linear-gradient(90deg, ${f.warna}17, transparent 70%)">
+                    <span class="w-10 h-10 shrink-0 rounded-xl grid place-items-center text-white" style="background:${f.warna}"><i data-lucide="${f.id === 'aduk' ? 'lightbulb' : 'book-open'}" class="w-5 h-5"></i></span>
+                    <div class="min-w-0"><p class="font-extrabold text-slate-900 leading-tight judul-kartu">${b.judul}</p></div>
+                </div>
+                <div class="buku-isi p-5 sm:p-6">${b.isi}</div>
+            </div>`;
+        }
+
+        FAKTOR.forEach(f => f.buku = BUKU[f.id]);
+
+        /* =====================================================
+           MEMBANGUN SETIAP BAGIAN FAKTOR
+           ===================================================== */
+        function bangunFaktor(f) {
+            const el = document.createElement('section');
+            el.className = 'faktor space-y-6';
+            el.id = f.id;
+            el.innerHTML = `
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl text-white grid place-items-center shadow-md" style="background:${f.warna}"><i data-lucide="${f.ikon}" class="w-6 h-6"></i></div>
+                    <div class="flex-1 min-w-[10rem]">
+                        <p class="text-sm font-bold" style="color:${f.warna}">Faktor ${f.no} Dari 5</p>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">${f.judul}</h2>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5 w-full sm:w-auto">${f.efek.map(e => `<span class="text-xs font-bold px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-600">${e}</span>`).join('')}</div>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-5 sm:gap-6 items-stretch">
+                    <div class="bg-white rounded-[1.75rem] border border-slate-100 shadow-sm p-5 sm:p-6 space-y-4 ${f.ekstra ? '' : 'lg:col-span-2'}">
+                        ${f.judulInti ? `<p class="text-sm font-bold text-slate-800 sub-judul">${f.judulInti}</p>` : ''}
+                        <p class="text-slate-700 leading-relaxed">${f.inti}</p>
+                        <ul class="space-y-2.5">${f.poin.map(p => `<li class="flex gap-2.5 text-sm text-slate-600 leading-relaxed"><i data-lucide="circle-check" class="w-4 h-4 mt-0.5 shrink-0" style="color:${f.warna}"></i><span>${p}</span></li>`).join('')}</ul>
+                    </div>
+                    ${f.ekstra ? `<div class="flex flex-col gap-4 min-w-0 [&>*:first-child]:flex-1 [&>*:first-child]:flex [&>*:first-child]:flex-col [&>*:first-child]:justify-center">${f.ekstra}</div>` : ''}
+                    <div class="lg:col-span-2 bg-white rounded-[1.75rem] border border-slate-100 shadow-sm p-5 sm:p-6">
+                        <p class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2 sub-judul"><i data-lucide="house" class="w-4 h-4" style="color:${f.warna}"></i> Contoh Sehari-Hari</p>
+                        <ul class="grid sm:grid-cols-3 gap-3 sm:gap-4">${f.contoh.map((c, i) => `<li class="flex sm:flex-col items-center sm:items-stretch gap-3 rounded-2xl border border-slate-100 bg-slate-50/70 p-2.5 sm:p-3">
+                            <div class="shrink-0 w-24 h-24 sm:w-full sm:h-auto sm:aspect-[4/3] rounded-xl overflow-hidden" style="background:${f.warna}14">${GAMBAR[f.id][i]}</div>
+                            <p class="contoh-teks text-slate-700 sm:px-1 sm:pb-1">${c}</p></li>`).join('')}</ul>
+                    </div>
+                </div>
+                ${f.buku ? htmlBuku(f) : ''}`;
+            $('wadahFaktor').appendChild(el);
+        }
+
+        FAKTOR.forEach(bangunFaktor);
+
+        /* ====== Tambahan khusus: kubus dipotong (luas permukaan) ====== */
+        function renderKubus() {
+            const n = +$('potongKubus').value, sisi = 2;
+            const luas = 6 * sisi * sisi * n;
+            const ukuran = 64, sel = ukuran / n;
+            $('kubusVisual').innerHTML = `<svg width="${ukuran + 16}" height="${ukuran + 16}" viewBox="-8 -8 ${ukuran + 16} ${ukuran + 16}" aria-hidden="true">
+                ${Array.from({ length: n * n }, (_, k) => { const i = k % n, j = Math.floor(k / n), gap = n > 1 ? 3 : 0; return `<rect x="${i * sel + gap / 2}" y="${j * sel + gap / 2}" width="${sel - gap}" height="${sel - gap}" rx="2" fill="#6ee7b7" stroke="#047857" stroke-width="1.5"/>`; }).join('')}
+            </svg>`;
+            $('teksKubus').innerHTML = `Kubus ${sisi} cm dipotong menjadi <strong>${n ** 3} kubus</strong> kecil. Massa tetap, tetapi luas permukaan total menjadi <strong>${luas} cm²</strong> (${n}× semula).`;
+        }
+        $('potongKubus').addEventListener('input', renderKubus);
+        renderKubus();
+
+        /* ====== Tambahan khusus: sebaran energi (suhu) ====== */
+        const kvSebaran = kanvas('kvSebaranSuhu', 0.5, 140, 220);
+        function gambarSebaran() {
+            const { ctx, W, H } = kvSebaran;
+            if (!W) return;
+            ctx.clearRect(0, 0, W, H);
+            const Ea = 1.5;
+            const g = { x0: 12, y0: 10, x1: W - 10, y1: H - 22 }, eMaks = 5;
+            const X = e => g.x0 + e / eMaks * (g.x1 - g.x0);
+            const kurva = T => { const m = energiRata(T); return e => Math.exp(-e / m) / m; };
+            const fMaks = 1 / energiRata(10);
+            const Y = f => g.y1 - f / fMaks * (g.y1 - g.y0) * 0.95;
+            [[15, '#64748b', 'rgba(100,116,139,.18)'], [55, '#dc2626', 'rgba(249,115,22,.35)']].forEach(([T, w, isi]) => {
+                const f = kurva(T);
+                ctx.beginPath(); ctx.moveTo(X(Ea), g.y1);
+                for (let e = Ea; e <= eMaks; e += 0.05) ctx.lineTo(X(e), Y(f(e)));
+                ctx.lineTo(X(eMaks), g.y1); ctx.closePath(); ctx.fillStyle = isi; ctx.fill();
+                ctx.beginPath();
+                for (let e = 0; e <= eMaks; e += 0.05) e ? ctx.lineTo(X(e), Y(f(e))) : ctx.moveTo(X(e), Y(f(e)));
+                ctx.strokeStyle = w; ctx.lineWidth = 2.5; ctx.stroke();
+                ctx.fillStyle = w; ctx.font = '800 11px "Plus Jakarta Sans"'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+                ctx.fillText(T + ' °C', X(0.25), Y(f(0.25)) - (w === '#dc2626' ? -10 : 10));
+            });
+            ctx.strokeStyle = '#0f172a'; ctx.setLineDash([4, 3]); ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(X(Ea), g.y0); ctx.lineTo(X(Ea), g.y1); ctx.stroke(); ctx.setLineDash([]);
+            ctx.fillStyle = '#0f172a'; ctx.font = '800 11px "Plus Jakarta Sans"'; ctx.textAlign = 'left';
+            ctx.fillText('Ea', X(Ea) + 5, g.y0 + 8);
+            ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(g.x0, g.y0); ctx.lineTo(g.x0, g.y1); ctx.lineTo(g.x1, g.y1); ctx.stroke();
+            ctx.fillStyle = '#64748b'; ctx.font = '600 10px "Plus Jakarta Sans"'; ctx.textAlign = 'right'; ctx.textBaseline = 'top';
+            ctx.fillText('Energi kinetik →', g.x1, g.y1 + 5);
+        }
+        kvSebaran.onUkur = gambarSebaran;
+        gambarSebaran();
+
+        /* =====================================================
+           TABUNG GELEMBUNG (luas permukaan & konsentrasi)
+           ===================================================== */
+        function tabungGelembung(id, daftar) {
+            const kv = kanvas(id, 0.6, 190, 270);
+            const st = { t: 0, tunggu: 0, tb: daftar.map(d => Object.assign({}, d)) };
+            const reset = () => { st.t = 0; st.tunggu = 0; st.tb.forEach(b => { b.sisa = 1; b.gel = []; b.akum = 0; b.tHabis = null; }); };
+            reset();
+            st.tb.forEach(b => b.butir = Array.from({ length: 46 }, () => [Math.random() - .5, Math.random()]));
+            function padat(ctx, b, cx, dasar, lebar) {
+                ctx.fillStyle = '#f8fafc'; ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.2;
+                const k = Math.sqrt(b.sisa);
+                if (b.sisa <= 0) return;
+                if (b.bentuk === 'bongkahan') {
+                    const s = lebar * 0.58 * k; kotakBulat(ctx, cx - s / 2, dasar - s, s, s, 3); ctx.fill(); ctx.stroke();
+                } else if (b.bentuk === 'kepingan') {
+                    const s = lebar * 0.27 * k;
+                    [[-.28, 0], [0, 0], [.28, 0], [-.14, 1], [.14, 1]].forEach(([dx, baris]) => {
+                        kotakBulat(ctx, cx + dx * lebar - s / 2, dasar - s - baris * s * 1.02, s, s, 2); ctx.fill(); ctx.stroke();
+                    });
+                } else {
+                    const n = Math.min(46, Math.ceil(46 * b.sisa));
+                    for (let i = 0; i < n; i++) {
+                        const [u, v] = b.butir[i];
+                        ctx.beginPath(); ctx.arc(cx + u * lebar * .7, dasar - 2.5 - v * lebar * .2, 2.1, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+                    }
+                }
+            }
+            function langkah(dt) {
+                const { ctx, W, H } = kv; if (!W) return;
+                st.t += dt;
+                if (st.tb.every(b => b.sisa <= 0) || st.t > 20) { st.tunggu += dt; if (st.tunggu > 2.4) reset(); }
+                ctx.clearRect(0, 0, W, H);
+                const n = st.tb.length, kolom = W / n, atas = 30, bawah = H - 44;
+                st.tb.forEach((b, i) => {
+                    const cx = kolom * (i + .5), lebar = Math.min(66, kolom * .56), r = lebar / 2, dasar = bawah - r * .45;
+                    const cairAtas = atas + 18;
+                    if (b.sisa > 0 && st.tunggu === 0) {
+                        b.sisa = Math.max(0, b.sisa - dt * b.laju * 0.05);
+                        if (b.sisa === 0) b.tHabis = st.t;
+                        b.akum += dt * b.laju * 10 * (0.35 + 0.65 * Math.sqrt(b.sisa));
+                        while (b.akum >= 1) { b.akum -= 1; b.gel.push({ x: cx + (Math.random() - .5) * lebar * .55, y: dasar - 10, r: 1.3 + Math.random() * 2, v: 28 + Math.random() * 34, f: Math.random() * 6 }); }
+                    }
+                    b.gel.forEach(g => { g.y -= g.v * dt; g.f += dt * 7; g.r += dt * .6; });
+                    b.gel = b.gel.filter(g => g.y > cairAtas + 2);
+                    // bentuk tabung
+                    const jalur = () => { ctx.beginPath(); ctx.moveTo(cx - r, atas); ctx.lineTo(cx - r, bawah - r); ctx.arc(cx, bawah - r, r, Math.PI, 0, true); ctx.lineTo(cx + r, atas); };
+                    ctx.save(); jalur(); ctx.closePath(); ctx.clip();
+                    const gr = ctx.createLinearGradient(0, cairAtas, 0, bawah);
+                    gr.addColorStop(0, b.cair); gr.addColorStop(1, b.cair2 || b.cair);
+                    ctx.fillStyle = gr; ctx.fillRect(cx - r, cairAtas, lebar, bawah - cairAtas);
+                    padat(ctx, b, cx, dasar + r * .3, lebar);
+                    b.gel.forEach(g => {
+                        ctx.beginPath(); ctx.arc(g.x + Math.sin(g.f) * 1.2, g.y, g.r, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.fill(); ctx.strokeStyle = 'rgba(71,85,105,.55)'; ctx.lineWidth = 1; ctx.stroke();
+                    });
+                    // busa di permukaan sebanding dengan banyak gelembung
+                    const busa = Math.min(8, Math.round(b.gel.length / 3));
+                    for (let k = 0; k < busa; k++) { ctx.beginPath(); ctx.arc(cx - r + 5 + (k * 9.3 % (lebar - 8)), cairAtas + 1, 2.2, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.fill(); ctx.strokeStyle = 'rgba(100,116,139,.45)'; ctx.stroke(); }
+                    ctx.restore();
+                    // garis tabung + kilau kaca
+                    jalur(); ctx.strokeStyle = '#64748b'; ctx.lineWidth = 2; ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(cx - r - 4, atas); ctx.lineTo(cx + r + 4, atas); ctx.stroke();
+                    ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2.5;
+                    ctx.beginPath(); ctx.moveTo(cx - r + 5, cairAtas + 8); ctx.lineTo(cx - r + 5, bawah - r - 6); ctx.stroke();
+                    // label
+                    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+                    ctx.fillStyle = '#0f172a'; ctx.font = '800 12px "Plus Jakarta Sans", sans-serif';
+                    ctx.fillText(b.label, cx, bawah + 8);
+                    ctx.fillStyle = '#64748b'; ctx.font = '600 10px "Plus Jakarta Sans", sans-serif';
+                    ctx.fillText(b.sub, cx, bawah + 24);
+                    ctx.font = '700 10px "JetBrains Mono", monospace'; ctx.textBaseline = 'alphabetic';
+                    ctx.fillStyle = b.tHabis !== null ? b.warna : '#94a3b8';
+                    ctx.fillText(b.tHabis !== null ? 'habis ' + fmt(b.tHabis) + ' s' : Math.round((1 - b.sisa) * 100) + '%', cx, atas - 8);
+                });
+            }
+            daftarAnim(kv.c, langkah);
+            kv.onUkur = () => langkah(0);
+        }
+        tabungGelembung('kvTabungLuas', [
+            { label: 'Bongkahan', sub: 'CaCO₃ + HCl', bentuk: 'bongkahan', laju: 0.55, warna: '#059669', cair: 'rgba(209,250,229,.55)', cair2: 'rgba(167,243,208,.6)' },
+            { label: 'Kepingan', sub: 'CaCO₃ + HCl', bentuk: 'kepingan', laju: 1.15, warna: '#059669', cair: 'rgba(209,250,229,.55)', cair2: 'rgba(167,243,208,.6)' },
+            { label: 'Serbuk', sub: 'CaCO₃ + HCl', bentuk: 'serbuk', laju: 2.6, warna: '#059669', cair: 'rgba(209,250,229,.55)', cair2: 'rgba(167,243,208,.6)' }
+        ]);
+        tabungGelembung('kvTabungKons', [
+            { label: 'HCl 1 M', sub: 'kapur tulis', bentuk: 'kepingan', laju: 0.65, warna: '#2563eb', cair: 'rgba(219,234,254,.5)', cair2: 'rgba(191,219,254,.55)' },
+            { label: 'HCl 2 M', sub: 'kapur tulis', bentuk: 'kepingan', laju: 1.3, warna: '#2563eb', cair: 'rgba(191,219,254,.6)', cair2: 'rgba(147,197,253,.6)' },
+            { label: 'HCl 4 M', sub: 'kapur tulis', bentuk: 'kepingan', laju: 2.6, warna: '#2563eb', cair: 'rgba(147,197,253,.6)', cair2: 'rgba(96,165,250,.6)' }
+        ]);
+
+        /* =====================================================
+           SUHU: kalkulator aturan kelipatan & uji tanda silang
+           ===================================================== */
+        function angkaID(x) {
+            if (!isFinite(x)) return '∞';
+            if (Math.abs(x - Math.round(x)) < 1e-9 && Math.abs(x) < 1e12) return Math.round(x).toLocaleString('id-ID');
+            return Number(x.toPrecision(4)).toLocaleString('id-ID', { maximumFractionDigits: 4 });
+        }
+        function hitungKelipatan() {
+            const n = parseFloat($('kn').value), dT = parseFloat($('kdT').value), T1 = parseFloat($('kT1').value), T2 = parseFloat($('kT2').value);
+            if (!(n > 0) || !(dT > 0) || isNaN(T1) || isNaN(T2)) { $('kHasil').innerHTML = 'Isi n dan ΔT dengan angka lebih dari 0, serta T₁ dan T₂.'; return; }
+            const p = (T2 - T1) / dT, kali = Math.pow(n, p);
+            const arah = kali >= 1 ? `<strong>${angkaID(kali)} kali lebih cepat</strong>` : `<strong>${angkaID(1 / kali)} kali lebih lambat</strong>`;
+            $('kHasil').innerHTML = `Pangkat = (T₂ − T₁)/ΔT = (${angkaID(T2)} − ${angkaID(T1)})/${angkaID(dT)} = <strong>${angkaID(p)}</strong><br>
+                Laju pada ${angkaID(T2)} °C = ${angkaID(n)}<sup>${angkaID(p)}</sup> = ${arah} dibanding ${angkaID(T1)} °C.<br>
+                Waktu reaksinya menjadi ${kali >= 1 ? '1/' + angkaID(kali) : angkaID(1 / kali)} kali semula.`;
+        }
+        ['kn', 'kdT', 'kT1', 'kT2'].forEach(id => $(id).addEventListener('input', hitungKelipatan));
+        hitungKelipatan();
+
+        (function ujiSilang() {
+            const kv = kanvas('kvSilang', 0.42, 150, 230);
+            const SUHU = [35, 45, 55], T_AKHIR = [64, 32, 16];
+            const titik = SUHU.map(() => Array.from({ length: 70 }, () => { const a = Math.random() * 6.28, r = Math.sqrt(Math.random()); return [Math.cos(a) * r, Math.sin(a) * r, .6 + Math.random()]; }));
+            let st = { t: 0, jalan: false, catat: [null, null, null] };
+            const tulisTabel = () => SUHU.forEach((_, i) => {
+                $('silangW' + i).textContent = st.catat[i] === null ? '…' : st.catat[i];
+                $('silangV' + i).textContent = st.catat[i] === null ? '…' : fmt(1 / st.catat[i], 3);
+            });
+            function langkah(dt) {
+                const { ctx, W, H } = kv; if (!W) return;
+                if (st.jalan) {
+                    st.t += dt * 4;
+                    SUHU.forEach((_, i) => { if (st.catat[i] === null && st.t >= T_AKHIR[i]) { st.catat[i] = T_AKHIR[i]; tulisTabel(); } });
+                    if (st.catat.every(c => c !== null)) {
+                        st.jalan = false;
+                        $('silangCatatan').innerHTML = '<strong class="text-red-700">Selesai.</strong> Suhu naik 10 °C → waktu menjadi ½ kali dan <i>v</i> = 1/<i>t</i> menjadi 2 kali. Makin tinggi suhu, makin cepat reaksinya.';
+                    }
+                }
+                ctx.clearRect(0, 0, W, H);
+                const kolom = W / 3, R = Math.min(kolom * .36, H * .33);
+                SUHU.forEach((T, i) => {
+                    const cx = kolom * (i + .5), cy = H * .47;
+                    const keruh = st.t === 0 && !st.jalan ? 0 : clamp(st.t / T_AKHIR[i], 0, 1);
+                    // kertas
+                    ctx.fillStyle = '#fefce8'; ctx.strokeStyle = '#e7e5e4'; ctx.lineWidth = 1;
+                    kotakBulat(ctx, cx - R * 1.2, cy - R * 1.2, R * 2.4, R * 2.4, 6); ctx.fill(); ctx.stroke();
+                    // tanda silang
+                    ctx.strokeStyle = `rgba(15,23,42,${1 - Math.pow(keruh, 1.4) * .97})`; ctx.lineWidth = Math.max(3, R * .12); ctx.lineCap = 'round';
+                    const x = R * .5;
+                    ctx.beginPath(); ctx.moveTo(cx - x, cy - x); ctx.lineTo(cx + x, cy + x); ctx.moveTo(cx + x, cy - x); ctx.lineTo(cx - x, cy + x); ctx.stroke();
+                    // larutan (dari atas)
+                    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(253, 230, 138, ${0.08 + keruh * 0.86})`; ctx.fill();
+                    const nTitik = Math.round(keruh * 70);
+                    ctx.fillStyle = 'rgba(234, 179, 8, .75)';
+                    for (let k = 0; k < nTitik; k++) { const [u, v, s] = titik[i][k]; ctx.beginPath(); ctx.arc(cx + u * R * .92, cy + v * R * .92, s * 1.3, 0, Math.PI * 2); ctx.fill(); }
+                    // dinding gelas
+                    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 3; ctx.stroke();
+                    ctx.beginPath(); ctx.arc(cx, cy, R + 4, 0, Math.PI * 2); ctx.strokeStyle = 'rgba(148,163,184,.45)'; ctx.lineWidth = 2; ctx.stroke();
+                    ctx.beginPath(); ctx.arc(cx, cy, R * .8, Math.PI * 1.1, Math.PI * 1.45); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2.5; ctx.stroke();
+                    // label
+                    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+                    ctx.fillStyle = '#dc2626'; ctx.font = '800 12px "Plus Jakarta Sans", sans-serif';
+                    ctx.fillText(T + ' °C', cx, cy + R * 1.2 + 6);
+                    ctx.fillStyle = '#334155'; ctx.font = '700 11px "JetBrains Mono", monospace';
+                    const w = st.catat[i] !== null ? st.catat[i] + ' s ✓' : (st.jalan ? Math.floor(st.t) + ' s' : '0 s');
+                    ctx.fillText(w, cx, cy + R * 1.2 + 21);
+                });
+            }
+            $('silangMulai').addEventListener('click', () => {
+                st = { t: 0.001, jalan: true, catat: [null, null, null] }; tulisTabel();
+                $('silangCatatan').textContent = 'Perhatikan gelas mana yang tanda silangnya lebih dulu hilang…';
+            });
+            $('silangUlang').addEventListener('click', () => {
+                st = { t: 0, jalan: false, catat: [null, null, null] }; tulisTabel(); langkah(0);
+                $('silangCatatan').textContent = 'Waktu ilustratif, mengikuti aturan laju 2× setiap naik 10 °C. Animasi dipercepat 4×.';
+            });
+            daftarAnim(kv.c, langkah);
+            kv.onUkur = () => langkah(0);
+        })();
+
+        /* =====================================================
+           KATALIS: tab jenis, mekanisme, heterogen, autokatalis
+           ===================================================== */
+        document.querySelectorAll('#tabJenis .tab-jenis').forEach(btn => btn.addEventListener('click', () => {
+            document.querySelectorAll('#tabJenis .tab-jenis').forEach(b => { b.classList.toggle('aktif', b === btn); b.setAttribute('aria-selected', b === btn); });
+            document.querySelectorAll('.panel-jenis').forEach(p => {
+                const on = p.dataset.panel === btn.dataset.jenis;
+                p.classList.toggle('hidden', !on);
+                if (on) { p.classList.remove('masuk'); void p.offsetWidth; p.classList.add('masuk'); }
+            });
+            if (btn.dataset.jenis === 'auto') autoKatalis.ulang();
+        }));
+
+        (function mekanismeSO3() {
+            const baris = [...document.querySelectorAll('#mekaSO3 .langkah-meka')];
+            let i = 0, waktu = 0;
+            const nyalakan = () => baris.forEach((b, k) => b.classList.toggle('nyala', k === i));
+            nyalakan();
+            daftarAnim($('mekaSO3'), dt => { waktu += dt; if (waktu > 1.8) { waktu = 0; i = (i + 1) % baris.length; nyalakan(); } });
+        })();
+
+        (function heterogen() {
+            const TEKS = [
+                '<strong>1.</strong> H₂ dan C₂H₄ teradsorpsi pada sisi aktif permukaan Ni. Ikatan H–H melemah dan terbentuk ikatan H–Ni.',
+                '<strong>2.</strong> Ikatan H–H putus. Atom H bergerak di permukaan logam menuju molekul C₂H₄.',
+                '<strong>3.</strong> C₂H₄ berikatan dengan satu atom H dari permukaan Ni, membentuk Ni–C₂H₅.',
+                '<strong>4.</strong> Atom H kedua bergabung membentuk C₂H₆ (etana), yang lalu lepas dari permukaan (deadsorpsi).'
+            ];
+            const atom = (x, y, r, isi, tepi, teks) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${isi}" stroke="${tepi}" stroke-width="1.5"/>${teks ? `<text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="${r > 8 ? 10 : 8}" font-weight="800" fill="${isi === '#334155' ? '#fff' : '#334155'}">${teks}</text>` : ''}`;
+            const ikat = (x1, y1, x2, y2, putus) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#475569" stroke-width="2.5" ${putus ? 'stroke-dasharray="3 3"' : ''}/>`;
+            const H = (x, y) => atom(x, y, 6, '#ffffff', '#64748b', 'H');
+            const C = (x, y) => atom(x, y, 10, '#334155', '#0f172a', 'C');
+            function etil(cx, cy, tambahH) {
+                // tambahH: 0 = C2H4, 1 = C2H5 (H di bawah kiri), 2 = C2H6
+                let s = ikat(cx - 12, cy - 2, cx + 12, cy - 2) + (tambahH === 0 ? ikat(cx - 12, cy + 3, cx + 12, cy + 3) : '');
+                const hs = [[cx - 24, cy - 16], [cx + 24, cy - 16], [cx - 26, cy + 12], [cx + 26, cy + 12]];
+                hs.forEach(([x, y]) => s += ikat(x < cx ? cx - 12 : cx + 12, cy, x, y));
+                if (tambahH >= 1) s += ikat(cx - 12, cy, cx - 12, cy + 22);
+                if (tambahH >= 2) s += ikat(cx + 12, cy, cx + 12, cy + 22);
+                s += C(cx - 12, cy) + C(cx + 12, cy);
+                hs.forEach(([x, y]) => s += H(x, y));
+                if (tambahH >= 1) s += H(cx - 12, cy + 24);
+                if (tambahH >= 2) s += H(cx + 12, cy + 24);
+                return s;
+            }
+            function svg(langkah) {
+                let s = `<svg viewBox="0 0 300 204" class="w-full h-auto masuk" role="img" aria-label="Tahap ${langkah + 1} hidrogenasi etena pada nikel">`;
+                for (let i = 0; i < 12; i++) s += atom(15 + i * 25, 172, 12, '#cbd5e1', '#94a3b8', i % 3 === 1 ? 'Ni' : '');
+                s += `<text x="150" y="200" text-anchor="middle" font-size="9.5" font-weight="700" fill="#64748b">permukaan logam nikel (Ni)</text>`;
+                if (langkah === 0) {
+                    s += ikat(70, 140, 92, 140, true) + H(70, 140) + H(92, 140) + ikat(70, 146, 65, 160, true) + ikat(92, 146, 90, 160, true);
+                    s += etil(190, 128, 0);
+                } else if (langkah === 1) {
+                    s += ikat(55, 150, 52, 160, true) + H(55, 146) + ikat(125, 150, 125, 160, true) + H(125, 146);
+                    s += `<path d="M134 140 Q 150 128 160 140" fill="none" stroke="#7c3aed" stroke-width="2" marker-end="url(#panah)"/>`;
+                    s += etil(195, 120, 0);
+                } else if (langkah === 2) {
+                    s += ikat(70, 150, 70, 160, true) + H(70, 146);
+                    s += etil(172, 112, 1) + ikat(160, 136, 160, 160, true);
+                } else {
+                    s += etil(150, 50, 2);
+                    s += `<path d="M150 118 L 150 92" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#panah)"/>`;
+                    s += `<text x="150" y="132" text-anchor="middle" font-size="10" font-weight="800" fill="#7c3aed">C₂H₆ lepas</text>`;
+                }
+                s += `<defs><marker id="panah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#7c3aed"/></marker></defs></svg>`;
+                return s;
+            }
+            let i = 0, waktu = 0;
+            const tampil = () => {
+                $('heteroSvg').innerHTML = svg(i);
+                $('heteroTeks').innerHTML = TEKS[i];
+                $('heteroTitik').innerHTML = TEKS.map((_, k) => `<button type="button" data-k="${k}" class="h-7 px-2.5 rounded-full text-xs font-extrabold ${k === i ? 'bg-violet-600 text-white' : 'bg-violet-50 text-violet-700 border border-violet-200'}" aria-label="Tahap ${k + 1}">${k + 1}</button>`).join('');
+                $('heteroTitik').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { i = +b.dataset.k; waktu = -3; tampil(); }));
+            };
+            tampil();
+            daftarAnim($('heteroSvg'), dt => { waktu += dt; if (waktu > 2.8) { waktu = 0; i = (i + 1) % 4; tampil(); } });
+        })();
+
+        const autoKatalis = (function () {
+            const kv = kanvas('kvAuto', 0.62, 210, 290);
+            const SKALA = 5.5 / 8.4; // detik simulasi → menit (ilustratif)
+            let st;
+            const ulang = () => { st = { t: 0, g: [{ x: 0, c0: 0, nama: 'Tanpa MnSO₄', tSelesai: null, riw: [[0, 1]] }, { x: 0, c0: 0.5, nama: '+ MnSO₄ sejak awal', tSelesai: null, riw: [[0, 1]] }] }; };
+            ulang();
+            function langkah(dt) {
+                const { ctx, W, H } = kv; if (!W) return;
+                const d = dt * 1.3;
+                if (st.t < 10) {
+                    st.t += d;
+                    st.g.forEach(g => {
+                        for (let k = 0; k < 10; k++) g.x = Math.min(1, g.x + (0.002 + (g.x + g.c0)) * (1 - g.x) * d / 10);
+                        if (g.tSelesai === null && g.x >= 0.9) g.tSelesai = st.t;
+                        const akhir = g.riw[g.riw.length - 1];
+                        if (st.t - akhir[0] > 0.1) g.riw.push([st.t, 1 - g.x]);
+                    });
+                } else if (st.t < 12.5) st.t += d; else ulang();
+                ctx.clearRect(0, 0, W, H);
+                const atasG = H * .5;
+                // dua gelas
+                st.g.forEach((g, i) => {
+                    const cx = W * (i ? .72 : .28), lb = Math.min(W * .26, 96), tg = atasG - 46, x0 = cx - lb / 2, y0 = 22;
+                    const ungu = 1 - g.x;
+                    ctx.fillStyle = `rgba(126, 34, 206, ${0.06 + ungu * 0.82})`;
+                    kotakBulat(ctx, x0, y0 + tg * .25, lb, tg * .75, 6); ctx.fill();
+                    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+                    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x0, y0 + tg - 6); ctx.quadraticCurveTo(x0, y0 + tg, x0 + 6, y0 + tg); ctx.lineTo(x0 + lb - 6, y0 + tg); ctx.quadraticCurveTo(x0 + lb, y0 + tg, x0 + lb, y0 + tg - 6); ctx.lineTo(x0 + lb, y0); ctx.stroke();
+                    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+                    ctx.fillStyle = '#334155'; ctx.font = '800 11px "Plus Jakarta Sans", sans-serif'; ctx.fillText(g.nama, cx, y0 + tg + 5);
+                    ctx.font = '700 10px "JetBrains Mono", monospace'; ctx.fillStyle = i ? '#7c3aed' : '#64748b';
+                    ctx.fillText(g.tSelesai !== null ? '±' + fmt(g.tSelesai * SKALA) + ' menit ✓' : fmt(Math.min(st.t, 10) * SKALA) + ' menit', cx, y0 + tg + 19);
+                });
+                // grafik intensitas warna
+                const gx0 = 30, gx1 = W - 10, gy0 = atasG + 22, gy1 = H - 20;
+                ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1.5;
+                ctx.beginPath(); ctx.moveTo(gx0, gy0); ctx.lineTo(gx0, gy1); ctx.lineTo(gx1, gy1); ctx.stroke();
+                ctx.fillStyle = '#64748b'; ctx.font = '600 9.5px "Plus Jakarta Sans", sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+                ctx.fillText('warna ungu', gx0 + 4, gy0 - 2);
+                ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText('waktu →', gx1, gy1 + 3);
+                const X = t => gx0 + t / 10 * (gx1 - gx0), Y = v => gy1 - v * (gy1 - gy0 - 4);
+                st.g.forEach((g, i) => {
+                    ctx.beginPath(); g.riw.forEach(([t, v], k) => k ? ctx.lineTo(X(t), Y(v)) : ctx.moveTo(X(t), Y(v)));
+                    ctx.strokeStyle = i ? '#7c3aed' : '#94a3b8'; ctx.lineWidth = 3; ctx.lineJoin = 'round'; ctx.stroke();
+                });
+            }
+            $('autoUlang').addEventListener('click', ulang);
+            daftarAnim(kv.c, langkah);
+            kv.onUkur = () => langkah(0);
+            return { ulang };
+        })();
+
+        /* =====================================================
+           PENGADUKAN: gula batu dalam teh
+           Tanpa diaduk, molekul gula yang larut hanya berdifusi pelan
+           sehingga menumpuk (lapisan pekat) di sekitar gula dan pelarutan melambat.
+           Diaduk, arus putar menyapu lapisan itu sehingga pelarutan tetap cepat.
+           ===================================================== */
+        (function tehGula() {
+            const kv = kanvas('kvTeh', 0.56, 170, () => Math.min(330, window.innerHeight * 0.38));
+            const DSR = 92, PRM = 20, S0 = 24, KAPASITAS = 80, MAKS_T = 40;
+            const buat = aduk => ({ aduk, m: 1, p: [], akum: 0, sudut: 0, lokal: 0, tHabis: null });
+            let st = { t: 0, jalan: false, A: buat(false), B: buat(true) }, jeda = 0;
+            const sisi = g => S0 * Math.sqrt(g.m);
+            function proses(g, dt) {
+                const h = sisi(g) / 2, cx = 50, cy = DSR - h;
+                if (g.aduk) g.sudut += dt * 5;
+                if (!st.jalan) return;
+                // kepekatan di sekitar gula
+                const R = h + 10;
+                let n = 0; for (const q of g.p) if ((q.x - cx) ** 2 + (q.y - cy) ** 2 < R * R) n++;
+                g.lokal = Math.min(1, n / KAPASITAS);
+                if (g.m > 0) {
+                    g.akum += 60 * Math.max(.15, h * 2 / S0) * Math.max(0, 1 - g.lokal) * dt;
+                    while (g.akum >= 1 && g.m > 0) {
+                        g.akum -= 1; g.m = Math.max(0, g.m - 1 / 240);
+                        const u = Math.random(); let x, y;
+                        if (u < .5) { x = cx - h + Math.random() * 2 * h; y = DSR - 2 * h - 1; }
+                        else if (u < .75) { x = cx - h - 1; y = DSR - Math.random() * 2 * h; }
+                        else { x = cx + h + 1; y = DSR - Math.random() * 2 * h; }
+                        g.p.push({ x, y });
+                    }
+                    if (g.m <= 0.002) { g.m = 0; if (g.tHabis === null) g.tHabis = st.t; }
+                }
+                const D = g.aduk ? 140 : 6, sd = Math.sqrt(2 * D * dt), h2 = sisi(g) / 2;
+                for (const q of g.p) {
+                    let vx = 0, vy = 0;
+                    if (g.aduk) { const dx = q.x - 50, dy = q.y - 58, r = Math.hypot(dx, dy) || 1, w = 60 * Math.min(1, r / 22); vx = -dy / r * w; vy = dx / r * w * .6; }
+                    q.x = clamp(q.x + vx * dt + gauss() * sd, 7, 93);
+                    q.y = clamp(q.y + vy * dt + gauss() * sd, PRM + 3, DSR - 1);
+                    if (h2 > 0 && q.x > 50 - h2 && q.x < 50 + h2 && q.y > DSR - 2 * h2) {
+                        const kiri = q.x - (50 - h2), kanan = 50 + h2 - q.x, atas = q.y - (DSR - 2 * h2);
+                        if (atas < kiri && atas < kanan) q.y = DSR - 2 * h2 - .5; else if (kiri < kanan) q.x = 50 - h2 - .5; else q.x = 50 + h2 + .5;
+                    }
+                }
+            }
+            function gambarGelas(ctx, g, ox, s) {
+                const X = x => ox + x * s, Y = y => y * s + 4;
+                const dip = g.aduk ? 5 : 0;
+                // teh
+                ctx.beginPath(); ctx.moveTo(X(6), Y(PRM - dip * .35));
+                for (let x = 6; x <= 94; x += 2) { const u = (x - 50) / 44; ctx.lineTo(X(x), Y(PRM - dip * .35 + dip * (1 - u * u))); }
+                ctx.lineTo(X(93), Y(DSR)); ctx.lineTo(X(7), Y(DSR)); ctx.closePath();
+                const gr = ctx.createLinearGradient(0, Y(PRM), 0, Y(DSR));
+                gr.addColorStop(0, 'rgba(234, 179, 8, .14)'); gr.addColorStop(1, 'rgba(180, 83, 9, .26)');
+                ctx.fillStyle = gr; ctx.fill();
+                // arus putar
+                if (g.aduk) {
+                    ctx.strokeStyle = 'rgba(8, 145, 178, .35)'; ctx.lineWidth = Math.max(1, s * .45);
+                    for (let k = 0; k < 3; k++) {
+                        const rx = 14 + k * 11, ry = rx * .28, a0 = g.sudut * (1.15 - k * .18) + k * 2.1;
+                        ctx.beginPath(); ctx.ellipse(X(50), Y(42 + k * 15), rx * s, ry * s, 0, a0, a0 + Math.PI * 1.2); ctx.stroke();
+                    }
+                }
+                // lapisan pekat di sekitar gula
+                const h = sisi(g) / 2;
+                if (g.lokal > .05) {
+                    const rg = ctx.createRadialGradient(X(50), Y(DSR - h), 0, X(50), Y(DSR - h), (h + 16) * s);
+                    rg.addColorStop(0, `rgba(245, 158, 11, ${.45 * g.lokal})`); rg.addColorStop(1, 'rgba(245, 158, 11, 0)');
+                    ctx.fillStyle = rg; ctx.fillRect(X(6), Y(PRM), 88 * s, (DSR - PRM) * s);
+                }
+                // molekul gula terlarut
+                ctx.fillStyle = 'rgba(217, 119, 6, .8)';
+                const r = Math.max(1.1, s * .75);
+                g.p.forEach(q => { ctx.beginPath(); ctx.arc(X(q.x), Y(q.y), r, 0, Math.PI * 2); ctx.fill(); });
+                // gula batu
+                if (h > .4) {
+                    ctx.fillStyle = '#ffffff'; ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = Math.max(1, s * .4);
+                    kotakBulat(ctx, X(50 - h), Y(DSR - 2 * h), 2 * h * s, 2 * h * s, Math.max(1, s * 1.2)); ctx.fill(); ctx.stroke();
+                    ctx.strokeStyle = 'rgba(203, 213, 225, .8)'; ctx.lineWidth = 1;
+                    ctx.beginPath(); ctx.moveTo(X(50 - h * .5), Y(DSR - 2 * h)); ctx.lineTo(X(50 - h * .5), Y(DSR)); ctx.moveTo(X(50 - h), Y(DSR - h)); ctx.lineTo(X(50 + h), Y(DSR - h)); ctx.stroke();
+                }
+                // sendok pengaduk
+                if (g.aduk) {
+                    const ujung = 50 + Math.cos(g.sudut) * 22, dalam = 68 + Math.sin(g.sudut) * 4;
+                    ctx.strokeStyle = 'rgba(100, 116, 139, .9)'; ctx.lineWidth = Math.max(3, s * 1.6); ctx.lineCap = 'round';
+                    ctx.beginPath(); ctx.moveTo(X(50 + Math.cos(g.sudut) * 5), Y(2)); ctx.lineTo(X(ujung), Y(dalam)); ctx.stroke();
+                    ctx.fillStyle = 'rgba(148, 163, 184, .95)';
+                    ctx.beginPath(); ctx.ellipse(X(ujung), Y(dalam + 2), s * 3.2, s * 4.6, Math.cos(g.sudut) * .3, 0, Math.PI * 2); ctx.fill();
+                }
+                // gelas
+                ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = Math.max(2, s * 1); ctx.lineCap = 'round';
+                ctx.beginPath(); ctx.moveTo(X(5), Y(8)); ctx.lineTo(X(7), Y(DSR)); ctx.lineTo(X(93), Y(DSR)); ctx.lineTo(X(95), Y(8)); ctx.stroke();
+                ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineWidth = Math.max(1, s * .5);
+                ctx.beginPath(); ctx.moveTo(X(10), Y(28)); ctx.lineTo(X(11), Y(78)); ctx.stroke();
+                // keterangan lapisan pekat
+                if (!g.aduk && g.lokal > .55 && h > .4) {
+                    ctx.fillStyle = '#b45309'; ctx.font = `800 ${Math.max(9, Math.round(s * 3.6))}px "Plus Jakarta Sans", sans-serif`;
+                    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+                    ctx.fillText('lapisan pekat', X(50), Y(DSR - 2 * h - 14));
+                    ctx.strokeStyle = '#b45309'; ctx.lineWidth = 1.5;
+                    ctx.beginPath(); ctx.moveTo(X(50), Y(DSR - 2 * h - 13)); ctx.lineTo(X(50), Y(DSR - 2 * h - 5)); ctx.stroke();
+                }
+                // bilah gula larut
+                ctx.fillStyle = '#e2e8f0'; ctx.fillRect(X(8), Y(4), 84 * s, Math.max(3, s * 1.6));
+                ctx.fillStyle = g.aduk ? '#0891b2' : '#64748b'; ctx.fillRect(X(8), Y(4), 84 * s * (1 - g.m), Math.max(3, s * 1.6));
+            }
+            function langkah(dt) {
+                const { ctx, W, H } = kv; if (!W) return;
+                if (st.jalan) st.t += dt;
+                proses(st.A, dt); proses(st.B, dt);
+                if (st.jalan && (st.t >= MAKS_T || (st.A.m === 0 && st.B.m === 0) || (st.B.tHabis !== null && st.t >= st.B.tHabis + 4))) {
+                    st.jalan = false;
+                    const pA = Math.round((1 - st.A.m) * 100), pB = Math.round((1 - st.B.m) * 100);
+                    $('tehHasil').innerHTML = `<i data-lucide="trophy" class="w-4 h-4 inline -mt-0.5 text-amber-500"></i> <strong class="text-cyan-700">Gelas B lebih cepat.</strong> ${st.B.tHabis !== null ? `Gula di gelas B habis larut dalam <strong>${fmt(st.B.tHabis)} s</strong>` : `Gula di gelas B larut ${pB}%`}, sedangkan gelas A baru larut <strong>${pA}%</strong>${st.A.tHabis !== null ? ` (habis ${fmt(st.A.tHabis)} s)` : ` dalam ${fmt(st.t)} s`}. Di gelas A, lapisan pekat di sekitar gula menghambat pelarutan.`;
+                    ikon();
+                }
+                jeda += dt;
+                if (jeda > .25) {
+                    jeda = 0;
+                    ['A', 'B'].forEach(n => { $('teh' + n + 'larut').textContent = Math.round((1 - st[n].m) * 100) + '%'; $('teh' + n + 'pekat').textContent = Math.round(st[n].lokal * 100) + '%'; });
+                }
+                ctx.clearRect(0, 0, W, H);
+                const lebar = W / 2, s = Math.min(lebar - 8, H - 8) / 100;
+                gambarGelas(ctx, st.A, (lebar - 100 * s) / 2, s);
+                gambarGelas(ctx, st.B, lebar + (lebar - 100 * s) / 2, s);
+                ctx.strokeStyle = '#eef2f7'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(lebar, 10); ctx.lineTo(lebar, H - 10); ctx.stroke();
+            }
+            $('tehMulai').addEventListener('click', () => {
+                st = { t: 0, jalan: true, A: buat(false), B: buat(true) };
+                $('tehHasil').innerHTML = '<span class="text-slate-500">Gula mulai larut… bandingkan awan oranye di sekitar kedua gula batu.</span>';
+            });
+            $('tehUlang').addEventListener('click', () => {
+                st = { t: 0, jalan: false, A: buat(false), B: buat(true) }; langkah(0);
+                $('tehHasil').innerHTML = 'Tekan <strong>Masukkan gula</strong>. Perhatikan awan oranye pekat yang menumpuk di sekitar gula pada gelas A.';
+            });
+            daftarAnim(kv.c, langkah);
+            kv.onUkur = () => langkah(0);
+        })();
+
+        /* =====================================================
+           RINGKASAN & KUIS
+           ===================================================== */
+        const RINGKAS = [
+            ['Luas permukaan', 'Zat padat diperkecil (serbuk)', 'Bidang sentuh bertambah → tumbukan lebih sering', 'Naik'],
+            ['Konsentrasi', 'Konsentrasi pereaksi dinaikkan', 'Partikel lebih rapat → tumbukan lebih sering', 'Naik'],
+            ['Suhu', 'Suhu dinaikkan', 'Partikel lebih cepat dan lebih banyak yang energinya ≥ Ea', 'Naik'],
+            ['Katalis', 'Katalis ditambahkan', 'Ea lebih rendah → lebih banyak tumbukan efektif', 'Naik'],
+            ['Pengadukan', 'Campuran diaduk', 'Partikel segar terus dibawa ke permukaan zat padat', 'Naik']
+        ];
+        $('tabelRingkasan').innerHTML = RINGKAS.map((r, i) => `<tr>
+            <td data-l="Faktor" class="px-5 py-3 font-bold" style="color:${FAKTOR[i].warna}"><a href="#${FAKTOR[i].id}" class="hover:underline">${i + 1}. ${r[0]}</a></td>
+            <td data-l="Yang Diubah" class="px-5 py-3 text-slate-600">${r[1]}</td>
+            <td data-l="Pengaruh Pada Tumbukan" class="px-5 py-3 text-slate-600">${r[2]}</td>
+            <td data-l="Laju" class="px-5 py-3"><span class="inline-flex items-center gap-1 text-emerald-700 font-bold"><i data-lucide="trending-up" class="w-4 h-4"></i>${r[3]}</span></td>
+        </tr>`).join('');
+
+        const SOAL = [
+            { t: 'Mengapa serbuk CaCO₃ bereaksi lebih cepat dengan HCl daripada bongkahan CaCO₃ bermassa sama?', o: ['Massa serbuk lebih besar', 'Luas permukaan bidang sentuhnya lebih besar', 'Energi aktivasinya lebih tinggi', 'Suhunya lebih tinggi'], b: 1, p: 'Serbuk memiliki lebih banyak permukaan yang bersentuhan dengan HCl, sehingga tumbukan lebih sering.' },
+            { t: 'Menaikkan konsentrasi larutan mempercepat reaksi karena …', o: ['Energi kinetik partikel bertambah', 'Energi aktivasi turun', 'Jumlah partikel per volume bertambah sehingga tumbukan lebih sering', 'Luas permukaan zat padat bertambah'], b: 2, p: 'Partikel lebih rapat sehingga frekuensi tumbukan meningkat.' },
+            { t: 'Kenaikan suhu mempercepat reaksi terutama karena …', o: ['Lebih banyak partikel yang energinya ≥ Ea', 'Ea menjadi lebih kecil', 'Jumlah partikel bertambah', 'Katalis terbentuk'], b: 0, p: 'Suhu tidak mengubah Ea, tetapi menambah porsi partikel berenergi tinggi.' },
+            { t: 'Setiap kenaikan suhu 10 °C, laju suatu reaksi menjadi 2 kali. Jika suhu dinaikkan dari 20 °C menjadi 80 °C, laju reaksinya menjadi …', o: ['6 kali', '12 kali', '32 kali', '64 kali'], b: 3, p: 'Kelipatan = 2<sup>(80 − 20)/10</sup> = 2<sup>6</sup> = 64 kali (Contoh Soal 6.4).' },
+            { t: 'Pernyataan yang benar tentang katalis adalah …', o: ['Katalis habis bereaksi', 'Katalis menaikkan suhu', 'Katalis menurunkan energi aktivasi melalui jalur reaksi lain', 'Katalis menambah konsentrasi'], b: 2, p: 'Katalis menyediakan jalur dengan Ea lebih rendah dan diperoleh kembali di akhir reaksi.' },
+            { t: 'Reaksi KMnO₄ dengan asam oksalat makin lama makin cepat. Hal ini terjadi karena …', o: ['Suhu larutan turun', 'Konsentrasi KMnO₄ bertambah', 'MnSO₄ hasil reaksi bertindak sebagai katalis (autokatalis)', 'Energi aktivasinya naik'], b: 2, p: 'MnSO₄ yang terbentuk mempercepat reaksinya sendiri, sehingga reaksi makin cepat seiring waktu.' },
+            { t: 'Gula lebih cepat larut di teh yang diaduk karena …', o: ['Pengadukan menaikkan Ea', 'Pengadukan membawa partikel segar ke permukaan gula secara terus-menerus', 'Pengadukan mengurangi jumlah gula', 'Pengadukan menurunkan suhu'], b: 1, p: 'Pengadukan meratakan campuran sehingga tumbukan dengan permukaan gula lebih sering.' }
+        ];
+        let kuis = { i: 0, skor: 0, jawab: [] };
+        function renderKuis() {
+            $('kuisProgres').innerHTML = SOAL.map((_, i) => `<span class="h-2 flex-1 rounded-full ${kuis.jawab[i] === true ? 'bg-emerald-500' : kuis.jawab[i] === false ? 'bg-rose-400' : i === kuis.i ? 'bg-blue-400' : 'bg-slate-200'}"></span>`).join('');
+            $('skorKuis').textContent = kuis.skor;
+            if (kuis.i >= SOAL.length) {
+                $('kuisWadah').innerHTML = `<div class="text-center py-4 space-y-3">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-100 text-amber-600 grid place-items-center"><i data-lucide="trophy" class="w-8 h-8"></i></div>
+                    <p class="text-2xl font-extrabold text-slate-900">${kuis.skor} / ${SOAL.length}</p>
+                    <p class="text-slate-600">${kuis.skor === SOAL.length ? 'Sempurna! Kamu memahami kelima faktor.' : 'Coba baca ulang faktor yang keliru, lalu kerjakan lagi.'}</p>
+                    <button type="button" id="ulangKuis" class="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold">Ulangi</button>
+                </div>`;
+                ikon();
+                $('ulangKuis').addEventListener('click', () => { kuis = { i: 0, skor: 0, jawab: [] }; renderKuis(); });
+                return;
+            }
+            const s = SOAL[kuis.i];
+            $('kuisWadah').innerHTML = `<p class="text-sm font-bold text-blue-600 mb-1">Soal ${kuis.i + 1} dari ${SOAL.length}</p>
+                <p class="text-lg font-bold text-slate-900 mb-4 leading-snug">${s.t}</p>
+                <div class="space-y-2" id="opsiKuis">${s.o.map((o, i) => `<button type="button" class="opsi" data-i="${i}"><span class="inline-grid place-items-center w-6 h-6 rounded-md bg-slate-100 text-xs font-extrabold mr-2">${'ABCD'[i]}</span>${o}</button>`).join('')}</div>
+                <div id="bahasKuis"></div>`;
+            $('opsiKuis').querySelectorAll('.opsi').forEach(btn => btn.addEventListener('click', () => {
+                const i = +btn.dataset.i, ok = i === s.b;
+                kuis.jawab[kuis.i] = ok; if (ok) kuis.skor++;
+                $('opsiKuis').querySelectorAll('.opsi').forEach(x => { x.disabled = true; if (+x.dataset.i === s.b) x.classList.add('benar'); });
+                if (!ok) btn.classList.add('salah', 'goyang');
+                $('bahasKuis').innerHTML = `<div class="mt-4 rounded-2xl p-4 ${ok ? 'bg-emerald-50 border border-emerald-100' : 'bg-amber-50 border border-amber-100'}">
+                    <p class="font-bold ${ok ? 'text-emerald-700' : 'text-amber-800'}">${ok ? 'Tepat!' : 'Belum tepat.'}</p>
+                    <p class="text-sm text-slate-700 mt-1">${s.p}</p></div>
+                    <div class="text-right mt-3"><button type="button" id="lanjutKuis" class="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold">${kuis.i === SOAL.length - 1 ? 'Lihat hasil' : 'Soal berikutnya'}</button></div>`;
+                $('skorKuis').textContent = kuis.skor;
+                $('lanjutKuis').addEventListener('click', () => { kuis.i++; renderKuis(); });
+            }));
+        }
+        renderKuis();
+        $('jmlSoal').textContent = SOAL.length;
+
+        /* =====================================================
+           PETA FAKTOR (kartu di bawah hero)
+           ===================================================== */
+        $('petaFaktor').innerHTML = FAKTOR.map(f => `<a href="#${f.id}" class="kartu-faktor" style="--warna:${f.warna}">
+                <span class="ik"><i data-lucide="${f.ikon}" class="w-5 h-5"></i></span>
+                <span class="text-[11px] font-bold" style="color:${f.warna}">Faktor ${f.no}</span>
+                <span class="font-extrabold text-slate-900 leading-tight">${f.judul}</span>
+                <span class="text-xs text-slate-500 leading-snug">${f.efek.join(', ')}</span>
+            </a>`).join('') + `<a href="#ringkasan" class="kartu-faktor" style="--warna:#0f172a">
+                <span class="ik"><i data-lucide="list-checks" class="w-5 h-5"></i></span>
+                <span class="text-[11px] font-bold text-slate-500">Penutup</span>
+                <span class="font-extrabold text-slate-900 leading-tight">Kesimpulan Dan Kuis</span>
+                <span class="text-xs text-slate-500 leading-snug">${SOAL.length} soal cek pemahaman</span>
+            </a>`;
+
+
+        /* =====================================================
+           TAB AKTIF, VISIBILITAS & LOOP ANIMASI
+           ===================================================== */
+        const idTab = ['luas', 'konsentrasi', 'suhu', 'katalis', 'aduk', 'ringkasan'];
+        function perbaruiTab() {
+            let aktif = null;
+            idTab.forEach(id => { if ($(id).getBoundingClientRect().top < window.innerHeight * 0.45) aktif = id; });
+            document.querySelectorAll('.tab-faktor').forEach(t => {
+                const on = t.dataset.id === aktif;
+                if (on && !t.classList.contains('aktif')) {
+                    const nav = $('tabFaktor');
+                    nav.scrollTo({ left: t.offsetLeft - nav.clientWidth / 2 + t.offsetWidth / 2, behavior: kurangiGerak ? 'auto' : 'smooth' });
+                }
+                t.classList.toggle('aktif', on);
+            });
+        }
+        window.addEventListener('scroll', perbaruiTab, { passive: true });
+
+        let lalu = performance.now();
+        function loop(now) {
+            const dt = clamp((now - lalu) / 1000, 0, 0.05);
+            lalu = now;
+            if (!document.hidden) {
+                ANIM.forEach(a => { if (a.terlihat) a.fn(dt, now); });
+            }
+            requestAnimationFrame(loop);
+        }
+
+        ikon();
+        perbaruiTab();
+        requestAnimationFrame(loop);
+    </script>
+</body>
+
+</html>

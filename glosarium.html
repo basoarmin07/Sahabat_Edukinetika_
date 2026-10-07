@@ -1,0 +1,3052 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Kamus Kinetika · Glosarium Laju Reaksi · EduKinetika</title>
+    <meta name="description"
+        content="Glosarium interaktif istilah laju reaksi lengkap dengan visual: teori tumbukan, energi aktivasi, faktor laju reaksi, orde reaksi, alat dan bahan praktikum.">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0f2a44;
+            --ink-2: #3d5670;
+            --mute: #6b7f94;
+            --line: #dbe4ee;
+            --paper: #f7fafc;
+            --sky: #0ea5e9;
+            --sky-d: #0369a1;
+            --amber: #f59e0b;
+            --rose: #e11d48;
+            --shadow: 0 1px 2px rgba(15, 42, 68, .05), 0 10px 28px -14px rgba(15, 42, 68, .22);
+            --shadow-lg: 0 2px 4px rgba(15, 42, 68, .05), 0 24px 48px -22px rgba(15, 42, 68, .32);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            color: var(--ink);
+            background: var(--paper);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        button {
+            font: inherit;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--amber);
+            outline-offset: 2px;
+            border-radius: 8px;
+        }
+
+        mark {
+            background: #fde68a;
+            color: inherit;
+            border-radius: 3px;
+            padding: 0 1px;
+        }
+
+        .wrap {
+            max-width: 76rem;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ---------- Navbar ---------- */
+        .top {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            background: rgba(255, 255, 255, .92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--line);
+            padding-top: env(safe-area-inset-top, 0px);
+        }
+
+        .top .wrap {
+            height: 62px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            min-width: 0;
+        }
+
+        .brand-ic {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--ink);
+            color: #fbbf24;
+            display: grid;
+            place-items: center;
+            flex: none;
+        }
+
+        .brand b {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -.02em;
+        }
+
+        .brand span {
+            color: var(--mute);
+            font-weight: 600;
+            font-size: 14px;
+            padding-left: 10px;
+            border-left: 1px solid var(--line);
+            white-space: nowrap;
+        }
+
+        .btn-dash {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 40px;
+            padding: 0 16px;
+            border-radius: 12px;
+            background: var(--ink);
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            flex: none;
+        }
+
+        .btn-dash:hover {
+            background: #16395c;
+        }
+
+        /* ---------- Hero pencarian ---------- */
+        .hero {
+            position: relative;
+            background: #fff;
+            border-bottom: 1px solid var(--line);
+            overflow-x: clip;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(14, 165, 233, .07) 1px, transparent 1px), linear-gradient(90deg, rgba(14, 165, 233, .07) 1px, transparent 1px);
+            background-size: 28px 28px;
+            -webkit-mask-image: radial-gradient(ellipse 60% 90% at 50% 0%, #000 30%, transparent 80%);
+            mask-image: radial-gradient(ellipse 60% 90% at 50% 0%, #000 30%, transparent 80%);
+            pointer-events: none;
+        }
+
+        .hero .wrap {
+            position: relative;
+            padding-top: 44px;
+            padding-bottom: 30px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            line-height: 1.05;
+            letter-spacing: -.035em;
+            margin: 0 0 10px;
+            font-weight: 800;
+        }
+
+        .hero h1 .ab {
+            display: inline-block;
+            font-size: .42em;
+            vertical-align: middle;
+            letter-spacing: 0;
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+            padding: 4px 10px;
+            border-radius: 999px;
+            margin-left: 6px;
+            transform: translateY(-4px);
+        }
+
+        .hero p.lead {
+            color: var(--ink-2);
+            font-size: 17px;
+            max-width: 36rem;
+            margin: 0 auto 24px;
+        }
+
+        .search {
+            position: relative;
+            max-width: 42rem;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box>svg {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--mute);
+            pointer-events: none;
+        }
+
+        #q {
+            width: 100%;
+            height: 62px;
+            border-radius: 20px;
+            border: 2px solid var(--line);
+            background: #fff;
+            padding: 0 96px 0 56px;
+            font: 600 17px/1 inherit;
+            font-family: inherit;
+            color: var(--ink);
+            box-shadow: var(--shadow-lg);
+            transition: border-color .15s;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        #q::placeholder {
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        #q:focus {
+            outline: none;
+            border-color: var(--sky);
+        }
+
+        #q::-webkit-search-cancel-button {
+            display: none;
+        }
+
+        .search-tools {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        #q-clear[hidden] {
+            display: none;
+        }
+
+        #q-clear {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: 0;
+            background: #f1f5f9;
+            display: grid;
+            place-items: center;
+        }
+
+        .kbd {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--mute);
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            padding: 3px 8px;
+            background: var(--paper);
+        }
+
+        #saran {
+            list-style: none;
+            margin: 8px 0 0;
+            padding: 6px;
+            position: absolute;
+            z-index: 25;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            box-shadow: var(--shadow-lg);
+            max-height: min(430px, 60vh);
+            overflow-y: auto;
+        }
+
+        .s-head {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--mute);
+            padding: 8px 12px 4px;
+        }
+
+        .s-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .s-item[aria-selected="true"],
+        .s-item:hover {
+            background: #f0f8ff;
+        }
+
+        .s-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            margin-top: 7px;
+            flex: none;
+        }
+
+        .s-txt {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .s-txt b {
+            font-size: 15.5px;
+        }
+
+        .s-txt small {
+            color: var(--mute);
+            font-weight: 600;
+        }
+
+        .s-txt>span {
+            display: block;
+            font-size: 13px;
+            color: var(--ink-2);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .s-item em {
+            font-style: normal;
+            font-size: 11.5px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 999px;
+            flex: none;
+            margin-top: 2px;
+        }
+
+        .s-empty {
+            padding: 14px;
+            font-size: 14px;
+            color: var(--ink-2);
+        }
+
+        .s-fix {
+            border: 0;
+            background: #e0f2fe;
+            color: var(--sky-d);
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 8px;
+        }
+
+        .s-all {
+            padding: 4px;
+        }
+
+        .s-all button {
+            width: 100%;
+            border: 0;
+            background: var(--paper);
+            border-radius: 12px;
+            padding: 10px;
+            font-weight: 700;
+            font-size: 13.5px;
+            color: var(--sky-d);
+        }
+
+        .quick {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 18px;
+            font-size: 14px;
+            color: var(--mute);
+            font-weight: 600;
+        }
+
+        .quick button {
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: 999px;
+            padding: 6px 13px;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--ink-2);
+        }
+
+        .quick button:hover {
+            border-color: var(--sky);
+            color: var(--sky-d);
+        }
+
+        #acak {
+            background: var(--ink);
+            color: #fff;
+            border-color: var(--ink);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        #acak:hover {
+            background: #16395c;
+            color: #fff;
+        }
+
+        #hari-ini {
+            margin-top: 14px;
+            font-size: 13.5px;
+            color: var(--mute);
+            font-weight: 600;
+        }
+
+        #hari-ini button {
+            border: 0;
+            background: none;
+            color: var(--sky-d);
+            font-weight: 800;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            padding: 0;
+        }
+
+        /* ---------- Kategori ---------- */
+        .cats {
+            position: sticky;
+            top: 62px;
+            z-index: 20;
+            background: rgba(247, 250, 252, .94);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        #chips {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 12px 20px;
+            max-width: 76rem;
+            margin: 0 auto;
+            scrollbar-width: none;
+        }
+
+        #chips::-webkit-scrollbar {
+            display: none;
+        }
+
+        #chips button {
+            flex: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: 999px;
+            padding: 7px 13px;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--ink-2);
+            white-space: nowrap;
+        }
+
+        #chips button i {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        #chips button span {
+            font-size: 12px;
+            opacity: .7;
+        }
+
+        /* ---------- Isi: daftar + detail ---------- */
+        .main {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+            gap: 28px;
+            padding-top: 24px;
+            padding-bottom: 60px;
+            align-items: start;
+        }
+
+        .list-col {
+            min-width: 0;
+        }
+
+        .list-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        #list-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 14px;
+            color: var(--mute);
+            font-weight: 600;
+        }
+
+        #list-info button {
+            border: 0;
+            background: #ffe4e6;
+            color: var(--rose);
+            border-radius: 999px;
+            padding: 4px 11px;
+            font-size: 12.5px;
+            font-weight: 700;
+        }
+
+        #az {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            margin: 0 0 14px;
+        }
+
+        #az button {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            border: 0;
+            background: #fff;
+            box-shadow: inset 0 0 0 1px var(--line);
+            font-size: 12.5px;
+            font-weight: 800;
+            color: var(--ink);
+        }
+
+        #az button:hover:not(:disabled) {
+            background: var(--ink);
+            color: #fff;
+            box-shadow: none;
+        }
+
+        #az button:disabled {
+            color: #cbd5e1;
+            background: transparent;
+            cursor: default;
+            box-shadow: none;
+        }
+
+        .grp {
+            scroll-margin-top: 130px;
+        }
+
+        .grp-h {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--mute);
+            margin: 18px 0 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grp-h::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--line);
+        }
+
+        .grp ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 6px;
+        }
+
+        .row {
+            width: 100%;
+            text-align: left;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 12px 16px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2px 12px;
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+        .row:hover {
+            border-color: #7dd3fc;
+        }
+
+        .row.on {
+            border-color: var(--ink);
+            box-shadow: inset 4px 0 0 var(--amber), var(--shadow);
+        }
+
+        .row-t {
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: -.01em;
+        }
+
+        .row-k {
+            font-size: 11.5px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .row-k i {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .row-d {
+            grid-column: 1 / -1;
+            font-size: 13.5px;
+            color: var(--ink-2);
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .list-empty {
+            background: #fff;
+            border: 1px dashed var(--line);
+            border-radius: 18px;
+            padding: 28px;
+            text-align: center;
+            display: grid;
+            gap: 4px;
+            color: var(--mute);
+        }
+
+        .list-empty b {
+            color: var(--ink);
+        }
+
+        #detail-wrap {
+            position: sticky;
+            top: 124px;
+        }
+
+        #sheet-back {
+            display: none;
+        }
+
+        #detail {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 26px;
+            box-shadow: var(--shadow-lg);
+            padding: 22px 24px 20px;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .d-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .d-kat {
+            font-size: 12px;
+            font-weight: 800;
+            padding: 5px 11px;
+            border-radius: 999px;
+        }
+
+        .d-act {
+            display: flex;
+            gap: 6px;
+        }
+
+        .d-act button {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: #fff;
+            display: grid;
+            place-items: center;
+            color: var(--ink-2);
+        }
+
+        .d-act button:hover {
+            border-color: var(--ink);
+            color: var(--ink);
+        }
+
+        .only-sheet {
+            display: none !important;
+        }
+
+        .d-title {
+            font-size: clamp(1.7rem, 3vw, 2.3rem);
+            line-height: 1.1;
+            letter-spacing: -.03em;
+            margin: 14px 0 4px;
+            font-weight: 800;
+            outline: none;
+        }
+
+        .d-alias {
+            margin: 0 0 4px;
+            color: var(--mute);
+            font-size: 13.5px;
+            font-weight: 600;
+        }
+
+        .d-vis {
+            margin: 16px 0 14px;
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 14px;
+        }
+
+        .d-vis figcaption {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 12.5px;
+            color: var(--ink-2);
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .d-pause {
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: 999px;
+            padding: 4px 11px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .vis-svg {
+            display: block;
+            width: 100%;
+            max-width: 440px;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        .vis-canvas canvas {
+            display: block;
+            width: 100%;
+            height: 220px;
+        }
+
+        .vis-canvas.collide canvas {
+            height: 150px;
+        }
+
+        .vis-note {
+            margin: 6px 0 0;
+            text-align: center;
+            font-weight: 800;
+            font-size: 13.5px;
+        }
+
+        .vis-note.ok {
+            color: #047857;
+        }
+
+        .vis-note.no {
+            color: var(--rose);
+        }
+
+        .vis-legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px 14px;
+            margin: 6px 0 0;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--ink-2);
+        }
+
+        .vis-legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .vis-legend i {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .vis-formula {
+            text-align: center;
+            padding: 10px 4px;
+        }
+
+        .vf-main {
+            font-size: clamp(1.5rem, 4vw, 2.1rem);
+            font-weight: 800;
+            letter-spacing: -.01em;
+            color: var(--ink);
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 16px 12px;
+        }
+
+        .vf-main .c1 {
+            color: var(--rose);
+        }
+
+        .vf-main .c2 {
+            color: var(--sky-d);
+        }
+
+        .vf-main .c3 {
+            color: #b45309;
+        }
+
+        .vf-legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 8px;
+            margin: 12px 0 0;
+            text-align: left;
+        }
+
+        .vf-legend div {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 8px 10px;
+        }
+
+        .vf-legend dt {
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .vf-legend dd {
+            margin: 0;
+            font-size: 12.5px;
+            color: var(--ink-2);
+        }
+
+        .vis-chem {
+            display: grid;
+            grid-template-columns: 136px 1fr;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .vc-tile {
+            aspect-ratio: 1;
+            border-radius: 18px;
+            background: var(--ink);
+            color: #fff;
+            display: grid;
+            place-content: center;
+            text-align: center;
+            padding: 8px;
+            box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .08);
+        }
+
+        .vc-f {
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -.02em;
+            line-height: 1.1;
+        }
+
+        .vc-n {
+            font-size: 11.5px;
+            color: #fde68a;
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+        .vc-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 13px;
+            padding: 5px 0;
+            border-bottom: 1px dashed var(--line);
+        }
+
+        .vc-row span {
+            color: var(--mute);
+            font-weight: 600;
+        }
+
+        .vc-el {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 10px 0 6px;
+        }
+
+        .vc-el span {
+            font-size: 12.5px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 10px;
+            color: var(--ink);
+        }
+
+        .vc-el i {
+            font-style: normal;
+            font-weight: 600;
+            color: var(--ink-2);
+        }
+
+        .vc-role {
+            margin: 6px 0 0;
+            font-size: 13px;
+            color: var(--ink-2);
+        }
+
+        .vis-table table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 14px;
+            overflow: hidden;
+            font-size: 13.5px;
+            text-align: center;
+            box-shadow: inset 0 0 0 1px var(--line);
+        }
+
+        .vis-table th {
+            background: var(--ink);
+            color: #fff;
+            font-weight: 700;
+            padding: 8px 6px;
+            font-size: 12.5px;
+        }
+
+        .vis-table td {
+            padding: 8px 6px;
+            border-top: 1px solid var(--line);
+        }
+
+        .vis-table tr.hl-a td {
+            background: #e0f2fe;
+        }
+
+        .vis-table tr.hl-b td {
+            background: #fef3c7;
+        }
+
+        .vt-steps {
+            margin-top: 10px;
+            display: grid;
+            gap: 4px;
+            font-size: 13.5px;
+        }
+
+        .vt-steps p {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .vt-steps .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+        }
+
+        .dot.a {
+            background: #7dd3fc;
+        }
+
+        .dot.b {
+            background: #fcd34d;
+        }
+
+        .vt-res {
+            margin-top: 4px !important;
+            font-weight: 800;
+            color: var(--rose);
+        }
+
+        .xm-cloud {
+            animation: keruh 4.5s ease-in infinite;
+        }
+
+        @keyframes keruh {
+            0% {
+                opacity: 0;
+            }
+
+            80%,
+            100% {
+                opacity: .92;
+            }
+        }
+
+        .bl-balloon {
+            transform-origin: 180px 98px;
+            animation: kembang 3.6s ease-out infinite;
+        }
+
+        @keyframes kembang {
+            0% {
+                transform: scale(.25);
+            }
+
+            85%,
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .bl-bub circle {
+            animation: naik 1.4s linear infinite;
+        }
+
+        @keyframes naik {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-34px);
+                opacity: 0;
+            }
+        }
+
+        .sw-hand {
+            transform-origin: 180px 112px;
+            animation: putar 6s linear infinite;
+        }
+
+        @keyframes putar {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .d-def {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.5;
+            margin: 0 0 8px;
+        }
+
+        .d-p {
+            font-size: 15.5px;
+            color: var(--ink-2);
+            margin: 0 0 14px;
+            line-height: 1.7;
+        }
+
+        .d-box {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-left: 4px solid var(--sky);
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+        }
+
+        .d-box.lab {
+            border-left-color: var(--amber);
+            background: #fffbeb;
+            border-color: #fde68a;
+        }
+
+        .d-box h4,
+        .d-rel h4 {
+            margin: 0 0 4px;
+            font-size: 12.5px;
+            font-weight: 800;
+            color: var(--mute);
+        }
+
+        .d-box p {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .d-rel div {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .d-rel button {
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: 999px;
+            padding: 6px 12px 6px 10px;
+            font-size: 13px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .d-rel button::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--c);
+        }
+
+        .d-rel button:hover {
+            border-color: var(--c);
+        }
+
+        .d-nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid var(--line);
+        }
+
+        .d-nav button {
+            text-align: left;
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: 14px;
+            padding: 9px 12px;
+            font-weight: 800;
+            font-size: 13.5px;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .d-nav button small {
+            display: block;
+            font-size: 11.5px;
+            color: var(--mute);
+            font-weight: 600;
+        }
+
+        .d-nav .nx {
+            text-align: right;
+        }
+
+        .d-nav button:hover {
+            border-color: var(--ink);
+        }
+
+        #toast {
+            position: fixed;
+            left: 50%;
+            bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+            transform: translate(-50%, 20px);
+            background: var(--ink);
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0;
+            pointer-events: none;
+            transition: .25s;
+            z-index: 80;
+            max-width: calc(100% - 32px);
+            overflow-wrap: anywhere;
+        }
+
+        #toast.show {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        footer {
+            border-top: 1px solid var(--line);
+            background: #fff;
+        }
+
+        footer .wrap {
+            padding-top: 20px;
+            padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+            font-size: 13px;
+            color: var(--mute);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        /* ---------- Tablet & HP ---------- */
+        @media (max-width: 899px) {
+            .main {
+                grid-template-columns: 1fr;
+                padding-top: 16px;
+            }
+
+            #detail-wrap {
+                position: fixed;
+                inset: 0;
+                z-index: 60;
+                top: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                visibility: hidden;
+                pointer-events: none;
+            }
+
+            #sheet-back {
+                display: block;
+                position: absolute;
+                inset: 0;
+                background: rgba(15, 42, 68, .45);
+                border: 0;
+                opacity: 0;
+                transition: opacity .25s;
+            }
+
+            #detail {
+                position: relative;
+                border-radius: 26px 26px 0 0;
+                max-height: calc(100% - 28px - env(safe-area-inset-top, 0px));
+                height: calc(100% - 28px - env(safe-area-inset-top, 0px));
+                transform: translateY(100%);
+                transition: transform .3s cubic-bezier(.3, .8, .3, 1);
+                padding: 10px 18px calc(22px + env(safe-area-inset-bottom, 0px));
+                border-bottom: 0;
+            }
+
+            #detail::before {
+                content: '';
+                display: block;
+                width: 44px;
+                height: 5px;
+                border-radius: 9px;
+                background: var(--line);
+                margin: 0 auto 10px;
+            }
+
+            body.sheet-open {
+                overflow: hidden;
+            }
+
+            body.sheet-open #detail-wrap {
+                visibility: visible;
+                pointer-events: auto;
+            }
+
+            body.sheet-open #sheet-back {
+                opacity: 1;
+            }
+
+            body.sheet-open #detail {
+                transform: none;
+            }
+
+            .only-sheet {
+                display: grid !important;
+            }
+
+            .grp {
+                scroll-margin-top: 120px;
+            }
+        }
+
+        @media (max-width: 639px) {
+            .wrap {
+                padding: 0 16px;
+            }
+
+            .top .wrap {
+                height: 56px;
+            }
+
+            .brand>span:not(.brand-ic),
+            .dash-long {
+                display: none;
+            }
+
+            .btn-dash {
+                height: 38px;
+                padding: 0 13px;
+                font-size: 13.5px;
+            }
+
+            .cats {
+                top: 56px;
+            }
+
+            #chips {
+                padding: 10px 16px;
+            }
+
+            .hero .wrap {
+                padding-top: 30px;
+                padding-bottom: 22px;
+            }
+
+            .hero p.lead {
+                font-size: 15px;
+                margin-bottom: 18px;
+            }
+
+            #q {
+                height: 56px;
+                border-radius: 16px;
+                font-size: 16px;
+                padding-right: 52px;
+                padding-left: 48px;
+            }
+
+            .search-box>svg {
+                left: 16px;
+            }
+
+            .kbd {
+                display: none;
+            }
+
+            .s-txt>span {
+                white-space: normal;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+            }
+
+            .s-item em {
+                display: none;
+            }
+
+            .quick {
+                gap: 6px;
+            }
+
+            #az {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                scrollbar-width: none;
+                margin: 0 -16px 10px;
+                padding: 0 16px;
+            }
+
+            #az::-webkit-scrollbar {
+                display: none;
+            }
+
+            #az button {
+                flex: none;
+                width: 32px;
+                height: 32px;
+            }
+
+            .row {
+                padding: 12px 14px;
+            }
+
+            .row-k {
+                grid-column: 1 / -1;
+                grid-row: 2;
+            }
+
+            .row-d {
+                grid-row: 3;
+                -webkit-line-clamp: 2;
+            }
+
+            .vis-chem {
+                grid-template-columns: 1fr;
+            }
+
+            .vc-tile {
+                aspect-ratio: auto;
+                padding: 18px;
+            }
+
+            .d-def {
+                font-size: 17px;
+            }
+
+            .vis-canvas canvas {
+                height: 200px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="top">
+        <div class="wrap">
+            <a class="brand" href="index.html" aria-label="EduKinetika, ke beranda">
+                <span class="brand-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M9 3h6M10 3v6.5L4.6 18.2A1.8 1.8 0 0 0 6.1 21h11.8a1.8 1.8 0 0 0 1.5-2.8L14 9.5V3" />
+                        <path d="M7.5 15h9" />
+                    </svg></span>
+                <b>EduKinetika</b><span>Kamus Kinetika</span>
+            </a>
+            <a class="btn-dash" href="index.html">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                    <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                    <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                    <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                </svg>
+                <span class="dash-long">Kembali ke</span> Dashboard
+            </a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="wrap">
+            <h1>Kamus Kinetika <span class="ab">A–Z</span></h1>
+            <p class="lead"><b id="jumlah">0</b> istilah laju reaksi, masing-masing dengan gambar atau animasi. Ketik
+                satu kata, langsung ketemu.</p>
+            <div class="search" role="search">
+                <label for="q" class="sr"
+                    style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Cari
+                    istilah</label>
+                <div class="search-box">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+                        stroke-linecap="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m20 20-3.5-3.5" />
+                    </svg>
+                    <input id="q" type="search" autocomplete="off" spellcheck="false"
+                        placeholder="Cari istilah, misalnya: energi aktivasi" role="combobox" aria-expanded="false"
+                        aria-controls="saran" aria-autocomplete="list">
+                    <div class="search-tools">
+                        <button type="button" id="q-clear" aria-label="Hapus kata" hidden><svg width="16" height="16"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"
+                                stroke-linecap="round">
+                                <path d="M6 6l12 12M18 6 6 18" />
+                            </svg></button>
+                        <span class="kbd" aria-hidden="true">/</span>
+                    </div>
+                </div>
+                <ul id="saran" role="listbox" hidden></ul>
+            </div>
+            <div class="quick" id="coba">
+                <span>Coba:</span>
+                <button type="button" data-t="Energi aktivasi">energi aktivasi</button>
+                <button type="button" data-t="Katalis">katalis</button>
+                <button type="button" data-t="Orde reaksi">orde reaksi</button>
+                <button type="button" data-t="Luas permukaan bidang sentuh">luas permukaan</button>
+                <button type="button" id="acak"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
+                        aria-hidden="true">
+                        <path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5" />
+                    </svg>Istilah acak</button>
+            </div>
+            <p id="hari-ini"></p>
+        </div>
+    </section>
+
+    <nav class="cats" aria-label="Kategori istilah">
+        <div id="chips"></div>
+    </nav>
+
+    <main class="wrap main">
+        <div class="list-col">
+            <div class="list-head">
+                <div id="list-info"></div>
+            </div>
+            <div id="az" aria-label="Lompat ke huruf"></div>
+            <div id="daftar"></div>
+        </div>
+        <div id="detail-wrap" aria-hidden="false">
+            <button type="button" id="sheet-back" aria-label="Tutup penjelasan"></button>
+            <article id="detail" aria-live="polite"></article>
+        </div>
+    </main>
+
+    <footer>
+        <div class="wrap">
+            <span>Kamus Kinetika · bagian dari EduKinetika, laboratorium virtual laju reaksi kelas XI</span>
+            <span>Tekan <b>/</b> untuk mencari dengan cepat</span>
+        </div>
+    </footer>
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        /* =====================================================================
+           DATA ISTILAH
+           E(istilah, kategori, [nama lain], definisi singkat, penjelasan, rumus/contoh, [visual, opsi], [istilah terkait], kaitan dengan praktikum)
+           ===================================================================== */
+        const E = (t, k, a, d, p, r, v, s, lab) => ({ t, k, a: a || [], d, p, r: r || '', v: v || ['formula', {}], s: s || [], lab: lab || '' });
+
+        const ISTILAH = [
+            /* ---------------- KONSEP DASAR ---------------- */
+            E('Laju reaksi', 'dasar', ['kecepatan reaksi', 'reaction rate'],
+                'Besarnya perubahan konsentrasi pereaksi atau hasil reaksi per satuan waktu.',
+                'Laju reaksi menunjukkan seberapa cepat pereaksi habis atau seberapa cepat produk terbentuk. Konsentrasi pereaksi berkurang sehingga diberi tanda negatif, sedangkan konsentrasi produk bertambah sehingga diberi tanda positif.',
+                'v = −Δ[Reaktan]/Δt = +Δ[Produk]/Δt',
+                ['graph', { mode: 'both', cap: 'Konsentrasi reaktan turun, konsentrasi produk naik seiring waktu.' }],
+                ['Laju rata-rata', 'Laju sesaat', 'Konsentrasi', 'Satuan laju reaksi'],
+                'Di laboratorium virtual EduKinetika, laju reaksi diamati dari seberapa cepat balon mengembang atau berapa volume gas yang terbentuk setiap detik.'),
+            E('Laju rata-rata', 'dasar', ['average rate'],
+                'Laju reaksi dalam suatu selang waktu tertentu.',
+                'Laju rata-rata dihitung dari perubahan konsentrasi dibagi selang waktunya. Pada grafik konsentrasi–waktu, nilainya sama dengan kemiringan garis lurus yang menghubungkan dua titik pada kurva.',
+                'v̄ = −([R]₂ − [R]₁) / (t₂ − t₁)',
+                ['graph', { mode: 'avg', cap: 'Garis putus-putus menghubungkan dua titik: kemiringannya adalah laju rata-rata.' }],
+                ['Laju reaksi', 'Laju sesaat', 'Laju awal']),
+            E('Laju sesaat', 'dasar', ['instantaneous rate'],
+                'Laju reaksi pada satu saat tertentu.',
+                'Laju sesaat ditentukan dari kemiringan garis singgung kurva konsentrasi–waktu pada saat itu. Umumnya laju paling besar di awal reaksi, lalu makin kecil karena pereaksi makin sedikit.',
+                'v = −d[R]/dt (kemiringan garis singgung)',
+                ['graph', { mode: 'inst', cap: 'Garis singgung pada satu titik menunjukkan laju sesaat.' }],
+                ['Laju rata-rata', 'Laju awal', 'Laju reaksi']),
+            E('Satuan laju reaksi', 'dasar', ['M/s', 'mol L-1 s-1'],
+                'Laju reaksi umumnya dinyatakan dalam M s⁻¹ (mol L⁻¹ s⁻¹).',
+                'Karena laju adalah perubahan konsentrasi (M) dibagi waktu (s), satuannya M s⁻¹. Bisa juga M menit⁻¹. Pada praktikum yang menghasilkan gas, laju sering dinyatakan sebagai volume gas per waktu, misalnya mL s⁻¹.',
+                'M s⁻¹ = mol · L⁻¹ · s⁻¹',
+                ['formula', { f: 'v = <b>M</b> / <b>s</b> = <b>M s⁻¹</b>', legend: [['M', 'molaritas (mol/L)'], ['s', 'detik'], ['mL s⁻¹', 'satuan laju untuk percobaan gas']] }],
+                ['Laju reaksi', 'Molaritas', 'Volume gas']),
+            E('Reaktan', 'dasar', ['pereaksi', 'reactant'],
+                'Zat yang bereaksi, ditulis di ruas kiri persamaan reaksi.',
+                'Selama reaksi berlangsung, jumlah dan konsentrasi reaktan berkurang karena berubah menjadi produk.',
+                'Contoh: pada 2H₂ + O₂ → 2H₂O, reaktannya H₂ dan O₂.',
+                ['eq', { hl: 'left', cap: 'Reaktan berada di ruas kiri tanda panah.' }],
+                ['Produk', 'Persamaan reaksi', 'Koefisien reaksi']),
+            E('Produk', 'dasar', ['hasil reaksi', 'product'],
+                'Zat baru yang terbentuk dari reaksi, ditulis di ruas kanan persamaan reaksi.',
+                'Konsentrasi produk bertambah seiring waktu sampai reaksi selesai.',
+                'Contoh: pada 2H₂ + O₂ → 2H₂O, produknya H₂O.',
+                ['eq', { hl: 'right', cap: 'Produk berada di ruas kanan tanda panah.' }],
+                ['Reaktan', 'Persamaan reaksi', 'Laju reaksi']),
+            E('Reaksi kimia', 'dasar', ['perubahan kimia'],
+                'Proses perubahan zat menjadi zat baru melalui pemutusan dan pembentukan ikatan.',
+                'Tanda-tanda reaksi kimia antara lain terbentuknya gas, endapan, perubahan warna, dan perubahan suhu.',
+                'H₂ + I₂ → 2HI',
+                ['bond', { cap: 'Ikatan lama putus, ikatan baru terbentuk.' }],
+                ['Pemutusan ikatan', 'Pembentukan ikatan', 'Persamaan reaksi']),
+            E('Persamaan reaksi', 'dasar', ['persamaan kimia'],
+                'Penulisan reaksi kimia menggunakan rumus kimia, wujud zat, dan koefisien.',
+                'Persamaan reaksi harus setara: jumlah atom setiap unsur di ruas kiri sama dengan di ruas kanan.',
+                'CaCO₃(s) + 2HCl(aq) → CaCl₂(aq) + H₂O(l) + CO₂(g)',
+                ['eq', { cap: 'Model partikel untuk 2H₂ + O₂ → 2H₂O.' }],
+                ['Koefisien reaksi', 'Wujud zat', 'Stoikiometri']),
+            E('Koefisien reaksi', 'dasar', ['koefisien'],
+                'Angka di depan rumus kimia yang menyatakan perbandingan jumlah partikel (mol).',
+                'Koefisien juga menentukan perbandingan laju. Untuk reaksi aA → bB, laju berkurangnya A dibagi a sama dengan laju bertambahnya B dibagi b.',
+                '(1/a)(−Δ[A]/Δt) = (1/b)(Δ[B]/Δt)',
+                ['eq', { hl: 'coef', cap: 'Angka berwarna adalah koefisien reaksi.' }],
+                ['Persamaan reaksi', 'Stoikiometri', 'Laju reaksi']),
+            E('Stoikiometri', 'dasar', [],
+                'Perhitungan jumlah zat dalam reaksi berdasarkan perbandingan koefisien.',
+                'Dengan stoikiometri kita dapat memperkirakan, misalnya, berapa mL gas CO₂ yang dihasilkan dari sejumlah CaCO₃.',
+                '1 mol CaCO₃ menghasilkan 1 mol CO₂',
+                ['eq', { hl: 'coef', cap: 'Perbandingan koefisien = perbandingan mol.' }],
+                ['Koefisien reaksi', 'Mol', 'Persamaan reaksi']),
+            E('Kinetika kimia', 'dasar', ['kinetika'],
+                'Cabang ilmu kimia yang mempelajari laju reaksi, faktor-faktor yang memengaruhinya, dan mekanisme reaksi.',
+                'Kinetika menjawab pertanyaan "seberapa cepat" dan "melalui tahap apa" suatu reaksi berlangsung, bukan hanya "apa hasilnya".',
+                '',
+                ['graph', { mode: 'both', cap: 'Kinetika mempelajari bentuk kurva ini dan penyebabnya.' }],
+                ['Laju reaksi', 'Mekanisme reaksi', 'Faktor-faktor laju reaksi']),
+            E('Konsentrasi', 'dasar', ['kepekatan'],
+                'Banyaknya zat terlarut dalam sejumlah larutan.',
+                'Dalam materi laju reaksi, konsentrasi dinyatakan dengan molaritas dan ditulis dalam kurung siku, misalnya [HCl].',
+                '[HCl] = 1,0 M artinya 1,0 mol HCl dalam 1 L larutan',
+                ['molarity', { cap: 'Makin banyak partikel zat terlarut dalam volume yang sama, makin pekat larutannya.' }],
+                ['Molaritas', 'Pengaruh konsentrasi', 'Larutan']),
+            E('Molaritas', 'dasar', ['kemolaran', 'M'],
+                'Jumlah mol zat terlarut dalam 1 liter larutan.',
+                'Molaritas adalah satuan konsentrasi yang paling sering dipakai dalam laju reaksi.',
+                'M = n / V   atau   M = (massa / Mr) × (1000 / V mL)<br>Contoh: 4 g NaOH (Mr 40) dalam 500 mL → 0,1 mol / 0,5 L = 0,2 M',
+                ['molarity', { cap: 'Molaritas = mol zat terlarut ÷ volume larutan (L).' }],
+                ['Mol', 'Konsentrasi', 'Pengenceran', 'Massa molekul relatif']),
+            E('Mol', 'dasar', ['n'],
+                'Satuan jumlah zat; 1 mol berisi 6,02 × 10²³ partikel.',
+                'Angka 6,02 × 10²³ disebut bilangan Avogadro. Mol menghubungkan massa zat yang ditimbang dengan jumlah partikelnya.',
+                'n = massa / Mr',
+                ['formula', { f: 'n = <b>massa</b> / <b>Mr</b>', legend: [['n', 'jumlah mol'], ['massa', 'dalam gram'], ['Mr', 'massa molekul relatif'], ['1 mol', '6,02 × 10²³ partikel']] }],
+                ['Molaritas', 'Massa molekul relatif', 'Stoikiometri']),
+            E('Massa molekul relatif', 'dasar', ['Mr'],
+                'Jumlah massa atom relatif (Ar) semua atom penyusun molekul.',
+                'Mr dipakai untuk mengubah massa zat (gram) menjadi mol.',
+                'Mr CaCO₃ = 40 + 12 + 3(16) = 100',
+                ['chem', { f: 'CaCO₃', n: 'Mr = 100', el: [['Ca', 1, 40], ['C', 1, 12], ['O', 3, 16]], role: 'Jumlahkan Ar setiap atom: 40 + 12 + (3 × 16) = 100.' }],
+                ['Mol', 'Molaritas', 'Kalsium karbonat']),
+            E('Larutan', 'dasar', ['solution'],
+                'Campuran homogen antara zat terlarut dan pelarut.',
+                'Pada praktikum laju reaksi, HCl, CH₃COOH, dan H₂O₂ digunakan dalam bentuk larutan dengan konsentrasi tertentu.',
+                'Larutan = zat terlarut + pelarut',
+                ['molarity', { cap: 'Partikel zat terlarut tersebar merata di dalam pelarut.' }],
+                ['Zat terlarut', 'Pelarut', 'Konsentrasi']),
+            E('Zat terlarut', 'dasar', ['solut', 'solute'],
+                'Zat yang jumlahnya lebih sedikit dan melarut di dalam pelarut.',
+                'Jumlah mol zat terlarut menentukan molaritas larutan.',
+                'Pada larutan HCl, zat terlarutnya adalah HCl.',
+                ['molarity', { cap: 'Titik-titik berwarna mewakili partikel zat terlarut.' }],
+                ['Pelarut', 'Larutan', 'Molaritas']),
+            E('Pelarut', 'dasar', ['solven', 'solvent'],
+                'Zat yang jumlahnya lebih banyak dan melarutkan zat lain.',
+                'Air adalah pelarut yang paling umum sehingga disebut pelarut universal.',
+                'Wujud (aq) berarti zat larut dalam air.',
+                ['molarity', { cap: 'Cairan di dalam labu adalah pelarut.' }],
+                ['Zat terlarut', 'Larutan', 'Pengenceran']),
+            E('Pengenceran', 'dasar', ['dilution'],
+                'Menurunkan konsentrasi larutan dengan menambahkan pelarut.',
+                'Saat diencerkan, jumlah mol zat terlarut tetap, tetapi volumenya bertambah sehingga molaritasnya turun.',
+                'M₁V₁ = M₂V₂<br>Contoh: 10 mL HCl 2 M diencerkan menjadi 40 mL → M₂ = (2 × 10)/40 = 0,5 M',
+                ['molarity', { dilute: true, cap: 'Jumlah partikel sama, volume bertambah, konsentrasi turun.' }],
+                ['Molaritas', 'Pelarut', 'Konsentrasi']),
+            E('Wujud zat', 'dasar', ['fase', 's l g aq'],
+                'Keterangan fase zat dalam persamaan reaksi: (s) padat, (l) cair, (g) gas, (aq) larut dalam air.',
+                'Wujud zat penting untuk laju reaksi. Misalnya, zat padat bereaksi hanya di permukaannya, sedangkan zat dalam larutan dapat bertumbukan ke segala arah.',
+                'CaCO₃(s) + 2HCl(aq) → CaCl₂(aq) + H₂O(l) + CO₂(g)',
+                ['formula', { f: '(s) &nbsp; (l) &nbsp; (g) &nbsp; (aq)', legend: [['s', 'solid, padat'], ['l', 'liquid, cair'], ['g', 'gas'], ['aq', 'aqueous, larut dalam air']] }],
+                ['Persamaan reaksi', 'Luas permukaan bidang sentuh', 'Katalis heterogen']),
+            E('Endapan', 'dasar', ['presipitat'],
+                'Padatan tidak larut yang terbentuk dari reaksi di dalam larutan.',
+                'Laju reaksi dapat diukur dari waktu sampai larutan menjadi keruh. Contoh klasiknya reaksi natrium tiosulfat dengan HCl yang menghasilkan endapan belerang, sehingga tanda X di bawah gelas lama-lama tidak terlihat.',
+                'Na₂S₂O₃(aq) + 2HCl(aq) → 2NaCl(aq) + H₂O(l) + SO₂(g) + S(s)',
+                ['xmark', { cap: 'Larutan makin keruh sampai tanda X tidak terlihat.' }],
+                ['Natrium tiosulfat', 'Waktu reaksi', 'Laju reaksi']),
+            E('Gas hasil reaksi', 'dasar', ['gelembung gas'],
+                'Gas yang terbentuk dari reaksi dan dapat dipakai untuk mengukur laju reaksi.',
+                'Makin cepat gas terbentuk, makin cepat balon mengembang. Gas yang dihasilkan pada praktikum antara lain CO₂, H₂, dan O₂.',
+                'Mg(s) + 2HCl(aq) → MgCl₂(aq) + H₂(g)',
+                ['balloon', { cap: 'Gas yang terbentuk ditampung balon.' }],
+                ['Volume gas', 'Balon', 'Karbon dioksida'],
+                'Di lab virtual, balon otomatis terpasang di mulut wadah dan tabel data mencatat volume gasnya.'),
+            E('Volume gas', 'dasar', ['V gas'],
+                'Banyaknya gas yang terbentuk, biasanya dalam mL, sebagai ukuran jalannya reaksi.',
+                'Laju pembentukan gas adalah perubahan volume gas dibagi waktu.',
+                'v = ΔV / Δt (mL s⁻¹)',
+                ['balloon', { cap: 'Balon makin besar seiring bertambahnya volume gas.' }],
+                ['Gas hasil reaksi', 'Laju reaksi', 'Satuan laju reaksi'],
+                'Tabel data di lab virtual mencatat volume gas setiap wadah sehingga laju antarpercobaan bisa dibandingkan.'),
+            E('Waktu reaksi', 'dasar', ['t'],
+                'Lama waktu yang dibutuhkan sampai reaksi mencapai tanda tertentu.',
+                'Laju reaksi berbanding terbalik dengan waktu: makin singkat waktunya, makin besar lajunya.',
+                'v ∝ 1/t',
+                ['tool', { name: 'stopwatch', cap: 'Waktu reaksi diukur dengan stopwatch.' }],
+                ['Stopwatch', 'Laju reaksi', 'Endapan']),
+            E('Makroskopik', 'dasar', ['level makroskopis'],
+                'Level fenomena yang dapat diamati langsung dengan indera.',
+                'Contohnya gelembung gas, balon mengembang, perubahan warna, atau larutan menjadi keruh.',
+                '',
+                ['scale', { hl: 0, cap: 'Makroskopik: yang terlihat mata.' }],
+                ['Submikroskopik', 'Simbolik']),
+            E('Submikroskopik', 'dasar', ['level partikulat', 'mikroskopik'],
+                'Level partikel (atom, ion, molekul) yang tidak dapat dilihat langsung.',
+                'Level ini menjelaskan mengapa sesuatu terjadi, misalnya partikel yang bergerak lebih cepat saat dipanaskan sehingga lebih sering bertumbukan.',
+                '',
+                ['scale', { hl: 1, cap: 'Submikroskopik: partikel yang bertumbukan.' }],
+                ['Makroskopik', 'Simbolik', 'Teori tumbukan'],
+                'Kanvas partikel di lab virtual menampilkan level submikroskopik dari setiap percobaan.'),
+            E('Simbolik', 'dasar', ['level simbolik'],
+                'Level representasi kimia dengan rumus, persamaan reaksi, dan grafik.',
+                'Kimia dipahami utuh jika ketiga level (makroskopik, submikroskopik, simbolik) dihubungkan.',
+                'CaCO₃ + 2HCl → CaCl₂ + H₂O + CO₂',
+                ['scale', { hl: 2, cap: 'Simbolik: rumus dan persamaan.' }],
+                ['Makroskopik', 'Submikroskopik', 'Persamaan reaksi']),
+
+            /* ---------------- TEORI TUMBUKAN & ENERGI ---------------- */
+            E('Teori tumbukan', 'tumbukan', ['collision theory'],
+                'Reaksi terjadi karena partikel pereaksi saling bertumbukan, tetapi hanya tumbukan efektif yang menghasilkan produk.',
+                'Ada dua syarat tumbukan efektif: partikel memiliki energi paling sedikit sebesar energi aktivasi, dan orientasi (arah) tumbukannya tepat. Makin sering tumbukan efektif terjadi, makin cepat reaksinya.',
+                'Laju ∝ frekuensi tumbukan efektif',
+                ['collide', { mode: 'all', cap: 'Tiga kemungkinan: efektif, orientasi salah, dan energi kurang.' }],
+                ['Tumbukan efektif', 'Energi aktivasi', 'Orientasi tumbukan', 'Frekuensi tumbukan']),
+            E('Tumbukan efektif', 'tumbukan', ['effective collision'],
+                'Tumbukan yang menghasilkan reaksi karena energinya cukup dan orientasinya tepat.',
+                'Tidak semua tumbukan menghasilkan produk. Faktor-faktor laju reaksi bekerja dengan cara menambah jumlah tumbukan efektif per satuan waktu.',
+                'Syarat: E ≥ Ea dan orientasi tepat',
+                ['collide', { mode: 'eff', cap: 'Sisi reaktif saling berhadapan dan energinya cukup: terbentuk produk.' }],
+                ['Tumbukan tidak efektif', 'Teori tumbukan', 'Energi aktivasi']),
+            E('Tumbukan tidak efektif', 'tumbukan', [],
+                'Tumbukan yang tidak menghasilkan reaksi; partikel hanya memantul.',
+                'Penyebabnya energi partikel kurang dari energi aktivasi atau orientasinya tidak tepat.',
+                '',
+                ['collide', { mode: 'ineff', cap: 'Orientasi salah atau energi kurang: partikel memantul.' }],
+                ['Tumbukan efektif', 'Orientasi tumbukan', 'Energi aktivasi']),
+            E('Orientasi tumbukan', 'tumbukan', ['arah tumbukan'],
+                'Arah atau posisi partikel ketika bertumbukan.',
+                'Partikel harus bertumbukan pada bagian yang tepat agar ikatan dapat putus dan terbentuk ikatan baru. Tumbukan dengan orientasi salah tidak menghasilkan produk walaupun energinya besar.',
+                '',
+                ['collide', { mode: 'orient', cap: 'Bandingkan orientasi tepat dan orientasi salah.' }],
+                ['Tumbukan efektif', 'Teori tumbukan']),
+            E('Frekuensi tumbukan', 'tumbukan', ['jumlah tumbukan'],
+                'Jumlah tumbukan antarpartikel per satuan waktu.',
+                'Frekuensi tumbukan naik jika konsentrasi dinaikkan, luas permukaan diperbesar, atau suhu dinaikkan.',
+                '',
+                ['compare', { mode: 'conc', cap: 'Lebih banyak partikel, lebih sering bertumbukan.' }],
+                ['Teori tumbukan', 'Pengaruh konsentrasi', 'Luas permukaan bidang sentuh']),
+            E('Energi aktivasi', 'tumbukan', ['Ea', 'activation energy'],
+                'Energi minimum yang harus dimiliki partikel agar tumbukannya menghasilkan reaksi.',
+                'Energi aktivasi dapat dibayangkan sebagai "bukit" yang harus dilewati. Makin rendah energi aktivasi, makin banyak partikel yang mampu melewatinya sehingga reaksi makin cepat.',
+                'Ea = E(kompleks teraktivasi) − E(reaktan)',
+                ['energy', { hl: 'ea', cap: 'Ea adalah tinggi "bukit" diukur dari tingkat energi reaktan.' }],
+                ['Kompleks teraktivasi', 'Katalis', 'Distribusi Maxwell-Boltzmann', 'Diagram energi']),
+            E('Kompleks teraktivasi', 'tumbukan', ['kompleks aktif', 'activated complex'],
+                'Susunan atom sementara berenergi paling tinggi ketika ikatan lama sebagian putus dan ikatan baru sebagian terbentuk.',
+                'Kompleks teraktivasi berada di puncak diagram energi. Ia sangat tidak stabil sehingga tidak dapat diisolasi, lalu segera berubah menjadi produk atau kembali menjadi reaktan.',
+                '',
+                ['energy', { hl: 'ts', cap: 'Titik puncak kurva adalah kompleks teraktivasi.' }],
+                ['Keadaan transisi', 'Energi aktivasi', 'Diagram energi']),
+            E('Keadaan transisi', 'tumbukan', ['transition state'],
+                'Kondisi pada puncak diagram energi saat terbentuk kompleks teraktivasi.',
+                'Istilah ini sering dipakai bergantian dengan kompleks teraktivasi.',
+                '',
+                ['energy', { hl: 'ts', cap: 'Keadaan transisi berada di puncak energi.' }],
+                ['Kompleks teraktivasi', 'Energi aktivasi']),
+            E('Diagram energi', 'tumbukan', ['profil energi', 'diagram tingkat energi'],
+                'Grafik yang menunjukkan perubahan energi selama reaksi berlangsung.',
+                'Dari diagram ini dapat dibaca energi reaktan, energi produk, energi aktivasi, kompleks teraktivasi, dan perubahan entalpi (ΔH).',
+                '',
+                ['energy', { hl: 'all', cap: 'Bagian-bagian diagram energi reaksi eksoterm.' }],
+                ['Energi aktivasi', 'Kompleks teraktivasi', 'Perubahan entalpi']),
+            E('Energi kinetik', 'tumbukan', ['Ek'],
+                'Energi yang dimiliki partikel karena bergerak.',
+                'Makin tinggi suhu, makin besar energi kinetik rata-rata partikel, sehingga partikel bergerak lebih cepat dan lebih banyak yang energinya melebihi energi aktivasi.',
+                'Ek = ½ m v²',
+                ['compare', { mode: 'temp', cap: 'Partikel pada suhu tinggi bergerak lebih cepat.' }],
+                ['Pengaruh suhu', 'Distribusi Maxwell-Boltzmann']),
+            E('Distribusi Maxwell-Boltzmann', 'tumbukan', ['distribusi energi'],
+                'Grafik sebaran energi kinetik partikel pada suhu tertentu.',
+                'Hanya partikel di sebelah kanan garis Ea yang cukup energinya untuk bereaksi. Saat suhu naik, kurva melebar ke kanan sehingga daerah di atas Ea bertambah luas.',
+                '',
+                ['mb', { two: true, cap: 'Daerah berarsir: partikel dengan energi ≥ Ea. Suhu tinggi, daerahnya lebih luas.' }],
+                ['Energi aktivasi', 'Pengaruh suhu', 'Energi kinetik']),
+            E('Reaksi eksoterm', 'tumbukan', ['eksotermik'],
+                'Reaksi yang melepaskan kalor ke lingkungan; energi produk lebih rendah dari reaktan.',
+                'Pada reaksi eksoterm, ΔH bernilai negatif dan suhu lingkungan naik.',
+                'ΔH < 0',
+                ['energy', { hl: 'dh', exo: true, cap: 'Produk lebih rendah dari reaktan: kalor dilepas.' }],
+                ['Reaksi endoterm', 'Perubahan entalpi', 'Diagram energi']),
+            E('Reaksi endoterm', 'tumbukan', ['endotermik'],
+                'Reaksi yang menyerap kalor dari lingkungan; energi produk lebih tinggi dari reaktan.',
+                'Pada reaksi endoterm, ΔH bernilai positif dan suhu lingkungan turun.',
+                'ΔH > 0',
+                ['energy', { hl: 'dh', exo: false, cap: 'Produk lebih tinggi dari reaktan: kalor diserap.' }],
+                ['Reaksi eksoterm', 'Perubahan entalpi']),
+            E('Perubahan entalpi', 'tumbukan', ['ΔH', 'entalpi reaksi'],
+                'Selisih energi antara produk dan reaktan.',
+                'Katalis tidak mengubah ΔH karena tingkat energi reaktan dan produk tetap; katalis hanya menurunkan puncaknya.',
+                'ΔH = H(produk) − H(reaktan)',
+                ['energy', { hl: 'dh', exo: true, cap: 'ΔH diukur dari tingkat reaktan ke tingkat produk.' }],
+                ['Reaksi eksoterm', 'Reaksi endoterm', 'Katalis']),
+            E('Pemutusan ikatan', 'tumbukan', [],
+                'Proses putusnya ikatan antaratom pada reaktan; memerlukan energi.',
+                'Energi untuk memutus ikatan berasal dari energi tumbukan. Inilah sebabnya partikel harus memiliki energi yang cukup.',
+                '',
+                ['bond', { hl: 'break', cap: 'Garis merah: ikatan yang putus.' }],
+                ['Pembentukan ikatan', 'Energi aktivasi', 'Reaksi kimia']),
+            E('Pembentukan ikatan', 'tumbukan', [],
+                'Proses terbentuknya ikatan baru pada produk; melepaskan energi.',
+                'Selisih energi pemutusan dan pembentukan ikatan menentukan apakah reaksi eksoterm atau endoterm.',
+                '',
+                ['bond', { hl: 'form', cap: 'Garis hijau: ikatan yang terbentuk.' }],
+                ['Pemutusan ikatan', 'Perubahan entalpi']),
+            E('Partikel', 'tumbukan', ['atom', 'ion', 'molekul'],
+                'Satuan terkecil penyusun zat: atom, ion, atau molekul.',
+                'Partikel selalu bergerak acak. Dalam teori tumbukan, partikel reaktanlah yang saling bertumbukan.',
+                '',
+                ['collide', { mode: 'eff', cap: 'Model partikel sederhana dua molekul.' }],
+                ['Teori tumbukan', 'Submikroskopik']),
+
+            /* ---------------- FAKTOR LAJU REAKSI ---------------- */
+            E('Faktor-faktor laju reaksi', 'faktor', ['faktor yang mempengaruhi laju reaksi', 'faktor yang memengaruhi laju reaksi'],
+                'Hal-hal yang dapat mengubah cepat lambatnya reaksi: konsentrasi, luas permukaan, suhu, dan katalis.',
+                'Selain empat faktor utama itu, sifat zat pereaksi, pengadukan, dan tekanan (untuk gas) juga berpengaruh. Semua faktor bekerja dengan mengubah jumlah tumbukan efektif.',
+                '',
+                ['factors', { cap: 'Empat faktor utama yang diuji di lab virtual.' }],
+                ['Pengaruh konsentrasi', 'Luas permukaan bidang sentuh', 'Pengaruh suhu', 'Katalis'],
+                'Keempat faktor ini masing-masing punya percobaan sendiri di laboratorium virtual EduKinetika.'),
+            E('Pengaruh konsentrasi', 'faktor', ['konsentrasi dan laju'],
+                'Makin besar konsentrasi pereaksi, makin cepat reaksinya.',
+                'Konsentrasi besar berarti jumlah partikel dalam volume yang sama lebih banyak, sehingga tumbukan lebih sering terjadi.',
+                'Contoh: CH₃COOH 3 M bereaksi lebih cepat dengan NaHCO₃ daripada CH₃COOH 1 M.',
+                ['compare', { mode: 'conc', cap: 'Kiri: konsentrasi rendah. Kanan: konsentrasi tinggi.' }],
+                ['Konsentrasi', 'Frekuensi tumbukan', 'Orde reaksi'],
+                'Percobaan konsentrasi di lab virtual memakai CH₃COOH 1,0 M, 2,0 M, dan 3,0 M dengan NaHCO₃.'),
+            E('Luas permukaan bidang sentuh', 'faktor', ['luas permukaan', 'ukuran partikel'],
+                'Makin luas permukaan zat padat yang bersentuhan, makin cepat reaksinya.',
+                'Zat padat hanya bereaksi di permukaannya. Jika dihaluskan, luas permukaan total bertambah sehingga lebih banyak partikel yang dapat bertumbukan.',
+                'serbuk > kepingan > bongkahan (laju)',
+                ['solid', { hl: -1, cap: 'Kubus yang sama dipotong: luas permukaan total bertambah.' }],
+                ['Bongkahan', 'Kepingan', 'Serbuk', 'Kalsium karbonat'],
+                'Percobaan luas permukaan di lab virtual memakai CaCO₃ bentuk bongkahan, kepingan, dan serbuk dengan HCl 1,0 M.'),
+            E('Bongkahan', 'faktor', ['butiran besar'],
+                'Bentuk zat padat berukuran besar dengan luas permukaan paling kecil.',
+                'Pada massa yang sama, bongkahan bereaksi paling lambat karena permukaan yang bersentuhan dengan larutan paling sedikit.',
+                '',
+                ['solid', { hl: 0, cap: 'Bongkahan: satu potongan besar.' }],
+                ['Kepingan', 'Serbuk', 'Luas permukaan bidang sentuh']),
+            E('Kepingan', 'faktor', ['keping', 'butiran'],
+                'Bentuk zat padat berukuran sedang, hasil pemecahan bongkahan.',
+                'Luas permukaannya lebih besar dari bongkahan tetapi lebih kecil dari serbuk.',
+                '',
+                ['solid', { hl: 1, cap: 'Kepingan: bongkahan dipecah menjadi beberapa bagian.' }],
+                ['Bongkahan', 'Serbuk', 'Luas permukaan bidang sentuh']),
+            E('Serbuk', 'faktor', ['bubuk'],
+                'Bentuk zat padat berukuran sangat kecil dengan luas permukaan terbesar.',
+                'Pada massa yang sama, serbuk bereaksi paling cepat.',
+                '',
+                ['solid', { hl: 2, cap: 'Serbuk: banyak potongan kecil, permukaan total paling luas.' }],
+                ['Bongkahan', 'Kepingan', 'Luas permukaan bidang sentuh']),
+            E('Pengaruh suhu', 'faktor', ['suhu dan laju'],
+                'Makin tinggi suhu, makin cepat reaksinya.',
+                'Kenaikan suhu menambah energi kinetik partikel. Akibatnya tumbukan lebih sering dan, yang lebih penting, lebih banyak partikel yang energinya melebihi energi aktivasi.',
+                'v₂ = v₁ × 2^(ΔT/10)   dan   t₂ = t₁ × (½)^(ΔT/10)',
+                ['compare', { mode: 'temp', cap: 'Kiri: suhu rendah. Kanan: suhu tinggi.' }],
+                ['Aturan kenaikan suhu 10 °C', 'Energi kinetik', 'Distribusi Maxwell-Boltzmann', 'Persamaan Arrhenius'],
+                'Percobaan suhu di lab virtual memakai pita Mg dan HCl 1,0 M pada 5 °C, 25 °C, dan 45 °C.'),
+            E('Aturan kenaikan suhu 10 °C', 'faktor', ['kenaikan suhu 10 derajat', 'laju naik 2 kali'],
+                'Aturan praktis: setiap kenaikan suhu 10 °C, laju reaksi menjadi sekitar 2 kali lipat.',
+                'Aturan ini hanya perkiraan untuk banyak reaksi pada suhu sekitar suhu kamar. Soal biasanya menyebutkan faktor kelipatannya (2 kali, 3 kali, dan seterusnya).',
+                'v₂ = v₁ × n^(ΔT/10)<br>Contoh: 25 °C → 45 °C (ΔT = 20) dengan n = 2 → laju 2² = 4 kali, waktu menjadi ¼ kali',
+                ['doubling', { cap: 'Setiap naik 10 °C, laju 2× dan waktu ½×.' }],
+                ['Pengaruh suhu', 'Persamaan Arrhenius']),
+            E('Katalis', 'faktor', ['katalisator', 'catalyst'],
+                'Zat yang mempercepat reaksi tanpa ikut habis bereaksi.',
+                'Katalis menyediakan jalur reaksi lain dengan energi aktivasi lebih rendah. Katalis ikut bereaksi di tahap tertentu, tetapi terbentuk kembali di akhir reaksi. Katalis tidak mengubah ΔH.',
+                'Contoh: 2H₂O₂(aq) → 2H₂O(l) + O₂(g) dipercepat oleh MnO₂',
+                ['energy', { cat: true, hl: 'cat', cap: 'Garis putus-putus: jalur dengan katalis, puncaknya lebih rendah.' }],
+                ['Energi aktivasi', 'Katalis homogen', 'Katalis heterogen', 'Enzim', 'Mangan dioksida'],
+                'Percobaan katalis di lab virtual membandingkan penguraian H₂O₂ tanpa katalis dan dengan MnO₂, KI, atau FeCl₃.'),
+            E('Katalis homogen', 'faktor', [],
+                'Katalis yang fasenya sama dengan pereaksi.',
+                'Contohnya ion I⁻ dari KI atau ion Fe³⁺ dari FeCl₃ yang larut bersama H₂O₂ dalam air.',
+                'H₂O₂(aq) dengan katalis KI(aq)',
+                ['compare', { mode: 'cat', cap: 'Kanan: partikel katalis (hijau) tersebar di dalam larutan.' }],
+                ['Katalis', 'Katalis heterogen', 'Kalium iodida', 'Besi(III) klorida']),
+            E('Katalis heterogen', 'faktor', ['katalis kontak'],
+                'Katalis yang fasenya berbeda dengan pereaksi.',
+                'Biasanya berupa padatan, dan reaksi terjadi di permukaannya setelah partikel pereaksi menempel (teradsorpsi). Contohnya MnO₂ padat pada larutan H₂O₂.',
+                'H₂O₂(aq) dengan katalis MnO₂(s)',
+                ['energy', { cat: true, hl: 'cat', cap: 'Katalis heterogen juga bekerja dengan menurunkan Ea.' }],
+                ['Katalis', 'Katalis homogen', 'Adsorpsi', 'Mangan dioksida']),
+            E('Adsorpsi', 'faktor', [],
+                'Menempelnya partikel pada permukaan suatu zat padat.',
+                'Pada katalis heterogen, partikel pereaksi teradsorpsi di permukaan katalis sehingga ikatannya melemah dan lebih mudah bereaksi.',
+                '',
+                ['compare', { mode: 'cat', cap: 'Partikel bereaksi setelah menyentuh katalis.' }],
+                ['Katalis heterogen']),
+            E('Biokatalis', 'faktor', ['katalis biologis'],
+                'Katalis yang berasal dari makhluk hidup, yaitu enzim.',
+                'Biokatalis bekerja pada suhu tubuh dan sangat spesifik untuk reaksi tertentu.',
+                '',
+                ['enzyme', { cap: 'Enzim bekerja seperti gembok dan kunci.' }],
+                ['Enzim', 'Katalis']),
+            E('Enzim', 'faktor', ['katalase'],
+                'Protein yang berfungsi sebagai katalis di dalam tubuh makhluk hidup.',
+                'Setiap enzim hanya cocok dengan substrat tertentu (model gembok dan kunci). Contohnya enzim katalase di hati yang menguraikan H₂O₂ menjadi air dan oksigen.',
+                '2H₂O₂ → 2H₂O + O₂ (dikatalisis katalase)',
+                ['enzyme', { cap: 'Substrat masuk ke sisi aktif enzim, lalu diubah menjadi produk.' }],
+                ['Biokatalis', 'Katalis', 'Hidrogen peroksida']),
+            E('Autokatalis', 'faktor', [],
+                'Reaksi yang produknya sendiri berperan sebagai katalis.',
+                'Awalnya reaksi berjalan lambat, lalu makin cepat setelah produk (katalis) terbentuk. Contohnya ion Mn²⁺ pada reaksi KMnO₄ dengan asam oksalat.',
+                '',
+                ['graph', { mode: 'auto', cap: 'Kurva produk: lambat di awal, lalu cepat, lalu melambat.' }],
+                ['Katalis']),
+            E('Inhibitor', 'faktor', ['penghambat', 'katalis negatif'],
+                'Zat yang memperlambat atau menghambat reaksi.',
+                'Inhibitor mengurangi jumlah tumbukan efektif, misalnya dengan mengikat pereaksi atau menutup katalis. Contohnya bahan pengawet makanan yang memperlambat pembusukan.',
+                '',
+                ['compare', { mode: 'inhib', cap: 'Kanan: partikel inhibitor (abu-abu) menangkap pereaksi.' }],
+                ['Katalis']),
+            E('Jalur reaksi alternatif', 'faktor', ['mekanisme alternatif'],
+                'Rute reaksi lain yang disediakan katalis dengan energi aktivasi lebih rendah.',
+                'Reaktan dan produknya tetap sama, hanya "jalannya" berbeda, seperti mencari jalan pintas yang tidak perlu mendaki bukit setinggi sebelumnya.',
+                '',
+                ['energy', { cat: true, hl: 'cat', cap: 'Jalur dengan katalis (putus-putus) lebih rendah.' }],
+                ['Katalis', 'Energi aktivasi']),
+            E('Pengadukan', 'faktor', ['diaduk'],
+                'Mencampur larutan agar pereaksi lebih cepat bertemu.',
+                'Pengadukan membuat partikel pereaksi tersebar merata dan lebih sering bersentuhan dengan permukaan zat padat.',
+                '',
+                ['compare', { mode: 'stir', cap: 'Kanan: larutan diaduk, partikel berputar dan lebih sering bertemu.' }],
+                ['Frekuensi tumbukan', 'Luas permukaan bidang sentuh']),
+            E('Tekanan', 'faktor', ['tekanan gas'],
+                'Untuk reaksi gas, menaikkan tekanan mempercepat reaksi.',
+                'Tekanan dinaikkan dengan memperkecil volume, sehingga partikel gas lebih rapat (konsentrasinya naik) dan lebih sering bertumbukan.',
+                '',
+                ['compare', { mode: 'press', cap: 'Kanan: volume lebih kecil, partikel lebih rapat.' }],
+                ['Pengaruh konsentrasi', 'Frekuensi tumbukan']),
+            E('Sifat zat pereaksi', 'faktor', ['kereaktifan'],
+                'Jenis zat memengaruhi laju reaksi karena kereaktifannya berbeda.',
+                'Contohnya natrium bereaksi dengan air jauh lebih cepat daripada magnesium. Reaksi antarion dalam larutan umumnya cepat, sedangkan reaksi yang memutus banyak ikatan kovalen umumnya lebih lambat.',
+                '',
+                ['factors', { cap: 'Selain empat faktor utama, jenis zat juga menentukan.' }],
+                ['Faktor-faktor laju reaksi']),
+
+            /* ---------------- PERSAMAAN LAJU & ORDE ---------------- */
+            E('Persamaan laju', 'persamaan', ['hukum laju', 'rate law', 'persamaan laju reaksi'],
+                'Persamaan yang menghubungkan laju reaksi dengan konsentrasi pereaksi.',
+                'Untuk reaksi A + B → produk, laju sebanding dengan konsentrasi pereaksi yang dipangkatkan orde masing-masing. Pangkat x dan y ditentukan dari data percobaan, bukan dari koefisien reaksi.',
+                'v = k [A]ˣ [B]ʸ',
+                ['formula', { f: 'v = <b class="c1">k</b> [A]<sup class="c2">x</sup> [B]<sup class="c3">y</sup>', legend: [['v', 'laju reaksi (M s⁻¹)'], ['k', 'tetapan laju'], ['[A], [B]', 'konsentrasi pereaksi (M)'], ['x, y', 'orde terhadap A dan B'], ['x + y', 'orde reaksi total']] }],
+                ['Tetapan laju', 'Orde reaksi', 'Metode laju awal', 'Orde reaksi total']),
+            E('Tetapan laju', 'persamaan', ['konstanta laju', 'k', 'rate constant'],
+                'Bilangan k dalam persamaan laju yang besarnya khas untuk setiap reaksi.',
+                'Nilai k bergantung pada suhu dan katalis, tetapi tidak bergantung pada konsentrasi. Makin besar k, makin cepat reaksinya.',
+                'k = v / ([A]ˣ[B]ʸ)',
+                ['arrhenius', { cap: 'Nilai k naik tajam ketika suhu dinaikkan.' }],
+                ['Persamaan laju', 'Satuan tetapan laju', 'Persamaan Arrhenius']),
+            E('Orde reaksi', 'persamaan', ['tingkat reaksi', 'order'],
+                'Pangkat konsentrasi pereaksi dalam persamaan laju.',
+                'Orde menunjukkan seberapa besar pengaruh konsentrasi suatu pereaksi terhadap laju. Orde ditentukan melalui percobaan dan dapat bernilai 0, 1, 2, bahkan pecahan.',
+                'v = k[A]ˣ → x adalah orde terhadap A',
+                ['order', { n: -1, cap: 'Hubungan laju dengan konsentrasi untuk orde 0, 1, dan 2.' }],
+                ['Orde nol', 'Orde satu', 'Orde dua', 'Orde reaksi total', 'Metode laju awal']),
+            E('Orde reaksi total', 'persamaan', ['orde total', 'orde keseluruhan'],
+                'Jumlah semua orde pereaksi dalam persamaan laju.',
+                'Jika v = k[A]ˣ[B]ʸ, maka orde total adalah x + y.',
+                'Contoh: v = k[NO]²[H₂] → orde total = 2 + 1 = 3',
+                ['ratetable', { cap: 'Orde tiap pereaksi dicari dari data, lalu dijumlahkan.' }],
+                ['Orde reaksi', 'Persamaan laju', 'Metode laju awal']),
+            E('Orde nol', 'persamaan', ['orde 0'],
+                'Laju reaksi tidak bergantung pada konsentrasi pereaksi tersebut.',
+                'Berapa pun konsentrasinya dinaikkan, lajunya tetap. Grafik laju terhadap konsentrasi berupa garis mendatar.',
+                'v = k[A]⁰ = k',
+                ['order', { n: 0, cap: 'Orde nol: garis mendatar.' }],
+                ['Orde satu', 'Orde dua', 'Orde reaksi']),
+            E('Orde satu', 'persamaan', ['orde 1'],
+                'Laju reaksi berbanding lurus dengan konsentrasi pereaksi.',
+                'Jika konsentrasi dinaikkan 2 kali, laju naik 2 kali. Grafik laju terhadap konsentrasi berupa garis lurus melalui titik nol.',
+                'v = k[A]',
+                ['order', { n: 1, cap: 'Orde satu: garis lurus.' }],
+                ['Orde nol', 'Orde dua', 'Waktu paruh']),
+            E('Orde dua', 'persamaan', ['orde 2'],
+                'Laju reaksi sebanding dengan kuadrat konsentrasi pereaksi.',
+                'Jika konsentrasi dinaikkan 2 kali, laju naik 2² = 4 kali. Grafiknya berupa kurva parabola yang makin curam.',
+                'v = k[A]²',
+                ['order', { n: 2, cap: 'Orde dua: kurva parabola.' }],
+                ['Orde nol', 'Orde satu', 'Orde reaksi']),
+            E('Laju awal', 'persamaan', ['initial rate'],
+                'Laju sesaat tepat ketika reaksi dimulai (t = 0).',
+                'Laju awal dipakai untuk menentukan orde karena konsentrasi awal diketahui dengan pasti dan belum ada produk yang mengganggu.',
+                '',
+                ['graph', { mode: 'initial', cap: 'Garis singgung di t = 0 menunjukkan laju awal.' }],
+                ['Metode laju awal', 'Laju sesaat']),
+            E('Metode laju awal', 'persamaan', ['metode laju reaksi awal'],
+                'Cara menentukan orde dengan membandingkan laju awal dari beberapa percobaan.',
+                'Pilih dua percobaan yang konsentrasi pereaksi lainnya tetap. Perbandingan laju sama dengan perbandingan konsentrasi dipangkatkan ordenya.',
+                '(v₂/v₁) = ([A]₂/[A]₁)ˣ   dengan [B] tetap',
+                ['ratetable', { cap: 'Bandingkan dua percobaan yang hanya berbeda satu konsentrasi.' }],
+                ['Orde reaksi', 'Laju awal', 'Data eksperimen']),
+            E('Data eksperimen', 'persamaan', ['data percobaan', 'tabel data'],
+                'Kumpulan hasil pengukuran konsentrasi dan laju dari beberapa percobaan.',
+                'Orde reaksi dan tetapan laju tidak dapat ditebak dari persamaan reaksi; keduanya harus dihitung dari data eksperimen.',
+                '',
+                ['ratetable', { cap: 'Contoh tabel data untuk mencari orde.' }],
+                ['Metode laju awal', 'Orde reaksi'],
+                'Tabel data otomatis di lab virtual bisa langsung dipakai untuk mengisi LKPD.'),
+            E('Satuan tetapan laju', 'persamaan', ['satuan k'],
+                'Satuan k bergantung pada orde reaksi totalnya.',
+                'Untuk orde total n, satuan k adalah M^(1−n) s⁻¹.',
+                'orde 0: M s⁻¹ · orde 1: s⁻¹ · orde 2: M⁻¹ s⁻¹ · orde 3: M⁻² s⁻¹',
+                ['formula', { f: 'k = <b>M<sup>1−n</sup> s⁻¹</b>', legend: [['orde 0', 'M s⁻¹'], ['orde 1', 's⁻¹'], ['orde 2', 'M⁻¹ s⁻¹'], ['orde 3', 'M⁻² s⁻¹']] }],
+                ['Tetapan laju', 'Orde reaksi total']),
+            E('Persamaan Arrhenius', 'persamaan', ['Arrhenius'],
+                'Persamaan yang menghubungkan tetapan laju dengan suhu dan energi aktivasi.',
+                'Makin tinggi suhu atau makin rendah energi aktivasi, makin besar nilai k. Ini menjelaskan secara kuantitatif pengaruh suhu dan katalis.',
+                'k = A · e^(−Ea/RT)',
+                ['arrhenius', { cap: 'k naik secara eksponensial terhadap suhu.' }],
+                ['Tetapan laju', 'Energi aktivasi', 'Faktor frekuensi', 'Pengaruh suhu']),
+            E('Faktor frekuensi', 'persamaan', ['A', 'faktor pra-eksponensial'],
+                'Konstanta A dalam persamaan Arrhenius yang berkaitan dengan frekuensi dan orientasi tumbukan.',
+                'Nilai A mencerminkan seberapa sering partikel bertumbukan dengan orientasi yang tepat.',
+                'k = A · e^(−Ea/RT)',
+                ['formula', { f: 'k = <b class="c1">A</b> · e<sup>−Ea/RT</sup>', legend: [['A', 'faktor frekuensi'], ['Ea', 'energi aktivasi (J/mol)'], ['R', '8,314 J mol⁻¹ K⁻¹'], ['T', 'suhu (K)']] }],
+                ['Persamaan Arrhenius', 'Orientasi tumbukan']),
+            E('Waktu paruh', 'persamaan', ['t½', 'half-life'],
+                'Waktu yang diperlukan agar konsentrasi pereaksi tinggal separuhnya.',
+                'Untuk reaksi orde satu, waktu paruh selalu sama berapa pun konsentrasi awalnya.',
+                't½ = 0,693 / k (orde satu)',
+                ['halflife', { cap: 'Setiap satu waktu paruh, konsentrasi tinggal setengahnya.' }],
+                ['Orde satu', 'Tetapan laju']),
+            E('Mekanisme reaksi', 'persamaan', ['tahap reaksi'],
+                'Rangkaian tahap-tahap reaksi elementer yang menyusun reaksi keseluruhan.',
+                'Banyak reaksi tidak terjadi dalam satu tumbukan, melainkan melalui beberapa tahap. Laju keseluruhan ditentukan oleh tahap yang paling lambat.',
+                'Tahap 1 (lambat): NO₂ + NO₂ → NO₃ + NO<br>Tahap 2 (cepat): NO₃ + CO → NO₂ + CO₂<br>Total: NO₂ + CO → NO + CO₂',
+                ['mechanism', { hl: 'all', cap: 'Reaksi NO₂ + CO berlangsung dalam dua tahap.' }],
+                ['Tahap penentu laju', 'Reaksi elementer', 'Zat antara']),
+            E('Tahap penentu laju', 'persamaan', ['tahap lambat', 'rate determining step'],
+                'Tahap paling lambat dalam mekanisme reaksi yang menentukan laju keseluruhan.',
+                'Persamaan laju reaksi keseluruhan mengikuti tahap lambat ini, seperti antrean yang kecepatannya ditentukan oleh loket paling lambat.',
+                'Tahap lambat NO₂ + NO₂ → … maka v = k[NO₂]²',
+                ['mechanism', { hl: 'slow', cap: 'Tahap lambat menentukan persamaan laju.' }],
+                ['Mekanisme reaksi', 'Persamaan laju']),
+            E('Reaksi elementer', 'persamaan', ['tahap elementer'],
+                'Reaksi yang berlangsung dalam satu tahap tumbukan.',
+                'Hanya untuk reaksi elementer, orde reaksi sama dengan koefisien pereaksinya.',
+                'Untuk tahap elementer 2NO₂ → …, v = k[NO₂]²',
+                ['mechanism', { hl: 'slow', cap: 'Setiap tahap dalam mekanisme adalah reaksi elementer.' }],
+                ['Mekanisme reaksi', 'Molekularitas']),
+            E('Molekularitas', 'persamaan', ['unimolekuler', 'bimolekuler'],
+                'Jumlah partikel yang bertumbukan dalam satu tahap reaksi elementer.',
+                'Unimolekuler melibatkan 1 partikel, bimolekuler 2 partikel, dan termolekuler 3 partikel (jarang terjadi).',
+                '',
+                ['collide', { mode: 'eff', cap: 'Tumbukan dua partikel: bimolekuler.' }],
+                ['Reaksi elementer', 'Mekanisme reaksi']),
+            E('Zat antara', 'persamaan', ['intermediet', 'intermediate'],
+                'Zat yang terbentuk pada satu tahap lalu habis dipakai pada tahap berikutnya.',
+                'Zat antara tidak muncul dalam persamaan reaksi keseluruhan. Bedanya dengan katalis: katalis ada di awal dan terbentuk lagi di akhir, sedangkan zat antara muncul di tengah lalu habis.',
+                'Pada mekanisme NO₂ + CO, NO₃ adalah zat antara.',
+                ['mechanism', { hl: 'inter', cap: 'NO₃ terbentuk di tahap 1 dan habis di tahap 2.' }],
+                ['Mekanisme reaksi', 'Katalis']),
+
+            /* ---------------- ZAT KIMIA (BAHAN PRAKTIKUM) ---------------- */
+            E('Kalsium karbonat', 'bahan', ['CaCO3', 'batu kapur', 'marmer'],
+                'Garam padat putih, penyusun batu kapur dan marmer.',
+                'CaCO₃ bereaksi dengan asam menghasilkan gas CO₂. Tersedia dalam bentuk bongkahan, kepingan, dan serbuk sehingga cocok untuk menguji luas permukaan.',
+                'CaCO₃(s) + 2HCl(aq) → CaCl₂(aq) + H₂O(l) + CO₂(g)',
+                ['chem', { f: 'CaCO₃', n: 'Kalsium karbonat', w: 'padat (s)', j: 'garam', el: [['Ca', 1], ['C', 1], ['O', 3]], role: 'Pereaksi padat pada percobaan luas permukaan.' }],
+                ['Asam klorida', 'Luas permukaan bidang sentuh', 'Karbon dioksida']),
+            E('Asam klorida', 'bahan', ['HCl', 'asam lambung'],
+                'Larutan asam kuat hasil pelarutan gas HCl dalam air.',
+                'HCl bereaksi dengan logam (seperti Mg) menghasilkan gas H₂, dan dengan karbonat menghasilkan gas CO₂.',
+                'Mg(s) + 2HCl(aq) → MgCl₂(aq) + H₂(g)',
+                ['chem', { f: 'HCl', n: 'Asam klorida', w: 'larutan (aq)', j: 'asam', el: [['H', 1], ['Cl', 1]], role: 'Pereaksi larutan pada percobaan luas permukaan dan suhu.' }],
+                ['Magnesium', 'Kalsium karbonat', 'Molaritas']),
+            E('Magnesium', 'bahan', ['Mg', 'pita magnesium'],
+                'Logam ringan berwarna perak, biasanya berbentuk pita di laboratorium.',
+                'Magnesium bereaksi dengan asam menghasilkan gas hidrogen. Dipakai untuk menguji pengaruh suhu.',
+                'Mg(s) + 2HCl(aq) → MgCl₂(aq) + H₂(g)',
+                ['chem', { f: 'Mg', n: 'Magnesium', w: 'padat (s)', j: 'logam', el: [['Mg', 1]], role: 'Pereaksi padat (pita 0,10 g) pada percobaan suhu.' }],
+                ['Asam klorida', 'Gas hidrogen', 'Pengaruh suhu']),
+            E('Natrium bikarbonat', 'bahan', ['NaHCO3', 'soda kue', 'natrium hidrogen karbonat'],
+                'Garam berbentuk serbuk putih yang dikenal sebagai soda kue.',
+                'Bereaksi dengan asam menghasilkan gas CO₂ yang membuat adonan kue mengembang.',
+                'NaHCO₃(s) + CH₃COOH(aq) → CH₃COONa(aq) + H₂O(l) + CO₂(g)',
+                ['chem', { f: 'NaHCO₃', n: 'Natrium bikarbonat', w: 'padat (s)', j: 'garam', el: [['Na', 1], ['H', 1], ['C', 1], ['O', 3]], role: 'Pereaksi padat pada percobaan konsentrasi.' }],
+                ['Asam asetat', 'Karbon dioksida', 'Pengaruh konsentrasi']),
+            E('Asam asetat', 'bahan', ['CH3COOH', 'asam cuka', 'cuka'],
+                'Asam lemah yang terdapat dalam cuka dapur.',
+                'Dipakai dengan berbagai konsentrasi untuk menguji pengaruh konsentrasi terhadap laju reaksi.',
+                'CH₃COOH(aq) + NaHCO₃(s) → CH₃COONa(aq) + H₂O(l) + CO₂(g)',
+                ['chem', { f: 'CH₃COOH', n: 'Asam asetat', w: 'larutan (aq)', j: 'asam', el: [['C', 2], ['H', 4], ['O', 2]], role: 'Larutan 1,0 M, 2,0 M, dan 3,0 M pada percobaan konsentrasi.' }],
+                ['Natrium bikarbonat', 'Pengaruh konsentrasi', 'Molaritas']),
+            E('Hidrogen peroksida', 'bahan', ['H2O2', 'peroksida'],
+                'Senyawa yang mudah terurai menjadi air dan gas oksigen.',
+                'Tanpa katalis penguraiannya sangat lambat. Dengan katalis seperti MnO₂, gelembung O₂ muncul dengan cepat.',
+                '2H₂O₂(aq) → 2H₂O(l) + O₂(g)',
+                ['chem', { f: 'H₂O₂', n: 'Hidrogen peroksida', w: 'larutan (aq)', j: 'oksidator', el: [['H', 2], ['O', 2]], role: 'Larutan 5% pada percobaan katalis.' }],
+                ['Katalis', 'Mangan dioksida', 'Gas oksigen', 'Enzim']),
+            E('Mangan dioksida', 'bahan', ['MnO2', 'mangan(IV) oksida'],
+                'Padatan hitam yang dipakai sebagai katalis heterogen penguraian H₂O₂.',
+                'MnO₂ tidak habis setelah reaksi; massanya tetap dan dapat dipakai lagi.',
+                '2H₂O₂(aq) —MnO₂→ 2H₂O(l) + O₂(g)',
+                ['chem', { f: 'MnO₂', n: 'Mangan dioksida', w: 'padat (s)', j: 'katalis', el: [['Mn', 1], ['O', 2]], role: 'Pilihan katalis pada percobaan katalis.' }],
+                ['Katalis heterogen', 'Hidrogen peroksida', 'Katalis']),
+            E('Kalium iodida', 'bahan', ['KI'],
+                'Garam yang larut dalam air; ion I⁻ berperan sebagai katalis homogen penguraian H₂O₂.',
+                'Karena larut bersama H₂O₂, katalis ini tersebar merata di seluruh larutan.',
+                '2H₂O₂(aq) —KI→ 2H₂O(l) + O₂(g)',
+                ['chem', { f: 'KI', n: 'Kalium iodida', w: 'larutan (aq)', j: 'katalis', el: [['K', 1], ['I', 1]], role: 'Pilihan katalis pada percobaan katalis.' }],
+                ['Katalis homogen', 'Hidrogen peroksida']),
+            E('Besi(III) klorida', 'bahan', ['FeCl3', 'feri klorida'],
+                'Garam berwarna kuning kecokelatan; ion Fe³⁺ dapat mengkatalisis penguraian H₂O₂.',
+                'Termasuk katalis homogen karena larut dalam air bersama H₂O₂.',
+                '2H₂O₂(aq) —FeCl₃→ 2H₂O(l) + O₂(g)',
+                ['chem', { f: 'FeCl₃', n: 'Besi(III) klorida', w: 'larutan (aq)', j: 'katalis', el: [['Fe', 1], ['Cl', 3]], role: 'Pilihan katalis pada percobaan katalis.' }],
+                ['Katalis homogen', 'Hidrogen peroksida']),
+            E('Karbon dioksida', 'bahan', ['CO2'],
+                'Gas tidak berwarna hasil reaksi karbonat dengan asam.',
+                'Volume CO₂ yang ditampung balon menjadi ukuran laju pada percobaan luas permukaan dan konsentrasi.',
+                '',
+                ['chem', { f: 'CO₂', n: 'Karbon dioksida', w: 'gas (g)', j: 'gas', el: [['C', 1], ['O', 2]], role: 'Gas produk yang mengembangkan balon.' }],
+                ['Gas hasil reaksi', 'Kalsium karbonat', 'Natrium bikarbonat']),
+            E('Gas oksigen', 'bahan', ['O2', 'oksigen'],
+                'Gas hasil penguraian hidrogen peroksida.',
+                'Keberadaan O₂ dapat diuji dengan bara api yang menyala kembali.',
+                '',
+                ['chem', { f: 'O₂', n: 'Gas oksigen', w: 'gas (g)', j: 'gas', el: [['O', 2]], role: 'Gas produk pada percobaan katalis.' }],
+                ['Hidrogen peroksida', 'Katalis']),
+            E('Gas hidrogen', 'bahan', ['H2', 'hidrogen'],
+                'Gas paling ringan, dihasilkan dari reaksi logam dengan asam.',
+                'Keberadaan H₂ dapat diuji dengan nyala api yang menimbulkan bunyi "pop".',
+                '',
+                ['chem', { f: 'H₂', n: 'Gas hidrogen', w: 'gas (g)', j: 'gas', el: [['H', 2]], role: 'Gas produk pada percobaan suhu.' }],
+                ['Magnesium', 'Asam klorida']),
+            E('Natrium tiosulfat', 'bahan', ['Na2S2O3', 'hipo'],
+                'Garam yang bereaksi dengan asam membentuk endapan belerang kuning.',
+                'Dipakai pada percobaan klasik "tanda X": waktu sampai tanda X tertutup kekeruhan dicatat sebagai ukuran laju.',
+                'Na₂S₂O₃(aq) + 2HCl(aq) → 2NaCl(aq) + H₂O(l) + SO₂(g) + S(s)',
+                ['chem', { f: 'Na₂S₂O₃', n: 'Natrium tiosulfat', w: 'larutan (aq)', j: 'garam', el: [['Na', 2], ['S', 2], ['O', 3]], role: 'Pereaksi pada percobaan kekeruhan (endapan).' }],
+                ['Endapan', 'Asam klorida']),
+
+            /* ---------------- ALAT PRAKTIKUM ---------------- */
+            E('Erlenmeyer', 'alat', ['labu erlenmeyer', 'labu kerucut'],
+                'Labu kaca berbentuk kerucut dengan leher sempit.',
+                'Bentuknya memudahkan menggoyang larutan tanpa tumpah, dan mulutnya pas untuk dipasangi balon penampung gas.',
+                '',
+                ['tool', { name: 'erlenmeyer', cap: 'Labu Erlenmeyer.' }],
+                ['Balon', 'Gelas kimia'],
+                'Wadah Erl 1, Erl 2, dan Erl 3 pada tabel data lab virtual adalah labu Erlenmeyer.'),
+            E('Gelas kimia', 'alat', ['beaker', 'gelas piala'],
+                'Wadah kaca silinder bercorong tuang untuk menampung dan mencampur larutan.',
+                'Skala pada gelas kimia hanya perkiraan, sehingga tidak dipakai untuk mengukur volume secara teliti.',
+                '',
+                ['tool', { name: 'beaker', cap: 'Gelas kimia.' }],
+                ['Gelas ukur', 'Erlenmeyer'],
+                'Wadah Bkr 1 dan Bkr 2 pada percobaan katalis adalah gelas kimia.'),
+            E('Gelas ukur', 'alat', ['silinder ukur'],
+                'Tabung kaca tinggi berskala untuk mengukur volume cairan.',
+                'Baca skala tepat pada bagian bawah meniskus dengan mata sejajar permukaan cairan.',
+                '',
+                ['tool', { name: 'cylinder', cap: 'Gelas ukur dengan skala.' }],
+                ['Gelas kimia', 'Pipet tetes']),
+            E('Labu ukur', 'alat', ['labu takar'],
+                'Labu berleher panjang dengan satu garis tanda untuk membuat larutan dengan volume tepat.',
+                'Dipakai saat membuat larutan dengan molaritas tertentu atau saat pengenceran.',
+                '',
+                ['tool', { name: 'volumetric', cap: 'Labu ukur dengan garis tanda batas.' }],
+                ['Molaritas', 'Pengenceran']),
+            E('Pipet tetes', 'alat', ['pipet'],
+                'Alat untuk mengambil dan meneteskan cairan dalam jumlah sedikit.',
+                'Berguna untuk menambahkan larutan sedikit demi sedikit.',
+                '',
+                ['tool', { name: 'pipette', cap: 'Pipet tetes.' }],
+                ['Gelas ukur']),
+            E('Neraca analitik', 'alat', ['timbangan', 'neraca'],
+                'Alat untuk menimbang massa zat dengan teliti.',
+                'Zat padat ditimbang di atas kaca arloji. Tekan tombol tara (nol) setelah kaca arloji diletakkan agar yang terbaca hanya massa zatnya.',
+                '',
+                ['tool', { name: 'balance', cap: 'Neraca analitik dengan kaca arloji.' }],
+                ['Kaca arloji', 'Mol'],
+                'Di lab virtual, massa padatan dan katalis diatur lewat neraca sebelum percobaan dijalankan.'),
+            E('Kaca arloji', 'alat', ['watch glass'],
+                'Kaca cekung tipis untuk wadah menimbang padatan.',
+                'Kaca arloji juga bisa dipakai sebagai penutup gelas kimia.',
+                '',
+                ['tool', { name: 'watchglass', cap: 'Kaca arloji berisi padatan.' }],
+                ['Neraca analitik', 'Spatula']),
+            E('Stopwatch', 'alat', ['pencatat waktu'],
+                'Alat pengukur selang waktu jalannya reaksi.',
+                'Stopwatch dijalankan tepat saat pereaksi dicampur dan dihentikan saat tanda akhir tercapai.',
+                '',
+                ['tool', { name: 'stopwatch', cap: 'Stopwatch mengukur waktu reaksi.' }],
+                ['Waktu reaksi']),
+            E('Termometer', 'alat', ['pengukur suhu'],
+                'Alat untuk mengukur suhu larutan.',
+                'Pada percobaan suhu, suhu larutan harus diukur dan dijaga tetap selama reaksi.',
+                '',
+                ['tool', { name: 'thermometer', cap: 'Termometer.' }],
+                ['Pengaruh suhu']),
+            E('Balon', 'alat', ['balon penampung gas'],
+                'Balon yang dipasang di mulut wadah untuk menampung gas hasil reaksi.',
+                'Besarnya balon menunjukkan volume gas, dan cepatnya balon mengembang menunjukkan laju reaksi.',
+                '',
+                ['balloon', { cap: 'Balon mengembang saat gas terbentuk.' }],
+                ['Volume gas', 'Gas hasil reaksi', 'Erlenmeyer']),
+            E('Spatula', 'alat', ['sudip'],
+                'Sendok logam kecil untuk mengambil zat padat.',
+                'Gunakan spatula yang bersih dan kering agar zat tidak terkontaminasi.',
+                '',
+                ['tool', { name: 'spatula', cap: 'Spatula.' }],
+                ['Kaca arloji', 'Neraca analitik']),
+            E('Laboratorium virtual', 'alat', ['lab virtual', 'virtual lab', 'EduKinetika'],
+                'Simulasi praktikum di komputer atau HP yang meniru alat, bahan, dan hasil percobaan nyata.',
+                'Percobaan dapat diulang tanpa takut bahan habis atau berbahaya, dan partikel yang tak terlihat bisa ditampilkan.',
+                '',
+                ['factors', { cap: 'Empat percobaan faktor laju reaksi di lab virtual.' }],
+                ['Faktor-faktor laju reaksi', 'Submikroskopik'],
+                'Buka laboratorium virtual EduKinetika dari menu Lab Virtual di dashboard.'),
+
+            /* ---------------- KETERAMPILAN ILMIAH ---------------- */
+            E('Variabel bebas', 'ilmiah', ['variabel manipulasi', 'variabel independen'],
+                'Variabel yang sengaja diubah oleh peneliti.',
+                'Dalam satu percobaan, hanya satu variabel bebas yang diubah agar pengaruhnya terlihat jelas.',
+                'Contoh: suhu (5 °C, 25 °C, 45 °C) pada percobaan suhu.',
+                ['variables', { hl: 0, cap: 'Variabel bebas memengaruhi variabel terikat.' }],
+                ['Variabel terikat', 'Variabel kontrol', 'Hipotesis']),
+            E('Variabel terikat', 'ilmiah', ['variabel respons', 'variabel dependen'],
+                'Variabel yang diukur sebagai hasil perubahan variabel bebas.',
+                'Pada praktikum laju reaksi, variabel terikatnya biasanya waktu reaksi atau volume gas.',
+                'Contoh: waktu yang diperlukan sampai balon mengembang.',
+                ['variables', { hl: 1, cap: 'Variabel terikat adalah yang diukur.' }],
+                ['Variabel bebas', 'Variabel kontrol']),
+            E('Variabel kontrol', 'ilmiah', ['variabel tetap', 'variabel terkendali'],
+                'Variabel yang dibuat sama pada setiap percobaan.',
+                'Variabel kontrol dijaga tetap supaya perbedaan hasil benar-benar disebabkan oleh variabel bebas.',
+                'Contoh: volume HCl 25 mL dan massa pita Mg 0,10 g.',
+                ['variables', { hl: 2, cap: 'Variabel kontrol dibuat sama di semua wadah.' }],
+                ['Variabel bebas', 'Variabel terikat']),
+            E('Hipotesis', 'ilmiah', ['dugaan sementara'],
+                'Jawaban sementara terhadap rumusan masalah yang akan diuji melalui percobaan.',
+                'Hipotesis yang baik menyebut hubungan variabel bebas dan terikat, sehingga dapat dibuktikan benar atau salah dengan data.',
+                'Contoh: "Jika suhu dinaikkan, waktu reaksi Mg dengan HCl makin singkat."',
+                ['variables', { hl: -1, cap: 'Hipotesis menghubungkan variabel bebas dan terikat.' }],
+                ['Variabel bebas', 'Variabel terikat'])
+        ];
+        /* =====================================================================
+           MESIN VISUAL
+           Setiap fungsi mengembalikan HTML (SVG) atau menyiapkan animasi kanvas.
+           ===================================================================== */
+        const C = { ink: '#0f2a44', ink2: '#3d5670', mute: '#8aa0b6', line: '#dbe4ee', sky: '#0ea5e9', skyL: '#bae6fd', amber: '#f59e0b', amberL: '#fde68a', rose: '#e11d48', green: '#059669', greenL: '#a7f3d0', violet: '#7c3aed', paper: '#f7fafc' };
+        const svg = (w, h, inner, label) => `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${label || ''}" xmlns="http://www.w3.org/2000/svg" class="vis-svg">${inner}</svg>`;
+        const tx = (x, y, s, o = {}) => `<text x="${x}" y="${y}" font-size="${o.fs || 11}" font-weight="${o.fw || 600}" fill="${o.c || C.ink2}" text-anchor="${o.a || 'start'}" ${o.extra || ''}>${s}</text>`;
+        const arrowDefs = `<defs>
+  <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="context-stroke"/></marker>
+  <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="6" fill="${C.sky}" opacity=".35"/></pattern>
+  <pattern id="hatch2" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="3" height="6" fill="${C.amber}" opacity=".45"/></pattern>
+</defs>`;
+        const axes = (x0, y0, x1, y1, xl, yl) => `
+  <line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y0}" stroke="${C.ink}" stroke-width="1.6" marker-end="url(#ah)"/>
+  <line x1="${x0}" y1="${y0}" x2="${x0}" y2="${y1}" stroke="${C.ink}" stroke-width="1.6" marker-end="url(#ah)"/>
+  ${tx(x1, y0 + 18, xl, { a: 'end' })}
+  ${tx(x0 - 8, y1 - 6, yl, { a: 'start' })}`;
+        const pathFn = (f, t0, t1, mx, my, n = 60) => {
+            let d = '';
+            for (let i = 0; i <= n; i++) { const t = t0 + (t1 - t0) * i / n; d += (i ? 'L' : 'M') + mx(t).toFixed(1) + ' ' + my(f(t)).toFixed(1) + ' '; }
+            return d;
+        };
+
+        const VIS = {
+            /* Grafik konsentrasi terhadap waktu */
+            graph(o) {
+                const X0 = 44, Y0 = 186, W = 280, H = 150;
+                const mx = t => X0 + t / 10 * W, my = c => Y0 - c * H;
+                const R = t => Math.exp(-0.32 * t), P = t => 1 - R(t);
+                let g = arrowDefs + axes(X0, Y0, X0 + W + 14, Y0 - H - 14, 'Waktu', 'Konsentrasi');
+                if (o.mode === 'auto') {
+                    const S = t => 1 / (1 + Math.exp(-(t - 5) * 1.1));
+                    g += `<path d="${pathFn(S, 0, 10, mx, my)}" fill="none" stroke="${C.amber}" stroke-width="3.2" stroke-linecap="round"/>`;
+                    g += tx(mx(1), my(0.14), 'lambat', { c: C.ink2 }) + tx(mx(5.2), my(0.52), 'makin cepat', { c: C.rose, fw: 700 }) + tx(mx(8.2), my(0.9), 'melambat', { c: C.ink2 });
+                    g += tx(mx(10), my(1.02), '[Produk]', { a: 'end', c: C.amber, fw: 800 });
+                    return svg(360, 214, g, 'Kurva autokatalis');
+                }
+                g += `<path d="${pathFn(R, 0, 10, mx, my)}" fill="none" stroke="${C.sky}" stroke-width="3.2" stroke-linecap="round"/>`;
+                g += tx(mx(0.3), my(1.04), '[Reaktan]', { c: C.sky, fw: 800 });
+                if (o.mode === 'both') {
+                    g += `<path d="${pathFn(P, 0, 10, mx, my)}" fill="none" stroke="${C.amber}" stroke-width="3.2" stroke-linecap="round"/>`;
+                    g += tx(mx(10), my(0.9), '[Produk]', { a: 'end', c: C.amber, fw: 800 });
+                }
+                if (o.mode === 'avg') {
+                    const t1 = 1.5, t2 = 6;
+                    g += `<line x1="${mx(t1)}" y1="${my(R(t1))}" x2="${mx(t2)}" y2="${my(R(t2))}" stroke="${C.rose}" stroke-width="2.4" stroke-dasharray="6 4"/>`;
+                    g += `<circle cx="${mx(t1)}" cy="${my(R(t1))}" r="5" fill="${C.rose}"/><circle cx="${mx(t2)}" cy="${my(R(t2))}" r="5" fill="${C.rose}"/>`;
+                    g += `<line x1="${mx(t1)}" y1="${my(R(t2))}" x2="${mx(t2)}" y2="${my(R(t2))}" stroke="${C.mute}" stroke-dasharray="3 3"/><line x1="${mx(t1)}" y1="${my(R(t1))}" x2="${mx(t1)}" y2="${my(R(t2))}" stroke="${C.mute}" stroke-dasharray="3 3"/>`;
+                    g += tx(mx(t1) - 6, (my(R(t1)) + my(R(t2))) / 2, 'Δ[R]', { a: 'end', c: C.rose, fw: 800 }) + tx((mx(t1) + mx(t2)) / 2, my(R(t2)) + 16, 'Δt', { a: 'middle', c: C.rose, fw: 800 });
+                }
+                if (o.mode === 'inst' || o.mode === 'initial') {
+                    const t = o.mode === 'inst' ? 3 : 0, s = -0.32 * R(t);
+                    const a = Math.max(0, t - 1.6), b = t + 2.2;
+                    g += `<line x1="${mx(a)}" y1="${my(R(t) + s * (a - t))}" x2="${mx(b)}" y2="${my(R(t) + s * (b - t))}" stroke="${C.rose}" stroke-width="2.4"/>`;
+                    g += `<circle cx="${mx(t)}" cy="${my(R(t))}" r="5.5" fill="${C.rose}"/>`;
+                    g += tx(mx(b) + 4, my(R(t) + s * (b - t)) + 4, o.mode === 'inst' ? 'garis singgung' : 'laju awal (t = 0)', { c: C.rose, fw: 800 });
+                }
+                return svg(360, 214, g, 'Grafik konsentrasi terhadap waktu');
+            },
+
+            /* Diagram energi reaksi */
+            energy(o) {
+                const exo = o.exo !== false, hl = o.hl || 'all';
+                const yr = exo ? 138 : 172, yp = exo ? 178 : 112, pk = 42, pc = 94;
+                const on = k => hl === 'all' || hl === k;
+                const col = k => on(k) ? C.rose : C.mute;
+                const curve = (peak) => `M24 ${yr} L84 ${yr} C132 ${yr} 136 ${peak} 176 ${peak} C216 ${peak} 220 ${yp} 268 ${yp} L330 ${yp}`;
+                let g = arrowDefs + axes(18, 200, 344, 18, 'Jalannya reaksi', 'Energi');
+                g += `<path d="${curve(pk)}" fill="none" stroke="${C.ink}" stroke-width="3" stroke-linecap="round"/>`;
+                if (o.cat) g += `<path d="${curve(pc)}" fill="none" stroke="${C.green}" stroke-width="3" stroke-dasharray="7 5" stroke-linecap="round"/>` + tx(222, pc - 6, 'dengan katalis', { c: C.green, fw: 800 });
+                g += tx(30, yr - 8, 'Reaktan', { c: C.ink, fw: 800 }) + tx(236, yp + (exo ? 16 : -8), 'Produk', { c: C.ink, fw: 800 });
+                // Ea
+                g += `<line x1="84" y1="${yr}" x2="200" y2="${yr}" stroke="${C.mute}" stroke-dasharray="3 3"/>`;
+                g += `<line x1="150" y1="${yr - 2}" x2="150" y2="${pk + 4}" stroke="${col('ea')}" stroke-width="2.2" marker-end="url(#ah)" marker-start="url(#ah)"/>` + tx(144, (yr + pk) / 2, 'Ea', { a: 'end', c: col('ea'), fs: 13, fw: 800 });
+                if (o.cat) g += `<line x1="196" y1="${yr - 2}" x2="196" y2="${pc + 4}" stroke="${C.green}" stroke-width="2.2" marker-end="url(#ah)" marker-start="url(#ah)"/>` + tx(202, (yr + pc) / 2 + 14, 'Ea′', { c: C.green, fs: 13, fw: 800 });
+                // TS
+                g += `<circle cx="176" cy="${pk}" r="${on('ts') ? 7 : 4.5}" fill="${col('ts')}"/>` + tx(186, pk - 6, 'Kompleks teraktivasi', { c: col('ts'), fw: 800 });
+                // dH
+                g += `<line x1="268" y1="${yr}" x2="318" y2="${yr}" stroke="${C.mute}" stroke-dasharray="3 3"/>`;
+                g += `<line x1="306" y1="${yr + (exo ? 2 : -2)}" x2="306" y2="${yp + (exo ? -3 : 3)}" stroke="${col('dh')}" stroke-width="2.2" marker-end="url(#ah)"/>` + tx(300, (yr + yp) / 2 + 4, `ΔH ${exo ? '< 0' : '> 0'}`, { a: 'end', c: col('dh'), fs: 12, fw: 800 });
+                return svg(360, 224, g, 'Diagram energi reaksi');
+            },
+
+            /* Distribusi Maxwell-Boltzmann */
+            mb(o) {
+                const X0 = 36, Y0 = 186, W = 290, H = 150;
+                const f = (E, T) => Math.sqrt(E) * Math.exp(-E / T) / Math.pow(T, 1.5);
+                const mx = e => X0 + e / 10 * W;
+                const maxT1 = f(1.6 / 2, 1.6) * 1.08;
+                const my = v => Y0 - v / maxT1 * H;
+                const Ea = 5;
+                let g = arrowDefs + axes(X0, Y0, X0 + W + 12, Y0 - H - 16, 'Energi kinetik', 'Jumlah partikel');
+                const area = (T, fill) => {
+                    let d = `M${mx(Ea)} ${Y0} `; for (let e = Ea; e <= 10; e += .1) d += `L${mx(e).toFixed(1)} ${my(f(e, T)).toFixed(1)} `; return `<path d="${d}L${mx(10)} ${Y0}Z" fill="${fill}"/>`;
+                };
+                if (o.two) g += area(2.6, 'url(#hatch2)');
+                g += area(1.6, 'url(#hatch)');
+                g += `<path d="${pathFn(e => f(e, 1.6), 0.01, 10, mx, my, 90)}" fill="none" stroke="${C.sky}" stroke-width="3"/>` + tx(mx(1.4), my(f(0.8, 1.6)) - 8, 'T₁ (rendah)', { c: C.sky, fw: 800 });
+                if (o.two) g += `<path d="${pathFn(e => f(e, 2.6), 0.01, 10, mx, my, 90)}" fill="none" stroke="${C.amber}" stroke-width="3"/>` + tx(mx(3.3), my(f(1.3, 2.6)) - 4, 'T₂ (tinggi)', { c: C.amber, fw: 800 });
+                g += `<line x1="${mx(Ea)}" y1="${Y0}" x2="${mx(Ea)}" y2="${Y0 - H + 10}" stroke="${C.rose}" stroke-width="2.4" stroke-dasharray="6 4"/>` + tx(mx(Ea) + 6, Y0 - H + 22, 'Ea', { c: C.rose, fs: 13, fw: 800 });
+                g += tx(mx(8.1), Y0 - 30, 'E ≥ Ea', { a: 'middle', c: C.ink, fw: 800 });
+                return svg(360, 222, g, 'Distribusi Maxwell-Boltzmann');
+            },
+
+            /* Grafik laju terhadap konsentrasi untuk orde 0, 1, 2 */
+            order(o) {
+                const X0 = 40, Y0 = 186, W = 280, H = 150;
+                const mx = c => X0 + c * W, my = v => Y0 - v * H;
+                const fs = [c => 0.45, c => c * 0.95, c => c * c * 0.95];
+                const cols = [C.violet, C.sky, C.rose];
+                const labels = ['orde 0', 'orde 1', 'orde 2'];
+                let g = arrowDefs + axes(X0, Y0, X0 + W + 14, Y0 - H - 14, '[A]', 'Laju (v)');
+                fs.forEach((f, n) => {
+                    const act = o.n === -1 || o.n === n;
+                    g += `<path d="${pathFn(f, 0, 1, mx, my)}" fill="none" stroke="${act ? cols[n] : C.line}" stroke-width="${act ? 3.4 : 2}" stroke-linecap="round"/>`;
+                    if (act) g += tx(mx(1) + 4, my(f(1)) + 4, labels[n], { c: cols[n], fw: 800 });
+                });
+                if (o.n >= 0) {
+                    const f = fs[o.n];
+                    g += `<line x1="${mx(.4)}" y1="${Y0}" x2="${mx(.4)}" y2="${my(f(.4))}" stroke="${C.mute}" stroke-dasharray="3 3"/><line x1="${mx(.8)}" y1="${Y0}" x2="${mx(.8)}" y2="${my(f(.8))}" stroke="${C.mute}" stroke-dasharray="3 3"/>`;
+                    g += `<circle cx="${mx(.4)}" cy="${my(f(.4))}" r="4.5" fill="${cols[o.n]}"/><circle cx="${mx(.8)}" cy="${my(f(.8))}" r="4.5" fill="${cols[o.n]}"/>`;
+                    g += tx(mx(.4), Y0 + 14, 'x', { a: 'middle' }) + tx(mx(.8), Y0 + 14, '2x', { a: 'middle' });
+                    g += tx(X0 + 10, Y0 - H + 4, ['[A] 2× → v tetap', '[A] 2× → v 2×', '[A] 2× → v 4×'][o.n], { c: cols[o.n], fs: 12, fw: 800 });
+                }
+                return svg(380, 214, g, 'Grafik laju terhadap konsentrasi');
+            },
+
+            halflife() {
+                const X0 = 40, Y0 = 186, W = 280, H = 150, k = 0.35, th = Math.log(2) / k;
+                const mx = t => X0 + t / 10 * W, my = c => Y0 - c * H;
+                let g = arrowDefs + axes(X0, Y0, X0 + W + 14, Y0 - H - 14, 'Waktu', '[A]');
+                g += `<path d="${pathFn(t => Math.exp(-k * t), 0, 10, mx, my)}" fill="none" stroke="${C.sky}" stroke-width="3.2"/>`;
+                [1, 2, 3].forEach(n => {
+                    const c = Math.pow(.5, n), t = th * n;
+                    g += `<line x1="${X0}" y1="${my(c)}" x2="${mx(t)}" y2="${my(c)}" stroke="${C.mute}" stroke-dasharray="3 3"/><line x1="${mx(t)}" y1="${my(c)}" x2="${mx(t)}" y2="${Y0}" stroke="${C.mute}" stroke-dasharray="3 3"/>`;
+                    g += `<circle cx="${mx(t)}" cy="${my(c)}" r="4.5" fill="${C.rose}"/>` + tx(mx(t), Y0 + 14, `${n}t½`, { a: 'middle', c: C.rose, fw: 800 }) + tx(X0 - 4, my(c) + 4, ['½', '¼', '⅛'][n - 1], { a: 'end', fw: 800 });
+                });
+                return svg(360, 214, g, 'Waktu paruh');
+            },
+
+            arrhenius() {
+                const X0 = 40, Y0 = 186, W = 280, H = 150;
+                const mx = t => X0 + t * W, my = v => Y0 - v * H;
+                const f = t => (Math.exp(3.2 * t) - 1) / (Math.exp(3.2) - 1);
+                let g = arrowDefs + axes(X0, Y0, X0 + W + 14, Y0 - H - 14, 'Suhu (T)', 'Tetapan laju (k)');
+                g += `<path d="${pathFn(f, 0, 1, mx, my)}" fill="none" stroke="${C.amber}" stroke-width="3.4"/>`;
+                g += `<rect x="${X0 + 14}" y="${Y0 - H + 4}" width="150" height="30" rx="8" fill="#fff" stroke="${C.line}"/>` + tx(X0 + 89, Y0 - H + 24, 'k = A · e<tspan baseline-shift="super" font-size="9">−Ea/RT</tspan>', { a: 'middle', c: C.ink, fs: 13, fw: 800 });
+                return svg(360, 214, g, 'Hubungan k dengan suhu');
+            },
+
+            doubling() {
+                const temps = [25, 35, 45, 55], v = [1, 2, 4, 8], t = [80, 40, 20, 10];
+                let g = '';
+                temps.forEach((T, i) => {
+                    const x = 40 + i * 78, h = v[i] * 17;
+                    g += `<rect x="${x}" y="${170 - h}" width="46" height="${h}" rx="6" fill="${[C.skyL, '#7dd3fc', C.sky, '#0369a1'][i]}"/>`;
+                    g += tx(x + 23, 164 - h, v[i] + '×', { a: 'middle', c: C.ink, fs: 13, fw: 800 });
+                    g += tx(x + 23, 188, T + ' °C', { a: 'middle', c: C.ink, fw: 800 }) + tx(x + 23, 204, t[i] + ' s', { a: 'middle', c: C.rose, fw: 700 });
+                });
+                g += tx(8, 188, 'Suhu', { fs: 10 }) + tx(8, 204, 'Waktu', { fs: 10, c: C.rose });
+                g += tx(180, 14, 'Laju reaksi relatif', { a: 'middle', c: C.ink2, fw: 800 });
+                return svg(360, 212, g, 'Aturan kenaikan suhu 10 derajat');
+            },
+
+            /* Labu berisi partikel */
+            molarity(o) {
+                const flask = (x, w, h, n, seed, label, sub) => {
+                    let s = `<rect x="${x}" y="${190 - h}" width="${w}" height="${h}" rx="10" fill="${C.skyL}" opacity=".55"/><path d="M${x} ${40} V${180} q0 10 10 10 h${w - 20} q10 0 10 -10 V${40}" fill="none" stroke="${C.ink}" stroke-width="2.4"/>`;
+                    let r = seed; const rnd = () => (r = (r * 9301 + 49297) % 233280) / 233280;
+                    for (let i = 0; i < n; i++) s += `<circle cx="${(x + 10 + rnd() * (w - 20)).toFixed(1)}" cy="${(196 - h + rnd() * (h - 16)).toFixed(1)}" r="5" fill="${C.amber}" stroke="#fff" stroke-width="1.2"/>`;
+                    s += tx(x + w / 2, 30, label, { a: 'middle', c: C.ink, fw: 800 }) + (sub ? tx(x + w / 2, 212, sub, { a: 'middle', c: C.rose, fw: 800 }) : '');
+                    return s;
+                };
+                if (o.dilute) {
+                    let g = flask(30, 110, 70, 10, 3, 'Sebelum', 'M₁ · V₁') + flask(220, 110, 140, 10, 7, 'Sesudah', 'M₂ · V₂');
+                    g += `<path d="M150 120 h56" stroke="${C.ink}" stroke-width="2.4" marker-end="url(#ah)"/>` + tx(178, 110, '+ air', { a: 'middle', c: C.sky, fw: 800 });
+                    return svg(360, 220, arrowDefs + g, 'Pengenceran');
+                }
+                let g = flask(24, 120, 120, 6, 5, 'Encer', '') + flask(214, 120, 120, 18, 11, 'Pekat', '');
+                g += `<rect x="112" y="96" width="136" height="38" rx="10" fill="#fff" stroke="${C.line}"/>` + tx(180, 121, 'M = n / V', { a: 'middle', c: C.ink, fs: 16, fw: 800 });
+                return svg(360, 220, g, 'Molaritas');
+            },
+
+            /* Luas permukaan: bongkahan, kepingan, serbuk */
+            solid(o) {
+                const panels = [
+                    { n: 1, s: 54, lbl: 'Bongkahan', area: '24 cm²', sub: '1 kubus 2 cm' },
+                    { n: 2, s: 26, lbl: 'Kepingan', area: '48 cm²', sub: '8 kubus 1 cm' },
+                    { n: 4, s: 12, lbl: 'Serbuk', area: '96 cm²', sub: '64 kubus 0,5 cm' }
+                ];
+                let g = '';
+                panels.forEach((P, i) => {
+                    const x0 = 12 + i * 118, act = o.hl === -1 || o.hl === i;
+                    g += `<rect x="${x0}" y="10" width="106" height="186" rx="14" fill="${act ? '#fff' : C.paper}" stroke="${act ? C.amber : C.line}" stroke-width="${act ? 3 : 1.4}"/>`;
+                    const tot = P.n * P.s + (P.n - 1) * 4, sx = x0 + (106 - tot) / 2, sy = 30 + (80 - tot) / 2;
+                    for (let a = 0; a < P.n; a++) for (let b = 0; b < P.n; b++) g += `<rect x="${sx + a * (P.s + 4)}" y="${sy + b * (P.s + 4)}" width="${P.s}" height="${P.s}" rx="${Math.max(2, P.s / 8)}" fill="#e7e5e4" stroke="#a8a29e" stroke-width="1.4"/>`;
+                    g += tx(x0 + 53, 136, P.lbl, { a: 'middle', c: C.ink, fs: 13, fw: 800 }) + tx(x0 + 53, 154, P.sub, { a: 'middle', fs: 10 }) + tx(x0 + 53, 180, P.area, { a: 'middle', c: C.rose, fs: 14, fw: 800 });
+                });
+                return svg(370, 206, g, 'Luas permukaan');
+            },
+
+            /* Model partikel 2H2 + O2 -> 2H2O */
+            eq(o) {
+                const H = (x, y) => `<circle cx="${x}" cy="${y}" r="9" fill="#f1f5f9" stroke="${C.ink2}" stroke-width="1.6"/>`;
+                const O = (x, y) => `<circle cx="${x}" cy="${y}" r="13" fill="#ef4444" stroke="#991b1b" stroke-width="1.6"/>`;
+                const h2 = (x, y) => H(x, y) + H(x + 15, y);
+                const o2 = (x, y) => O(x, y) + O(x + 22, y);
+                const h2o = (x, y) => H(x - 14, y + 9) + H(x + 14, y + 9) + O(x, y);
+                const box = (x, w, on) => `<rect x="${x}" y="22" width="${w}" height="126" rx="14" fill="${on ? '#fff7ed' : 'none'}" stroke="${on ? C.amber : 'none'}" stroke-width="2.4"/>`;
+                let g = box(8, 176, o.hl === 'left') + box(222, 128, o.hl === 'right');
+                g += h2(34, 60) + h2(34, 106) + tx(96, 88, '+', { fs: 20, c: C.ink, a: 'middle' }) + o2(122, 84);
+                g += `<path d="M190 84 h26" stroke="${C.ink}" stroke-width="2.6" marker-end="url(#ah)"/>`;
+                g += h2o(262, 54) + h2o(262, 102);
+                const coef = o.hl === 'coef';
+                const cc = coef ? C.amber : C.ink;
+                g += `<text x="96" y="176" font-size="17" font-weight="800" text-anchor="middle" fill="${C.ink}"><tspan fill="${cc}" font-size="${coef ? 22 : 17}">2</tspan>H₂ + <tspan fill="${cc}" font-size="${coef ? 22 : 17}">1</tspan>O₂</text>`;
+                g += `<text x="203" y="176" font-size="17" font-weight="800" text-anchor="middle" fill="${C.ink}">→</text>`;
+                g += `<text x="290" y="176" font-size="17" font-weight="800" text-anchor="middle" fill="${C.ink}"><tspan fill="${cc}" font-size="${coef ? 22 : 17}">2</tspan>H₂O</text>`;
+                g += tx(96, 200, 'reaktan', { a: 'middle', fs: 10 }) + tx(290, 200, 'produk', { a: 'middle', fs: 10 });
+                return svg(360, 208, arrowDefs + g, 'Model partikel persamaan reaksi');
+            },
+
+            /* Pemutusan dan pembentukan ikatan H2 + I2 -> 2HI */
+            bond(o) {
+                const at = (x, y, el, r, f, s) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${f}" stroke="${s}" stroke-width="1.6"/>` + tx(x, y + 4, el, { a: 'middle', c: el === 'I' ? '#fff' : C.ink, fs: 11, fw: 800 });
+                const Hh = (x, y) => at(x, y, 'H', 11, '#f1f5f9', C.ink2), Ii = (x, y) => at(x, y, 'I', 16, '#7c3aed', '#4c1d95');
+                const brk = o.hl !== 'form', frm = o.hl !== 'break';
+                let g = '';
+                g += `<line x1="30" y1="60" x2="58" y2="60" stroke="${brk ? C.rose : C.ink2}" stroke-width="5" ${brk ? 'stroke-dasharray="4 4"' : ''}/>` + Hh(30, 60) + Hh(58, 60);
+                g += `<line x1="30" y1="130" x2="70" y2="130" stroke="${brk ? C.rose : C.ink2}" stroke-width="5" ${brk ? 'stroke-dasharray="4 4"' : ''}/>` + Ii(30, 130) + Ii(70, 130);
+                g += `<path d="M112 95 h60" stroke="${C.ink}" stroke-width="2.6" marker-end="url(#ah)"/>`;
+                g += `<line x1="214" y1="60" x2="248" y2="60" stroke="${frm ? C.green : C.ink2}" stroke-width="5"/>` + Hh(214, 60) + Ii(250, 60);
+                g += `<line x1="214" y1="130" x2="248" y2="130" stroke="${frm ? C.green : C.ink2}" stroke-width="5"/>` + Hh(214, 130) + Ii(250, 130);
+                if (brk) g += tx(50, 176, 'ikatan putus', { a: 'middle', c: C.rose, fw: 800 }) + tx(50, 192, 'menyerap energi', { a: 'middle', fs: 10 });
+                if (frm) g += tx(232, 176, 'ikatan terbentuk', { a: 'middle', c: C.green, fw: 800 }) + tx(232, 192, 'melepas energi', { a: 'middle', fs: 10 });
+                g += tx(142, 86, 'H₂ + I₂ → 2HI', { a: 'middle', c: C.ink, fs: 11, fw: 800 });
+                g += tx(320, 98, '2 HI', { a: 'middle', c: C.ink, fs: 14, fw: 800 });
+                return svg(360, 204, arrowDefs + g, 'Pemutusan dan pembentukan ikatan');
+            },
+
+            /* Tiga level representasi */
+            scale(o) {
+                const on = i => o.hl === i;
+                const ring = (cx, i) => `<circle cx="${cx}" cy="92" r="52" fill="${on(i) ? '#fff' : C.paper}" stroke="${on(i) ? C.amber : C.line}" stroke-width="${on(i) ? 3.4 : 1.6}"/>`;
+                let g = ring(62, 0) + ring(180, 1) + ring(298, 2);
+                // makro: gelas dengan gelembung
+                g += `<path d="M40 64 V116 q0 8 8 8 h28 q8 0 8 -8 V64" fill="${C.skyL}" stroke="${C.ink}" stroke-width="2.2"/>`;
+                [[52, 108], [62, 96], [70, 110], [58, 84], [72, 88]].forEach(([x, y]) => g += `<circle cx="${x}" cy="${y}" r="3.2" fill="#fff" stroke="${C.sky}"/>`);
+                // submikro: partikel
+                [[160, 76, C.sky], [178, 70, C.ink], [196, 84, C.sky], [168, 104, C.ink], [190, 110, C.amber], [202, 108, C.amber], [150, 96, C.sky]].forEach(([x, y, c]) => g += `<circle cx="${x}" cy="${y}" r="7" fill="${c}"/>`);
+                // simbolik
+                g += tx(298, 88, 'CaCO₃ + 2HCl', { a: 'middle', c: C.ink, fs: 11, fw: 800 }) + tx(298, 106, '→ CO₂ + …', { a: 'middle', c: C.ink, fs: 11, fw: 800 });
+                g += tx(62, 168, 'Makroskopik', { a: 'middle', c: on(0) ? C.ink : C.ink2, fs: 12, fw: 800 }) + tx(180, 168, 'Submikroskopik', { a: 'middle', c: on(1) ? C.ink : C.ink2, fs: 12, fw: 800 }) + tx(298, 168, 'Simbolik', { a: 'middle', c: on(2) ? C.ink : C.ink2, fs: 12, fw: 800 });
+                return svg(360, 184, g, 'Tiga level representasi kimia');
+            },
+
+            /* Mekanisme NO2 + CO */
+            mechanism(o) {
+                const hl = o.hl || 'all';
+                const step = (y, title, eqn, speed, on) => `<rect x="14" y="${y}" width="332" height="50" rx="12" fill="#fff" stroke="${on ? C.rose : C.line}" stroke-width="${on ? 3 : 1.4}"/>` +
+                    tx(28, y + 20, title, { c: on ? C.rose : C.ink2, fw: 800 }) + tx(28, y + 39, eqn, { c: C.ink, fs: 13, fw: 800 }) +
+                    `<rect x="266" y="${y + 13}" width="66" height="24" rx="12" fill="${speed === 'lambat' ? '#ffe4e6' : '#dcfce7'}"/>` + tx(299, y + 29, speed, { a: 'middle', c: speed === 'lambat' ? C.rose : C.green, fw: 800 });
+                let g = step(10, 'Tahap 1', 'NO₂ + NO₂ → <tspan fill="' + (hl === 'inter' ? C.amber : C.ink) + '">NO₃</tspan> + NO', 'lambat', hl === 'slow' || hl === 'all');
+                g += step(70, 'Tahap 2', '<tspan fill="' + (hl === 'inter' ? C.amber : C.ink) + '">NO₃</tspan> + CO → NO₂ + CO₂', 'cepat', false);
+                g += `<rect x="14" y="136" width="332" height="56" rx="12" fill="${C.ink}"/>` + tx(28, 158, 'Reaksi total', { c: '#9fb3c8', fw: 700 }) + tx(28, 180, 'NO₂ + CO → NO + CO₂', { c: '#fff', fs: 13, fw: 800 }) + tx(332, 180, 'v = k[NO₂]²', { a: 'end', c: C.amberL, fs: 13, fw: 800 });
+                if (hl === 'inter') g += tx(180, 128, 'NO₃ = zat antara', { a: 'middle', c: C.amber, fs: 12, fw: 800 });
+                return svg(360, 200, g, 'Mekanisme reaksi');
+            },
+
+            variables(o) {
+                const box = (x, y, w, t, s, on, c) => `<rect x="${x}" y="${y}" width="${w}" height="62" rx="14" fill="${on ? c : '#fff'}" stroke="${on ? c : C.line}" stroke-width="2"/>` + tx(x + w / 2, y + 26, t, { a: 'middle', c: on ? '#fff' : C.ink, fs: 13, fw: 800 }) + tx(x + w / 2, y + 46, s, { a: 'middle', c: on ? '#fff' : C.ink2, fs: 10.5 });
+                let g = box(10, 20, 150, 'Variabel bebas', 'yang diubah: suhu', o.hl === 0 || o.hl === -1, C.sky);
+                g += `<path d="M166 51 h32" stroke="${C.ink}" stroke-width="2.6" marker-end="url(#ah)"/>` + tx(182, 42, 'memengaruhi', { a: 'middle', fs: 9 });
+                g += box(204, 20, 146, 'Variabel terikat', 'yang diukur: waktu', o.hl === 1 || o.hl === -1, C.amber);
+                g += box(60, 116, 240, 'Variabel kontrol', 'dibuat sama: volume HCl, massa Mg', o.hl === 2, C.green);
+                return svg(360, 192, arrowDefs + g, 'Variabel percobaan');
+            },
+
+            enzyme() {
+                let g = `<path d="M20 120 q0 -60 60 -60 h40 v26 l-18 18 18 18 v26 h-40 q-60 0 -60 -28z" fill="${C.violet}" opacity=".85"/>` + tx(62, 110, 'Enzim', { a: 'middle', c: '#fff', fs: 13, fw: 800 });
+                g += `<path d="M150 86 l18 18 -18 18 h40 v-36z" fill="${C.amber}"/>` + tx(172, 142, 'Substrat', { a: 'middle', c: C.ink, fw: 800 });
+                g += `<path d="M204 104 h34" stroke="${C.ink}" stroke-width="2.6" marker-end="url(#ah)"/>`;
+                g += `<path d="M254 80 l14 14 v18 h26 v-32z" fill="${C.amber}"/><path d="M274 118 l14 -12 h26 v26 h-40z" fill="${C.amberL}"/>` + tx(292, 150, 'Produk', { a: 'middle', c: C.ink, fw: 800 });
+                g += tx(180, 32, 'Model gembok dan kunci', { a: 'middle', c: C.ink2, fw: 800 });
+                g += tx(120, 104, 'sisi aktif', { a: 'end', fs: 9.5, c: '#fff' });
+                return svg(360, 170, arrowDefs + g, 'Model kerja enzim');
+            },
+
+            factors(o) {
+                const tile = (x, y, t, icon, c) => `<rect x="${x}" y="${y}" width="164" height="84" rx="16" fill="#fff" stroke="${C.line}"/><rect x="${x + 12}" y="${y + 18}" width="48" height="48" rx="14" fill="${c}" opacity=".15"/>${icon}` + tx(x + 72, y + 48, t, { c: C.ink, fs: 12.5, fw: 800 });
+                let g = tile(8, 8, 'Konsentrasi', [[28, 34], [44, 30], [36, 48], [52, 50], [28, 58]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="5" fill="${C.sky}"/>`).join(''), C.sky);
+                g += tile(188, 8, 'Luas permukaan', `<rect x="206" y="34" width="12" height="12" rx="2" fill="#a8a29e"/><rect x="222" y="34" width="12" height="12" rx="2" fill="#a8a29e"/><rect x="206" y="50" width="12" height="12" rx="2" fill="#a8a29e"/><rect x="222" y="50" width="12" height="12" rx="2" fill="#a8a29e"/>`, C.amber);
+                g += tile(8, 100, 'Suhu', `<rect x="36" y="118" width="8" height="30" rx="4" fill="none" stroke="${C.rose}" stroke-width="2"/><circle cx="40" cy="152" r="7" fill="${C.rose}"/><rect x="38" y="130" width="4" height="20" fill="${C.rose}"/>`, C.rose);
+                g += tile(188, 100, 'Katalis', `<path d="M226 116 l-12 20 h10 l-6 18 16 -24 h-10 l8 -14z" fill="${C.green}"/>`, C.green);
+                return svg(360, 192, g, 'Faktor-faktor laju reaksi');
+            },
+
+            xmark() {
+                let g = `<ellipse cx="180" cy="160" rx="120" ry="22" fill="#e2e8f0"/>`;
+                g += `<g class="xm-mark"><path d="M160 150 l40 20 M200 150 l-40 20" stroke="${C.ink}" stroke-width="6" stroke-linecap="round"/></g>`;
+                g += `<path d="M120 40 V150 q0 12 12 12 h96 q12 0 12 -12 V40" fill="none" stroke="${C.ink}" stroke-width="2.4"/>`;
+                g += `<rect class="xm-cloud" x="122" y="62" width="116" height="98" rx="10" fill="#facc15"/>`;
+                g += tx(180, 30, 'Kertas bertanda X di bawah gelas', { a: 'middle', c: C.ink2, fw: 700 });
+                return svg(360, 190, g, 'Percobaan tanda X');
+            },
+
+            balloon() {
+                let g = `<g class="bl-balloon"><ellipse cx="180" cy="52" rx="34" ry="40" fill="${C.rose}" opacity=".9"/><path d="M170 88 h20 l-4 10 h-12z" fill="#be123c"/></g>`;
+                g += `<path d="M168 98 V118 L128 184 q-4 10 8 10 h88 q12 0 8 -10 L192 118 V98" fill="none" stroke="${C.ink}" stroke-width="2.4"/>`;
+                g += `<path d="M140 160 L132 184 q-3 8 8 8 h80 q11 0 8 -8 L220 160z" fill="${C.skyL}"/>`;
+                g += `<g class="bl-bub">${[[160, 176], [180, 182], [196, 172], [170, 186]].map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="3" fill="#fff" stroke="${C.sky}" style="animation-delay:${i * .35}s"/>`).join('')}</g>`;
+                g += tx(290, 110, 'v = ΔV / Δt', { a: 'middle', c: C.ink, fs: 14, fw: 800 }) + tx(290, 128, 'volume gas per waktu', { a: 'middle', fs: 10 });
+                return svg(360, 200, g, 'Balon menampung gas');
+            },
+
+            /* Alat laboratorium */
+            tool(o) {
+                const S = C.ink, W = 2.4, L = C.skyL;
+                const d = {
+                    erlenmeyer: `<path d="M150 40 h60 M160 40 v44 L118 170 q-6 14 10 14 h104 q16 0 10 -14 L200 84 V40" fill="none" stroke="${S}" stroke-width="${W}"/><path d="M130 146 L122 170 q-4 10 8 10 h100 q12 0 8 -10 L230 146z" fill="${L}"/>`,
+                    beaker: `<path d="M120 40 h8 V170 q0 12 12 12 h80 q12 0 12 -12 V40 h8" fill="none" stroke="${S}" stroke-width="${W}"/><rect x="130" y="110" width="100" height="70" rx="10" fill="${L}"/>${[70, 95, 120, 145].map(y => `<line x1="210" y1="${y}" x2="228" y2="${y}" stroke="${S}"/>`).join('')}`,
+                    cylinder: `<path d="M160 30 V176 h40 V30" fill="none" stroke="${S}" stroke-width="${W}"/><path d="M140 188 h80" stroke="${S}" stroke-width="6" stroke-linecap="round"/><rect x="162" y="96" width="36" height="80" fill="${L}"/><path d="M162 96 q18 8 36 0" fill="none" stroke="${C.sky}" stroke-width="2"/>${[50, 70, 90, 110, 130, 150].map((y, i) => `<line x1="160" y1="${y}" x2="${i % 2 ? 170 : 176}" y2="${y}" stroke="${S}"/>`).join('')}` + tx(214, 100, 'meniskus', { fs: 10, c: C.sky }),
+                    volumetric: `<path d="M170 20 V100 q-50 10 -50 50 q0 38 60 38 q60 0 60 -38 q0 -40 -50 -50 V20" fill="none" stroke="${S}" stroke-width="${W}" transform="translate(-5 0)"/><path d="M121 150 q0 32 54 32 q54 0 54 -32 q0 -30 -40 -40 h-28 q-40 10 -40 40z" fill="${L}"/><line x1="160" y1="60" x2="180" y2="60" stroke="${C.rose}" stroke-width="2.6"/>` + tx(186, 64, 'tanda batas', { fs: 10, c: C.rose }),
+                    pipette: `<ellipse cx="180" cy="44" rx="16" ry="22" fill="${C.rose}"/><path d="M172 64 h16 V150 l-6 30 h-4 l-6 -30z" fill="#fff" stroke="${S}" stroke-width="${W}"/><rect x="175" y="120" width="10" height="30" fill="${L}"/><circle cx="180" cy="194" r="4" fill="${C.sky}"/>`,
+                    balance: `<rect x="90" y="130" width="180" height="50" rx="10" fill="#e2e8f0" stroke="${S}" stroke-width="${W}"/><rect x="110" y="142" width="80" height="26" rx="5" fill="${C.ink}"/>` + tx(150, 160, '2,00 g', { a: 'middle', c: C.greenL, fs: 13, fw: 800 }) + `<circle cx="228" cy="155" r="10" fill="${C.amber}"/>` + tx(228, 159, 'T', { a: 'middle', c: C.ink, fs: 10, fw: 800 }) + `<rect x="130" y="118" width="100" height="10" rx="3" fill="#94a3b8"/><ellipse cx="180" cy="112" rx="44" ry="8" fill="#e0f2fe" stroke="${C.sky}"/><ellipse cx="180" cy="106" rx="18" ry="6" fill="#fafaf9" stroke="#a8a29e"/>`,
+                    watchglass: `<path d="M110 110 q70 50 140 0" fill="#e0f2fe" stroke="${C.sky}" stroke-width="${W}"/><ellipse cx="180" cy="116" rx="26" ry="8" fill="#fafaf9" stroke="#a8a29e"/>`,
+                    stopwatch: `<circle cx="180" cy="112" r="62" fill="#fff" stroke="${S}" stroke-width="4"/><rect x="170" y="34" width="20" height="14" rx="3" fill="${S}"/><rect x="220" y="52" width="14" height="10" rx="3" fill="${S}" transform="rotate(40 227 57)"/>${Array.from({ length: 12 }, (_, i) => `<line x1="180" y1="56" x2="180" y2="${i % 3 ? 62 : 68}" stroke="${S}" stroke-width="2" transform="rotate(${i * 30} 180 112)"/>`).join('')}<g class="sw-hand"><line x1="180" y1="112" x2="180" y2="64" stroke="${C.rose}" stroke-width="3" stroke-linecap="round"/></g><circle cx="180" cy="112" r="5" fill="${C.rose}"/>`,
+                    thermometer: `<rect x="170" y="22" width="20" height="140" rx="10" fill="#fff" stroke="${S}" stroke-width="${W}"/><circle cx="180" cy="170" r="18" fill="${C.rose}" stroke="${S}" stroke-width="${W}"/><rect x="176" y="70" width="8" height="96" rx="4" fill="${C.rose}"/>${[40, 60, 80, 100, 120, 140].map(y => `<line x1="190" y1="${y}" x2="200" y2="${y}" stroke="${S}"/>`).join('')}` + tx(206, 74, '45 °C', { c: C.rose, fw: 800 }),
+                    spatula: `<rect x="100" y="104" width="150" height="10" rx="5" fill="#94a3b8" stroke="${S}" stroke-width="1.6"/><path d="M250 100 q40 -6 46 9 q-6 15 -46 9z" fill="#cbd5e1" stroke="${S}" stroke-width="1.6"/><ellipse cx="276" cy="106" rx="10" ry="3.5" fill="#fafaf9"/>`
+                }[o.name] || '';
+                return svg(360, 204, d, o.name);
+            },
+
+            /* Kartu rumus */
+            formula(o) {
+                return `<div class="vis-formula"><div class="vf-main">${o.f || ''}</div>${(o.legend || []).length ? `<dl class="vf-legend">${o.legend.map(([a, b]) => `<div><dt>${a}</dt><dd>${b}</dd></div>`).join('')}</dl>` : ''}</div>`;
+            },
+
+            /* Kartu zat kimia */
+            chem(o) {
+                const warna = { H: '#e2e8f0', O: '#fecaca', C: '#cbd5e1', Ca: '#d9f99d', Cl: '#bbf7d0', Na: '#ddd6fe', Mg: '#e9d5ff', Mn: '#fbcfe8', K: '#c4b5fd', I: '#ddd6fe', Fe: '#fed7aa', S: '#fef08a' };
+                return `<div class="vis-chem">
+      <div class="vc-tile"><span class="vc-f">${o.f}</span><span class="vc-n">${o.n || ''}</span></div>
+      <div class="vc-info">
+        ${o.w ? `<div class="vc-row"><span>Wujud</span><b>${o.w}</b></div>` : ''}
+        ${o.j ? `<div class="vc-row"><span>Golongan</span><b>${o.j}</b></div>` : ''}
+        <div class="vc-el">${(o.el || []).map(([s, n, ar]) => `<span style="background:${warna[s] || '#e2e8f0'}"><b>${s}</b>${n > 1 ? ` × ${n}` : ''}${ar ? ` <i>Ar ${ar}</i>` : ''}</span>`).join('')}</div>
+        ${o.role ? `<p class="vc-role">${o.role}</p>` : ''}
+      </div></div>`;
+            },
+
+            /* Tabel data metode laju awal */
+            ratetable() {
+                return `<div class="vis-table">
+      <table><thead><tr><th>Perc.</th><th>[A] (M)</th><th>[B] (M)</th><th>v (M s⁻¹)</th></tr></thead>
+      <tbody><tr><td>1</td><td>0,10</td><td>0,10</td><td>2 × 10⁻³</td></tr>
+      <tr class="hl-a"><td>2</td><td><b>0,20</b></td><td>0,10</td><td><b>8 × 10⁻³</b></td></tr>
+      <tr class="hl-b"><td>3</td><td>0,10</td><td><b>0,20</b></td><td><b>4 × 10⁻³</b></td></tr></tbody></table>
+      <div class="vt-steps">
+        <p><span class="dot a"></span>Perc. 1 → 2: [A] 2×, v 4× → 2ˣ = 4 → <b>x = 2</b></p>
+        <p><span class="dot b"></span>Perc. 1 → 3: [B] 2×, v 2× → 2ʸ = 2 → <b>y = 1</b></p>
+        <p class="vt-res">v = k[A]²[B] &nbsp;·&nbsp; orde total = 3</p>
+      </div></div>`;
+            }
+        };
+
+        /* =====================================================================
+           ANIMASI KANVAS
+           ===================================================================== */
+        let ANIM = { id: 0, running: true, stop: null };
+        function stopAnim() { if (ANIM.stop) ANIM.stop(); ANIM.stop = null; }
+
+        function setupCanvas(cv) {
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            const w = cv.clientWidth, h = cv.clientHeight;
+            cv.width = w * dpr; cv.height = h * dpr;
+            const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            return { ctx, w, h };
+        }
+        function loop(step) {
+            let raf, last = performance.now(), alive = true;
+            const f = (t) => { if (!alive) return; const dt = Math.min(0.05, (t - last) / 1000); last = t; if (ANIM.running) step(dt); raf = requestAnimationFrame(f); };
+            raf = requestAnimationFrame(f);
+            return () => { alive = false; cancelAnimationFrame(raf); };
+        }
+        function circle(ctx, x, y, r, fill, stroke) { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fillStyle = fill; ctx.fill(); if (stroke) { ctx.lineWidth = 1.5; ctx.strokeStyle = stroke; ctx.stroke(); } }
+
+        /* Dua molekul bertumbukan */
+        function animCollide(cv, o) {
+            const { ctx, w, h } = setupCanvas(cv);
+            const seq = { eff: ['eff'], ineff: ['orient', 'energy'], orient: ['eff', 'orient'], all: ['eff', 'orient', 'energy'] }[o.mode || 'all'];
+            let k = 0, t = 0, dur = 3.2;
+            const note = cv.parentElement.querySelector('.vis-note');
+            const txt = { eff: '✓ Tumbukan efektif: energi cukup, orientasi tepat', orient: '✗ Orientasi salah: partikel memantul', energy: '✗ Energi kurang dari Ea: partikel memantul' };
+            const setNote = s => { if (note) { note.textContent = txt[s]; note.className = 'vis-note ' + (s === 'eff' ? 'ok' : 'no'); } };
+            setNote(seq[0]);
+            const mol = (x, y, ang, main, nub) => { circle(ctx, x, y, 16, main); const nx = x + Math.cos(ang) * 16, ny = y + Math.sin(ang) * 16; circle(ctx, nx, ny, 7, nub, '#fff'); };
+            return loop(dt => {
+                t += dt; if (t > dur) { t = 0; k = (k + 1) % seq.length; setNote(seq[k]); }
+                const s = seq[k]; ctx.clearRect(0, 0, w, h);
+                const cy = h / 2, meet = w / 2, gap = 22;
+                const speed = s === 'energy' ? 0.55 : 1;
+                const p = Math.min(1, t / (1.3 / speed));
+                let xa, xb, angA = 0, angB = Math.PI;
+                if (s === 'orient') { angA = Math.PI; angB = 0; }
+                if (p < 1) { xa = 30 + (meet - gap - 30) * p; xb = w - 30 - (w - 30 - meet - gap) * p; }
+                else {
+                    const q = (t - 1.3 / speed);
+                    if (s === 'eff') {
+                        xa = meet - gap + Math.min(q * 30, 8); xb = meet + gap - Math.min(q * 30, 8);
+                        if (q < .35) { ctx.globalAlpha = 1 - q / .35; circle(ctx, meet, cy, 30 + q * 90, '#fde68a'); ctx.globalAlpha = 1; }
+                        circle(ctx, meet, cy, 34, 'rgba(245,158,11,.14)');
+                        mol(xa, cy, angA, C.sky, C.amber); mol(xb, cy, angB, C.ink, C.amber);
+                        ctx.fillStyle = C.ink; ctx.font = '700 12px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('produk', meet, cy + 50);
+                        return;
+                    }
+                    xa = meet - gap - q * 70 * speed; xb = meet + gap + q * 70 * speed;
+                }
+                mol(xa, cy, angA, C.sky, C.amber); mol(xb, cy, angB, C.ink, C.amber);
+                if (s === 'energy') { ctx.fillStyle = C.ink2; ctx.font = '600 11px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('bergerak lambat', w / 2, h - 12); }
+            });
+        }
+
+        /* Dua panel perbandingan partikel */
+        function animCompare(cv, o) {
+            const { ctx, w, h } = setupCanvas(cv);
+            const cfg = {
+                conc: [{ lbl: 'Konsentrasi rendah', n: 5, sp: 55, p: .5 }, { lbl: 'Konsentrasi tinggi', n: 14, sp: 55, p: .5 }],
+                temp: [{ lbl: 'Suhu rendah', n: 9, sp: 28, p: .18 }, { lbl: 'Suhu tinggi', n: 9, sp: 95, p: .6 }],
+                cat: [{ lbl: 'Tanpa katalis', n: 9, sp: 55, p: .12 }, { lbl: 'Dengan katalis', n: 9, sp: 55, p: .12, cat: 4 }],
+                inhib: [{ lbl: 'Tanpa inhibitor', n: 9, sp: 55, p: .5 }, { lbl: 'Dengan inhibitor', n: 9, sp: 55, p: .5, inh: 4 }],
+                stir: [{ lbl: 'Tidak diaduk', n: 8, sp: 30, p: .45 }, { lbl: 'Diaduk', n: 8, sp: 30, p: .45, swirl: 1 }],
+                press: [{ lbl: 'Tekanan rendah', n: 8, sp: 55, p: .45 }, { lbl: 'Tekanan tinggi', n: 8, sp: 55, p: .45, box: .55 }]
+            }[o.mode] || [];
+            const pw = (w - 12) / 2, R = 5.5;
+            const panels = cfg.map((c, i) => {
+                const x0 = i * (pw + 12), bw = pw * (c.box || 1), bh = (h - 64) * (c.box || 1);
+                const bx = x0 + (pw - bw) / 2, by = 26 + (h - 44 - bh) / 2;
+                const mk = (type) => { const a = Math.random() * 6.28; return { x: bx + R + Math.random() * (bw - 2 * R), y: by + R + Math.random() * (bh - 2 * R), vx: Math.cos(a) * c.sp, vy: Math.sin(a) * c.sp, type, act: false }; };
+                const ps = [];
+                for (let j = 0; j < c.n; j++) { ps.push(mk('A')); ps.push(mk('B')); }
+                for (let j = 0; j < (c.cat || 0); j++) { const q = mk('K'); q.vx *= .3; q.vy *= .3; ps.push(q); }
+                for (let j = 0; j < (c.inh || 0); j++) { const q = mk('I'); q.vx *= .3; q.vy *= .3; ps.push(q); }
+                return { c, bx, by, bw, bh, x0, ps, count: 0, flashes: [], mk };
+            });
+            return loop(dt => {
+                ctx.clearRect(0, 0, w, h);
+                panels.forEach(P => {
+                    const { c } = P;
+                    ctx.fillStyle = '#fff'; ctx.strokeStyle = C.line; ctx.lineWidth = 1.4;
+                    ctx.beginPath(); ctx.roundRect(P.x0, 20, pw, h - 32, 12); ctx.fill(); ctx.stroke();
+                    if (c.box) { ctx.strokeStyle = C.ink2; ctx.setLineDash([5, 4]); ctx.strokeRect(P.bx, P.by, P.bw, P.bh); ctx.setLineDash([]); }
+                    ctx.fillStyle = C.ink; ctx.font = '700 11.5px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(c.lbl, P.x0 + pw / 2, 13);
+                    P.ps.forEach(p => {
+                        if (c.swirl) { const cx = P.bx + P.bw / 2, cy = P.by + P.bh / 2, dx = p.x - cx, dy = p.y - cy; p.vx += -dy * 1.6 * dt; p.vy += dx * 1.6 * dt; const sp = Math.hypot(p.vx, p.vy), mx = 110; if (sp > mx) { p.vx *= mx / sp; p.vy *= mx / sp; } }
+                        p.x += p.vx * dt; p.y += p.vy * dt;
+                        if (p.x < P.bx + R) { p.x = P.bx + R; p.vx = Math.abs(p.vx); } if (p.x > P.bx + P.bw - R) { p.x = P.bx + P.bw - R; p.vx = -Math.abs(p.vx); }
+                        if (p.y < P.by + R) { p.y = P.by + R; p.vy = Math.abs(p.vy); } if (p.y > P.by + P.bh - R) { p.y = P.by + P.bh - R; p.vy = -Math.abs(p.vy); }
+                    });
+                    // interaksi
+                    for (let i = 0; i < P.ps.length; i++) for (let j = i + 1; j < P.ps.length; j++) {
+                        const a = P.ps[i], b = P.ps[j]; if (a.dead || b.dead) continue;
+                        const d = Math.hypot(a.x - b.x, a.y - b.y); if (d > 2 * R + 1) continue;
+                        const types = a.type + b.type;
+                        if (types === 'AK' || types === 'KA') { (a.type === 'A' ? a : b).act = true; continue; }
+                        if (types === 'AI' || types === 'IA') { const A = a.type === 'A' ? a : b; A.trap = 1.4; continue; }
+                        if (types === 'AB' || types === 'BA') {
+                            const A = a.type === 'A' ? a : b;
+                            if (A.trap > 0) continue;
+                            if (A.act || Math.random() < c.p) {
+                                P.count++; P.flashes.push({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, t: 0 });
+                                [a, b].forEach(q => { const n = P.mk(q.type); Object.assign(q, n); });
+                            } else { const tx = a.vx; a.vx = b.vx; b.vx = tx; const ty = a.vy; a.vy = b.vy; b.vy = ty; }
+                        }
+                    }
+                    P.ps.forEach(p => { if (p.trap > 0) { p.trap -= dt; p.vx *= .9; p.vy *= .9; if (p.trap <= 0) { const a = Math.random() * 6.28; p.vx = Math.cos(a) * c.sp; p.vy = Math.sin(a) * c.sp; } } });
+                    P.flashes = P.flashes.filter(f => (f.t += dt) < .5);
+                    P.flashes.forEach(f => { ctx.globalAlpha = 1 - f.t / .5; circle(ctx, f.x, f.y, 6 + f.t * 26, C.amberL); ctx.globalAlpha = 1; });
+                    P.ps.forEach(p => {
+                        if (p.type === 'A') circle(ctx, p.x, p.y, R, p.act ? C.green : C.sky, p.act ? '#065f46' : null);
+                        else if (p.type === 'B') circle(ctx, p.x, p.y, R, C.ink);
+                        else if (p.type === 'K') { ctx.fillStyle = C.green; ctx.fillRect(p.x - 6, p.y - 6, 12, 12); }
+                        else if (p.type === 'I') { circle(ctx, p.x, p.y, 7, '#94a3b8'); }
+                    });
+                    ctx.fillStyle = C.rose; ctx.font = '800 11.5px sans-serif'; ctx.textAlign = 'center';
+                    ctx.fillText(`Reaksi terjadi: ${P.count}`, P.x0 + pw / 2, h - 18);
+                });
+            });
+        }
+
+        /* Cadangan untuk peramban lama yang belum mendukung roundRect */
+        if (typeof CanvasRenderingContext2D !== 'undefined' && !CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) { this.rect(x, y, w, h); };
+        }
+        /* =====================================================================
+           APLIKASI KAMUS
+           ===================================================================== */
+        const KAT = {
+            dasar: { n: 'Konsep Dasar', c: '#0369a1', b: '#e0f2fe' },
+            tumbukan: { n: 'Teori Tumbukan & Energi', c: '#6d28d9', b: '#ede9fe', p: 'Pertemuan 1' },
+            faktor: { n: 'Faktor Laju Reaksi', c: '#b45309', b: '#fef3c7', p: 'Pertemuan 2' },
+            persamaan: { n: 'Persamaan Laju & Orde', c: '#be123c', b: '#ffe4e6', p: 'Pertemuan 3' },
+            bahan: { n: 'Zat Kimia', c: '#0f766e', b: '#ccfbf1' },
+            alat: { n: 'Alat Praktikum', c: '#047857', b: '#d1fae5' },
+            ilmiah: { n: 'Keterampilan Ilmiah', c: '#334155', b: '#e2e8f0' }
+        };
+        const $ = s => document.querySelector(s);
+        const SUB = { '₀': '0', '₁': '1', '₂': '2', '₃': '3', '₄': '4', '₅': '5', '₆': '6', '₇': '7', '₈': '8', '₉': '9', '⁰': '0', '¹': '1', '²': '2', '³': '3', 'ˣ': 'x', 'ʸ': 'y', '⁻': '-', '½': '1/2', 'Δ': 'delta ' };
+        const norm = s => String(s).replace(/[₀-₉⁰¹²³ˣʸ⁻½Δ]/g, m => SUB[m]).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[()\[\],.:;'"!?]/g, ' ').replace(/\s+/g, ' ').trim();
+        const slug = t => norm(t).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        const esc = s => String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+
+        ISTILAH.sort((a, b) => a.t.localeCompare(b.t, 'id'));
+        ISTILAH.forEach((e, i) => { e.i = i; e.id = slug(e.t); e.nt = norm(e.t); e.na = e.a.map(norm); e.nd = norm(e.d + ' ' + e.p); });
+        const byTitle = Object.fromEntries(ISTILAH.map(e => [e.t, e]));
+        const byId = Object.fromEntries(ISTILAH.map(e => [e.id, e]));
+
+        /* ---------- Pencarian ---------- */
+        function skor(e, q) {
+            if (!q) return 0;
+            const words = q.split(' ');
+            let s = 0;
+            if (e.nt === q) s = 1000;
+            else if (e.nt.startsWith(q)) s = 800;
+            else if (e.na.some(a => a === q)) s = 760;
+            else if (e.nt.split(' ').some(w => w.startsWith(q))) s = 600;
+            else if (e.na.some(a => a.startsWith(q))) s = 560;
+            else if (e.nt.includes(q)) s = 450;
+            else if (e.na.some(a => a.includes(q))) s = 400;
+            else if (words.every(w => (e.nt + ' ' + e.na.join(' ')).includes(w))) s = 300;
+            else if (q.length > 2 && words.every(w => e.nd.includes(w))) s = 120;
+            return s ? s - e.t.length * 0.5 : 0;
+        }
+        function cari(q) {
+            q = norm(q);
+            if (!q) return [];
+            return ISTILAH.map(e => ({ e, s: skor(e, q) })).filter(r => r.s > 0).sort((a, b) => b.s - a.s).map(r => r.e);
+        }
+        function lev(a, b) {
+            const m = a.length, n = b.length; if (!m) return n; if (!n) return m;
+            let prev = Array.from({ length: n + 1 }, (_, j) => j);
+            for (let i = 1; i <= m; i++) {
+                const cur = [i];
+                for (let j = 1; j <= n; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+                prev = cur;
+            }
+            return prev[n];
+        }
+        function mirip(q) {
+            q = norm(q); if (q.length < 3) return null;
+            let best = null, bd = Infinity;
+            ISTILAH.forEach(e => [e.nt, ...e.na, ...e.nt.split(' ')].forEach(c => {
+                const d = lev(q, c.slice(0, Math.max(q.length, Math.min(c.length, q.length + 2))));
+                if (d < bd) { bd = d; best = e; }
+            }));
+            return bd <= Math.max(1, Math.floor(q.length / 4)) ? best : null;
+        }
+        function tandai(text, q) {
+            const nq = norm(q); if (!nq) return esc(text);
+            const low = text.toLowerCase().replace(/[₀-₉]/g, m => SUB[m]);
+            const i = low.indexOf(nq);
+            if (i < 0) return esc(text);
+            return esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + nq.length)) + '</mark>' + esc(text.slice(i + nq.length));
+        }
+
+        /* ---------- Riwayat pencarian ---------- */
+        const KEY_RIWAYAT = 'ek_kamus_riwayat';
+        const bacaRiwayat = () => { try { return JSON.parse(localStorage.getItem(KEY_RIWAYAT)) || []; } catch (_) { return []; } };
+        function simpanRiwayat(t) {
+            try { const r = [t, ...bacaRiwayat().filter(x => x !== t)].slice(0, 6); localStorage.setItem(KEY_RIWAYAT, JSON.stringify(r)); } catch (_) { }
+        }
+
+        /* ---------- Kotak pencarian & saran ---------- */
+        const input = $('#q'), drop = $('#saran');
+        let hasilSaran = [], aktifSaran = -1;
+        function tampilSaran() {
+            const q = input.value.trim();
+            $('#q-clear').hidden = !q;
+            if (!q) {
+                const r = bacaRiwayat().filter(t => byTitle[t]);
+                if (!r.length) return tutupSaran();
+                hasilSaran = r.map(t => byTitle[t]);
+                aktifSaran = -1;
+                drop.innerHTML = `<li class="s-head">Terakhir dicari</li>` + hasilSaran.map((e, i) => itemSaran(e, i, '')).join('');
+            } else {
+                const all = cari(q); hasilSaran = all.slice(0, 7); aktifSaran = hasilSaran.length ? 0 : -1;
+                if (!hasilSaran.length) {
+                    const m = mirip(q);
+                    drop.innerHTML = `<li class="s-empty">Tidak ada istilah "<b>${esc(q)}</b>".${m ? ` Mungkin maksud Anda <button type="button" class="s-fix" data-id="${m.id}">${esc(m.t)}</button>?` : ' Coba kata lain, misalnya "katalis" atau "orde".'}</li>`;
+                } else {
+                    drop.innerHTML = hasilSaran.map((e, i) => itemSaran(e, i, q)).join('') +
+                        (all.length > hasilSaran.length || all.length > 1 ? `<li class="s-all"><button type="button" id="s-all">Tampilkan semua ${all.length} hasil di daftar</button></li>` : '');
+                }
+            }
+            drop.hidden = false; input.setAttribute('aria-expanded', 'true');
+            tandaiSaran();
+        }
+        function itemSaran(e, i, q) {
+            const k = KAT[e.k];
+            const alias = q && !norm(e.t).includes(norm(q)) ? e.a.find(a => norm(a).includes(norm(q))) : '';
+            return `<li role="option" id="sr-${i}" data-id="${e.id}" class="s-item">
+    <span class="s-dot" style="background:${k.c}"></span>
+    <span class="s-txt"><b>${tandai(e.t, q)}</b>${alias ? ` <small>(${tandai(alias, q)})</small>` : ''}<span>${esc(e.d)}</span></span>
+    <em style="color:${k.c};background:${k.b}">${k.n.split(' ')[0]}</em></li>`;
+        }
+        function tandaiSaran() {
+            drop.querySelectorAll('.s-item').forEach((el, i) => el.setAttribute('aria-selected', i === aktifSaran));
+            input.setAttribute('aria-activedescendant', aktifSaran >= 0 ? 'sr-' + aktifSaran : '');
+        }
+        function tutupSaran() { drop.hidden = true; input.setAttribute('aria-expanded', 'false'); }
+        input.addEventListener('input', tampilSaran);
+        input.addEventListener('focus', tampilSaran);
+        input.addEventListener('keydown', ev => {
+            if (ev.key === 'ArrowDown' && hasilSaran.length) { ev.preventDefault(); aktifSaran = (aktifSaran + 1) % hasilSaran.length; tandaiSaran(); }
+            else if (ev.key === 'ArrowUp' && hasilSaran.length) { ev.preventDefault(); aktifSaran = (aktifSaran - 1 + hasilSaran.length) % hasilSaran.length; tandaiSaran(); }
+            else if (ev.key === 'Enter') {
+                ev.preventDefault();
+                const e = hasilSaran[aktifSaran] || hasilSaran[0];
+                if (e) { simpanRiwayat(e.t); tutupSaran(); buka(e, true); input.blur(); }
+                else { const m = mirip(input.value); if (m) { buka(m, true); tutupSaran(); } }
+            } else if (ev.key === 'Escape') { tutupSaran(); input.blur(); }
+        });
+        drop.addEventListener('mousedown', ev => ev.preventDefault());
+        drop.addEventListener('click', ev => {
+            const it = ev.target.closest('[data-id]');
+            if (it) { const e = byId[it.dataset.id]; simpanRiwayat(e.t); tutupSaran(); buka(e, true); input.blur(); return; }
+            if (ev.target.id === 's-all') { state.q = input.value.trim(); state.kat = 'semua'; tutupSaran(); renderChips(); renderDaftar(); $('#daftar').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        });
+        $('#q-clear').addEventListener('click', () => { input.value = ''; state.q = ''; renderDaftar(); input.focus(); tampilSaran(); });
+        document.addEventListener('click', ev => { if (!ev.target.closest('.search')) tutupSaran(); });
+        document.addEventListener('keydown', ev => {
+            if (ev.key === '/' && document.activeElement !== input && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { ev.preventDefault(); input.focus(); }
+            if (ev.key === 'Escape' && document.body.classList.contains('sheet-open')) tutupSheet();
+        });
+
+        /* ---------- Kategori & daftar ---------- */
+        const state = { kat: 'semua', q: '', aktif: null };
+        function daftarAktif() {
+            let list = state.q ? cari(state.q) : ISTILAH.slice();
+            if (state.kat !== 'semua') list = list.filter(e => e.k === state.kat);
+            return list;
+        }
+        function renderChips() {
+            const count = k => k === 'semua' ? ISTILAH.length : ISTILAH.filter(e => e.k === k).length;
+            $('#chips').innerHTML = ['semua', ...Object.keys(KAT)].map(k => {
+                const on = state.kat === k, meta = KAT[k];
+                return `<button type="button" data-k="${k}" aria-pressed="${on}" style="${on && meta ? `background:${meta.c};border-color:${meta.c};color:#fff` : ''}">
+      ${meta ? `<i style="background:${on ? '#fff' : meta.c}"></i>` : ''}${meta ? meta.n : 'Semua'} <span>${count(k)}</span></button>`;
+            }).join('');
+        }
+        $('#chips').addEventListener('click', ev => {
+            const b = ev.target.closest('[data-k]'); if (!b) return;
+            state.kat = b.dataset.k; renderChips(); renderDaftar();
+        });
+        function renderDaftar() {
+            const list = daftarAktif();
+            const info = $('#list-info');
+            info.innerHTML = state.q
+                ? `<span>${list.length} hasil untuk "<b>${esc(state.q)}</b>"</span><button type="button" id="reset-q">Hapus pencarian</button>`
+                : `<span>${list.length} istilah${state.kat !== 'semua' ? ' · ' + KAT[state.kat].n : ''}</span>`;
+            const r = $('#reset-q'); if (r) r.onclick = () => { state.q = ''; input.value = ''; renderDaftar(); };
+            const groups = {};
+            list.forEach(e => { const L = state.q ? 'Hasil' : e.t[0].toUpperCase(); (groups[L] = groups[L] || []).push(e); });
+            $('#daftar').innerHTML = Object.entries(groups).map(([L, es]) => `
+    <section class="grp" id="huruf-${L}" aria-label="Huruf ${L}">
+      ${state.q ? '' : `<h3 class="grp-h">${L}</h3>`}
+      <ul>${es.map(e => {
+                const k = KAT[e.k]; return `<li><button type="button" class="row${state.aktif === e ? ' on' : ''}" data-id="${e.id}">
+        <span class="row-t">${state.q ? tandai(e.t, state.q) : esc(e.t)}</span>
+        <span class="row-k" style="color:${k.c}"><i style="background:${k.c}"></i>${k.n}</span>
+        <span class="row-d">${esc(e.d)}</span></button></li>`;
+            }).join('')}</ul>
+    </section>`).join('') || `<div class="list-empty"><b>Belum ada istilah di sini.</b><span>Pilih kategori lain atau hapus pencarian.</span></div>`;
+            // Indeks A–Z
+            const ada = new Set(list.map(e => e.t[0].toUpperCase()));
+            $('#az').innerHTML = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(L => `<button type="button" data-l="${L}" ${ada.has(L) && !state.q ? '' : 'disabled'}>${L}</button>`).join('');
+        }
+        $('#daftar').addEventListener('click', ev => { const b = ev.target.closest('[data-id]'); if (b) buka(byId[b.dataset.id], true); });
+        $('#az').addEventListener('click', ev => {
+            const b = ev.target.closest('[data-l]'); if (!b || b.disabled) return;
+            const el = document.getElementById('huruf-' + b.dataset.l);
+            if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - (window.innerWidth < 900 ? 132 : 90), behavior: 'smooth' });
+        });
+
+        /* ---------- Detail istilah ---------- */
+        function visualHTML(e) {
+            const [type, o] = e.v;
+            if (type === 'collide' || type === 'compare') {
+                return `<div class="vis-canvas ${type}"><canvas></canvas>${type === 'collide' ? '<p class="vis-note"></p>' : '<p class="vis-legend"><span><i style="background:#0ea5e9"></i>pereaksi A</span><span><i style="background:#0f2a44"></i>pereaksi B</span><span><i style="background:#fde68a"></i>reaksi terjadi</span>' + (o.mode === 'cat' ? '<span><i style="background:#059669;border-radius:2px"></i>katalis</span>' : '') + (o.mode === 'inhib' ? '<span><i style="background:#94a3b8"></i>inhibitor</span>' : '') + '</p>'}</div>`;
+            }
+            return (VIS[type] || VIS.formula)(o || {});
+        }
+        function detailHTML(e) {
+            const k = KAT[e.k];
+            const list = daftarAktif(), idx = list.indexOf(e);
+            const prev = idx > 0 ? list[idx - 1] : null, next = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : null;
+            const canvas = e.v[0] === 'collide' || e.v[0] === 'compare';
+            return `
+  <div class="d-top">
+    <span class="d-kat" style="color:${k.c};background:${k.b}">${k.n}${k.p ? ` · ${k.p}` : ''}</span>
+    <div class="d-act">
+      ${'speechSynthesis' in window ? `<button type="button" id="d-speak" title="Dengarkan" aria-label="Dengarkan penjelasan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button>` : ''}
+      <button type="button" id="d-link" title="Salin tautan" aria-label="Salin tautan istilah ini"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button>
+      <button type="button" id="d-close" class="only-sheet" aria-label="Tutup"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+  </div>
+  <h2 class="d-title" id="d-title">${esc(e.t)}</h2>
+  ${e.a.length ? `<p class="d-alias">Juga disebut: ${e.a.map(esc).join(', ')}</p>` : ''}
+  <figure class="d-vis">
+    ${visualHTML(e)}
+    <figcaption>${canvas ? `<button type="button" id="d-pause" class="d-pause">Jeda animasi</button>` : ''}<span>${esc(e.v[1].cap || '')}</span></figcaption>
+  </figure>
+  <p class="d-def">${esc(e.d)}</p>
+  <p class="d-p">${esc(e.p)}</p>
+  ${e.r ? `<div class="d-box"><h4>Rumus / contoh</h4><p>${e.r}</p></div>` : ''}
+  ${e.lab ? `<div class="d-box lab"><h4>Di EduKinetika</h4><p>${esc(e.lab)}</p></div>` : ''}
+  ${e.s.length ? `<div class="d-rel"><h4>Istilah terkait</h4><div>${e.s.map(t => byTitle[t]).filter(Boolean).map(r => `<button type="button" data-id="${r.id}" style="--c:${KAT[r.k].c}">${esc(r.t)}</button>`).join('')}</div></div>` : ''}
+  <nav class="d-nav" aria-label="Istilah sebelumnya dan berikutnya">
+    ${prev ? `<button type="button" data-id="${prev.id}"><small>Sebelumnya</small>${esc(prev.t)}</button>` : '<span></span>'}
+    ${next ? `<button type="button" data-id="${next.id}" class="nx"><small>Berikutnya</small>${esc(next.t)}</button>` : '<span></span>'}
+  </nav>`;
+        }
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        function buka(e, dariPengguna) {
+            if (!e) return;
+            state.aktif = e;
+            stopAnim();
+            const panel = $('#detail');
+            panel.innerHTML = detailHTML(e);
+            panel.scrollTop = 0;
+            document.querySelectorAll('#daftar .row').forEach(r => r.classList.toggle('on', r.dataset.id === e.id));
+            const cv = panel.querySelector('canvas');
+            ANIM.running = !reduce;
+            if (cv) {
+                requestAnimationFrame(() => { ANIM.stop = e.v[0] === 'collide' ? animCollide(cv, e.v[1]) : animCompare(cv, e.v[1]); if (reduce) { ANIM.running = true; setTimeout(() => { ANIM.running = false; syncPause(); }, 1200); } syncPause(); });
+            }
+            const pz = $('#d-pause'); if (pz) pz.onclick = () => { ANIM.running = !ANIM.running; syncPause(); };
+            const sp = $('#d-speak'); if (sp) sp.onclick = () => bicara(e);
+            $('#d-link').onclick = () => salinTautan(e);
+            const cl = $('#d-close'); if (cl) cl.onclick = tutupSheet;
+            panel.querySelectorAll('.d-rel [data-id], .d-nav [data-id]').forEach(b => b.onclick = () => buka(byId[b.dataset.id], true));
+            if (dariPengguna) {
+                history.replaceState(null, '', '#' + e.id);
+                if (window.innerWidth < 900) bukaSheet();
+                else { const top = panel.getBoundingClientRect().top; if (top < 0 || top > window.innerHeight * .6) window.scrollTo({ top: panel.getBoundingClientRect().top + window.scrollY - 86, behavior: 'smooth' }); }
+            }
+            document.title = `${e.t} · Kamus Kinetika`;
+        }
+        function syncPause() { const b = $('#d-pause'); if (b) b.textContent = ANIM.running ? 'Jeda animasi' : 'Putar animasi'; }
+        function bicara(e) {
+            try {
+                speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(`${e.t}. ${e.d} ${e.p}`.replace(/[₀-₉]/g, m => SUB[m]));
+                u.lang = 'id-ID'; u.rate = 0.98;
+                const v = speechSynthesis.getVoices().find(v => v.lang && v.lang.toLowerCase().startsWith('id')); if (v) u.voice = v;
+                speechSynthesis.speak(u);
+            } catch (_) { }
+        }
+        function salinTautan(e) {
+            const url = location.href.split('#')[0] + '#' + e.id;
+            const done = () => toast('Tautan istilah disalin');
+            if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => toast(url));
+            else toast(url);
+        }
+        let toastT;
+        function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200); }
+
+        /* ---------- Lembar detail di HP ---------- */
+        function bukaSheet() { document.body.classList.add('sheet-open'); $('#detail-wrap').setAttribute('aria-hidden', 'false'); setTimeout(() => $('#d-title') && $('#d-title').focus({ preventScroll: true }), 50); }
+        function tutupSheet() { document.body.classList.remove('sheet-open'); if (window.innerWidth < 900) stopAnim(); try { speechSynthesis.cancel(); } catch (_) { } }
+        $('#sheet-back').addEventListener('click', tutupSheet);
+
+        /* ---------- Tombol cepat ---------- */
+        $('#acak').addEventListener('click', () => buka(ISTILAH[Math.floor(Math.random() * ISTILAH.length)], true));
+        $('#coba').addEventListener('click', ev => { const b = ev.target.closest('[data-t]'); if (b) buka(byTitle[b.dataset.t], true); });
+
+        /* ---------- Mulai ---------- */
+        $('#jumlah').textContent = ISTILAH.length;
+        renderChips(); renderDaftar();
+        const dariHash = byId[decodeURIComponent(location.hash.slice(1))];
+        if (dariHash) { buka(dariHash, false); if (window.innerWidth < 900) bukaSheet(); }
+        else {
+            const hari = Math.floor(Date.now() / 86400000);
+            const e = ISTILAH[hari % ISTILAH.length];
+            buka(e, false);
+            $('#hari-ini').innerHTML = `Istilah hari ini: <button type="button" data-id="${e.id}">${esc(e.t)}</button>`;
+            $('#hari-ini button').onclick = () => buka(e, true);
+        }
+        window.addEventListener('hashchange', () => { const e = byId[decodeURIComponent(location.hash.slice(1))]; if (e && e !== state.aktif) buka(e, true); });
+
+    </script>
+</body>
+
+</html>

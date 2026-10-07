@@ -1,0 +1,3985 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduKinetika — Laboratorium Virtual Laju Reaksi</title>
+    <meta name="description"
+        content="Laboratorium virtual untuk materi Laju Reaksi kelas XI. Atur suhu, konsentrasi, dan katalis, lalu amati partikelnya.">
+
+    <!-- Font: Plus Jakarta Sans (satu keluarga untuk seluruh situs) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS (CDN, sama seperti halaman EduKinetika lainnya) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    },
+                    colors: {
+                        ink: { DEFAULT: '#0f2a44', soft: '#3d5670', mute: '#6b7f94' },
+                        sky: { 50: '#f0f8ff', 100: '#e0f2fe', 200: '#bae6fd', 400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1' },
+                        amber: { 50: '#fffbeb', 100: '#fef3c7', 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' },
+                        paper: '#f7fafc',
+                        line: '#dbe4ee',
+                    },
+                    maxWidth: { page: '76rem' },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Fokus keyboard yang jelas di semua elemen interaktif */
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        label:focus-within {
+            outline: 3px solid #f59e0b;
+            outline-offset: 3px;
+            border-radius: 10px;
+        }
+
+        /* Judul hero: tipografi sebagai elemen utama */
+        .hero-title {
+            font-size: clamp(2.25rem, 5.2vw, 4rem);
+            line-height: 1.04;
+            letter-spacing: -0.035em;
+        }
+
+        /* Slider bergaya sederhana */
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 99px;
+            background: #dbe4ee;
+            cursor: pointer;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #0f2a44;
+            border: 3px solid #fff;
+            box-shadow: 0 1px 4px rgba(15, 42, 68, .35);
+        }
+
+        input[type=range]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #0f2a44;
+            border: 3px solid #fff;
+            box-shadow: 0 1px 4px rgba(15, 42, 68, .35);
+        }
+
+        /* Toggle katalis */
+        .switch {
+            position: relative;
+            width: 44px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            position: absolute;
+            opacity: 0;
+            inset: 0;
+            cursor: pointer;
+        }
+
+        .switch span {
+            position: absolute;
+            inset: 0;
+            border-radius: 99px;
+            background: #dbe4ee;
+            transition: background .2s;
+        }
+
+        .switch span::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+            transition: transform .2s;
+        }
+
+        .switch input:checked+span {
+            background: #f59e0b;
+        }
+
+        .switch input:checked+span::after {
+            transform: translateX(18px);
+        }
+
+        /* Hasil pencarian: item aktif (navigasi keyboard) */
+        .search-item[aria-selected="true"] {
+            background: #f0f8ff;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+
+        /* ── USER CARD NAVBAR ── */
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px 6px 6px;
+            border-radius: 100px;
+            border: 1.5px solid #dbe4ee;
+            background: #f7fafc;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: inherit;
+        }
+
+        .user-card:hover {
+            border-color: #0f2a44;
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(15, 42, 68, .1);
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0ea5e9, #0f2a44);
+            color: #fff;
+            font-weight: 800;
+            font-size: 0.78rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-name-nav {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #0f2a44;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Dropdown */
+        .user-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: #fff;
+            border: 1.5px solid #dbe4ee;
+            border-radius: 16px;
+            min-width: 200px;
+            box-shadow: 0 12px 32px rgba(15, 42, 68, .14);
+            overflow: hidden;
+            z-index: 999;
+            display: none;
+            animation: dropIn .2s ease;
+        }
+
+        .user-dropdown.open {
+            display: block;
+        }
+
+        @keyframes dropIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f0f4f8;
+            font-size: 0.78rem;
+        }
+
+        .dropdown-header strong {
+            display: block;
+            font-weight: 800;
+            color: #0f2a44;
+            margin-bottom: 2px;
+        }
+
+        .dropdown-header span {
+            color: #6b7f94;
+            font-size: 0.72rem;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #3d5670;
+            cursor: pointer;
+            transition: background .15s;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+        }
+
+        .dropdown-item:hover {
+            background: #f7fafc;
+            color: #0f2a44;
+        }
+
+        .dropdown-item.danger:hover {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .dropdown-item svg {
+            flex-shrink: 0;
+        }
+
+        /* ── GREETING BADGE ── */
+        .greeting-badge {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            border: 1.5px solid #bae6fd;
+            border-radius: 100px;
+            padding: 6px 14px 6px 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #0369a1;
+            margin-bottom: 20px;
+            animation: slideIn .5s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .greeting-badge.show {
+            display: inline-flex;
+        }
+
+        .greeting-avatar-sm {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0ea5e9, #0f2a44);
+            color: #fff;
+            font-weight: 800;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .greeting-avatar-sm img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ── SRL TIMER WIDGET ── */
+        #srl-widget {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        #srl-widget.show {
+            display: flex;
+        }
+
+        .srl-card {
+            background: #fff;
+            border: 1.5px solid #dbe4ee;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(15, 42, 68, .15), 0 2px 8px rgba(15, 42, 68, .08);
+            overflow: hidden;
+            animation: srlReveal .5s cubic-bezier(.34, 1.56, .64, 1);
+            min-width: 220px;
+        }
+
+        @keyframes srlReveal {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .srl-header {
+            background: linear-gradient(135deg, #0f2a44, #1e4976);
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .srl-title {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 0.5px;
+        }
+
+        .srl-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+            animation: srlPulse 2s ease-in-out infinite;
+        }
+
+        .srl-dot.paused {
+            background: #f59e0b;
+            animation: none;
+        }
+
+        @keyframes srlPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 0 5px rgba(34, 197, 94, 0);
+            }
+        }
+
+        .srl-pause-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            border-radius: 8px;
+            padding: 3px 8px;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .2s;
+        }
+
+        .srl-pause-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .srl-body {
+            padding: 12px 14px;
+        }
+
+        .srl-time-display {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #0f2a44;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -1px;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .srl-label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: #6b7f94;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .srl-progress-wrap {
+            margin-bottom: 10px;
+        }
+
+        .srl-progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #6b7f94;
+            margin-bottom: 4px;
+        }
+
+        .srl-progress-bar {
+            height: 5px;
+            background: #e2e8f0;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .srl-progress-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #0ea5e9, #0284c7);
+            transition: width .5s ease;
+        }
+
+        .srl-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .srl-stat {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 7px 10px;
+            text-align: center;
+        }
+
+        .srl-stat-val {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #0f2a44;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+        }
+
+        .srl-stat-lbl {
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        .srl-toggle-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: #0f2a44;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(15, 42, 68, .3);
+            transition: all .2s;
+            color: #fff;
+        }
+
+        .srl-toggle-btn:hover {
+            background: #1e4976;
+            transform: scale(1.05);
+        }
+    </style>
+
+    <!-- =========================================================
+         PENYEMPURNAAN DESAIN (tambahan, tidak mengubah fungsi)
+         ========================================================= -->
+    <style>
+        :root {
+            --ek-ink: #0f2a44;
+            --ek-sky: #0ea5e9;
+            --ek-amber: #f59e0b;
+            --ek-line: #dbe4ee;
+            --ek-shadow: 0 1px 2px rgba(15, 42, 68, .05), 0 8px 24px -12px rgba(15, 42, 68, .18);
+            --ek-shadow-lg: 0 2px 4px rgba(15, 42, 68, .05), 0 22px 44px -20px rgba(15, 42, 68, .28);
+        }
+
+        body {
+            text-rendering: optimizeLegibility;
+        }
+
+        /* Navbar: tautan aktif & bayangan halus */
+        header.sticky {
+            box-shadow: 0 1px 0 rgba(15, 42, 68, .02), 0 6px 18px -14px rgba(15, 42, 68, .25);
+        }
+
+        /* ---------- HERO: latar kertas milimeter ala buku praktikum ---------- */
+        .hero-bg {
+            position: relative;
+            isolation: isolate;
+            background-color: #fff;
+            overflow-x: clip;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(14, 165, 233, .07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(14, 165, 233, .07) 1px, transparent 1px);
+            background-size: 28px 28px;
+            -webkit-mask-image: radial-gradient(ellipse 70% 80% at 75% 40%, #000 30%, transparent 75%);
+            mask-image: radial-gradient(ellipse 70% 80% at 75% 40%, #000 30%, transparent 75%);
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            width: 520px;
+            height: 520px;
+            right: -140px;
+            top: -160px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(56, 189, 248, .16), transparent 65%);
+            pointer-events: none;
+        }
+
+        .hero-title {
+            font-size: clamp(2.1rem, 4.6vw, 3.6rem);
+            line-height: 1.06;
+        }
+
+        .hero-points {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 18px;
+            margin: -12px 0 28px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #3d5670;
+        }
+
+        .hero-points li {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .hero-points svg {
+            color: #0284c7;
+            flex-shrink: 0;
+        }
+
+        #sim {
+            background: #fff;
+            box-shadow: var(--ek-shadow-lg);
+        }
+
+        /* ---------- Menu cepat (gaya aplikasi belajar) ---------- */
+        .quick-wrap {
+            position: relative;
+            z-index: 5;
+            margin-top: -34px;
+        }
+
+        .quick-card {
+            background: #fff;
+            border: 1px solid var(--ek-line);
+            border-radius: 24px;
+            box-shadow: var(--ek-shadow-lg);
+            padding: 18px 18px 20px;
+        }
+
+        .quick-card h2 {
+            font-size: 15px;
+            font-weight: 800;
+            margin: 2px 4px 14px;
+            color: var(--ek-ink);
+        }
+
+        .quick-list {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .quick-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 16px;
+            border: 1px solid transparent;
+            transition: background .15s, border-color .15s;
+        }
+
+        .quick-item:hover {
+            background: #f7fafc;
+            border-color: var(--ek-line);
+        }
+
+        .quick-ic {
+            width: 46px;
+            height: 46px;
+            flex-shrink: 0;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+        }
+
+        .quick-item b {
+            display: block;
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--ek-ink);
+            line-height: 1.2;
+        }
+
+        .quick-item small {
+            display: block;
+            font-size: 12.5px;
+            color: #6b7f94;
+            margin-top: 2px;
+            line-height: 1.35;
+        }
+
+        .qi-sky {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .qi-ink {
+            background: #0f2a44;
+            color: #fbbf24;
+        }
+
+        .qi-green {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .qi-amber {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .qi-rose {
+            background: #ffe4e6;
+            color: #be123c;
+        }
+
+        @media (max-width: 1023px) {
+            .quick-list {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 639px) {
+            .quick-wrap {
+                margin-top: -22px;
+            }
+
+            .quick-card {
+                padding: 14px 10px 12px;
+                border-radius: 20px;
+            }
+
+            .quick-card h2 {
+                margin: 2px 8px 10px;
+            }
+
+            .quick-list {
+                grid-template-columns: repeat(5, minmax(0, 1fr));
+                gap: 2px;
+            }
+
+            .quick-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 7px;
+                padding: 8px 2px;
+            }
+
+            .quick-ic {
+                width: 44px;
+                height: 44px;
+                border-radius: 13px;
+            }
+
+            .quick-item b {
+                font-size: 12px;
+                font-weight: 700;
+            }
+
+            .quick-item small {
+                display: none;
+            }
+        }
+
+        /* ---------- Judul bagian ---------- */
+        .sec-sub {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #0369a1;
+            margin-bottom: 10px;
+        }
+
+        .sec-sub i {
+            width: 22px;
+            height: 3px;
+            border-radius: 3px;
+            background: var(--ek-amber);
+        }
+
+        /* ---------- Alur PBL ---------- */
+        .pbl-steps li {
+            position: relative;
+        }
+
+        .pbl-ic {
+            position: absolute;
+            top: 22px;
+            right: 20px;
+            color: #9fb3c8;
+        }
+
+        .pbl-steps li.bg-sky-50 .pbl-ic {
+            color: #0284c7;
+        }
+
+        .pbl-tag {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #6b7f94;
+            margin-bottom: 2px;
+        }
+
+        @media (max-width: 767px) {
+
+            /* Di HP: kartu digeser ke samping seperti aplikasi belajar */
+            .pbl-steps {
+                display: flex !important;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 12px !important;
+                background: transparent !important;
+                border: 0 !important;
+                border-radius: 0 !important;
+                margin: 0 -20px;
+                padding: 4px 20px 14px;
+                scrollbar-width: none;
+            }
+
+            .pbl-steps::-webkit-scrollbar {
+                display: none;
+            }
+
+            .pbl-steps li {
+                flex: 0 0 78%;
+                scroll-snap-align: start;
+                border: 1px solid var(--ek-line);
+                border-radius: 20px;
+                box-shadow: var(--ek-shadow);
+            }
+
+            .pbl-hint {
+                display: flex !important;
+            }
+        }
+
+        .pbl-hint {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #6b7f94;
+            margin-top: 6px;
+        }
+
+        /* ---------- Daftar materi sebagai kartu ---------- */
+        #daftar-materi {
+            border: 0 !important;
+            display: grid;
+            gap: 12px;
+        }
+
+        #daftar-materi>li {
+            border: 0 !important;
+        }
+
+        #daftar-materi .materi-item {
+            position: relative;
+            padding: 18px 52px 18px 18px;
+            background: #fff;
+            border: 1px solid var(--ek-line);
+            border-radius: 20px;
+            transition: border-color .15s, box-shadow .15s, transform .15s;
+        }
+
+        #daftar-materi button.materi-item:hover {
+            border-color: #7dd3fc;
+            box-shadow: var(--ek-shadow);
+        }
+
+        #daftar-materi button.materi-item::after {
+            content: '';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            width: 10px;
+            height: 10px;
+            border-top: 2.5px solid #9fb3c8;
+            border-right: 2.5px solid #9fb3c8;
+            transform: translateY(-50%) rotate(45deg);
+            transition: border-color .15s, right .15s;
+        }
+
+        #daftar-materi button.materi-item:hover::after {
+            border-color: #0284c7;
+            right: 16px;
+        }
+
+        #daftar-materi div.materi-item {
+            background: #f7fafc;
+            border-style: dashed;
+        }
+
+        .materi-sec {
+            background: #f7fafc !important;
+        }
+
+        @media (max-width: 639px) {
+            #daftar-materi .materi-item {
+                padding: 16px 40px 16px 14px;
+                column-gap: 14px;
+            }
+
+            #daftar-materi button.materi-item::after {
+                right: 16px;
+            }
+
+            #daftar-materi .materi-item .text-lg {
+                font-size: 16px;
+            }
+        }
+
+        /* ---------- Kartu kegiatan ---------- */
+        .lab-card {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .lab-card::before {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            right: -60px;
+            bottom: -60px;
+            width: 300px;
+            height: 300px;
+            background-image: radial-gradient(rgba(251, 191, 36, .55) 2px, transparent 2.5px),
+                radial-gradient(rgba(56, 189, 248, .45) 2px, transparent 2.5px);
+            background-size: 26px 26px, 26px 26px;
+            background-position: 0 0, 13px 13px;
+            -webkit-mask-image: radial-gradient(circle at 70% 70%, #000 20%, transparent 68%);
+            mask-image: radial-gradient(circle at 70% 70%, #000 20%, transparent 68%);
+        }
+
+        .act-card {
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--ek-shadow);
+        }
+
+        .act-ic {
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 14px;
+        }
+
+        .act-link {
+            margin-top: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--ek-ink);
+        }
+
+        .act-link svg {
+            transition: transform .15s;
+        }
+
+        .act-card:hover .act-link svg {
+            transform: translateX(3px);
+        }
+
+        /* ---------- Progres ---------- */
+        #progres-title+p {
+            max-width: 32rem;
+        }
+
+        .prog-card {
+            box-shadow: var(--ek-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prog-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: linear-gradient(#0ea5e9, #f59e0b);
+        }
+
+        /* ---------- Prestasi: kartu lebih rapi di HP ---------- */
+        .pr-card,
+        .pr-stat {
+            box-shadow: var(--ek-shadow);
+        }
+
+        @media (max-width: 560px) {
+            .pr-root {
+                padding-top: 48px !important;
+                padding-bottom: 56px !important;
+            }
+
+            .pr-badges {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 10px !important;
+            }
+
+            .pr-badge {
+                flex-direction: column;
+                gap: 8px !important;
+                padding: 12px !important;
+            }
+
+            .pr-badge>div:last-child,
+            .pr-badge>div {
+                width: 100%;
+            }
+
+            .pr-seg {
+                width: 100%;
+            }
+
+            .pr-seg button {
+                flex: 1;
+            }
+        }
+
+        /* ---------- Umum ---------- */
+        @media (max-width: 639px) {
+            .hero-bg .flex-wrap.gap-3>a {
+                flex: 1 1 100%;
+                justify-content: center;
+            }
+
+            h2.text-3xl {
+                font-size: 1.7rem;
+            }
+
+            /* ruang agar tombol timer SRL tidak menutupi isi footer */
+            footer {
+                padding-bottom: 72px;
+            }
+
+            #srl-widget {
+                right: 14px !important;
+                bottom: 14px !important;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .quick-item,
+            #daftar-materi .materi-item,
+            .act-link svg {
+                transition: none;
+            }
+        }
+
+        /* =========================================================
+           PEMBARUAN TAMPILAN (latar molekul, kartu simulasi, peta pertemuan)
+           ========================================================= */
+        .hero-bg::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%230ea5e9' stroke-opacity='.16' stroke-width='1'/%3E%3Cpath d='M28 0L28 34L0 50L0 84L28 100L56 84L56 50L28 34' fill='none' stroke='%230ea5e9' stroke-opacity='.09' stroke-width='1'/%3E%3C/svg%3E");
+            background-size: 56px 100px;
+        }
+
+        .hero-bg {
+            background:
+                radial-gradient(700px 420px at 0% 100%, rgba(245, 158, 11, .08), transparent 60%),
+                radial-gradient(800px 500px at 100% 0%, rgba(56, 189, 248, .14), transparent 60%),
+                linear-gradient(180deg, #ffffff 0%, #f5faff 100%);
+        }
+
+        #hero-molekul {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        #sim {
+            position: relative;
+            border: 1px solid #dbe4ee;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+        }
+
+        #sim::before {
+            content: '';
+            position: absolute;
+            left: 22px;
+            right: 22px;
+            top: -1px;
+            height: 4px;
+            border-radius: 0 0 6px 6px;
+            background: linear-gradient(90deg, #38bdf8, #0f2a44 45%, #f59e0b);
+        }
+
+        .sim-why {
+            background: linear-gradient(135deg, #f0f8ff, #fffbeb);
+            border: 1px solid #dbe4ee;
+        }
+
+        .sim-why li {
+            display: flex;
+            gap: .5rem;
+        }
+
+        .sim-why li i {
+            flex-shrink: 0;
+            width: .55rem;
+            height: .55rem;
+            margin-top: .35rem;
+            border-radius: 999px;
+        }
+
+        /* Peta tiga pertemuan */
+        .pt-kartu {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border: 1px solid #dbe4ee;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: var(--ek-shadow);
+            transition: border-color .2s, box-shadow .2s, transform .2s;
+        }
+
+        .pt-kartu:hover {
+            border-color: var(--w);
+            box-shadow: var(--ek-shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .pt-ilus {
+            height: 132px;
+            background: var(--bg);
+            border-bottom: 1px solid #dbe4ee;
+            display: grid;
+            place-items: center;
+        }
+
+        .pt-no {
+            display: inline-grid;
+            place-items: center;
+            height: 1.75rem;
+            padding: 0 .7rem;
+            border-radius: 999px;
+            font-size: .75rem;
+            font-weight: 800;
+            color: #fff;
+            background: var(--w);
+        }
+
+        .pt-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .4rem;
+            min-height: 2.6rem;
+            padding: 0 1rem;
+            border-radius: .8rem;
+            font-weight: 800;
+            font-size: .875rem;
+            transition: background-color .15s, color .15s, border-color .15s;
+        }
+
+        .pt-btn.utama {
+            background: var(--w);
+            color: #fff;
+        }
+
+        .pt-btn.utama:hover {
+            filter: brightness(1.08);
+        }
+
+        .pt-btn.kedua {
+            border: 2px solid #dbe4ee;
+            color: #0f2a44;
+        }
+
+        .pt-btn.kedua:hover {
+            border-color: var(--w);
+        }
+
+        .chip-faktor {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            padding: .35rem .65rem;
+            border-radius: 999px;
+            font-size: .75rem;
+            font-weight: 700;
+            color: #0f2a44;
+            background: #fff;
+            border: 1px solid #dbe4ee;
+            transition: border-color .15s, background-color .15s;
+        }
+
+        .chip-faktor:hover {
+            border-color: var(--c);
+            background: color-mix(in srgb, var(--c) 8%, #fff);
+        }
+
+        .chip-faktor i {
+            width: .6rem;
+            height: .6rem;
+            border-radius: 999px;
+            background: var(--c);
+        }
+
+        @keyframes ptA {
+
+            0%,
+            100% {
+                transform: translateX(-26px);
+            }
+
+            45%,
+            55% {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes ptB {
+
+            0%,
+            100% {
+                transform: translateX(26px);
+            }
+
+            45%,
+            55% {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes ptKilat {
+
+            0%,
+            42% {
+                opacity: 0;
+                transform: scale(.4);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            62%,
+            100% {
+                opacity: 0;
+                transform: scale(1.5);
+            }
+        }
+
+        @keyframes ptNaik {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-46px);
+                opacity: 0;
+            }
+        }
+
+        .pt-a {
+            animation: ptA 2.4s ease-in-out infinite;
+        }
+
+        .pt-b {
+            animation: ptB 2.4s ease-in-out infinite;
+        }
+
+        .pt-kilat {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: ptKilat 2.4s ease-out infinite;
+        }
+
+        .pt-gel {
+            animation: ptNaik 2.2s ease-in infinite;
+        }
+
+        @media (max-width: 639px) {
+            .pt-ilus {
+                height: 112px;
+            }
+
+            #sim::before {
+                left: 16px;
+                right: 16px;
+            }
+        }
+
+        /* ===== Tambahan: simulasi beranda lebih nyaman di HP ===== */
+        @media (max-width: 639px) {
+            .sim-legenda {
+                left: .4rem;
+                top: .4rem;
+                font-size: 10.5px;
+                gap: .15rem .6rem;
+                padding: .3rem .5rem;
+            }
+
+            #sim-conc,
+            #sim-temp {
+                touch-action: pan-y;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-paper text-ink font-sans antialiased">
+
+    <a href="#konten"
+        class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] bg-white px-4 py-2 rounded-lg font-semibold">
+        Langsung ke konten
+    </a>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-line">
+        <nav class="max-w-page mx-auto px-5 md:px-8 h-16 flex items-center justify-between" aria-label="Navigasi utama">
+            <a href="index.html" class="flex items-center gap-2.5" aria-label="EduKinetika, ke beranda">
+                <!-- Logo: labu reaksi -->
+                <span class="w-9 h-9 rounded-[10px] bg-ink text-amber-400 grid place-items-center">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M9 3h6M10 3v6.5L4.6 18.2A1.8 1.8 0 0 0 6.1 21h11.8a1.8 1.8 0 0 0 1.5-2.8L14 9.5V3" />
+                        <path d="M7.5 15h9" />
+                    </svg>
+                </span>
+                <span class="text-[19px] font-extrabold tracking-tight">EduKinetika</span>
+            </a>
+
+            <ul class="hidden md:flex items-center gap-1 text-[15px] font-semibold text-ink-soft">
+                <li><a href="#materi" class="px-3 py-2 rounded-lg hover:text-ink hover:bg-sky-50">Materi</a></li>
+                <li><a href="lab111.html" class="px-3 py-2 rounded-lg hover:text-ink hover:bg-sky-50">Lab Virtual</a>
+                </li>
+                <li><a href="kartulkpd.html" class="px-3 py-2 rounded-lg hover:text-ink hover:bg-sky-50">LKPD</a></li>
+                <li><a href="kartu_kuis_edukinetika.html"
+                        class="px-3 py-2 rounded-lg hover:text-ink hover:bg-sky-50">Kuis</a></li>
+                <li><a href="#prestasi" class="px-3 py-2 rounded-lg hover:text-ink hover:bg-sky-50">Prestasi</a></li>
+                <!-- Tambahan: menu Glosarium (tampil mulai layar lebar agar navbar tidak sesak di tablet) -->
+                <li class="hidden lg:block"><a href="glosarium.html"
+                        class="px-3 py-2 rounded-lg hover:text-ink hover:bg-sky-50">Glosarium</a></li>
+            </ul>
+
+            <div class="flex items-center gap-2">
+                <!-- Tombol masuk (tampil jika belum login) -->
+                <a id="nav-login-btn" href="loging.html"
+                    class="hidden sm:inline-flex items-center h-10 px-5 rounded-xl bg-ink text-white text-[15px] font-bold hover:bg-ink-soft transition-colors">
+                    Masuk
+                </a>
+                <!-- User card (tampil jika sudah login) -->
+                <div id="nav-user-wrap" class="relative hidden">
+                    <button id="nav-user-btn" class="user-card" aria-haspopup="true" aria-expanded="false">
+                        <div class="user-avatar" id="nav-avatar"></div>
+                        <span class="user-name-nav" id="nav-username">Pengguna</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <path d="m6 9 6 6 6-6" />
+                        </svg>
+                    </button>
+                    <!-- Dropdown -->
+                    <div id="nav-dropdown" class="user-dropdown" role="menu">
+                        <div class="dropdown-header">
+                            <strong id="dd-name">Nama</strong>
+                            <span id="dd-role">Peneliti Pemula</span>
+                        </div>
+                        <button class="dropdown-item" onclick="window.location.href='index.html'">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7" rx="1" />
+                                <rect x="14" y="3" width="7" height="7" rx="1" />
+                                <rect x="14" y="14" width="7" height="7" rx="1" />
+                                <rect x="3" y="14" width="7" height="7" rx="1" />
+                            </svg>
+                            Dashboard Saya
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='loging.html'">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M11 17l-5-5 5-5M18 12H6" />
+                            </svg>
+                            Ganti Akun
+                        </button>
+                        <button class="dropdown-item danger" id="btn-logout">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
+                            </svg>
+                            Keluar
+                        </button>
+                    </div>
+                </div>
+                <button id="menu-btn" type="button"
+                    class="md:hidden w-10 h-10 grid place-items-center rounded-xl border border-line"
+                    aria-expanded="false" aria-controls="menu-mobile" aria-label="Buka menu">
+                    <svg id="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                        <path d="M4 7h16M4 12h16M4 17h16" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Menu mobile -->
+        <div id="menu-mobile" class="md:hidden hidden border-t border-line bg-white">
+            <ul class="px-5 py-3 flex flex-col text-[16px] font-semibold">
+                <li><a href="#materi" class="block py-3 border-b border-line">Materi</a></li>
+                <li><a href="lab111.html" class="block py-3 border-b border-line">Lab Virtual</a></li>
+                <li><a href="kartulkpd.html" class="block py-3 border-b border-line">LKPD</a></li>
+                <li><a href="kartu_kuis_edukinetika.html" class="block py-3 border-b border-line">Kuis</a></li>
+                <li><a href="#prestasi" class="block py-3 border-b border-line">Prestasi</a></li>
+                <!-- Tambahan: menu Glosarium (HP) -->
+                <li><a href="glosarium.html" class="block py-3 border-b border-line">Glosarium</a></li>
+                <li class="pt-3" id="mobile-login-li"><a href="loging.html"
+                        class="flex justify-center items-center h-12 rounded-xl bg-ink text-white font-bold">Masuk</a>
+                </li>
+                <li class="pt-3 hidden" id="mobile-logout-li">
+                    <button id="mobile-btn-logout"
+                        class="w-full flex justify-center items-center h-12 rounded-xl border-2 border-ink text-ink font-bold">
+                        Keluar dari Akun
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <main id="konten">
+
+        <!-- ================= HERO ================= -->
+        <section class="hero-bg border-b border-line">
+            <canvas id="hero-molekul" aria-hidden="true"></canvas>
+            <div
+                class="max-w-page mx-auto px-5 md:px-8 pt-10 pb-16 md:pt-16 md:pb-24 grid lg:grid-cols-[1fr_1.05fr] gap-10 lg:gap-14 items-center lg:items-start">
+
+                <!-- Kiri: pesan utama + pencarian -->
+                <div class="lg:sticky lg:top-24 lg:pt-6">
+                    <!-- Greeting personal jika sudah login -->
+                    <div id="greeting-badge" class="greeting-badge">
+                        <div class="greeting-avatar-sm" id="greeting-avatar"></div>
+                        <span id="greeting-text">Halo, Peneliti!</span>
+                    </div>
+                    <p
+                        class="inline-flex items-center gap-2 text-sm font-semibold text-sky-700 bg-sky-50 border border-sky-100 rounded-full px-3 py-1 mb-6">
+                        Kimia kelas XI, materi Laju Reaksi
+                    </p>
+
+                    <h1 class="hero-title font-extrabold text-ink mb-5">
+                        Reaksi kimia punya kecepatan. Di sini kamu yang mengaturnya.
+                    </h1>
+
+                    <p class="text-lg text-ink-soft leading-relaxed max-w-[34rem] mb-8">
+                        Ubah suhu, konsentrasi, dan katalis, lalu amati sendiri bagaimana partikel bertumbukan.
+                        Materi, praktikum virtual, LKPD, dan kuis ada dalam satu tempat.
+                    </p>
+
+                    <ul class="hero-points" aria-label="Yang tersedia">
+                        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="m5 12 5 5 9-10" />
+                            </svg>4 topik materi</li>
+                        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="m5 12 5 5 9-10" />
+                            </svg>Praktikum virtual</li>
+                        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="m5 12 5 5 9-10" />
+                            </svg>LKPD 3 pertemuan</li>
+                        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="m5 12 5 5 9-10" />
+                            </svg>Kuis dan pembahasan</li>
+                    </ul>
+
+                    <div class="flex flex-wrap gap-3 mb-10">
+                        <a href="kartu-belajar.html"
+                            class="inline-flex items-center h-12 px-6 rounded-xl bg-amber-500 text-ink font-extrabold text-[16px] hover:bg-amber-400 transition-colors shadow-[0_2px_0_#b45309]">
+                            Mulai Belajar
+                        </a>
+                        <a href="lab111.html"
+                            class="inline-flex items-center h-12 px-6 rounded-xl border-2 border-ink text-ink font-bold text-[16px] hover:bg-ink hover:text-white transition-colors">
+                            Buka Lab Virtual
+                        </a>
+                    </div>
+
+                    <!-- Pencarian materi -->
+                    <div class="relative max-w-[34rem]" id="search-wrap">
+                        <label for="search" class="block text-sm font-bold text-ink mb-2">Cari materi</label>
+                        <div class="relative">
+                            <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-ink-mute pointer-events-none"
+                                width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                                <circle cx="11" cy="11" r="7" />
+                                <path d="m20 20-3.5-3.5" />
+                            </svg>
+                            <input id="search" type="search" autocomplete="off"
+                                placeholder="misalnya: energi aktivasi, katalis, orde reaksi"
+                                class="w-full h-14 pl-12 pr-14 rounded-2xl border-2 border-line bg-paper text-[16px] placeholder:text-ink-mute focus:border-sky-500 focus:bg-white focus:outline-none transition-colors"
+                                role="combobox" aria-expanded="false" aria-controls="search-results"
+                                aria-autocomplete="list">
+                            <kbd
+                                class="hidden md:block absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-ink-mute border border-line rounded-md px-2 py-0.5 bg-white">/</kbd>
+                        </div>
+                        <ul id="search-results" role="listbox"
+                            class="hidden absolute z-30 left-0 right-0 mt-2 bg-white border border-line rounded-2xl shadow-[0_12px_32px_rgba(15,42,68,.12)] overflow-hidden max-h-80 overflow-y-auto">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Kanan: simulasi tumbukan interaktif -->
+                <div class="bg-paper border border-line rounded-[28px] p-4 sm:p-5" id="sim">
+                    <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3 px-1">
+                        <div>
+                            <h2 class="font-extrabold text-[17px] leading-tight">Coba sekarang: A + B → C</h2>
+                            <p class="text-sm text-ink-mute mt-0.5">Simulasi disederhanakan untuk pembelajaran</p>
+                        </div>
+                        <div class="flex gap-2 shrink-0">
+                            <button id="sim-play" type="button"
+                                class="h-9 px-4 rounded-lg bg-ink text-white text-sm font-bold hover:bg-ink-soft transition-colors">Jeda</button>
+                            <button id="sim-reset" type="button"
+                                class="h-9 px-4 rounded-lg border border-line bg-white text-sm font-bold hover:border-ink transition-colors">Ulangi</button>
+                        </div>
+                    </div>
+
+                    <!-- Kanvas partikel -->
+                    <div class="relative bg-white rounded-2xl border border-line overflow-hidden">
+                        <canvas id="sim-canvas" class="block w-full aspect-[16/10]" role="img"
+                            aria-label="Simulasi partikel A dan B yang bertumbukan dan membentuk C"></canvas>
+                        <div
+                            class="sim-legenda absolute left-3 top-3 flex flex-wrap gap-x-3 gap-y-1 text-xs font-semibold bg-white/90 rounded-lg px-2.5 py-1.5">
+                            <span class="flex items-center gap-1.5"><i
+                                    class="w-2.5 h-2.5 rounded-full bg-sky-400"></i>A</span>
+                            <span class="flex items-center gap-1.5"><i
+                                    class="w-2.5 h-2.5 rounded-full bg-ink"></i>B</span>
+                            <span class="flex items-center gap-1.5"><i
+                                    class="w-2.5 h-2.5 rounded-full bg-amber-500"></i>C (produk)</span>
+                            <span class="flex items-center gap-1.5"><i
+                                    class="w-2.5 h-2.5 rounded-full border-2 border-orange-600"></i>Energi ≥ Ea</span>
+                        </div>
+                    </div>
+
+                    <!-- Kontrol variabel -->
+                    <div class="grid sm:grid-cols-2 gap-x-6 gap-y-4 mt-4 px-1">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <label for="sim-temp" class="font-bold">Suhu</label>
+                                <output id="sim-temp-out" for="sim-temp"
+                                    class="font-semibold text-ink-soft tabular-nums">30 °C</output>
+                            </div>
+                            <input id="sim-temp" type="range" min="20" max="80" step="5" value="30">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <label for="sim-conc" class="font-bold">Konsentrasi</label>
+                                <output id="sim-conc-out" for="sim-conc"
+                                    class="font-semibold text-ink-soft tabular-nums">0,40 M</output>
+                            </div>
+                            <input id="sim-conc" type="range" min="6" max="30" step="2" value="16"
+                                aria-valuetext="0,40 M">
+                            <div class="flex justify-between text-[11px] font-semibold text-ink-mute mt-1">
+                                <span>0,15 M (encer)</span><span>0,75 M (pekat)</span>
+                            </div>
+                        </div>
+                        <label
+                            class="flex items-center justify-between gap-4 bg-white border border-line rounded-xl px-4 py-3 cursor-pointer">
+                            <span>
+                                <span class="block text-sm font-bold">Tambahkan katalis</span>
+                                <span class="block text-xs text-ink-mute">Menurunkan energi aktivasi yang
+                                    dibutuhkan</span>
+                            </span>
+                            <span class="switch"><input id="sim-cat" type="checkbox"><span></span></span>
+                        </label>
+                        <label
+                            class="flex items-center justify-between gap-4 bg-white border border-line rounded-xl px-4 py-3 cursor-pointer">
+                            <span>
+                                <span class="block text-sm font-bold">Tandai partikel berenergi ≥ Ea</span>
+                                <span class="block text-xs text-ink-mute">Cincin oranye = energi cukup untuk
+                                    bereaksi</span>
+                            </span>
+                            <span class="switch"><input id="sim-mark" type="checkbox" checked><span></span></span>
+                        </label>
+                    </div>
+
+                    <!-- Grafik [A] terhadap waktu + ringkasan -->
+                    <div class="grid sm:grid-cols-[1fr_auto] gap-3 sm:gap-4 mt-4 items-stretch">
+                        <div class="bg-white border border-line rounded-xl p-2">
+                            <canvas id="sim-chart" class="block w-full h-[92px]" role="img"
+                                aria-label="Grafik konsentrasi A terhadap waktu"></canvas>
+                        </div>
+                        <dl
+                            class="flex sm:flex-col justify-between sm:justify-center gap-2 text-sm sm:min-w-[8.5rem] px-1">
+                            <div>
+                                <dt class="text-ink-mute text-xs">Tumbukan efektif</dt>
+                                <dd class="font-extrabold text-lg tabular-nums" id="sim-eff">0 dari 0</dd>
+                            </div>
+                            <div>
+                                <dt class="text-ink-mute text-xs">Waktu separuh A bereaksi</dt>
+                                <dd class="font-extrabold text-lg tabular-nums" id="sim-time" aria-live="polite">0,0 s
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-3 sm:gap-4 mt-4">
+                        <div class="bg-white border border-line rounded-xl p-2">
+                            <div class="flex items-center justify-between gap-2 px-1 pb-1">
+                                <span class="text-xs font-bold">Sebaran energi partikel</span>
+                                <span class="text-xs font-extrabold text-amber-600 tabular-nums whitespace-nowrap"
+                                    id="sim-fraksi">0% ≥ Ea</span>
+                            </div>
+                            <canvas id="sim-energi" class="block w-full h-[96px]" role="img"
+                                aria-label="Histogram energi kinetik partikel pereaksi dengan garis energi aktivasi"></canvas>
+                        </div>
+                        <div class="sim-why rounded-xl p-3.5" aria-live="polite">
+                            <p class="text-xs font-extrabold text-sky-700 mb-1.5">Mengapa lajunya begini?</p>
+                            <ul id="sim-why" class="space-y-1.5 text-[13px] text-ink-soft leading-snug"></ul>
+                        </div>
+                    </div>
+                    <p class="text-xs text-ink-mute mt-3 px-1">
+                        Batang oranye = partikel yang energinya melewati garis Ea. Faktor luas permukaan dan pengadukan
+                        bisa dicoba di <a href="faktorpenentulaju.html"
+                            class="font-bold text-sky-700 underline underline-offset-2">halaman faktor penentu laju</a>.
+                    </p>
+                    <p class="text-xs text-ink-mute mt-2 px-1">
+                        Garis biru: percobaan sekarang. Garis putus-putus: percobaan sebelumnya, untuk dibandingkan.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= MENU CEPAT ================= -->
+        <div class="quick-wrap max-w-page mx-auto px-5 md:px-8">
+            <nav class="quick-card" aria-labelledby="quick-title">
+                <h2 id="quick-title">Mau belajar apa hari ini?</h2>
+                <div class="quick-list">
+                    <a href="#materi" class="quick-item">
+                        <span class="quick-ic qi-sky"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                aria-hidden="true">
+                                <path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6.5A2.5 2.5 0 0 0 4 21.5v-2Z" />
+                                <path d="M8 7h7M8 11h5" />
+                            </svg></span>
+                        <span><b>Materi</b><small>4 topik laju reaksi</small></span>
+                    </a>
+                    <a href="lab111.html" class="quick-item">
+                        <span class="quick-ic qi-ink"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                aria-hidden="true">
+                                <path
+                                    d="M9 3h6M10 3v6.5L4.6 18.2A1.8 1.8 0 0 0 6.1 21h11.8a1.8 1.8 0 0 0 1.5-2.8L14 9.5V3" />
+                                <path d="M7.5 15h9" />
+                            </svg></span>
+                        <span><b>Lab Virtual</b><small>Praktikum tanpa batas</small></span>
+                    </a>
+                    <a href="kartulkpd.html" class="quick-item">
+                        <span class="quick-ic qi-green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                aria-hidden="true">
+                                <rect x="5" y="3" width="14" height="18" rx="2" />
+                                <path d="M9 3v2h6V3M9 11h6M9 15h4" />
+                            </svg></span>
+                        <span><b>LKPD</b><small>Lembar kerja digital</small></span>
+                    </a>
+                    <a href="kartu_kuis_edukinetika.html" class="quick-item">
+                        <span class="quick-ic qi-amber"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                aria-hidden="true">
+                                <circle cx="12" cy="12" r="9" />
+                                <path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14" />
+                                <path d="M12 17.2v.1" />
+                            </svg></span>
+                        <span><b>Kuis</b><small>Latihan dan pembahasan</small></span>
+                    </a>
+                    <a href="#prestasi" class="quick-item">
+                        <span class="quick-ic qi-rose"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                aria-hidden="true">
+                                <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z" />
+                                <path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3" />
+                            </svg></span>
+                        <span><b>Prestasi</b><small>Nilai dan lencana</small></span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- ================= PETA TIGA PERTEMUAN ================= -->
+        <section class="max-w-page mx-auto px-5 md:px-8 pt-16 md:pt-20" aria-labelledby="pertemuan-title">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8 md:mb-10">
+                <div class="max-w-2xl">
+                    <h2 id="pertemuan-title"
+                        class="text-3xl md:text-[2.5rem] font-extrabold tracking-tight leading-tight mb-3">Tiga
+                        pertemuan, satu alur konsep</h2>
+                    <p class="text-ink-soft text-lg leading-relaxed">
+                        Mulai dari tumbukan antarpartikel, lanjut ke lima faktor yang mengubah tumbukan itu, lalu
+                        rumuskan persamaan lajunya.
+                    </p>
+                </div>
+                <p class="text-sm text-ink-mute md:text-right">Rujukan: <em>Jelajah Kimia 2 SMA/MA Kelas XI</em>,<br
+                        class="hidden md:block"> Bab 6 Kinetika Kimia</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-5" id="peta-pertemuan"></div>
+        </section>
+
+        <!-- ================= ALUR BELAJAR (PBL) ================= -->
+        <section class="max-w-page mx-auto px-5 md:px-8 py-16 md:py-20" aria-labelledby="alur-title">
+            <div class="max-w-2xl mb-10">
+                <h2 id="alur-title" class="text-3xl md:text-[2.5rem] font-extrabold tracking-tight leading-tight mb-3">
+                    Belajar dari masalah, bukan dari hafalan
+                </h2>
+                <p class="text-ink-soft text-lg leading-relaxed">
+                    Setiap pertemuan mengikuti lima tahap Problem-Based Learning. Kamu mulai dari masalah nyata,
+                    menyelidikinya di lab virtual, lalu menyimpulkan sendiri.
+                </p>
+            </div>
+
+            <ol class="pbl-steps grid md:grid-cols-5 gap-px bg-line border border-line rounded-3xl overflow-hidden">
+                <li class="bg-white p-6">
+                    <span
+                        class="w-9 h-9 rounded-full bg-ink text-white grid place-items-center font-extrabold mb-4">1</span>
+                    <span class="pbl-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
+                            <circle cx="11" cy="11" r="7" />
+                            <path d="m20 20-3.5-3.5M11 8v3M11 14v.01" />
+                        </svg></span>
+                    <h3 class="font-bold mb-1.5">Orientasi masalah</h3>
+                    <p class="text-sm text-ink-soft leading-relaxed">Mengapa daging lebih awet di kulkas? Setiap materi
+                        dibuka dengan fenomena sehari-hari.</p>
+                </li>
+                <li class="bg-white p-6">
+                    <span
+                        class="w-9 h-9 rounded-full bg-ink text-white grid place-items-center font-extrabold mb-4">2</span>
+                    <span class="pbl-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
+                            <circle cx="9" cy="8" r="3" />
+                            <circle cx="17" cy="9" r="2.5" />
+                            <path d="M3 20a6 6 0 0 1 12 0M15 20a4.5 4.5 0 0 1 6-4.2" />
+                        </svg></span>
+                    <h3 class="font-bold mb-1.5">Mengorganisasi belajar</h3>
+                    <p class="text-sm text-ink-soft leading-relaxed">Rumuskan hipotesis dan bagi tugas kelompok di LKPD.
+                    </p>
+                </li>
+                <li class="bg-sky-50 p-6">
+                    <span
+                        class="w-9 h-9 rounded-full bg-sky-600 text-white grid place-items-center font-extrabold mb-4">3</span>
+                    <span class="pbl-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
+                            <path
+                                d="M9 3h6M10 3v6.5L4.6 18.2A1.8 1.8 0 0 0 6.1 21h11.8a1.8 1.8 0 0 0 1.5-2.8L14 9.5V3" />
+                        </svg></span>
+                    <h3 class="font-bold mb-1.5">Penyelidikan</h3>
+                    <p class="text-sm text-ink-soft leading-relaxed">Lakukan percobaan di lab virtual dan catat datanya
+                        dengan stopwatch.</p>
+                </li>
+                <li class="bg-white p-6">
+                    <span
+                        class="w-9 h-9 rounded-full bg-ink text-white grid place-items-center font-extrabold mb-4">4</span>
+                    <span class="pbl-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
+                            <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />
+                        </svg></span>
+                    <h3 class="font-bold mb-1.5">Menyajikan hasil</h3>
+                    <p class="text-sm text-ink-soft leading-relaxed">Olah data menjadi tabel dan grafik, lalu tuliskan
+                        kesimpulan.</p>
+                </li>
+                <li class="bg-white p-6">
+                    <span
+                        class="w-9 h-9 rounded-full bg-ink text-white grid place-items-center font-extrabold mb-4">5</span>
+                    <span class="pbl-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
+                            <path d="M9 11.5 11.5 14 16 9" />
+                            <circle cx="12" cy="12" r="9" />
+                        </svg></span>
+                    <h3 class="font-bold mb-1.5">Evaluasi</h3>
+                    <p class="text-sm text-ink-soft leading-relaxed">Refleksikan prosesnya dan uji pemahamanmu lewat
+                        kuis.</p>
+                </li>
+            </ol>
+            <p class="pbl-hint" aria-hidden="true">Geser untuk melihat tahap berikutnya
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+                    stroke-linecap="round">
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+            </p>
+        </section>
+
+        <!-- ================= MATERI ================= -->
+        <section id="materi" class="materi-sec bg-white border-y border-line scroll-mt-16"
+            aria-labelledby="materi-title">
+            <div class="max-w-page mx-auto px-5 md:px-8 py-16 md:py-20 grid lg:grid-cols-[20rem_1fr] gap-10">
+                <div class="lg:sticky lg:top-24 self-start">
+                    <h2 id="materi-title"
+                        class="text-3xl md:text-[2.5rem] font-extrabold tracking-tight leading-tight mb-3">Materi Laju
+                        Reaksi</h2>
+                    <p class="text-ink-soft leading-relaxed mb-6">
+                        Empat topik, disusun dari yang paling dasar. Pelajari berurutan agar konsepnya saling
+                        menyambung.
+                    </p>
+                    <a href="kartu-belajar.html"
+                        class="inline-flex items-center gap-2 font-bold text-sky-700 hover:text-sky-600 underline underline-offset-4 decoration-2 decoration-sky-200 hover:decoration-sky-500">
+                        Lihat semua kartu belajar
+                    </a>
+                </div>
+
+                <ul class="divide-y divide-line border-y border-line" id="daftar-materi">
+                    <!-- Diisi oleh JavaScript dari data MATERI -->
+                </ul>
+            </div>
+        </section>
+
+        <!-- ================= KEGIATAN ================= -->
+        <section class="max-w-page mx-auto px-5 md:px-8 py-16 md:py-20" aria-labelledby="kegiatan-title">
+            <h2 id="kegiatan-title"
+                class="text-3xl md:text-[2.5rem] font-extrabold tracking-tight leading-tight mb-10 max-w-2xl">
+                Tiga cara berlatih setelah membaca materi
+            </h2>
+
+            <div class="grid lg:grid-cols-[1.4fr_1fr] gap-5">
+                <!-- Lab virtual (utama) -->
+                <a href="lab111.html"
+                    class="lab-card group bg-ink text-white rounded-[28px] p-8 md:p-10 flex flex-col justify-between min-h-[20rem] hover:bg-[#143654] transition-colors">
+                    <div>
+                        <svg class="text-amber-400 mb-6" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
+                            <path
+                                d="M9 3h6M10 3v6.5L4.6 18.2A1.8 1.8 0 0 0 6.1 21h11.8a1.8 1.8 0 0 0 1.5-2.8L14 9.5V3" />
+                            <circle cx="10" cy="16" r="1" fill="currentColor" />
+                            <circle cx="14" cy="17.5" r="1" fill="currentColor" />
+                        </svg>
+                        <h3 class="text-2xl md:text-3xl font-extrabold mb-3 tracking-tight">Laboratorium Virtual</h3>
+                        <p class="text-white/75 leading-relaxed max-w-md">
+                            Tuang pereaksi, nyalakan stopwatch, dan catat volume gas pada balon.
+                            Ulangi percobaan sebanyak yang kamu mau tanpa takut bahan habis.
+                        </p>
+                    </div>
+                    <span
+                        class="mt-8 inline-flex self-start items-center h-11 px-5 rounded-xl bg-amber-500 text-ink font-extrabold group-hover:bg-amber-400 transition-colors">
+                        Masuk ke lab
+                    </span>
+                </a>
+
+                <div class="grid gap-5">
+                    <a href="kartulkpd.html"
+                        class="act-card bg-white border border-line rounded-[28px] p-7 hover:border-ink transition-colors">
+                        <span class="act-ic qi-green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                aria-hidden="true">
+                                <rect x="5" y="3" width="14" height="18" rx="2" />
+                                <path d="M9 3v2h6V3M9 11h6M9 15h4" />
+                            </svg></span>
+                        <h3 class="text-xl font-extrabold mb-2">LKPD digital</h3>
+                        <p class="text-ink-soft text-sm leading-relaxed">
+                            Lembar kerja untuk tiga pertemuan, dikerjakan langsung di browser sambil melakukan
+                            percobaan.
+                        </p>
+                        <span class="act-link">Buka LKPD <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"
+                                aria-hidden="true">
+                                <path d="M5 12h14M13 6l6 6-6 6" />
+                            </svg></span>
+                    </a>
+                    <a href="kartu_kuis_edukinetika.html"
+                        class="act-card bg-amber-50 border border-amber-100 rounded-[28px] p-7 hover:border-amber-500 transition-colors">
+                        <span class="act-ic qi-amber" style="background:#fff"><svg width="22" height="22"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="9" />
+                                <path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14" />
+                                <path d="M12 17.2v.1" />
+                            </svg></span>
+                        <h3 class="text-xl font-extrabold mb-2">Kuis per topik</h3>
+                        <p class="text-ink-soft text-sm leading-relaxed">
+                            Soal pilihan ganda dengan pembahasan. Kerjakan setelah setiap topik untuk tahu bagian mana
+                            yang perlu diulang.
+                        </p>
+                        <span class="act-link">Mulai kuis <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"
+                                aria-hidden="true">
+                                <path d="M5 12h14M13 6l6 6-6 6" />
+                            </svg></span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PROGRES ================= -->
+        <section class="max-w-page mx-auto px-5 md:px-8 pb-16 md:pb-20" aria-labelledby="progres-title">
+            <div
+                class="prog-card bg-white border border-line rounded-[28px] p-7 md:p-10 grid md:grid-cols-[1fr_1.3fr] gap-8 items-center">
+                <div>
+                    <h2 id="progres-title" class="text-2xl md:text-3xl font-extrabold tracking-tight mb-2">Progres
+                        belajarmu</h2>
+                    <p class="text-ink-soft leading-relaxed mb-5" id="progres-text">
+                        Materi yang sudah kamu buka akan tercatat di sini.
+                    </p>
+                    <a href="index.html"
+                        class="inline-flex items-center h-11 px-5 rounded-xl border-2 border-ink font-bold hover:bg-ink hover:text-white transition-colors">
+                        Buka dashboard
+                    </a>
+                </div>
+                <div>
+                    <div class="flex justify-between text-sm font-semibold mb-2">
+                        <span>Materi dibuka</span>
+                        <span id="progres-angka" class="tabular-nums">0 dari 4</span>
+                    </div>
+                    <div class="h-3 rounded-full bg-sky-100 overflow-hidden mb-5">
+                        <div id="progres-bar" class="h-full bg-sky-500 rounded-full transition-[width] duration-700"
+                            style="width:0%"></div>
+                    </div>
+                    <ul id="progres-list" class="grid sm:grid-cols-2 gap-2 text-sm"></ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PRESTASI ================= -->
+        <div class="bg-white border-y border-line" aria-labelledby="prestasi-title">
+            <style>
+                .pr-root {
+                    --pr-navy: #0f2a44;
+                    --pr-navy-2: #16395c;
+                    --pr-ink: #0f172a;
+                    --pr-muted: #64748b;
+                    --pr-line: #e2e8f0;
+                    --pr-soft: #f1f5f9;
+                    --pr-sky: #38bdf8;
+                    --pr-sky-soft: #e0f2fe;
+                    --pr-amber: #f59e0b;
+                    --pr-amber-soft: #fef3c7;
+                    --pr-green: #10b981;
+                    --pr-green-soft: #d1fae5;
+                    --pr-red: #ef4444;
+                    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+                    color: var(--pr-ink);
+                    max-width: 76rem;
+                    margin: 0 auto;
+                    padding: 64px 20px 72px;
+                    scroll-margin-top: 64px;
+                }
+
+                @media (min-width: 768px) {
+                    .pr-root {
+                        padding-left: 32px;
+                        padding-right: 32px;
+                    }
+                }
+
+                .pr-root * {
+                    box-sizing: border-box;
+                }
+
+                .pr-head {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    gap: 16px;
+                    flex-wrap: wrap;
+                    margin-bottom: 20px;
+                }
+
+                .pr-eyebrow {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    font-size: 12px;
+                    font-weight: 700;
+                    color: #0369a1;
+                    background: var(--pr-sky-soft);
+                    padding: 6px 12px;
+                    border-radius: 999px;
+                    margin-bottom: 10px;
+                }
+
+                .pr-head h2 {
+                    font-size: clamp(26px, 3.4vw, 38px);
+                    font-weight: 800;
+                    letter-spacing: -.02em;
+                    color: var(--pr-navy);
+                    margin: 0;
+                    line-height: 1.1;
+                }
+
+                .pr-head p {
+                    margin: 8px 0 0;
+                    color: var(--pr-muted);
+                    font-size: 15px;
+                }
+
+                .pr-live {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 12.5px;
+                    font-weight: 700;
+                    color: var(--pr-muted);
+                    background: #fff;
+                    border: 1px solid var(--pr-line);
+                    padding: 8px 14px;
+                    border-radius: 999px;
+                }
+
+                .pr-live i {
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    background: #94a3b8;
+                }
+
+                .pr-live.on i {
+                    background: var(--pr-green);
+                    box-shadow: 0 0 0 4px rgba(16, 185, 129, .18);
+                    animation: prPulse 1.6s infinite;
+                }
+
+                @keyframes prPulse {
+                    50% {
+                        box-shadow: 0 0 0 7px rgba(16, 185, 129, .05);
+                    }
+                }
+
+                .pr-stats {
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: 14px;
+                    margin-bottom: 16px;
+                }
+
+                .pr-stat {
+                    background: #fff;
+                    border: 1px solid var(--pr-line);
+                    border-radius: 20px;
+                    padding: 16px 18px;
+                }
+
+                .pr-stat .k {
+                    font-size: 11.5px;
+                    font-weight: 700;
+                    color: var(--pr-muted);
+                    text-transform: uppercase;
+                    letter-spacing: .06em;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+
+                .pr-stat .v {
+                    font-size: 28px;
+                    font-weight: 800;
+                    color: var(--pr-navy);
+                    margin-top: 6px;
+                    letter-spacing: -.02em;
+                }
+
+                .pr-stat .s {
+                    font-size: 12.5px;
+                    color: var(--pr-muted);
+                    margin-top: 2px;
+                }
+
+                .pr-stat.dark {
+                    background: var(--pr-navy);
+                    border-color: var(--pr-navy);
+                }
+
+                .pr-stat.dark .k,
+                .pr-stat.dark .s {
+                    color: #bcd3ea;
+                }
+
+                .pr-stat.dark .v {
+                    color: #fff;
+                }
+
+                .pr-bar {
+                    height: 6px;
+                    background: rgba(255, 255, 255, .18);
+                    border-radius: 99px;
+                    margin-top: 10px;
+                    overflow: hidden;
+                }
+
+                .pr-bar i {
+                    display: block;
+                    height: 100%;
+                    width: 0;
+                    background: var(--pr-sky);
+                    border-radius: 99px;
+                    transition: width .6s;
+                }
+
+                .pr-grid {
+                    display: grid;
+                    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+                    gap: 16px;
+                    margin-bottom: 16px;
+                }
+
+                .pr-card {
+                    background: #fff;
+                    border: 1px solid var(--pr-line);
+                    border-radius: 24px;
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .pr-card-h {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 16px 20px;
+                    border-bottom: 1px solid var(--pr-line);
+                    flex-wrap: wrap;
+                }
+
+                .pr-card-h h3 {
+                    margin: 0;
+                    font-size: 16px;
+                    font-weight: 800;
+                    color: var(--pr-navy);
+                }
+
+                .pr-card-h small {
+                    display: block;
+                    font-size: 12px;
+                    color: var(--pr-muted);
+                    font-weight: 500;
+                    margin-top: 2px;
+                }
+
+                .pr-card-b {
+                    padding: 16px 20px 20px;
+                }
+
+                .pr-seg {
+                    display: inline-flex;
+                    background: var(--pr-soft);
+                    border-radius: 12px;
+                    padding: 3px;
+                    gap: 2px;
+                }
+
+                .pr-seg button {
+                    border: 0;
+                    background: transparent;
+                    font: inherit;
+                    font-size: 12.5px;
+                    font-weight: 700;
+                    color: var(--pr-muted);
+                    padding: 7px 12px;
+                    border-radius: 9px;
+                    cursor: pointer;
+                }
+
+                .pr-seg button[aria-pressed="true"] {
+                    background: var(--pr-navy);
+                    color: #fff;
+                }
+
+                .pr-chart svg {
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                }
+
+                .pr-legend {
+                    display: flex;
+                    gap: 16px;
+                    flex-wrap: wrap;
+                    font-size: 12px;
+                    color: var(--pr-muted);
+                    margin-top: 8px;
+                }
+
+                .pr-legend span {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+
+                .pr-legend i {
+                    width: 12px;
+                    height: 3px;
+                    border-radius: 2px;
+                    display: inline-block;
+                }
+
+                .pr-chat {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    min-height: 380px;
+                }
+
+                .pr-thread {
+                    flex: 1;
+                    padding: 16px 18px;
+                    overflow-y: auto;
+                    max-height: 380px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    background: #fbfdff;
+                }
+
+                .pr-msg {
+                    max-width: 86%;
+                    padding: 10px 13px;
+                    border-radius: 16px;
+                    font-size: 14px;
+                    line-height: 1.55;
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                }
+
+                .pr-msg .meta {
+                    display: block;
+                    font-size: 11px;
+                    margin-bottom: 3px;
+                    font-weight: 700;
+                }
+
+                .pr-msg .time {
+                    display: block;
+                    font-size: 10.5px;
+                    margin-top: 4px;
+                    opacity: .75;
+                    text-align: right;
+                }
+
+                .pr-msg.guru {
+                    align-self: flex-start;
+                    background: #fff;
+                    border: 1px solid var(--pr-line);
+                    border-bottom-left-radius: 5px;
+                }
+
+                .pr-msg.guru .meta {
+                    color: #0369a1;
+                }
+
+                .pr-msg.guru.baru {
+                    border-color: var(--pr-sky);
+                    box-shadow: 0 0 0 3px var(--pr-sky-soft);
+                }
+
+                .pr-msg.siswa {
+                    align-self: flex-end;
+                    background: var(--pr-navy);
+                    color: #fff;
+                    border-bottom-right-radius: 5px;
+                }
+
+                .pr-msg.siswa .meta {
+                    color: #93c5fd;
+                }
+
+                .pr-empty {
+                    margin: auto;
+                    text-align: center;
+                    color: var(--pr-muted);
+                    font-size: 13.5px;
+                    padding: 30px 10px;
+                }
+
+                .pr-empty b {
+                    display: block;
+                    font-size: 30px;
+                    margin-bottom: 6px;
+                }
+
+                .pr-compose {
+                    display: flex;
+                    gap: 8px;
+                    padding: 12px 14px;
+                    border-top: 1px solid var(--pr-line);
+                    background: #fff;
+                }
+
+                .pr-compose textarea {
+                    flex: 1;
+                    resize: none;
+                    height: 44px;
+                    max-height: 120px;
+                    border: 1.5px solid var(--pr-line);
+                    border-radius: 14px;
+                    padding: 11px 13px;
+                    font: inherit;
+                    font-size: 14px;
+                    outline: none;
+                }
+
+                .pr-compose textarea:focus {
+                    border-color: var(--pr-navy-2);
+                }
+
+                .pr-compose button {
+                    border: 0;
+                    background: var(--pr-navy);
+                    color: #fff;
+                    font: inherit;
+                    font-weight: 800;
+                    font-size: 14px;
+                    padding: 0 18px;
+                    border-radius: 14px;
+                    cursor: pointer;
+                }
+
+                .pr-compose button:disabled {
+                    opacity: .5;
+                    cursor: default;
+                }
+
+                .pr-count {
+                    background: var(--pr-red);
+                    color: #fff;
+                    font-size: 11px;
+                    font-weight: 800;
+                    padding: 2px 8px;
+                    border-radius: 99px;
+                }
+
+                .pr-badges {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+                    gap: 12px;
+                }
+
+                .pr-badge {
+                    border: 1px solid var(--pr-line);
+                    border-radius: 18px;
+                    padding: 14px;
+                    display: flex;
+                    gap: 12px;
+                    align-items: flex-start;
+                    background: #fff;
+                    transition: transform .15s;
+                }
+
+                .pr-badge .ic {
+                    width: 46px;
+                    height: 46px;
+                    min-width: 46px;
+                    border-radius: 14px;
+                    display: grid;
+                    place-items: center;
+                    font-size: 23px;
+                    background: var(--pr-soft);
+                    filter: grayscale(1);
+                    opacity: .55;
+                }
+
+                .pr-badge b {
+                    display: block;
+                    font-size: 13.5px;
+                    color: var(--pr-navy);
+                }
+
+                .pr-badge span {
+                    display: block;
+                    font-size: 12px;
+                    color: var(--pr-muted);
+                    line-height: 1.45;
+                    margin-top: 2px;
+                }
+
+                .pr-badge .pg {
+                    height: 5px;
+                    background: var(--pr-soft);
+                    border-radius: 99px;
+                    margin-top: 8px;
+                    overflow: hidden;
+                }
+
+                .pr-badge .pg i {
+                    display: block;
+                    height: 100%;
+                    background: var(--pr-sky);
+                    border-radius: 99px;
+                }
+
+                .pr-badge.got {
+                    border-color: #fcd34d;
+                    background: linear-gradient(135deg, #fffbeb, #fff);
+                }
+
+                .pr-badge.got .ic {
+                    filter: none;
+                    opacity: 1;
+                    background: var(--pr-amber-soft);
+                }
+
+                .pr-badge.got:hover {
+                    transform: translateY(-2px);
+                }
+
+                .pr-grid.b {
+                    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+                }
+
+                .pr-tbl {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 13.5px;
+                }
+
+                .pr-tbl th {
+                    text-align: left;
+                    font-size: 11.5px;
+                    text-transform: uppercase;
+                    letter-spacing: .05em;
+                    color: var(--pr-muted);
+                    font-weight: 700;
+                    padding: 0 8px 10px;
+                    border-bottom: 1px solid var(--pr-line);
+                }
+
+                .pr-tbl td {
+                    padding: 10px 8px;
+                    border-bottom: 1px solid #f1f5f9;
+                    vertical-align: middle;
+                }
+
+                .pr-tbl tr.grp td {
+                    background: var(--pr-soft);
+                    font-size: 11.5px;
+                    font-weight: 800;
+                    color: var(--pr-navy);
+                    text-transform: uppercase;
+                    letter-spacing: .05em;
+                    padding: 7px 8px;
+                    border-bottom: 0;
+                }
+
+                .pr-tbl td.n {
+                    font-weight: 800;
+                    color: var(--pr-navy);
+                    font-variant-numeric: tabular-nums;
+                    text-align: right;
+                }
+
+                .pr-tbl td.t {
+                    color: var(--pr-muted);
+                    font-size: 12px;
+                    white-space: nowrap;
+                }
+
+                .pr-chip {
+                    display: inline-block;
+                    font-size: 11.5px;
+                    font-weight: 700;
+                    padding: 3px 9px;
+                    border-radius: 99px;
+                    white-space: nowrap;
+                }
+
+                .pr-chip.ok {
+                    background: var(--pr-green-soft);
+                    color: #047857;
+                }
+
+                .pr-chip.no {
+                    background: #fee2e2;
+                    color: #b91c1c;
+                }
+
+                .pr-chip.wait {
+                    background: var(--pr-amber-soft);
+                    color: #b45309;
+                }
+
+                .pr-chip.nil {
+                    background: var(--pr-soft);
+                    color: var(--pr-muted);
+                }
+
+                .pr-chip.info {
+                    background: var(--pr-sky-soft);
+                    color: #0369a1;
+                }
+
+                .pr-toast {
+                    position: fixed;
+                    right: 20px;
+                    bottom: 90px;
+                    z-index: 9999;
+                    background: var(--pr-navy);
+                    color: #fff;
+                    padding: 12px 16px;
+                    border-radius: 16px;
+                    font-size: 13.5px;
+                    font-weight: 600;
+                    box-shadow: 0 12px 30px rgba(15, 42, 68, .3);
+                    max-width: 320px;
+                    transform: translateY(20px);
+                    opacity: 0;
+                    transition: .3s;
+                    pointer-events: none;
+                }
+
+                .pr-toast.show {
+                    transform: none;
+                    opacity: 1;
+                }
+
+                @media (max-width: 900px) {
+                    .pr-stats {
+                        grid-template-columns: repeat(2, 1fr);
+                    }
+
+                    .pr-grid,
+                    .pr-grid.b {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            </style>
+
+            <section class="pr-root" id="prestasi">
+                <div class="pr-head">
+                    <div>
+                        <span class="pr-eyebrow">🏆 Prestasi Belajar</span>
+                        <h2 id="prestasi-title">Prestasi dan perkembangan belajarmu.</h2>
+                        <p>Rekap nilai, grafik belajar, lencana, dan percakapan dengan guru ada di sini.</p>
+                    </div>
+                    <span class="pr-live" id="pr-live"><i></i><span>Menghubungkan…</span></span>
+                </div>
+
+                <div class="pr-stats">
+                    <div class="pr-stat dark">
+                        <div class="k">⏱ Belajar hari ini</div>
+                        <div class="v" id="pr-today">0m</div>
+                        <div class="s" id="pr-target">Target harian 60 menit</div>
+                        <div class="pr-bar"><i id="pr-target-bar"></i></div>
+                    </div>
+                    <div class="pr-stat">
+                        <div class="k">📚 Total jam belajar</div>
+                        <div class="v" id="pr-total">0m</div>
+                        <div class="s" id="pr-avg">Rata-rata 7 hari: 0m</div>
+                    </div>
+                    <div class="pr-stat">
+                        <div class="k">🔥 Hari beruntun</div>
+                        <div class="v" id="pr-streak">0</div>
+                        <div class="s">hari belajar berturut-turut</div>
+                    </div>
+                    <div class="pr-stat">
+                        <div class="k">🎯 Rata-rata kuis</div>
+                        <div class="v" id="pr-kuis">–</div>
+                        <div class="s" id="pr-kuis-s">0 dari 3 kuis selesai</div>
+                    </div>
+                </div>
+
+                <div class="pr-grid">
+                    <div class="pr-card">
+                        <div class="pr-card-h">
+                            <div>
+                                <h3>📈 Grafik Belajar</h3><small id="pr-chart-sub">Menit belajar 7 hari terakhir</small>
+                            </div>
+                            <div class="pr-seg" role="group" aria-label="Pilih grafik">
+                                <button data-g="jam7" aria-pressed="true">7 hari</button>
+                                <button data-g="jam30" aria-pressed="false">30 hari</button>
+                                <button data-g="kuis" aria-pressed="false">Nilai kuis</button>
+                            </div>
+                        </div>
+                        <div class="pr-card-b pr-chart">
+                            <div id="pr-chart"></div>
+                            <div class="pr-legend" id="pr-legend"></div>
+                        </div>
+                    </div>
+
+                    <div class="pr-card">
+                        <div class="pr-card-h">
+                            <div>
+                                <h3>💬 Umpan Balik Guru</h3><small>Pesan masuk dan terkirim secara langsung</small>
+                            </div>
+                            <span class="pr-count" id="pr-unread" hidden>0</span>
+                        </div>
+                        <div class="pr-chat">
+                            <div class="pr-thread" id="pr-thread">
+                                <div class="pr-empty"><b>💬</b>Memuat percakapan…</div>
+                            </div>
+                            <div class="pr-compose">
+                                <textarea id="pr-text" placeholder="Tulis pertanyaan atau balasan untuk guru…"
+                                    maxlength="1000"></textarea>
+                                <button id="pr-send" disabled>Kirim</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pr-grid b">
+                    <div class="pr-card">
+                        <div class="pr-card-h">
+                            <div>
+                                <h3>📋 Rekap Nilai</h3><small id="pr-rekap-sub">Kuis, LKPD, dan percobaan lab</small>
+                            </div>
+                        </div>
+                        <div class="pr-card-b" style="overflow-x:auto">
+                            <table class="pr-tbl">
+                                <thead>
+                                    <tr>
+                                        <th>Kegiatan</th>
+                                        <th style="text-align:right">Nilai</th>
+                                        <th>Status</th>
+                                        <th>Waktu</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pr-rekap"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="pr-card">
+                        <div class="pr-card-h">
+                            <div>
+                                <h3>🏅 Lencana Prestasi</h3><small id="pr-badge-sub">0 lencana diraih</small>
+                            </div>
+                        </div>
+                        <div class="pr-card-b">
+                            <div class="pr-badges" id="pr-badges"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="pr-toast" id="pr-toast"></div>
+
+            <script type="module">
+                const FIREBASE_CONFIG = {
+                    apiKey: "AIzaSyA_YUPPq0CZgNi5McaTx3-a8LOGW70zIzg",
+                    authDomain: "starararrara.firebaseapp.com",
+                    databaseURL: "https://starararrara-default-rtdb.asia-southeast1.firebasedatabase.app",
+                    projectId: "starararrara",
+                    storageBucket: "starararrara.firebasestorage.app",
+                    messagingSenderId: "1085300087665",
+                    appId: "1:1085300087665:web:375eae85042f14ffa7f4d0"
+                };
+                const TARGET_MENIT = 60, KKM = 75;
+                const KUIS = [['kuis1', 'Kuis 1'], ['kuis2', 'Kuis 2'], ['kuis3', 'Kuis 3']];
+                // Versi 3 pertemuan: nilai dari versi 4 kuis (jumlah soal berbeda) tidak dihitung
+                const JML_SOAL = { kuis1: 10, kuis2: 8, kuis3: 7 };
+                const saringKuis = (v) => Object.fromEntries(Object.entries(v || {}).filter(([k, q]) => !JML_SOAL[k] || (q && q.total === JML_SOAL[k])));
+                const LAB = ['surface', 'temp', 'conc', 'cat'];
+                const $ = (s) => document.querySelector(s);
+                const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+                const key = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                const durasi = (dtk) => { const m = Math.floor((dtk || 0) / 60); return m >= 60 ? `${Math.floor(m / 60)}j ${m % 60}m` : `${m}m`; };
+                const jam = (t) => t ? new Date(t).toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+                const konteksLabel = (k) => !k || k === 'umum' ? 'Catatan umum' : k.startsWith('lkpd:') ? 'Catatan LKPD' : k.startsWith('kuis') ? 'Catatan kuis' : k;
+
+                const S = { harian: {}, progres: {}, kuis: {}, lab: {}, lkpd: {}, umpan: {}, grafik: 'jam7' };
+                let API = null, UID = null, pertamaUmpan = true;
+
+                function toast(t) { const el = $('#pr-toast'); el.textContent = t; el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 4000); }
+                function live(on, teks) { const el = $('#pr-live'); el.classList.toggle('on', on); el.querySelector('span').textContent = teks; }
+
+                /* ---------- hitungan ---------- */
+                function hari(n) { const out = []; const d = new Date(); d.setHours(12); for (let i = n - 1; i >= 0; i--) { const x = new Date(d); x.setDate(d.getDate() - i); out.push(x); } return out; }
+                function totalDetik() {
+                    const sum = Object.values(S.harian).reduce((a, b) => a + (+b || 0), 0);
+                    return Math.max(sum, +S.progres.jamBelajarDetik || 0);
+                }
+                function streakHari() {
+                    let n = 0; const d = new Date();
+                    if (!(S.harian[key(d)] >= 60)) d.setDate(d.getDate() - 1); // hari ini belum belajar → hitung dari kemarin
+                    while (S.harian[key(d)] >= 60) { n++; d.setDate(d.getDate() - 1); }
+                    return n;
+                }
+                const skorKuis = () => KUIS.map(([k]) => S.kuis[k]?.skor).filter(v => v != null);
+                const labSelesai = () => LAB.filter(id => (S.lab[id] || {}).status === 'selesai').length;
+
+                /* ---------- ringkasan ---------- */
+                function renderStats() {
+                    const today = +S.harian[key(new Date())] || 0;
+                    $('#pr-today').textContent = durasi(today);
+                    const pct = Math.min(100, Math.round(today / 60 / TARGET_MENIT * 100));
+                    $('#pr-target').textContent = `Target harian ${TARGET_MENIT} menit • ${pct}%`;
+                    $('#pr-target-bar').style.width = pct + '%';
+                    $('#pr-total').textContent = durasi(totalDetik());
+                    const w = hari(7).map(d => +S.harian[key(d)] || 0);
+                    $('#pr-avg').textContent = `Rata-rata 7 hari: ${durasi(w.reduce((a, b) => a + b, 0) / 7)}`;
+                    $('#pr-streak').textContent = streakHari();
+                    const sk = skorKuis();
+                    $('#pr-kuis').textContent = sk.length ? (sk.reduce((a, b) => a + b, 0) / sk.length).toFixed(1).replace('.', ',') : '–';
+                    $('#pr-kuis-s').textContent = `${sk.length} dari ${KUIS.length} kuis selesai • ${sk.filter(v => v >= KKM).length} tuntas`;
+                }
+
+                /* ---------- grafik ---------- */
+                function renderChart() {
+                    const W = 640, H = 250, L = 40, R = 12, T = 18, B = 34;
+                    const iw = W - L - R, ih = H - T - B;
+                    let bars, labels, maxV, garis, satuan, warna, legend, sub;
+                    if (S.grafik === 'kuis') {
+                        bars = KUIS.map(([k]) => S.kuis[k]?.skor ?? null); labels = KUIS.map(([, n]) => n);
+                        maxV = 100; garis = KKM; satuan = ''; sub = 'Skor terbaru setiap kuis (KKM 75)';
+                        warna = bars.map(v => v == null ? '#e2e8f0' : v >= KKM ? '#10b981' : '#f59e0b');
+                        legend = '<span><i style="background:#10b981"></i>Tuntas</span><span><i style="background:#f59e0b"></i>Belum tuntas</span><span><i style="background:#ef4444"></i>Garis KKM</span>';
+                    } else {
+                        const n = S.grafik === 'jam30' ? 30 : 7;
+                        const ds = hari(n);
+                        bars = ds.map(d => Math.round((+S.harian[key(d)] || 0) / 60));
+                        labels = ds.map((d, i) => n === 7 ? d.toLocaleDateString('id-ID', { weekday: 'short' }) : (i % 5 === 4 || i === n - 1 ? d.getDate() + '/' + (d.getMonth() + 1) : ''));
+                        maxV = Math.ceil(Math.max(TARGET_MENIT, ...bars) * 1.1 / 20) * 20; garis = TARGET_MENIT; satuan = 'm';
+                        sub = `Menit belajar ${n} hari terakhir`;
+                        warna = bars.map((v, i) => i === n - 1 ? '#38bdf8' : v >= TARGET_MENIT ? '#0f2a44' : '#94a3b8');
+                        legend = '<span><i style="background:#38bdf8"></i>Hari ini</span><span><i style="background:#0f2a44"></i>Mencapai target</span><span><i style="background:#94a3b8"></i>Di bawah target</span><span><i style="background:#ef4444"></i>Target 60 menit</span>';
+                    }
+                    $('#pr-chart-sub').textContent = sub;
+                    const n = bars.length, slot = iw / n, bw = Math.min(46, slot * .62);
+                    const y = v => T + ih - (v / maxV) * ih;
+                    let g = '';
+                    for (let i = 0; i <= 4; i++) {
+                        const v = maxV / 4 * i, yy = y(v);
+                        g += `<line x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}" stroke="#eef2f7"/><text x="${L - 8}" y="${yy + 4}" font-size="10.5" fill="#94a3b8" text-anchor="end">${Math.round(v)}${satuan}</text>`;
+                    }
+                    bars.forEach((v, i) => {
+                        const x = L + slot * i + (slot - bw) / 2, val = v ?? 0, yy = y(val), h = T + ih - yy;
+                        g += `<rect x="${x}" y="${v == null ? T + ih - 4 : yy}" width="${bw}" height="${v == null ? 4 : Math.max(h, 2)}" rx="${Math.min(8, bw / 3)}" fill="${warna[i]}"><title>${labels[i] || ''}: ${v == null ? 'belum' : v + (satuan === 'm' ? ' menit' : '')}</title></rect>`;
+                        if (n <= 7 && v != null) g += `<text x="${x + bw / 2}" y="${yy - 6}" font-size="11.5" font-weight="700" fill="#0f2a44" text-anchor="middle">${v}${satuan}</text>`;
+                        if (labels[i]) g += `<text x="${x + bw / 2}" y="${H - 12}" font-size="11" fill="#64748b" text-anchor="middle">${labels[i]}</text>`;
+                    });
+                    g += `<line x1="${L}" x2="${W - R}" y1="${y(garis)}" y2="${y(garis)}" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="5 4"/>`;
+                    $('#pr-chart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${sub}" font-family="inherit">${g}</svg>`;
+                    $('#pr-legend').innerHTML = legend;
+                }
+
+                /* ---------- lencana ---------- */
+                function renderBadges() {
+                    const menit = totalDetik() / 60, st = streakHari(), sk = skorKuis(), tuntas = sk.filter(v => v >= KKM).length;
+                    const lab = labSelesai(), balas = Object.values(S.umpan).filter(m => m.dari === 'siswa').length;
+                    const list = [
+                        ['⏱', 'Langkah Pertama', 'Belajar total 10 menit', menit, 10],
+                        ['📚', 'Pembelajar Tekun', 'Belajar total 1 jam', menit, 60],
+                        ['🏃', 'Maraton Kinetika', 'Belajar total 5 jam', menit, 300],
+                        ['🔥', 'Konsisten', 'Belajar 3 hari berturut-turut', st, 3],
+                        ['🌟', 'Disiplin Seminggu', 'Belajar 7 hari berturut-turut', st, 7],
+                        ['🧪', 'Peneliti Muda', 'Selesaikan 1 percobaan lab', lab, 1],
+                        ['🔬', 'Ahli Laboratorium', 'Selesaikan keempat percobaan lab', lab, 4],
+                        ['🎯', 'Tuntas Pertama', 'Capai KKM di 1 kuis', tuntas, 1],
+                        ['🏆', 'Juara Kuis', 'Capai KKM di ketiga kuis', tuntas, 3],
+                        ['💯', 'Nilai Sempurna', 'Dapatkan skor 100 di sebuah kuis', sk.filter(v => v === 100).length, 1],
+                        ['💬', 'Aktif Bertanya', 'Kirim pesan ke guru', balas, 1]
+                    ];
+                    const got = list.filter(b => b[3] >= b[4]).length;
+                    $('#pr-badge-sub').textContent = `${got} dari ${list.length} lencana diraih`;
+                    $('#pr-badges').innerHTML = list.map(([ic, n, d, v, t]) => {
+                        const ok = v >= t, p = Math.min(100, v / t * 100);
+                        return `<div class="pr-badge ${ok ? 'got' : ''}"><div class="ic">${ic}</div><div style="flex:1"><b>${n}</b><span>${ok ? '✔ Diraih' : d}</span>${ok ? '' : `<div class="pg"><i style="width:${p}%"></i></div>`}</div></div>`;
+                    }).join('');
+                }
+
+                /* ---------- umpan balik ---------- */
+                function renderUmpan() {
+                    const list = Object.entries(S.umpan).map(([id, m]) => ({ id, ...m })).sort((a, b) => (a.waktu || 0) - (b.waktu || 0));
+                    const th = $('#pr-thread');
+                    const diBawah = th.scrollHeight - th.scrollTop - th.clientHeight < 40;
+                    th.innerHTML = list.length ? list.map(m => m.dari === 'siswa'
+                        ? `<div class="pr-msg siswa"><span class="meta">Kamu</span>${esc(m.teks)}<span class="time">${jam(m.waktu)}${m.dibaca ? ' • ✓ dibaca guru' : ''}</span></div>`
+                        : `<div class="pr-msg guru ${m.dibaca ? '' : 'baru'}"><span class="meta">👩‍🏫 Guru • ${esc(konteksLabel(m.konteks))}</span>${esc(m.teks)}<span class="time">${jam(m.waktu)}</span></div>`).join('')
+                        : '<div class="pr-empty"><b>💬</b>Belum ada pesan.<br>Tulis pertanyaan untuk gurumu di bawah.</div>';
+                    if (diBawah || pertamaUmpan) th.scrollTop = th.scrollHeight;
+                    const belum = list.filter(m => m.dari !== 'siswa' && !m.dibaca);
+                    const c = $('#pr-unread'); c.hidden = !belum.length; c.textContent = `${belum.length} baru`;
+                    return belum;
+                }
+                // tandai pesan guru sebagai dibaca ketika kotak umpan balik terlihat di layar
+                let terlihat = false;
+                new IntersectionObserver(es => { terlihat = es.some(e => e.isIntersecting); if (terlihat) tandaiDibaca(); }, { threshold: .3 }).observe(document.getElementById('pr-thread'));
+                function tandaiDibaca() {
+                    if (!API || !UID || !terlihat || document.visibilityState !== 'visible') return;
+                    const up = {};
+                    Object.entries(S.umpan).forEach(([id, m]) => { if (m.dari !== 'siswa' && !m.dibaca) up[`${id}/dibaca`] = true; });
+                    if (Object.keys(up).length) API.D.update(API.D.ref(API.db, `umpanBalik/${UID}`), up).catch(() => { });
+                }
+
+                async function kirim() {
+                    const ta = $('#pr-text'), teks = ta.value.trim();
+                    if (!teks || !API || !UID) return;
+                    const btn = $('#pr-send'); btn.disabled = true;
+                    try {
+                        const { D, db } = API;
+                        await D.set(D.push(D.ref(db, `umpanBalik/${UID}`)), { teks, waktu: D.serverTimestamp(), konteks: 'umum', dari: 'siswa', dibaca: false });
+                        D.set(D.push(D.ref(db, 'aktivitas')), { uid: UID, jenis: 'umpan', pesan: 'mengirim pesan ke guru', waktu: D.serverTimestamp() }).catch(() => { });
+                        ta.value = '';
+                    } catch (e) { toast('Pesan gagal terkirim. Periksa koneksi internet.'); }
+                    btn.disabled = !API;
+                }
+
+                /* ---------- rekap nilai ---------- */
+                const LKPD = [['lkpd_surface', 'LKPD 1: Luas permukaan'], ['lkpd_temp', 'LKPD 2: Suhu'], ['lkpd_conc', 'LKPD 3: Konsentrasi'], ['lkpd_cat', 'LKPD 4: Katalis']];
+                const LABN = [['surface', 'Lab 1: Luas permukaan'], ['temp', 'Lab 2: Suhu'], ['conc', 'Lab 3: Konsentrasi'], ['cat', 'Lab 4: Katalis']];
+                const tglPendek = (t) => t ? new Date(t).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) : '–';
+                function renderRekap() {
+                    const baris = [];
+                    const skor = (v) => v == null ? '–' : v;
+                    const chipNilai = (v) => v == null ? '<span class="pr-chip nil">Belum</span>' : v >= KKM ? '<span class="pr-chip ok">Tuntas</span>' : '<span class="pr-chip no">Belum tuntas</span>';
+                    baris.push('<tr class="grp"><td colspan="4">🎯 Kuis</td></tr>');
+                    [...KUIS, ['pretest', 'Pretest'], ['posttest', 'Posttest']].forEach(([k, n]) => {
+                        const q = S.kuis[k];
+                        if (!q && (k === 'pretest' || k === 'posttest')) return;
+                        baris.push(`<tr><td>${n}${q ? ` <span style="color:#64748b;font-size:12px">(${q.benar}/${q.total} benar)</span>` : ''}</td><td class="n">${skor(q?.skor)}</td><td>${chipNilai(q?.skor)}</td><td class="t">${tglPendek(q?.dikerjakanPada)}</td></tr>`);
+                    });
+                    baris.push('<tr class="grp"><td colspan="4">📝 LKPD</td></tr>');
+                    LKPD.forEach(([id, n]) => {
+                        const l = S.lkpd[id] || {};
+                        const st = { dinilai: l.nilai != null ? chipNilai(l.nilai) : '<span class="pr-chip ok">Dinilai</span>', dikumpulkan: '<span class="pr-chip wait">Menunggu dinilai</span>', revisi: '<span class="pr-chip no">Perlu revisi</span>', draf: '<span class="pr-chip info">Draf</span>' }[l.status] || '<span class="pr-chip nil">Belum</span>';
+                        baris.push(`<tr><td>${n}</td><td class="n">${l.status === 'dinilai' ? skor(l.nilai) : '–'}</td><td>${st}</td><td class="t">${tglPendek(l.dinilaiPada || l.dikumpulkanPada)}</td></tr>`);
+                    });
+                    baris.push('<tr class="grp"><td colspan="4">🧪 Percobaan Lab</td></tr>');
+                    LABN.forEach(([id, n]) => {
+                        const l = S.lab[id] || {};
+                        const jml = Object.keys(l.percobaan || {}).length;
+                        const st = l.status === 'selesai' ? '<span class="pr-chip ok">Selesai</span>' : l.status === 'berjalan' ? '<span class="pr-chip info">Berjalan</span>' : '<span class="pr-chip nil">Belum</span>';
+                        baris.push(`<tr><td>${n}</td><td class="n">${jml ? jml + '×' : '–'}</td><td>${st}</td><td class="t">${tglPendek(l.diperbarui)}</td></tr>`);
+                    });
+                    $('#pr-rekap').innerHTML = baris.join('');
+                    const nilaiLkpd = LKPD.map(([id]) => S.lkpd[id]).filter(l => l && l.status === 'dinilai' && l.nilai != null).map(l => l.nilai);
+                    $('#pr-rekap-sub').textContent = `Rata-rata LKPD: ${nilaiLkpd.length ? (nilaiLkpd.reduce((a, b) => a + b, 0) / nilaiLkpd.length).toFixed(1).replace('.', ',') : '–'} • Lab selesai: ${labSelesai()}/4`;
+                }
+
+                function renderAll() { renderStats(); renderChart(); renderBadges(); renderRekap(); }
+
+                /* ---------- event ---------- */
+                document.querySelectorAll('#prestasi [data-g]').forEach(b => b.addEventListener('click', () => {
+                    S.grafik = b.dataset.g;
+                    document.querySelectorAll('#prestasi [data-g]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+                    renderChart();
+                }));
+                $('#pr-send').addEventListener('click', kirim);
+                $('#pr-text').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); kirim(); } });
+                document.addEventListener('visibilitychange', tandaiDibaca);
+                // Jam belajar hari ini diambil juga dari timer SRL di halaman ini (localStorage) agar selalu terbaru
+                function srlLokal() {
+                    try {
+                        const k = key(new Date());
+                        if (localStorage.getItem('srl_today_date') === k) {
+                            const t = parseInt(localStorage.getItem('srl_today_seconds')) || 0;
+                            if (t > (+S.harian[k] || 0)) { S.harian = { ...S.harian, [k]: t }; return true; }
+                        }
+                    } catch (_) { }
+                    return false;
+                }
+                setInterval(() => { if (srlLokal()) { renderStats(); if (S.grafik !== 'kuis') renderChart(); renderBadges(); } }, 30000);
+                window.__prestasiDemo = (data) => { Object.assign(S, data); renderAll(); renderUmpan(); }; // untuk uji tampilan
+
+                srlLokal();
+                renderAll();
+
+                /* ---------- koneksi Firebase (real-time) ---------- */
+                try {
+                    const V = '10.12.2';
+                    const APP = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
+                    const A = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`);
+                    const D = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-database.js`);
+                    const app = APP.getApps().length ? APP.getApp() : APP.initializeApp(FIREBASE_CONFIG);
+                    const db = D.getDatabase(app);
+                    D.onValue(D.ref(db, '.info/connected'), s => live(!!s.val() && !!UID, s.val() ? (UID ? 'Terhubung langsung' : 'Belum masuk') : 'Menyambung ulang…'));
+                    A.onAuthStateChanged(A.getAuth(app), (user) => {
+                        if (!user) {
+                            live(false, 'Belum masuk');
+                            $('#pr-thread').innerHTML = '<div class="pr-empty"><b>🔒</b>Masuk dulu untuk melihat prestasi dan pesan dari guru.<br><a href="loging.html" style="color:#0f2a44;font-weight:800">Masuk sekarang</a></div>';
+                            return;
+                        }
+                        UID = user.uid; API = { D, db };
+                        $('#pr-send').disabled = false;
+                        live(true, 'Terhubung langsung');
+                        const dengar = (path, fn) => D.onValue(D.ref(db, path), s => { fn(s.val() || {}); }, err => console.warn(path, err));
+                        dengar(`belajarHarian/${UID}`, v => { S.harian = v; srlLokal(); renderAll(); });
+                        dengar(`lkpd/${UID}`, v => { S.lkpd = v; renderAll(); });
+                        dengar(`progres_siswa/${UID}`, v => { S.progres = v; renderAll(); });
+                        dengar(`kuis/${UID}`, v => { S.kuis = saringKuis(v); renderAll(); });
+                        dengar(`lab/${UID}`, v => { S.lab = v; renderAll(); });
+                        dengar(`umpanBalik/${UID}`, v => {
+                            const lama = new Set(Object.keys(S.umpan));
+                            S.umpan = v;
+                            const baru = Object.entries(v).filter(([id, m]) => !lama.has(id) && m.dari !== 'siswa');
+                            if (!pertamaUmpan && baru.length) toast('💬 Pesan baru dari guru: ' + String(baru[baru.length - 1][1].teks).slice(0, 80));
+                            renderUmpan(); renderBadges(); tandaiDibaca();
+                            pertamaUmpan = false;
+                        });
+                    });
+                } catch (e) {
+                    live(false, 'Tidak terhubung');
+                    $('#pr-thread').innerHTML = '<div class="pr-empty"><b>📡</b>Tidak dapat terhubung ke server.</div>';
+                }
+            </script>
+
+        </div>
+    </main>
+
+    <!-- ── SRL TIMER WIDGET ── -->
+    <div id="srl-widget" role="timer" aria-label="Jam belajar hari ini" aria-live="off">
+        <!-- Expanded card -->
+        <div class="srl-card" id="srl-card">
+            <div class="srl-header">
+                <div class="srl-title">
+                    <div class="srl-dot" id="srl-dot"></div>
+                    JAM BELAJAR (SRL)
+                </div>
+                <button class="srl-pause-btn" id="srl-pause-btn">Jeda</button>
+            </div>
+            <div class="srl-body">
+                <div class="srl-time-display" id="srl-display">00:00:00</div>
+                <div class="srl-label" id="srl-status">Sesi ini</div>
+
+                <div class="srl-progress-wrap">
+                    <div class="srl-progress-label">
+                        <span>Target harian</span>
+                        <span id="srl-target-pct">0%</span>
+                    </div>
+                    <div class="srl-progress-bar">
+                        <div class="srl-progress-fill" id="srl-progress-fill" style="width:0%"></div>
+                    </div>
+                </div>
+
+                <div class="srl-stats">
+                    <div class="srl-stat">
+                        <div class="srl-stat-val" id="srl-today">0j 0m</div>
+                        <div class="srl-stat-lbl">Total Hari Ini</div>
+                    </div>
+                    <div class="srl-stat">
+                        <div class="srl-stat-val" id="srl-total">0j</div>
+                        <div class="srl-stat-lbl">Total Keseluruhan</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Toggle button -->
+        <button class="srl-toggle-btn" id="srl-toggle" title="Jam Belajar SRL"
+            aria-label="Tampilkan/sembunyikan timer belajar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-ink text-white/80">
+        <div class="max-w-page mx-auto px-5 md:px-8 py-12 grid sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10">
+            <div>
+                <div class="flex items-center gap-2.5 mb-4">
+                    <span class="w-9 h-9 rounded-[10px] bg-white text-ink grid place-items-center">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path
+                                d="M9 3h6M10 3v6.5L4.6 18.2A1.8 1.8 0 0 0 6.1 21h11.8a1.8 1.8 0 0 0 1.5-2.8L14 9.5V3" />
+                            <path d="M7.5 15h9" />
+                        </svg>
+                    </span>
+                    <span class="text-lg font-extrabold text-white">EduKinetika</span>
+                </div>
+                <p class="text-sm leading-relaxed max-w-xs">
+                    Laboratorium virtual berbasis Problem-Based Learning untuk materi Laju Reaksi, Kimia SMA kelas XI.
+                </p>
+            </div>
+            <div>
+                <h3 class="text-white font-bold mb-3">Belajar</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="kartu-belajar.html" class="hover:text-white">Kartu belajar</a></li>
+                    <li><a href="lab111.html" class="hover:text-white">Lab virtual</a></li>
+                    <li><a href="kartulkpd.html" class="hover:text-white">LKPD</a></li>
+                    <li><a href="kartu_kuis_edukinetika.html" class="hover:text-white">Kuis</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-white font-bold mb-3">Akun</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="loging.html" class="hover:text-white">Masuk</a></li>
+                    <li><a href="index.html" class="hover:text-white">Dashboard siswa</a></li>
+                    <li><a href="dashboard-guru.html" class="hover:text-white">Dashboard guru</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-white font-bold mb-3">Panduan</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="tp.html" class="hover:text-white">Tujuan pembelajaran</a></li>
+                    <li><a href="modul.html" class="hover:text-white">Modul praktikum</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-white/10">
+            <p class="max-w-page mx-auto px-5 md:px-8 py-5 text-xs text-white/60">© <span id="tahun"></span> EduKinetika
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        /* =========================================================
+           1. DATA MATERI (satu sumber untuk daftar materi + pencarian)
+           Ubah di sini jika nama file halaman berubah.
+           ========================================================= */
+        const MATERI = [
+            {
+                id: 'modul_pengenalan', judul: 'Tujuan Pembelajaran', url: 'tp.html', level: 'Pemula', durasi: '10 menit',
+                ringkas: 'Kompetensi dan tujuan yang akan kamu capai pada materi laju reaksi.',
+                kata: 'tujuan pembelajaran capaian kompetensi indikator'
+            },
+            {
+                id: 'modul_teori', judul: 'Teori Tumbukan & Energi Aktivasi', url: 'materi1.html', level: 'Menengah', durasi: '30 menit',
+                ringkas: 'Syarat tumbukan efektif: orientasi tepat dan energi cukup.',
+                kata: 'tumbukan efektif energi aktivasi Ea orientasi diagram energi'
+            },
+            {
+                id: 'modul_konsep', judul: 'Konsep Dasar Laju Reaksi', url: 'konsepdasarlajureaksi.html', level: 'Pemula', durasi: '25 menit',
+                ringkas: 'Perubahan konsentrasi pereaksi atau produk per satuan waktu.',
+                kata: 'molaritas kemolaran konsentrasi definisi laju satuan M/s'
+            },
+            {
+                id: 'modul_faktor', judul: 'Faktor yang Memengaruhi Laju Reaksi', url: 'kartup3.html', level: 'Menengah', durasi: '40 menit',
+                ringkas: 'Pengaruh luas permukaan, konsentrasi, suhu, katalis, dan pengadukan.',
+                kata: 'faktor konsentrasi luas permukaan suhu katalis katalisator pengadukan diaduk praktikum'
+            },
+        ];
+
+        // Halaman lain yang juga bisa dicari
+        const HALAMAN_LAIN = [
+            { judul: 'Simulasi Faktor Penentu Laju', url: 'faktorpenentulaju.html', jenis: 'Simulasi', kata: 'faktor balapan reaksi luas permukaan konsentrasi suhu katalis pengadukan arrhenius autokatalis enzim' },
+            { judul: 'Laboratorium Virtual', url: 'lab111.html', jenis: 'Praktikum', kata: 'lab praktikum percobaan stopwatch balon gas' },
+            { judul: 'Modul Praktikum Virtual', url: 'modul.html', jenis: 'Praktikum', kata: 'modul prosedur alat bahan' },
+            { judul: 'LKPD Pertemuan 1', url: 'lkpd_pertemuan1.html', jenis: 'LKPD', kata: 'lembar kerja teori tumbukan energi aktivasi' },
+            { judul: 'LKPD Pertemuan 2', url: 'lkpd_pertemuan2.html', jenis: 'LKPD', kata: 'lembar kerja faktor laju reaksi praktikum' },
+            { judul: 'LKPD Pertemuan 3', url: 'lkpd_pertemuan3.html', jenis: 'LKPD', kata: 'lembar kerja orde persamaan hukum laju' },
+            { judul: 'Kuis Laju Reaksi', url: 'kartu_kuis_edukinetika.html', jenis: 'Kuis', kata: 'kuis soal latihan evaluasi tes' },
+        ];
+
+        const WARNA_LEVEL = {
+            Pemula: 'bg-sky-50 text-sky-700 border-sky-100',
+            Menengah: 'bg-amber-50 text-amber-600 border-amber-100',
+            Mahir: 'bg-ink text-white border-ink',
+        };
+
+        /* =========================================================
+           2. PROGRES — memakai kunci localStorage yang sama dengan
+              kartu-belajar.html ('statusKartuPoin')
+           ========================================================= */
+        function bacaProgres() {
+            try { return JSON.parse(localStorage.getItem('statusKartuPoin')) || {}; }
+            catch (e) { return {}; }
+        }
+
+        // Sama seperti bukaKartu() di kartu-belajar.html: poin hanya diberikan sekali
+        function bukaMateri(url, idKartu) {
+            const status = bacaProgres();
+            if (!status[idKartu]) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ tipe: 'tambahPoinKartu', poin: 100 }, '*');
+                }
+                status[idKartu] = true;
+                try { localStorage.setItem('statusKartuPoin', JSON.stringify(status)); } catch (e) { }
+            }
+            window.location.href = url;
+        }
+
+        function renderMateri() {
+            const status = bacaProgres();
+            const ul = document.getElementById('daftar-materi');
+            ul.innerHTML = MATERI.map((m, i) => {
+                const siap = !!m.url;
+                const sudah = !!status[m.id];
+                const tag = siap ? 'button' : 'div';
+                return `
+                <li>
+                    <${tag} ${siap ? `type="button" data-url="${m.url}" data-id="${m.id}"` : 'aria-disabled="true"'}
+                        class="materi-item w-full text-left py-6 grid grid-cols-[3rem_1fr] sm:grid-cols-[3.5rem_1fr_auto] gap-x-5 gap-y-3 items-center ${siap ? 'group cursor-pointer' : 'opacity-60'}">
+                        <span class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl border-2 ${sudah ? 'border-sky-500 bg-sky-500 text-white' : 'border-line text-ink'} grid place-items-center text-lg font-extrabold">
+                            ${sudah ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-label="Sudah dibuka"><path d="m5 12 5 5 9-10"/></svg>' : i + 1}
+                        </span>
+                        <span class="min-w-0">
+                            <span class="block text-lg font-bold leading-snug ${siap ? 'group-hover:text-sky-700' : ''}">${m.judul}</span>
+                            <span class="block text-sm text-ink-soft mt-1">${m.ringkas}</span>
+                        </span>
+                        <span class="col-start-2 sm:col-start-3 flex items-center gap-3 text-sm">
+                            <span class="px-2.5 py-1 rounded-full border text-xs font-bold ${WARNA_LEVEL[m.level]}">${m.level}</span>
+                            <span class="text-ink-mute whitespace-nowrap">${siap ? m.durasi : 'Segera hadir'}</span>
+                        </span>
+                    </${tag}>
+                </li>`;
+            }).join('');
+
+            ul.querySelectorAll('button.materi-item').forEach(btn => {
+                btn.addEventListener('click', () => bukaMateri(btn.dataset.url, btn.dataset.id));
+            });
+        }
+
+        function renderProgres() {
+            const status = bacaProgres();
+            const total = MATERI.length;
+            const selesai = MATERI.filter(m => status[m.id]).length;
+            document.getElementById('progres-angka').textContent = `${selesai} dari ${total}`;
+            document.getElementById('progres-bar').style.width = (selesai / total * 100) + '%';
+
+            const berikut = MATERI.find(m => !status[m.id] && m.url);
+            document.getElementById('progres-text').textContent =
+                selesai === 0 ? 'Belum ada materi yang dibuka. Mulai dari topik pertama agar konsepnya berurutan.'
+                    : berikut ? `Lanjutkan ke: ${berikut.judul}.`
+                        : 'Semua materi yang tersedia sudah kamu buka. Saatnya menguji pemahaman lewat kuis.';
+
+            document.getElementById('progres-list').innerHTML = MATERI.map(m => `
+                <li class="flex items-center gap-2 ${status[m.id] ? 'text-ink font-semibold' : 'text-ink-mute'}">
+                    <span class="w-2 h-2 rounded-full ${status[m.id] ? 'bg-sky-500' : 'bg-line'}"></span>${m.judul}
+                </li>`).join('');
+        }
+
+
+        /* =========================================================
+           2b. PETA TIGA PERTEMUAN (P1 tumbukan, P2 faktor, P3 persamaan laju)
+           ========================================================= */
+        const FAKTOR_LAJU = [
+            ['luas', 'Luas permukaan', '#059669'], ['konsentrasi', 'Konsentrasi', '#2563eb'],
+            ['suhu', 'Suhu', '#dc2626'], ['katalis', 'Katalis', '#7c3aed'], ['aduk', 'Pengadukan', '#0891b2']
+        ];
+        const ILUS_PERTEMUAN = {
+            1: `<svg viewBox="0 0 220 110" width="220" height="110" aria-hidden="true">
+                    <path d="M10 92 C 60 92, 80 22, 110 22 S 160 98, 210 98" fill="none" stroke="#bae6fd" stroke-width="3" stroke-dasharray="5 5"/>
+                    <text x="110" y="15" text-anchor="middle" font-size="10" font-weight="800" fill="#0369a1">Ea</text>
+                    <circle class="pt-kilat" cx="110" cy="68" r="22" fill="#fde68a" opacity="0"/>
+                    <g class="pt-a"><circle cx="96" cy="68" r="13" fill="#38bdf8"/><text x="96" y="72" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">A</text></g>
+                    <g class="pt-b"><circle cx="124" cy="68" r="13" fill="#0f2a44"/><text x="124" y="72" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">B</text></g>
+                </svg>`,
+            2: `<svg viewBox="0 0 220 110" width="220" height="110" aria-hidden="true">
+                    <path d="M78 14 V 92 a 8 8 0 0 0 8 8 H 134 a 8 8 0 0 0 8 -8 V 14" fill="#fff" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+                    <rect x="80" y="40" width="60" height="58" rx="6" fill="#fde68a" opacity=".55"/>
+                    <rect x="92" y="84" width="10" height="10" rx="2" fill="#f8fafc" stroke="#94a3b8"/>
+                    <rect x="106" y="86" width="8" height="8" rx="2" fill="#f8fafc" stroke="#94a3b8"/>
+                    <rect x="118" y="85" width="9" height="9" rx="2" fill="#f8fafc" stroke="#94a3b8"/>
+                    <circle class="pt-gel" cx="98" cy="80" r="3.5" fill="#fff" stroke="#64748b"/>
+                    <circle class="pt-gel" cx="111" cy="82" r="3" fill="#fff" stroke="#64748b" style="animation-delay:.7s"/>
+                    <circle class="pt-gel" cx="123" cy="80" r="4" fill="#fff" stroke="#64748b" style="animation-delay:1.4s"/>
+                    <circle cx="30" cy="30" r="9" fill="#059669"/><circle cx="46" cy="62" r="9" fill="#2563eb"/>
+                    <circle cx="174" cy="30" r="9" fill="#dc2626"/><circle cx="190" cy="62" r="9" fill="#7c3aed"/><circle cx="174" cy="94" r="9" fill="#0891b2"/>
+                </svg>`,
+            3: `<svg viewBox="0 0 220 110" width="220" height="110" aria-hidden="true">
+                    <path d="M30 12 V 96 H 206" fill="none" stroke="#94a3b8" stroke-width="2"/>
+                    <text x="34" y="14" font-size="9" font-weight="700" fill="#64748b">[A]</text>
+                    <text x="204" y="108" text-anchor="end" font-size="9" font-weight="700" fill="#64748b">waktu</text>
+                    <path id="kurva-p3" d="M32 20 C 70 70, 110 84, 204 90" fill="none" stroke="#0284c7" stroke-width="3"/>
+                    <path d="M44 22 L 112 92" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4 3"/>
+                    <circle r="5" fill="#f59e0b"><animateMotion dur="4s" repeatCount="indefinite" path="M32 20 C 70 70, 110 84, 204 90"/></circle>
+                    <text x="120" y="50" font-size="10" font-weight="800" fill="#b45309">v = −Δ[A]/Δt</text>
+                </svg>`
+        };
+        const PERTEMUAN = [
+            {
+                no: 1, w: '#0284c7', bg: 'linear-gradient(135deg,#f0f8ff,#e0f2fe)', materi: 'modul_teori',
+                judul: 'Teori tumbukan dan energi aktivasi',
+                isi: 'Reaksi terjadi jika partikel bertumbukan dengan arah yang tepat dan energi minimal sebesar energi aktivasi (Ea). Tumbukan seperti ini disebut tumbukan efektif.',
+                kedua: ['Coba simulasi', '#sim']
+            },
+            {
+                no: 2, w: '#d97706', bg: 'linear-gradient(135deg,#fffbeb,#fef3c7)', materi: 'modul_faktor',
+                judul: 'Faktor-faktor yang memengaruhi laju',
+                isi: 'Lima faktor mengubah seberapa sering dan seberapa kuat partikel bertumbukan. Selidiki lewat balapan reaksi dan lab virtual.',
+                chips: true, kedua: ['Lab virtual', 'lab111.html']
+            },
+            {
+                no: 3, w: '#0f2a44', bg: 'linear-gradient(135deg,#f7fafc,#e2e8f0)', materi: 'modul_hukum',
+                judul: 'Persamaan laju dan orde reaksi',
+                isi: 'Olah data percobaan untuk menentukan orde reaksi dan tetapan laju k.',
+                rumus: 'v = k [A]<sup>x</sup> [B]<sup>y</sup>', kedua: ['Kerjakan kuis', 'kartu_kuis_edukinetika.html']
+            }
+        ];
+        function renderPertemuan() {
+            const wadah = document.getElementById('peta-pertemuan');
+            if (!wadah) return;
+            const status = bacaProgres();
+            wadah.innerHTML = PERTEMUAN.map(p => {
+                const m = MATERI.find(x => x.id === p.materi) || {};
+                const sudah = !!status[p.materi];
+                return `<article class="pt-kartu" style="--w:${p.w};--bg:${p.bg}">
+                    <div class="pt-ilus">${ILUS_PERTEMUAN[p.no]}</div>
+                    <div class="p-6 flex flex-col gap-3 flex-1">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="pt-no">Pertemuan ${p.no}</span>
+                            ${sudah ? '<span class="text-xs font-bold text-sky-700 flex items-center gap-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>Materi sudah dibuka</span>' : ''}
+                        </div>
+                        <h3 class="text-xl font-extrabold leading-snug">${p.judul}</h3>
+                        <p class="text-sm text-ink-soft leading-relaxed">${p.isi}</p>
+                        ${p.rumus ? `<p class="font-extrabold text-ink text-lg bg-paper border border-line rounded-xl px-3 py-2 self-start">${p.rumus}</p>` : ''}
+                        ${p.chips ? `<div><p class="text-xs font-bold text-ink-mute mb-2">Lihat simulasi tiap faktor</p><div class="flex flex-wrap gap-1.5">${FAKTOR_LAJU.map(f => `<a href="faktorpenentulaju.html#${f[0]}" class="chip-faktor" style="--c:${f[2]}"><i></i>${f[1]}</a>`).join('')}</div></div>` : ''}
+                        <div class="flex flex-wrap gap-2 mt-auto pt-2">
+                            ${m.url ? `<button type="button" class="pt-btn utama" data-url="${m.url}" data-id="${m.id}">Buka materi</button>` : ''}
+                            <a href="${p.kedua[1]}" class="pt-btn kedua">${p.kedua[0]}</a>
+                        </div>
+                    </div>
+                </article>`;
+            }).join('');
+            wadah.querySelectorAll('button[data-url]').forEach(b => b.addEventListener('click', () => bukaMateri(b.dataset.url, b.dataset.id)));
+        }
+
+        /* =========================================================
+           2c. LATAR HERO: molekul melayang pelan
+           ========================================================= */
+        function initLatarHero() {
+            const c = document.getElementById('hero-molekul');
+            if (!c) return;
+            const ctx = c.getContext('2d');
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const CETAK = [
+                [[0, 0, 7, '#ef4444'], [-10, 7, 4.5, '#94a3b8'], [10, 7, 4.5, '#94a3b8']],
+                [[0, 0, 6.5, '#0f2a44'], [-13, 0, 6, '#ef4444'], [13, 0, 6, '#ef4444']],
+                [[0, 0, 7, '#0f2a44'], [0, -12, 4.5, '#94a3b8'], [11, 6, 4.5, '#94a3b8'], [-11, 6, 4.5, '#94a3b8']],
+                [[-6, 0, 6.5, '#38bdf8'], [6, 0, 6.5, '#f59e0b']]
+            ];
+            let W = 0, H = 0, mol = [], terlihat = true, last = 0;
+            function ukur() {
+                const r = c.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+                if (!r.width) return;
+                W = r.width; H = r.height; c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                const n = Math.round(Math.max(8, Math.min(22, W * H / 45000)));
+                mol = Array.from({ length: n }, (_, i) => ({
+                    x: Math.random() * W, y: Math.random() * H, s: .9 + Math.random() * 1.1, rot: Math.random() * 6.28,
+                    vx: (Math.random() - .5) * 12, vy: (Math.random() - .5) * 12, vr: (Math.random() - .5) * .3, t: CETAK[i % CETAK.length]
+                }));
+                gambar();
+            }
+            function gambar() {
+                ctx.clearRect(0, 0, W, H);
+                mol.forEach(m => {
+                    ctx.save(); ctx.translate(m.x, m.y); ctx.rotate(m.rot); ctx.scale(m.s, m.s); ctx.globalAlpha = .17;
+                    ctx.strokeStyle = '#3d5670'; ctx.lineWidth = 2;
+                    m.t.slice(1).forEach(([x, y]) => { ctx.beginPath(); ctx.moveTo(m.t[0][0], m.t[0][1]); ctx.lineTo(x, y); ctx.stroke(); });
+                    m.t.forEach(([x, y, r, w]) => { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fillStyle = w; ctx.fill(); });
+                    ctx.restore();
+                });
+            }
+            function loop(ts) {
+                const dt = Math.max(0, Math.min((ts - last) / 1000, .05)); last = ts;
+                if (terlihat && !document.hidden) {
+                    mol.forEach(m => {
+                        m.x += m.vx * dt; m.y += m.vy * dt; m.rot += m.vr * dt;
+                        if (m.x < -30) m.x = W + 30; if (m.x > W + 30) m.x = -30;
+                        if (m.y < -30) m.y = H + 30; if (m.y > H + 30) m.y = -30;
+                    });
+                    gambar();
+                }
+                requestAnimationFrame(loop);
+            }
+            new ResizeObserver(ukur).observe(c);
+            ukur();
+            if (!reduce) {
+                new IntersectionObserver(([e]) => { terlihat = e.isIntersecting; }).observe(c);
+                requestAnimationFrame(ts => { last = ts; requestAnimationFrame(loop); });
+            }
+        }
+
+        /* =========================================================
+           3. PENCARIAN MATERI (dengan navigasi keyboard)
+           ========================================================= */
+        function initSearch() {
+            const input = document.getElementById('search');
+            const list = document.getElementById('search-results');
+            const semua = [
+                ...MATERI.filter(m => m.url).map(m => ({ judul: m.judul, url: m.url, id: m.id, jenis: 'Materi', kata: m.kata + ' ' + m.ringkas })),
+                ...HALAMAN_LAIN,
+            ];
+            let hasil = [], aktif = -1;
+
+            const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+            function tampil() {
+                const q = norm(input.value.trim());
+                if (!q) { tutup(); return; }
+                const kataKunci = q.split(/\s+/);
+                hasil = semua.filter(it => {
+                    const teks = norm(it.judul + ' ' + it.kata);
+                    return kataKunci.every(k => teks.includes(k));
+                }).slice(0, 7);
+                aktif = hasil.length ? 0 : -1;
+
+                list.innerHTML = hasil.length
+                    ? hasil.map((it, i) => `
+                        <li id="hasil-${i}" role="option" aria-selected="${i === aktif}" data-i="${i}"
+                            class="search-item flex items-center justify-between gap-3 px-4 py-3 cursor-pointer border-b border-line last:border-0">
+                            <span class="font-semibold">${it.judul}</span>
+                            <span class="text-xs font-bold text-ink-mute shrink-0">${it.jenis}</span>
+                        </li>`).join('')
+                    : `<li class="px-4 py-4 text-sm text-ink-soft">Tidak ada materi untuk "${input.value.replace(/</g, '&lt;')}". Coba kata lain, misalnya "suhu" atau "katalis".</li>`;
+                list.classList.remove('hidden');
+                input.setAttribute('aria-expanded', 'true');
+                input.setAttribute('aria-activedescendant', aktif >= 0 ? 'hasil-' + aktif : '');
+            }
+
+            function tutup() {
+                list.classList.add('hidden');
+                input.setAttribute('aria-expanded', 'false');
+                input.removeAttribute('aria-activedescendant');
+            }
+
+            function pilih(i) {
+                const it = hasil[i];
+                if (!it) return;
+                it.id ? bukaMateri(it.url, it.id) : (window.location.href = it.url);
+            }
+
+            function tandai() {
+                list.querySelectorAll('.search-item').forEach((el, i) => el.setAttribute('aria-selected', i === aktif));
+                input.setAttribute('aria-activedescendant', 'hasil-' + aktif);
+                document.getElementById('hasil-' + aktif)?.scrollIntoView({ block: 'nearest' });
+            }
+
+            input.addEventListener('input', tampil);
+            input.addEventListener('focus', () => input.value && tampil());
+            input.addEventListener('keydown', e => {
+                if (e.key === 'ArrowDown' && hasil.length) { e.preventDefault(); aktif = (aktif + 1) % hasil.length; tandai(); }
+                else if (e.key === 'ArrowUp' && hasil.length) { e.preventDefault(); aktif = (aktif - 1 + hasil.length) % hasil.length; tandai(); }
+                else if (e.key === 'Enter' && aktif >= 0) { e.preventDefault(); pilih(aktif); }
+                else if (e.key === 'Escape') { tutup(); }
+            });
+            list.addEventListener('mousedown', e => {
+                const li = e.target.closest('[data-i]');
+                if (li) { e.preventDefault(); pilih(+li.dataset.i); }
+            });
+            document.addEventListener('click', e => {
+                if (!document.getElementById('search-wrap').contains(e.target)) tutup();
+            });
+            // Tekan "/" untuk langsung mencari
+            document.addEventListener('keydown', e => {
+                if (e.key === '/' && document.activeElement.tagName !== 'INPUT') { e.preventDefault(); input.focus(); }
+            });
+        }
+
+        /* =========================================================
+           4. MENU MOBILE
+           ========================================================= */
+        function initMenu() {
+            const btn = document.getElementById('menu-btn');
+            const menu = document.getElementById('menu-mobile');
+            const icon = document.getElementById('menu-icon');
+            btn.addEventListener('click', () => {
+                const buka = menu.classList.toggle('hidden') === false;
+                btn.setAttribute('aria-expanded', buka);
+                btn.setAttribute('aria-label', buka ? 'Tutup menu' : 'Buka menu');
+                icon.innerHTML = buka ? '<path d="M6 6l12 12M18 6 6 18"/>' : '<path d="M4 7h16M4 12h16M4 17h16"/>';
+            });
+            menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+                menu.classList.add('hidden'); btn.setAttribute('aria-expanded', 'false');
+                icon.innerHTML = '<path d="M4 7h16M4 12h16M4 17h16"/>';
+            }));
+        }
+
+        /* =========================================================
+           5. SIMULASI TUMBUKAN PARTIKEL (A + B → C)
+           Model sederhana: tumbukan efektif jika kecepatan relatif
+           sepanjang garis tumbukan melebihi ambang "energi aktivasi".
+           ========================================================= */
+        function initSimulasi() {
+            const cv = document.getElementById('sim-canvas');
+            const ctx = cv.getContext('2d');
+            const ch = document.getElementById('sim-chart');
+            const cctx = ch.getContext('2d');
+            const el = id => document.getElementById(id);
+
+            const WARNA = { A: '#38bdf8', B: '#0f2a44', C: '#f59e0b' };
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            let W = 0, H = 0, dpr = 1, k = 1;       // ukuran kanvas & faktor skala
+            let partikel = [], kilat = [];
+            let suhu = 30, jumlah = 16, katalis = false;
+            let t = 0, tumbukan = 0, efektif = 0, selesai = false, tParuh = null;
+            const BATAS_WAKTU = 40;                                 // detik simulasi maksimum
+            let seri = [], seriLalu = null;
+            let jalan = !reduceMotion, terlihat = true, last = 0;
+
+            const skalaSuhu = T => 1 + (T - 20) / 40;              // 20 °C → 1×, 80 °C → 2,5×
+            const ambang = () => (katalis ? 45 : 80) * k;            // ambang energi aktivasi (px/s)
+            const fmt = n => n.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+            // Konsentrasi ditampilkan dalam molar (M); di kanvas, 1 partikel ≈ 0,025 M
+            const molar = n => (n / 40).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' M';
+
+            function ukur() {
+                const r = cv.getBoundingClientRect();
+                const Wlama = W, Hlama = H;
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                W = r.width; H = r.height; k = W / 480;
+                cv.width = W * dpr; cv.height = H * dpr;
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                // Saat ukuran berubah, posisi DAN kecepatan ikut diskalakan agar hasil tetap konsisten
+                if (Wlama && Hlama && W) partikel.forEach(p => {
+                    p.x *= W / Wlama; p.y *= H / Hlama;
+                    p.vx *= W / Wlama; p.vy *= W / Wlama;
+                    p.r = 6.5 * Math.max(k, .75);
+                });
+
+                const rc = ch.getBoundingClientRect();
+                ch.width = rc.width * dpr; ch.height = rc.height * dpr;
+                cctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                gambarGrafik();
+                if (!jalan) gambar();
+            }
+
+            function buatPartikel() {
+                partikel = []; kilat = [];
+                const r = 6.5 * Math.max(k, .75);
+                const v0 = 55 * k * skalaSuhu(suhu);
+                ['A', 'B'].forEach(tipe => {
+                    for (let i = 0; i < jumlah; i++) {
+                        let x, y, coba = 0;
+                        do {
+                            x = r + Math.random() * (W - 2 * r);
+                            y = r + Math.random() * (H - 2 * r);
+                            coba++;
+                        } while (coba < 40 && partikel.some(p => Math.hypot(p.x - x, p.y - y) < 2.4 * r));
+                        const sudut = Math.random() * Math.PI * 2;
+                        const s = 0.4 + Math.random() * 1.2;        // sebaran kecepatan (mirip distribusi Maxwell)
+                        partikel.push({ x, y, vx: Math.cos(sudut) * v0 * s, vy: Math.sin(sudut) * v0 * s, r, tipe, hidup: true });
+                    }
+                });
+            }
+
+            function ulang() {
+                if (seri.length > 2) seriLalu = seri.slice();
+                t = 0; tumbukan = 0; efektif = 0; selesai = false; tParuh = null; seri = [{ t: 0, f: 1 }];
+                buatPartikel();
+                perbaruiTeks();
+                gambar(); gambarGrafik();
+            }
+
+            function langkah(dt) {
+                t += dt;
+                for (const p of partikel) {
+                    p.x += p.vx * dt; p.y += p.vy * dt;
+                    if (p.x < p.r) { p.x = p.r; p.vx = Math.abs(p.vx); }
+                    if (p.x > W - p.r) { p.x = W - p.r; p.vx = -Math.abs(p.vx); }
+                    if (p.y < p.r) { p.y = p.r; p.vy = Math.abs(p.vy); }
+                    if (p.y > H - p.r) { p.y = H - p.r; p.vy = -Math.abs(p.vy); }
+                }
+
+                const th = ambang();
+                for (let i = 0; i < partikel.length; i++) {
+                    const a = partikel[i]; if (!a.hidup) continue;
+                    for (let j = i + 1; j < partikel.length; j++) {
+                        const b = partikel[j]; if (!b.hidup) continue;
+                        const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy), min = a.r + b.r;
+                        if (d >= min || d === 0) continue;
+                        const nx = dx / d, ny = dy / d;
+                        const vn = (a.vx - b.vx) * nx + (a.vy - b.vy) * ny;   // kecepatan saling mendekat
+                        if (vn <= 0) continue;
+                        tumbukan++;
+
+                        const pasanganAB = (a.tipe === 'A' && b.tipe === 'B') || (a.tipe === 'B' && b.tipe === 'A');
+                        if (pasanganAB && vn > th) {
+                            // Tumbukan efektif → terbentuk C (momentum dipertahankan)
+                            efektif++;
+                            a.tipe = 'C';
+                            a.x = (a.x + b.x) / 2; a.y = (a.y + b.y) / 2;
+                            a.vx = (a.vx + b.vx) / 2; a.vy = (a.vy + b.vy) / 2;
+                            b.hidup = false;
+                            kilat.push({ x: a.x, y: a.y, umur: 0 });
+                        } else {
+                            // Tumbukan lenting (massa sama)
+                            a.vx -= vn * nx; a.vy -= vn * ny;
+                            b.vx += vn * nx; b.vy += vn * ny;
+                            const geser = (min - d) / 2;
+                            a.x -= nx * geser; a.y -= ny * geser;
+                            b.x += nx * geser; b.y += ny * geser;
+                        }
+                    }
+                }
+                partikel = partikel.filter(p => p.hidup);
+                kilat.forEach(f => f.umur += dt);
+                kilat = kilat.filter(f => f.umur < 0.45);
+
+                const sisaA = partikel.filter(p => p.tipe === 'A').length;
+                const akhir = seri[seri.length - 1];
+                if (t - akhir.t >= 0.25) seri.push({ t, f: sisaA / jumlah });
+                if (tParuh === null && sisaA <= jumlah / 2) {
+                    tParuh = t;
+                    el('sim-time').textContent = `${fmt(t)} s`;
+                }
+                if ((sisaA === 0 || t >= BATAS_WAKTU) && !selesai) {
+                    selesai = true; seri.push({ t, f: sisaA / jumlah });
+                    setJalan(false);
+                }
+            }
+
+            function gambar() {
+                ctx.clearRect(0, 0, W, H);
+                for (const f of kilat) {
+                    const u = f.umur / 0.45;
+                    ctx.beginPath();
+                    ctx.arc(f.x, f.y, 8 * k + u * 20 * k, 0, Math.PI * 2);
+                    ctx.strokeStyle = `rgba(245,158,11,${1 - u})`;
+                    ctx.lineWidth = 2.5; ctx.stroke();
+                }
+                for (const p of partikel) {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r * (p.tipe === 'C' ? 1.25 : 1), 0, Math.PI * 2);
+                    ctx.fillStyle = WARNA[p.tipe]; ctx.fill();
+                    if (tandai && p.tipe !== 'C' && (p.vx * p.vx + p.vy * p.vy) >= vEa() ** 2) {
+                        ctx.beginPath(); ctx.arc(p.x, p.y, p.r + 3 * Math.max(k, .75), 0, Math.PI * 2);
+                        ctx.strokeStyle = 'rgba(234, 88, 12, .9)'; ctx.lineWidth = 2; ctx.stroke();
+                    }
+                }
+            }
+
+            function gambarGrafik() {
+                const w = ch.width / dpr, h = ch.height / dpr;
+                if (!w) return;
+                cctx.clearRect(0, 0, w, h);
+                const pad = { l: 26, r: 6, t: 8, b: 16 };
+                const maxT = Math.max(15, ...(seriLalu || []).map(p => p.t), ...seri.map(p => p.t));
+                const X = tt => pad.l + tt / maxT * (w - pad.l - pad.r);
+                const Y = f => pad.t + (1 - f) * (h - pad.t - pad.b);
+
+                cctx.strokeStyle = '#dbe4ee'; cctx.lineWidth = 1;
+                cctx.beginPath(); cctx.moveTo(pad.l, pad.t); cctx.lineTo(pad.l, h - pad.b); cctx.lineTo(w - pad.r, h - pad.b); cctx.stroke();
+                cctx.fillStyle = '#6b7f94'; cctx.font = '600 10px "Plus Jakarta Sans", sans-serif';
+                cctx.fillText('[A]', 2, pad.t + 8);
+                cctx.fillText('waktu', w - pad.r - 30, h - 3);
+
+                const garis = (data, warna, putus) => {
+                    if (!data || data.length < 2) return;
+                    cctx.beginPath(); cctx.setLineDash(putus ? [4, 4] : []);
+                    data.forEach((p, i) => i ? cctx.lineTo(X(p.t), Y(p.f)) : cctx.moveTo(X(p.t), Y(p.f)));
+                    cctx.strokeStyle = warna; cctx.lineWidth = putus ? 1.8 : 2.5; cctx.stroke();
+                    cctx.setLineDash([]);
+                };
+                garis(seriLalu, '#94a3b8', true);
+                garis(seri, '#0284c7', false);
+            }
+
+            function perbaruiTeks() {
+                el('sim-eff').textContent = `${efektif} dari ${tumbukan}`;
+                if (tParuh === null) el('sim-time').textContent = `${fmt(t)} s`;
+            }
+
+
+            /* ---- Konsep: sebaran energi partikel & penjelasan "mengapa" ----
+               Selaras dengan halaman Faktor Penentu Laju: partikel bertanda oranye
+               berenergi ≥ Ea (perkiraan), suhu menggeser sebaran ke kanan,
+               katalis menggeser garis Ea ke kiri. */
+            const ce = document.getElementById('sim-energi');
+            const ectx = ce.getContext('2d');
+            let tandai = el('sim-mark').checked, jedaKonsep = 0;
+            const vEa = () => ambang() / Math.SQRT2;
+            const E_REF = () => (80 * k / Math.SQRT2) ** 2;
+            function ukurEnergi() {
+                const r = ce.getBoundingClientRect();
+                if (!r.width) return;
+                ce.width = r.width * dpr; ce.height = r.height * dpr;
+                ectx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                gambarEnergi();
+            }
+            function gambarEnergi() {
+                const w = ce.width / dpr, h = ce.height / dpr;
+                const reaktan = partikel.filter(p => p.tipe !== 'C');
+                const eRef = E_REF(), xMax = 3, nBin = 24, ea = vEa() ** 2 / eRef;
+                const bin = new Array(nBin).fill(0);
+                let atas = 0;
+                reaktan.forEach(p => {
+                    const e = (p.vx * p.vx + p.vy * p.vy) / eRef;
+                    if (e >= ea) atas++;
+                    bin[Math.min(nBin - 1, Math.floor(e / xMax * nBin))]++;
+                });
+                const pct = reaktan.length ? Math.round(atas / reaktan.length * 100) : 0;
+                el('sim-fraksi').textContent = `${pct}% ≥ Ea`;
+                if (!w) return pct;
+                ectx.clearRect(0, 0, w, h);
+                const pad = { l: 6, r: 6, t: 14, b: 16 }, bw = (w - pad.l - pad.r) / nBin, mx = Math.max(3, ...bin);
+                bin.forEach((n, i) => {
+                    const bh = n / mx * (h - pad.t - pad.b), tengah = (i + .5) / nBin * xMax;
+                    ectx.fillStyle = tengah >= ea ? '#f59e0b' : '#7dd3fc';
+                    ectx.fillRect(pad.l + i * bw + 1, h - pad.b - bh, Math.max(1, bw - 2), bh);
+                });
+                ectx.strokeStyle = '#dbe4ee'; ectx.lineWidth = 1;
+                ectx.beginPath(); ectx.moveTo(pad.l, h - pad.b); ectx.lineTo(w - pad.r, h - pad.b); ectx.stroke();
+                const xEa = pad.l + Math.min(ea, xMax) / xMax * (w - pad.l - pad.r);
+                ectx.setLineDash([4, 3]); ectx.strokeStyle = '#0f2a44'; ectx.lineWidth = 1.5;
+                ectx.beginPath(); ectx.moveTo(xEa, pad.t - 4); ectx.lineTo(xEa, h - pad.b); ectx.stroke(); ectx.setLineDash([]);
+                ectx.fillStyle = '#0f2a44'; ectx.font = '800 10px "Plus Jakarta Sans", sans-serif'; ectx.textBaseline = 'top';
+                ectx.textAlign = xEa > w - 70 ? 'right' : 'left';
+                ectx.fillText(katalis ? 'Ea (dengan katalis)' : 'Ea', xEa + (xEa > w - 70 ? -4 : 4), 1);
+                ectx.fillStyle = '#6b7f94'; ectx.font = '600 10px "Plus Jakarta Sans", sans-serif'; ectx.textAlign = 'right';
+                ectx.fillText('energi kinetik →', w - pad.r, h - 12);
+                return pct;
+            }
+            function perbaruiKonsep() {
+                const pct = gambarEnergi();
+                const persen = tumbukan ? Math.round(efektif / tumbukan * 100) : 0;
+                const butir = [
+                    ['#ef4444', suhu >= 60 ? `<b>Suhu ${suhu} °C:</b> partikel bergerak cepat, tumbukan makin sering dan makin banyak partikel berenergi ≥ Ea.`
+                        : suhu <= 35 ? `<b>Suhu ${suhu} °C:</b> partikel bergerak relatif lambat. Naikkan suhu, batang oranye (energi ≥ Ea) akan bertambah.`
+                            : `<b>Suhu ${suhu} °C:</b> gerak partikel sedang. Naikkan suhu untuk menggeser sebaran energi ke kanan.`],
+                    ['#2563eb', jumlah >= 22 ? `<b>Konsentrasi tinggi (${molar(jumlah)}):</b> partikel lebih rapat, sehingga lebih sering bertumbukan.`
+                        : jumlah <= 10 ? `<b>Konsentrasi rendah (${molar(jumlah)}):</b> partikel berjauhan, tumbukan jarang terjadi.`
+                            : `<b>Konsentrasi ${molar(jumlah)}:</b> naikkan konsentrasi agar tumbukan lebih sering.`],
+                    ['#7c3aed', katalis ? '<b>Dengan katalis:</b> Ea lebih rendah (garis Ea bergeser ke kiri), sehingga lebih banyak tumbukan yang efektif.'
+                        : '<b>Tanpa katalis:</b> hanya tumbukan berenergi tinggi yang menghasilkan C.'],
+                    ['#f59e0b', `<b>${persen}% tumbukan efektif</b> sejauh ini; ${pct}% partikel pereaksi berenergi ≥ Ea.`]
+                ];
+                el('sim-why').innerHTML = butir.map(([c, t]) => `<li><i style="background:${c}"></i><span>${t}</span></li>`).join('');
+            }
+            function konsepTick(dt) { jedaKonsep += dt; if (jedaKonsep > 0.3) { jedaKonsep = 0; perbaruiKonsep(); } }
+            el('sim-mark').addEventListener('change', e => { tandai = e.target.checked; gambar(); });
+            ['sim-temp', 'sim-conc', 'sim-cat', 'sim-reset', 'sim-play'].forEach(id => {
+                el(id).addEventListener(id.includes('sim-temp') || id.includes('sim-conc') ? 'input' : (id === 'sim-cat' ? 'change' : 'click'), () => setTimeout(perbaruiKonsep));
+            });
+            el('sim-conc').addEventListener('change', () => setTimeout(perbaruiKonsep));
+            new ResizeObserver(ukurEnergi).observe(ce);
+
+            function loop(ts) {
+                const dt = Math.min((ts - last) / 1000, 1 / 30);
+                last = ts;
+                if (jalan && terlihat && !selesai) {
+                    // beberapa sub-langkah agar tumbukan cepat tidak "tembus"
+                    const sub = 3;
+                    for (let i = 0; i < sub; i++) langkah(dt / sub);
+                    gambar(); gambarGrafik(); perbaruiTeks(); konsepTick(dt);
+                } else if (selesai && kilat.length) {
+                    kilat.forEach(f => f.umur += dt); kilat = kilat.filter(f => f.umur < 0.45); gambar();
+                }
+                requestAnimationFrame(loop);
+            }
+
+            function setJalan(v) {
+                jalan = v;
+                el('sim-play').textContent = jalan ? 'Jeda' : 'Jalankan';
+            }
+
+            // --- Kontrol ---
+            el('sim-play').addEventListener('click', () => {
+                if (selesai) { ulang(); setJalan(true); return; }
+                setJalan(!jalan);
+            });
+            el('sim-reset').addEventListener('click', () => { ulang(); setJalan(true); });
+
+            el('sim-temp').addEventListener('input', e => {
+                const lama = skalaSuhu(suhu);
+                suhu = +e.target.value;
+                const f = skalaSuhu(suhu) / lama;
+                partikel.forEach(p => { p.vx *= f; p.vy *= f; });
+                el('sim-temp-out').textContent = `${suhu} °C`;
+            });
+            el('sim-conc').addEventListener('input', e => {
+                jumlah = +e.target.value;
+                el('sim-conc-out').textContent = molar(jumlah);
+                e.target.setAttribute('aria-valuetext', molar(jumlah));
+            });
+            // Konsentrasi baru berlaku saat percobaan diulang agar grafik tetap adil
+            el('sim-conc').addEventListener('change', () => { ulang(); setJalan(true); });
+            el('sim-cat').addEventListener('change', e => { katalis = e.target.checked; });
+
+            // Hentikan animasi saat simulasi tidak terlihat (hemat baterai)
+            new IntersectionObserver(([en]) => { terlihat = en.isIntersecting; }).observe(cv);
+            new ResizeObserver(ukur).observe(cv);
+
+            ukur();
+            ulang();
+            perbaruiKonsep();
+            setJalan(!reduceMotion);
+            requestAnimationFrame(ts => { last = ts; requestAnimationFrame(loop); });
+        }
+
+        /* ========================================================= */
+        document.getElementById('tahun').textContent = new Date().getFullYear();
+        renderMateri();
+        renderProgres();
+        renderPertemuan();
+        initLatarHero();
+        initSearch();
+        initMenu();
+        initSimulasi();
+        initUserSession();
+        initSRLTimer();
+        // Perbarui progres saat kembali dari halaman materi (tombol "back")
+        window.addEventListener('pageshow', () => { renderMateri(); renderProgres(); renderPertemuan(); });
+
+        /* =========================================================
+           6. SESSION USER — baca localStorage dan tampilkan nama
+           ========================================================= */
+        function initUserSession() {
+            let session = null;
+            try { session = JSON.parse(localStorage.getItem('activeSession')); } catch (e) { }
+
+            const navLoginBtn = document.getElementById('nav-login-btn');
+            const navUserWrap = document.getElementById('nav-user-wrap');
+            const navUserBtn = document.getElementById('nav-user-btn');
+            const navDropdown = document.getElementById('nav-dropdown');
+            const navAvatar = document.getElementById('nav-avatar');
+            const navUsername = document.getElementById('nav-username');
+            const ddName = document.getElementById('dd-name');
+            const ddRole = document.getElementById('dd-role');
+            const greetingBadge = document.getElementById('greeting-badge');
+            const greetingAvatar = document.getElementById('greeting-avatar');
+            const greetingText = document.getElementById('greeting-text');
+            const mobileLoginLi = document.getElementById('mobile-login-li');
+            const mobileLogoutLi = document.getElementById('mobile-logout-li');
+
+            function getInitial(name) {
+                if (!name) return '?';
+                const parts = name.trim().split(' ');
+                return parts.length >= 2
+                    ? (parts[0][0] + parts[1][0]).toUpperCase()
+                    : parts[0][0].toUpperCase();
+            }
+
+            function renderAvatar(el, name, photoURL) {
+                if (photoURL) {
+                    const img = document.createElement('img');
+                    img.src = photoURL;
+                    img.alt = name;
+                    el.appendChild(img);
+                } else {
+                    el.textContent = getInitial(name);
+                }
+            }
+
+            function getGreeting() {
+                const h = new Date().getHours();
+                if (h < 11) return 'Selamat pagi';
+                if (h < 15) return 'Selamat siang';
+                if (h < 18) return 'Selamat sore';
+                return 'Selamat malam';
+            }
+
+            if (session && session.name) {
+                const firstName = session.name.split(' ')[0];
+
+                // --- Navbar ---
+                navLoginBtn.classList.add('hidden');
+                navUserWrap.classList.remove('hidden');
+                renderAvatar(navAvatar, session.name, session.photoURL);
+                navUsername.textContent = firstName;
+                ddName.textContent = session.name;
+                ddRole.textContent = session.role || 'Peneliti Pemula';
+
+                // --- Hero Greeting ---
+                renderAvatar(greetingAvatar, session.name, session.photoURL);
+                greetingText.textContent = getGreeting() + ', ' + firstName + '! 👋';
+                greetingBadge.classList.add('show');
+
+                // --- Mobile ---
+                mobileLoginLi.classList.add('hidden');
+                mobileLogoutLi.classList.remove('hidden');
+            }
+
+            // Dropdown toggle
+            navUserBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const open = navDropdown.classList.toggle('open');
+                navUserBtn.setAttribute('aria-expanded', open);
+            });
+            document.addEventListener('click', () => {
+                navDropdown.classList.remove('open');
+                navUserBtn.setAttribute('aria-expanded', 'false');
+            });
+
+            // Logout
+            function doLogout() {
+                if (!confirm('Yakin ingin keluar dari akun ' + (session?.name || '') + '?')) return;
+                localStorage.removeItem('activeSession');
+                localStorage.removeItem('srl_today_date');
+                localStorage.removeItem('srl_today_seconds');
+                window.location.href = 'loging.html';
+            }
+            document.getElementById('btn-logout').addEventListener('click', doLogout);
+            document.getElementById('mobile-btn-logout').addEventListener('click', doLogout);
+        }
+
+        /* =========================================================
+           7. SRL TIMER — Jam Belajar Self-Regulated Learning
+              Menyimpan ke localStorage (sesi + total) dan Firebase
+           ========================================================= */
+        function initSRLTimer() {
+            let session = null;
+            try { session = JSON.parse(localStorage.getItem('activeSession')); } catch (e) { }
+
+            // Hanya tampilkan jika sudah login
+            if (!session || !session.uid) return;
+
+            const widget = document.getElementById('srl-widget');
+            const srlCard = document.getElementById('srl-card');
+            const displayEl = document.getElementById('srl-display');
+            const dotEl = document.getElementById('srl-dot');
+            const pauseBtn = document.getElementById('srl-pause-btn');
+            const toggleBtn = document.getElementById('srl-toggle');
+            const todayEl = document.getElementById('srl-today');
+            const totalEl = document.getElementById('srl-total');
+            const progressFill = document.getElementById('srl-progress-fill');
+            const targetPct = document.getElementById('srl-target-pct');
+
+            const TARGET_HARIAN_DETIK = 60 * 60; // target 1 jam / hari
+            const SYNC_INTERVAL_MS = 30000;    // sync ke Firebase setiap 30 detik
+
+            // ── localStorage helpers ──
+            function getTodayKey() {
+                const d = new Date();
+                return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+            }
+
+            function loadStoredData() {
+                const today = getTodayKey();
+                const storedDate = localStorage.getItem('srl_today_date');
+                const todaySec = storedDate === today ? (parseInt(localStorage.getItem('srl_today_seconds')) || 0) : 0;
+                const totalSec = parseInt(localStorage.getItem('srl_total_seconds')) || 0;
+                return { todaySec, totalSec };
+            }
+
+            function saveStoredData(todaySec, totalSec) {
+                localStorage.setItem('srl_today_date', getTodayKey());
+                localStorage.setItem('srl_today_seconds', todaySec);
+                localStorage.setItem('srl_total_seconds', totalSec);
+            }
+
+            // ── Format helpers ──
+            function fmtHHMMSS(sec) {
+                const h = Math.floor(sec / 3600);
+                const m = Math.floor((sec % 3600) / 60);
+                const s = sec % 60;
+                return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+            }
+
+            function fmtShort(sec) {
+                const h = Math.floor(sec / 3600);
+                const m = Math.floor((sec % 3600) / 60);
+                return h > 0 ? h + 'j ' + m + 'm' : m + 'm';
+            }
+
+            // ── State ──
+            let { todaySec, totalSec } = loadStoredData();
+            let sessionSec = 0;
+            let isRunning = true;
+            let cardOpen = true;
+            let lastSyncTotal = totalSec;
+
+            // ── Render UI ──
+            function render() {
+                displayEl.textContent = fmtHHMMSS(sessionSec);
+                const pct = Math.min(100, Math.round(todaySec / TARGET_HARIAN_DETIK * 100));
+                progressFill.style.width = pct + '%';
+                targetPct.textContent = pct + '%';
+                todayEl.textContent = fmtShort(todaySec);
+                const totalJam = Math.floor(totalSec / 3600);
+                totalEl.textContent = totalJam < 1 ? fmtShort(totalSec) : totalJam + 'j';
+            }
+
+            // ── Tick every second ──
+            // ── Deteksi aktif: waktu hanya dihitung saat tab terlihat dan siswa aktif ──
+            // (mencegah hitungan ganda ketika siswa belajar di tab lain, mis. Lab Virtual)
+            const BATAS_DIAM_MS = 3 * 60 * 1000;
+            const statusEl = document.getElementById('srl-status');
+            let terakhirAktif = Date.now();
+            ['pointermove', 'pointerdown', 'keydown', 'scroll', 'touchstart', 'wheel'].forEach(ev =>
+                window.addEventListener(ev, () => { terakhirAktif = Date.now(); }, { passive: true }));
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') terakhirAktif = Date.now();
+            });
+            function sedangAktif() {
+                return document.visibilityState === 'visible' && Date.now() - terakhirAktif < BATAS_DIAM_MS;
+            }
+            let statusTerakhir = '';
+            function tampilStatus() {
+                const st = !isRunning ? 'jeda' : sedangAktif() ? 'jalan' : 'diam';
+                if (st === statusTerakhir) return;
+                statusTerakhir = st;
+                dotEl.classList.toggle('paused', st !== 'jalan');
+                statusEl.textContent = st === 'jalan' ? 'Sesi ini' : st === 'jeda' ? 'Sesi ini (dijeda)' : 'Dijeda otomatis: tidak aktif';
+            }
+
+            const ticker = setInterval(() => {
+                tampilStatus();
+                if (!isRunning || !sedangAktif()) return;
+                sessionSec++;
+                todaySec++;
+                totalSec++;
+                saveStoredData(todaySec, totalSec);
+                render();
+            }, 1000);
+
+            render();
+            widget.classList.add('show');
+
+            // ── Firebase sync (setiap 30 detik) ──
+            let firebaseAuth = null, firebaseDB = null;
+
+            async function setupFirebase() {
+                try {
+                    const { initializeApp, getApps } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+                    const { getAuth, onAuthStateChanged } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
+                    const { getDatabase, ref, update, get, increment } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+
+                    const cfg = {
+                        apiKey: 'AIzaSyA_YUPPq0CZgNi5McaTx3-a8LOGW70zIzg',
+                        authDomain: 'starararrara.firebaseapp.com',
+                        databaseURL: 'https://starararrara-default-rtdb.asia-southeast1.firebasedatabase.app',
+                        projectId: 'starararrara',
+                        storageBucket: 'starararrara.firebasestorage.app',
+                        messagingSenderId: '1085300087665',
+                        appId: '1:1085300087665:web:375eae85042f14ffa7f4d0'
+                    };
+
+                    const fbApp = getApps().length ? getApps()[0] : initializeApp(cfg);
+                    firebaseAuth = getAuth(fbApp);
+                    firebaseDB = { getDatabase, ref, update, get, increment, db: getDatabase(fbApp) };
+
+                    // Load total jam dari Firebase (jika lebih besar dari localStorage)
+                    onAuthStateChanged(firebaseAuth, async (user) => {
+                        if (!user) return;
+                        try {
+                            const snap = await get(ref(firebaseDB.db, 'progres_siswa/' + user.uid + '/jamBelajarDetik'));
+                            if (snap.exists()) {
+                                const fbTotal = snap.val();
+                                if (fbTotal > totalSec) {
+                                    totalSec = fbTotal;
+                                    lastSyncTotal = fbTotal;
+                                    saveStoredData(todaySec, totalSec);
+                                    render();
+                                }
+                            }
+                        } catch (e) { console.warn('SRL: gagal baca Firebase', e); }
+                    });
+
+                } catch (e) { console.warn('SRL: Firebase init gagal', e); }
+            }
+
+            async function syncToFirebase() {
+                if (!firebaseDB || !firebaseAuth?.currentUser) return;
+                const delta = totalSec - lastSyncTotal;
+                if (delta <= 0) return;
+                try {
+                    const { ref, update, db } = firebaseDB;
+                    const uid = firebaseAuth.currentUser.uid;
+                    await update(ref(db, 'progres_siswa/' + uid), {
+                        jamBelajarDetik: totalSec,
+                        terakhirAktif: Date.now()
+                    });
+                    // Catatan jam belajar per hari (dipakai grafik di bagian Prestasi)
+                    await update(ref(db, 'belajarHarian/' + uid), { [getTodayKey()]: firebaseDB.increment(delta) });
+                    lastSyncTotal = totalSec;
+                } catch (e) { console.warn('SRL sync error:', e); }
+            }
+
+            setupFirebase();
+            const syncTimer = setInterval(syncToFirebase, SYNC_INTERVAL_MS);
+
+            // Sync saat tab ditutup / pindah halaman
+            window.addEventListener('beforeunload', () => {
+                saveStoredData(todaySec, totalSec);
+                syncToFirebase();
+            });
+
+            // ── Kontrol pause ──
+            pauseBtn.addEventListener('click', () => {
+                isRunning = !isRunning;
+                pauseBtn.textContent = isRunning ? 'Jeda' : 'Lanjut';
+                terakhirAktif = Date.now();
+                tampilStatus();
+            });
+
+            // ── Toggle tampilan card ──
+            toggleBtn.addEventListener('click', () => {
+                cardOpen = !cardOpen;
+                srlCard.style.display = cardOpen ? 'block' : 'none';
+            });
+        }
+    </script>
+</body>
+
+</html>

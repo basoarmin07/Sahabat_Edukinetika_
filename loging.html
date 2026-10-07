@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Masuk - EduKinetika Virtual Lab</title>
+    <meta name="description"
+        content="Masuk ke EduKinetika - Platform laboratorium virtual kimia terdepan untuk pembelajaran laju reaksi dan kinetika kimia interaktif.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --brand-dark: #012a38;
+            --brand-teal: #0d6e78;
+            --brand-teal-light: #14b8a6;
+            --brand-orange: #f97316;
+            --bg-deep: #010f14;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-deep);
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* ANIMATED BACKGROUND */
+        .bg-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(13, 110, 120, 0.35) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 60% at 80% 80%, rgba(20, 184, 166, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 50% at 20% 70%, rgba(249, 115, 22, 0.08) 0%, transparent 50%),
+                linear-gradient(135deg, #010f14 0%, #012030 50%, #010f14 100%);
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            pointer-events: none;
+            z-index: 0;
+            animation: floatOrb 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(13, 110, 120, 0.4), transparent 70%);
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb-2 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(20, 184, 166, 0.25), transparent 70%);
+            bottom: -50px;
+            right: -50px;
+            animation-delay: -7s;
+        }
+
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(249, 115, 22, 0.15), transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -14s;
+        }
+
+        @keyframes floatOrb {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
+        }
+
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image: linear-gradient(rgba(20, 184, 166, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(20, 184, 166, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(20, 184, 166, 0.6);
+            border-radius: 50%;
+            animation: particleFloat linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100px) translateX(var(--dx, 0));
+                opacity: 0;
+            }
+        }
+
+        /* LAYOUT */
+        .page-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+        }
+
+        .login-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+            max-width: 960px;
+            min-height: 580px;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.07), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            animation: cardReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes cardReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(40px) scale(0.97);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* LEFT PANEL */
+        .left-panel {
+            background: linear-gradient(145deg, #012a38 0%, #013d50 40%, #015265 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 52px 44px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='rgba(20,184,166,0.06)' stroke-width='1'%3E%3Ccircle cx='200' cy='200' r='150'/%3E%3Ccircle cx='200' cy='200' r='100'/%3E%3Ccircle cx='200' cy='200' r='50'/%3E%3Cline x1='50' y1='200' x2='350' y2='200'/%3E%3Cline x1='200' y1='50' x2='200' y2='350'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
+            opacity: 0.5;
+            top: -30%;
+            right: -30%;
+            width: 80%;
+            height: 80%;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.3), rgba(13, 110, 120, 0.5));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(20, 184, 166, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .logo-text h1 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+        }
+
+        .logo-text span {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: rgba(20, 184, 166, 0.8);
+            font-weight: 600;
+        }
+
+        .left-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .left-content h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.2;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+        }
+
+        .left-content h2 span {
+            background: linear-gradient(90deg, #5eead4, #14b8a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .left-content p {
+            font-size: 0.82rem;
+            color: rgba(180, 220, 225, 0.7);
+            line-height: 1.7;
+            max-width: 280px;
+        }
+
+        .feature-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(20, 184, 166, 0.12);
+            border: 1px solid rgba(20, 184, 166, 0.2);
+            border-radius: 100px;
+            font-size: 0.7rem;
+            color: rgba(20, 184, 166, 0.9);
+            font-weight: 600;
+        }
+
+        .pill svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-number {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            color: rgba(180, 220, 225, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .stat-divider {
+            width: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            align-self: stretch;
+        }
+
+        /* RIGHT PANEL */
+        .right-panel {
+            background: #fff;
+            padding: 48px 44px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .right-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #0d6e78, #14b8a6, #f97316);
+        }
+
+        /* Role Switcher */
+        .role-switcher {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 14px;
+            padding: 4px;
+            margin-bottom: 28px;
+            gap: 4px;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: #94a3b8;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .role-btn.active {
+            background: #fff;
+            color: #012a38;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transform: scale(1.02);
+        }
+
+        .form-header {
+            margin-bottom: 28px;
+        }
+
+        .form-header h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .form-header p {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        /* Google Button - PRIMARY */
+        .btn-google {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 20px;
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #1e293b;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .btn-google::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #f8faff, #f0f4ff);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .btn-google:hover {
+            border-color: #4285F4;
+            box-shadow: 0 4px 20px rgba(66, 133, 244, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .btn-google:hover::before {
+            opacity: 1;
+        }
+
+        .btn-google:active {
+            transform: translateY(0);
+        }
+
+        .btn-google span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-google .google-icon {
+            position: relative;
+            z-index: 1;
+        }
+
+        .google-badge {
+            position: absolute;
+            top: -1px;
+            right: 12px;
+            font-size: 0.55rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #4285F4;
+            background: #eff6ff;
+            padding: 2px 6px;
+            border-radius: 0 0 6px 6px;
+            border: 1px solid #dbeafe;
+            border-top: none;
+        }
+
+        .google-pulse {
+            position: absolute;
+            inset: -2px;
+            border-radius: 16px;
+            border: 2px solid rgba(66, 133, 244, 0.4);
+            animation: pulsing 2s ease-in-out infinite;
+        }
+
+        @keyframes pulsing {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.02);
+            }
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .divider span {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* Form Fields */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .form-input-wrap {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            color: #0f172a;
+            background: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #0d6e78;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(13, 110, 120, 0.08);
+        }
+
+        .form-input::placeholder {
+            color: #94a3b8;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            width: 16px;
+            height: 16px;
+            pointer-events: none;
+        }
+
+        #login-password {
+            padding-right: 46px;
+        }
+
+        .input-icon.right {
+            left: auto;
+            right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            pointer-events: all;
+            transition: color 0.2s;
+        }
+
+        .input-icon.right:hover {
+            color: #0d6e78;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .forgot-link {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #0d6e78;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: color 0.2s;
+            padding: 0;
+        }
+
+        .forgot-link:hover {
+            color: #012a38;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #0d6e78, #014d58);
+            border: none;
+            border-radius: 14px;
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(13, 110, 120, 0.4);
+            margin-top: 4px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(13, 110, 120, 0.5);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Error / Success */
+        .error-msg {
+            display: none;
+            padding: 12px 16px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            color: #b91c1c;
+            font-weight: 500;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .error-msg.show {
+            display: block;
+            animation: slideDown 0.2s ease;
+        }
+
+        .success-toast {
+            display: none;
+            padding: 12px 16px;
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            color: #15803d;
+            font-weight: 500;
+            margin-bottom: 16px;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .success-toast.show {
+            display: flex;
+            animation: slideDown 0.2s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .register-link {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 20px;
+        }
+
+        .register-link button {
+            background: none;
+            border: none;
+            color: #0d6e78;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            transition: color 0.2s;
+            padding: 0;
+        }
+
+        .register-link button:hover {
+            color: #012a38;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(1, 15, 20, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-card {
+            background: #fff;
+            border-radius: 24px;
+            max-width: 420px;
+            width: 100%;
+            padding: 36px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            animation: modalReveal 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #0d6e78, #14b8a6, #f97316);
+        }
+
+        @keyframes modalReveal {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 28px;
+        }
+
+        .modal-header h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.3px;
+        }
+
+        .modal-header p {
+            font-size: 0.72rem;
+            color: #64748b;
+            margin-top: 3px;
+        }
+
+        .modal-close {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: none;
+            background: #f1f5f9;
+            color: #64748b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .modal-close:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-google-modal {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #1e293b;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+        }
+
+        .btn-google-modal:hover {
+            border-color: #4285F4;
+            box-shadow: 0 4px 16px rgba(66, 133, 244, 0.2);
+        }
+
+        .btn-modal-submit {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #0d6e78, #014d58);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 16px rgba(13, 110, 120, 0.35);
+            margin-top: 4px;
+        }
+
+        .btn-modal-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(13, 110, 120, 0.4);
+        }
+
+        .btn-modal-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ============ RESPONSIF ============ */
+
+        /* Tablet: dua kolom masih muat, tetapi lebih rapat */
+        @media (max-width: 900px) {
+            .left-panel {
+                padding: 40px 32px;
+            }
+
+            .right-panel {
+                padding: 40px 32px;
+            }
+
+            .left-content h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* HP & tablet kecil: satu kolom, panel merek jadi ringkas di atas */
+        @media (max-width: 768px) {
+            .login-container {
+                grid-template-columns: 1fr;
+                max-width: 460px;
+                min-height: auto;
+                border-radius: 24px;
+            }
+
+            .left-panel {
+                padding: 28px 28px 26px;
+                justify-content: flex-start;
+                gap: 20px;
+            }
+
+            .left-panel::before {
+                width: 60%;
+                height: 140%;
+                top: -40%;
+                right: -20%;
+            }
+
+            .left-content h2 {
+                font-size: 1.55rem;
+                margin-bottom: 10px;
+            }
+
+            .left-content p {
+                max-width: none;
+            }
+
+            .feature-pills {
+                margin-top: 16px;
+            }
+
+            .stats-row {
+                display: none;
+            }
+
+            .right-panel {
+                padding: 32px 28px;
+            }
+
+            .form-header {
+                margin-bottom: 22px;
+            }
+
+            .role-switcher {
+                margin-bottom: 22px;
+            }
+
+            /* 16px mencegah iPhone melakukan zoom otomatis saat input disentuh */
+            .form-input {
+                font-size: 16px;
+                padding-top: 13px;
+                padding-bottom: 13px;
+            }
+
+            .orb-1 {
+                width: 260px;
+                height: 260px;
+            }
+
+            .orb-2 {
+                width: 220px;
+                height: 220px;
+            }
+
+            .orb-3 {
+                width: 160px;
+                height: 160px;
+            }
+
+            /* Modal pendaftaran menjadi lembar dari bawah */
+            .modal-overlay {
+                align-items: flex-end;
+                padding: 0;
+            }
+
+            .modal-card {
+                max-width: 100%;
+                border-radius: 24px 24px 0 0;
+                max-height: 92vh;
+                max-height: 92dvh;
+                overflow-y: auto;
+                padding: 28px 24px calc(24px + env(safe-area-inset-bottom));
+                animation: sheetUp 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+
+            @keyframes sheetUp {
+                from {
+                    transform: translateY(100%);
+                }
+
+                to {
+                    transform: translateY(0);
+                }
+            }
+        }
+
+        /* HP kecil */
+        @media (max-width: 480px) {
+            .page-wrapper {
+                padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+                align-items: flex-start;
+            }
+
+            .login-container {
+                border-radius: 20px;
+            }
+
+            .left-panel {
+                padding: 22px 20px;
+                gap: 14px;
+            }
+
+            .logo-icon {
+                width: 42px;
+                height: 42px;
+                border-radius: 12px;
+            }
+
+            .left-content h2 {
+                font-size: 1.3rem;
+                letter-spacing: -0.5px;
+                margin-bottom: 0;
+            }
+
+            /* Paragraf panjang disembunyikan agar form cepat terlihat */
+            .left-content p {
+                display: none;
+            }
+
+            .feature-pills {
+                margin-top: 12px;
+                gap: 6px;
+            }
+
+            .pill {
+                font-size: 0.66rem;
+                padding: 5px 10px;
+            }
+
+            .right-panel {
+                padding: 26px 20px 24px;
+            }
+
+            .form-header h2 {
+                font-size: 1.35rem;
+            }
+
+            .role-btn {
+                padding: 10px 8px;
+                font-size: 0.72rem;
+                line-height: 1.3;
+            }
+
+            .btn-google {
+                padding: 16px 14px 14px;
+            }
+
+            .divider span {
+                font-size: 0.62rem;
+                letter-spacing: 1px;
+                text-align: center;
+            }
+
+            .btn-submit {
+                padding: 15px;
+            }
+
+            .modal-card {
+                padding: 24px 18px calc(20px + env(safe-area-inset-bottom));
+            }
+
+            .modal-header {
+                margin-bottom: 20px;
+            }
+        }
+
+        /* HP sangat sempit (≤ 360px) */
+        @media (max-width: 360px) {
+            .feature-pills .pill:nth-child(3) {
+                display: none;
+            }
+
+            .role-btn {
+                font-size: 0.68rem;
+                padding: 9px 6px;
+            }
+
+            .google-badge {
+                display: none;
+            }
+        }
+
+        /* Laptop dengan layar pendek atau HP diputar mendatar */
+        @media (max-height: 640px) and (min-width: 769px) {
+            .page-wrapper {
+                align-items: flex-start;
+            }
+
+            .login-container {
+                min-height: auto;
+            }
+
+            .left-panel,
+            .right-panel {
+                padding-top: 32px;
+                padding-bottom: 32px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-canvas"></div>
+    <div class="grid-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="particles" id="particles"></div>
+
+    <div class="page-wrapper">
+        <div class="login-container">
+
+            <!-- LEFT PANEL -->
+            <div class="left-panel">
+                <div class="brand-logo">
+                    <div class="logo-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M9 3H4a1 1 0 0 0-1 1v2.5a1 1 0 0 0 1 1h1.5l2 4.5H5a1 1 0 0 0-.94.66L3 15.5V20a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-4.5l-1.06-3.34A1 1 0 0 0 19 11.5h-2.5l2-4.5H20a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-5"
+                                stroke="#14b8a6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M9 3h6" stroke="#14b8a6" stroke-width="1.5" stroke-linecap="round" />
+                            <circle cx="12" cy="16" r="2" stroke="#5eead4" stroke-width="1.5" />
+                            <circle cx="7" cy="16" r="1.5" stroke="rgba(20,184,166,0.6)" stroke-width="1" />
+                            <circle cx="17" cy="16" r="1.5" stroke="rgba(20,184,166,0.6)" stroke-width="1" />
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <h1>EduKinetika</h1>
+                        <span>Laboratorium Virtual</span>
+                    </div>
+                </div>
+
+                <div class="left-content">
+                    <h2>Jelajahi Dunia<br><span>Kinetika Kimia</span><br>Secara Virtual.</h2>
+                    <p>Platform laboratorium virtual interaktif untuk mempelajari laju reaksi, teori tumbukan, dan
+                        simulasi kimia yang mendukung kemandirian belajar Anda.</p>
+                    <div class="feature-pills">
+                        <div class="pill">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                            Aman & Terenkripsi
+                        </div>
+                        <div class="pill">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                            Real-time Progress
+                        </div>
+                        <div class="pill">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                            Simulasi Interaktif
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <div class="stat-number">3+</div>
+                        <div class="stat-label">Modul Materi</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Interaktif</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">4</div>
+                        <div class="stat-label">Kuis Evaluasi</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL -->
+            <div class="right-panel">
+                <div class="form-header">
+                    <h2>Selamat Datang! 👋</h2>
+                    <p>Masuk untuk melanjutkan eksperimen virtual Anda.</p>
+                </div>
+
+                <div class="role-switcher" role="tablist">
+                    <button id="btn-siswa" class="role-btn active" onclick="setRole('siswa')" role="tab"
+                        aria-selected="true">
+                        🎓 Siswa / Peneliti
+                    </button>
+                    <button id="btn-guru" class="role-btn" onclick="setRole('guru')" role="tab" aria-selected="false">
+                        👩‍🏫 Guru Pendamping
+                    </button>
+                </div>
+
+                <div id="error-msg" class="error-msg" role="alert"></div>
+                <div id="success-msg" class="success-toast">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span id="success-text"></span>
+                </div>
+
+                <!-- GOOGLE LOGIN - PRIMARY CTA -->
+                <button id="btn-google-main" class="btn-google" onclick="handleGoogleLogin()" type="button">
+                    <div class="google-pulse"></div>
+                    <svg width="20" height="20" viewBox="0 0 24 24" class="google-icon">
+                        <path
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                            fill="#4285F4" />
+                        <path
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                            fill="#34A853" />
+                        <path
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                            fill="#FBBC05" />
+                        <path
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                            fill="#EA4335" />
+                    </svg>
+                    <span>Masuk dengan Google</span>
+                    <div class="google-badge">Direkomendasikan</div>
+                </button>
+
+                <div class="divider">
+                    <span>atau masuk dengan email</span>
+                </div>
+
+                <form id="login-form" onsubmit="handleLogin(event)" novalidate>
+                    <div class="form-group">
+                        <label class="form-label" for="login-email">Alamat Email</label>
+                        <div class="form-input-wrap">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg>
+                            <input id="login-email" type="email" class="form-input" placeholder="nama@sekolah.sch.id"
+                                autocomplete="email" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-row">
+                            <label class="form-label" for="login-password">Kata Sandi</label>
+                            <button type="button" class="forgot-link" onclick="handleForgotPassword()">Lupa
+                                sandi?</button>
+                        </div>
+                        <div class="form-input-wrap">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                            <input id="login-password" type="password" class="form-input" placeholder="••••••••"
+                                autocomplete="current-password" required>
+                            <svg id="eye-icon" class="input-icon right" onclick="togglePassword()" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <button id="btn-submit" type="submit" class="btn-submit">
+                        Masuk ke Laboratorium
+                    </button>
+                </form>
+
+                <p class="register-link">
+                    Belum punya akun?
+                    <button onclick="toggleRegisterModal(true)">Daftar Sekarang</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- REGISTER MODAL -->
+    <div id="register-modal" class="modal-overlay" onclick="overlayClose(event)">
+        <div class="modal-card" id="modal-card">
+            <div class="modal-header">
+                <div>
+                    <h3>Buat Akun Baru 🚀</h3>
+                    <p>Bergabung dengan komunitas peneliti EduKinetika</p>
+                </div>
+                <button class="modal-close" onclick="toggleRegisterModal(false)" aria-label="Tutup">✕</button>
+            </div>
+
+            <div class="role-switcher" role="tablist" style="margin-bottom:18px;">
+                <button id="reg-btn-siswa" type="button" class="role-btn active" onclick="setRole('siswa')" role="tab"
+                    aria-selected="true">🎓 Saya Siswa</button>
+                <button id="reg-btn-guru" type="button" class="role-btn" onclick="setRole('guru')" role="tab"
+                    aria-selected="false">👩‍🏫 Saya Guru</button>
+            </div>
+
+            <button class="btn-google-modal" onclick="handleGoogleLogin()" type="button">
+                <svg width="18" height="18" viewBox="0 0 24 24">
+                    <path
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                        fill="#4285F4" />
+                    <path
+                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                        fill="#34A853" />
+                    <path
+                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                        fill="#FBBC05" />
+                    <path
+                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                        fill="#EA4335" />
+                </svg>
+                Daftar dengan Google (Cepat & Mudah)
+            </button>
+
+            <div class="divider" style="margin-bottom:16px;"><span>atau isi formulir</span></div>
+
+            <div id="modal-error" class="error-msg"></div>
+
+            <form id="register-form" onsubmit="handleRegister(event)" novalidate>
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label class="form-label" for="reg-name">Nama Lengkap</label>
+                    <div class="form-input-wrap">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        <input id="reg-name" type="text" class="form-input" placeholder="Contoh: Andi Saputra" required>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label class="form-label" for="reg-email">Alamat Email</label>
+                    <div class="form-input-wrap">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                            <polyline points="22,6 12,13 2,6" />
+                        </svg>
+                        <input id="reg-email" type="email" class="form-input" placeholder="nama@sekolah.sch.id"
+                            required>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom:16px;">
+                    <label class="form-label" for="reg-password">Kata Sandi (min. 6 karakter)</label>
+                    <div class="form-input-wrap">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                        <input id="reg-password" type="password" class="form-input"
+                            placeholder="Buat kata sandi yang kuat" minlength="6" required>
+                    </div>
+                </div>
+                <button id="btn-register" type="submit" class="btn-modal-submit">
+                    Buat Akun Peneliti
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import {
+            getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+            GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult,
+            updateProfile, sendPasswordResetEmail, signOut, onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getDatabase, ref, set, get, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA_YUPPq0CZgNi5McaTx3-a8LOGW70zIzg",
+            authDomain: "starararrara.firebaseapp.com",
+            databaseURL: "https://starararrara-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "starararrara",
+            storageBucket: "starararrara.firebasestorage.app",
+            messagingSenderId: "1085300087665",
+            appId: "1:1085300087665:web:375eae85042f14ffa7f4d0",
+            measurementId: "G-8F75SPH45K"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        // Error translation
+        function terjemahkanError(code) {
+            const map = {
+                'auth/user-not-found': "Akun tidak ditemukan. Silakan daftar terlebih dahulu.",
+                'auth/wrong-password': "Kata sandi yang Anda masukkan salah.",
+                'auth/invalid-credential': "Email atau kata sandi tidak cocok. Coba lagi.",
+                'auth/email-already-in-use': "Email ini sudah terdaftar. Coba masuk.",
+                'auth/weak-password': "Kata sandi terlalu lemah (minimal 6 karakter).",
+                'auth/invalid-email': "Format email tidak valid.",
+                'auth/too-many-requests': "Terlalu banyak percobaan. Coba lagi sebentar.",
+                'auth/network-request-failed': "Periksa koneksi internet Anda.",
+                'auth/popup-blocked': "Popup diblokir. Izinkan popup untuk situs ini.",
+                'auth/unauthorized-domain': "Domain website ini belum diizinkan di Firebase. Tambahkan domain ini di Authentication → Settings → Authorized domains.",
+            };
+            return map[code] || 'Terjadi kesalahan (' + code + '). Coba lagi.';
+        }
+
+        function showError(msg, isModal) {
+            const el = document.getElementById(isModal ? 'modal-error' : 'error-msg');
+            if (!msg) { el.classList.remove('show'); return; }
+            el.innerHTML = msg;
+            el.classList.add('show');
+        }
+
+        function showSuccess(msg) {
+            const toast = document.getElementById('success-msg');
+            document.getElementById('success-text').textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+
+        // Write user to Realtime DB
+        async function tulisDataUser(user, nama, role) {
+            const uid = user.uid;
+            const namaFinal = nama || user.displayName || user.email.split('@')[0];
+            await update(ref(db, 'users/' + uid), {
+                nama: namaFinal, email: user.email, role: role,
+                fotoUrl: user.photoURL || null, updatedAt: Date.now()
+            });
+
+            // Penanda peran: dipakai dashboard guru untuk memeriksa hak akses,
+            // dan dipakai daftar siswa di dashboard guru.
+            if (role === 'guru') {
+                await update(ref(db, 'guru/' + uid), { nama: namaFinal, email: user.email, aktif: true });
+            } else {
+                await update(ref(db, 'siswa/' + uid), {
+                    nama: namaFinal, email: user.email, online: true, lastActive: Date.now()
+                });
+            }
+            if (role === 'siswa') {
+                const snap = await get(ref(db, 'progres_siswa/' + uid));
+                if (!snap.exists()) {
+                    await set(ref(db, 'progres_siswa/' + uid), {
+                        jamBelajarDetik: 0, poin: 0, percobaan: 0, pencapaian: 0,
+                        modul: {
+                            konsep_laju_reaksi: { nama: "Konsep Laju Reaksi", selesai: 0, total: 8, persen: 0 },
+                            faktor_laju_reaksi: { nama: "Faktor Laju Reaksi", selesai: 0, total: 7, persen: 0 },
+                            teori_tumbukan: { nama: "Teori Tumbukan", selesai: 0, total: 6, persen: 0 }
+                        },
+                        terakhirAktif: Date.now()
+                    });
+                }
+            }
+        }
+
+        // Peran tersimpan di database (null jika akun baru / belum pernah tercatat)
+        async function getRoleTersimpan(uid) {
+            try {
+                const snap = await get(ref(db, 'users/' + uid + '/role'));
+                if (snap.exists()) return snap.val();
+                const g = await get(ref(db, 'guru/' + uid));
+                if (g.exists() && g.val()) return 'guru';
+            } catch (_) { }
+            return null;
+        }
+
+        function resetTombol() {
+            const guru = window.currentRole === 'guru';
+            const b1 = document.getElementById('btn-submit');
+            b1.disabled = false; b1.innerHTML = guru ? 'Masuk ke Dashboard Guru' : 'Masuk ke Laboratorium';
+            const b2 = document.getElementById('btn-register');
+            b2.disabled = false; b2.innerHTML = guru ? 'Buat Akun Guru' : 'Buat Akun Peneliti';
+            const g = document.getElementById('btn-google-main');
+            if (g) {
+                g.disabled = false;
+                g.innerHTML = '<div class="google-pulse"></div><svg width="20" height="20" viewBox="0 0 24 24" class="google-icon"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><span>Masuk dengan Google</span><div class="google-badge">Direkomendasikan</div>';
+            }
+        }
+
+        async function simpanSesiDanRedirect(user, nama) {
+            const namaFinal = nama || user.displayName || user.email.split('@')[0];
+            const roleTersimpan = await getRoleTersimpan(user.uid);
+            const role = roleTersimpan || window.currentRole;
+
+            // Akun siswa lama yang mencoba masuk lewat tab guru: beri tahu, jangan diam-diam dialihkan
+            if (roleTersimpan === 'siswa' && window.currentRole === 'guru') {
+                await signOut(auth);
+                resetTombol();
+                showError('Email ini sudah terdaftar sebagai <b>akun siswa</b>. Gunakan email lain untuk mendaftar sebagai guru.', false);
+                return;
+            }
+
+            try {
+                await tulisDataUser(user, namaFinal, role);
+            } catch (err) {
+                console.warn('RTDB write failed:', err);
+                if (role === 'guru') {
+                    // Tanpa data guru/{uid}, dashboard guru akan menolak akses, jadi hentikan di sini
+                    await signOut(auth);
+                    resetTombol();
+                    showError('Akun berhasil masuk, tetapi data guru gagal disimpan ke database (' + (err.code || err.message) +
+                        '). Periksa <b>Rules Realtime Database</b> agar pengguna boleh menulis ke <code>users/{uid}</code> dan <code>guru/{uid}</code>.', false);
+                    return;
+                }
+            }
+
+            localStorage.setItem('activeSession', JSON.stringify({
+                uid: user.uid, name: namaFinal,
+                role: role === 'guru' ? 'Guru Pendamping' : 'Peneliti Pemula',
+                peran: role,
+                email: user.email, photoURL: user.photoURL || null, loginAt: Date.now()
+            }));
+
+            // Guru langsung ke dashboard guru, siswa ke beranda EduKinetika
+            window.location.href = role === 'guru' ? 'dashboard-guru.html' : 'index.html';
+        }
+
+        // Login with email
+        window.handleLogin = async function (event) {
+            event.preventDefault();
+            showError(null, false);
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            const btn = document.getElementById('btn-submit');
+            if (!email || !password) { showError('Mohon isi email dan kata sandi Anda.', false); return; }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>Memverifikasi...';
+
+            try {
+                const cred = await signInWithEmailAndPassword(auth, email, password);
+                showSuccess(window.currentRole === 'guru' ? 'Login berhasil! Membuka dashboard guru...' : 'Login berhasil! Mengalihkan...');
+                await simpanSesiDanRedirect(cred.user, cred.user.displayName);
+            } catch (err) {
+                showError(terjemahkanError(err.code), false);
+                btn.disabled = false;
+                btn.innerHTML = window.currentRole === 'guru' ? 'Masuk ke Dashboard Guru' : 'Masuk ke Laboratorium';
+            }
+        };
+
+        // Register with email
+        window.handleRegister = async function (event) {
+            event.preventDefault();
+            showError(null, true);
+            const nama = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const btn = document.getElementById('btn-register');
+            if (!nama || !email || !password) { showError('Mohon lengkapi semua field.', true); return; }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>Mendaftarkan akun...';
+
+            try {
+                const cred = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(cred.user, { displayName: nama });
+                toggleRegisterModal(false);
+                showSuccess(window.currentRole === 'guru'
+                    ? 'Akun guru berhasil dibuat! Membuka dashboard guru...'
+                    : 'Akun berhasil dibuat! Selamat datang ' + nama + '!');
+                await simpanSesiDanRedirect(cred.user, nama);
+            } catch (err) {
+                showError(terjemahkanError(err.code), true);
+                btn.disabled = false;
+                btn.innerHTML = window.currentRole === 'guru' ? 'Buat Akun Guru' : 'Buat Akun Peneliti';
+            }
+        };
+
+        // Google Sign-In (Popup + Redirect fallback)
+        window.handleGoogleLogin = async function () {
+            showError(null, false);
+            showError(null, true);
+
+            const provider = new GoogleAuthProvider();
+            provider.addScope('profile');
+            provider.addScope('email');
+            provider.setCustomParameters({ prompt: 'select_account' });
+
+            const mainBtn = document.getElementById('btn-google-main');
+            const googleSVG = `<svg width="20" height="20" viewBox="0 0 24 24" class="google-icon">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>`;
+
+            if (mainBtn) {
+                mainBtn.disabled = true;
+                mainBtn.innerHTML = '<span class="spinner" style="border-color:rgba(66,133,244,0.3);border-top-color:#4285F4;"></span><span>Menghubungkan ke Google...</span>';
+            }
+
+            try {
+                const result = await signInWithPopup(auth, provider);
+                showSuccess('Login Google berhasil! Mengalihkan...');
+                await simpanSesiDanRedirect(result.user, result.user.displayName);
+            } catch (err) {
+                console.error('Google Login Error:', err.code);
+                if (mainBtn) {
+                    mainBtn.disabled = false;
+                    mainBtn.innerHTML = '<div class="google-pulse"></div>' + googleSVG + '<span>Masuk dengan Google</span><div class="google-badge">Direkomendasikan</div>';
+                }
+                if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') return;
+                if (err.code === 'auth/popup-blocked' || err.code === 'auth/web-storage-unsupported') {
+                    showError('Popup diblokir. Mengalihkan ke Google Sign-In...', false);
+                    setTimeout(() => signInWithRedirect(auth, provider), 1500);
+                    return;
+                }
+                showError('Gagal masuk dengan Google: ' + terjemahkanError(err.code), false);
+            }
+        };
+
+        // Handle redirect result
+        getRedirectResult(auth).then(async (result) => {
+            if (result && result.user) {
+                showSuccess('Login Google berhasil! Mengalihkan...');
+                await simpanSesiDanRedirect(result.user, result.user.displayName);
+            }
+        }).catch((err) => {
+            if (err.code !== 'auth/no-auth-event') {
+                showError('Gagal memproses login Google: ' + err.message, false);
+            }
+        });
+
+        // Forgot password
+        window.handleForgotPassword = function () {
+            const email = prompt("Masukkan email yang terdaftar.\nKami akan mengirimkan tautan reset kata sandi:");
+            if (!email || !email.trim()) return;
+            sendPasswordResetEmail(auth, email.trim())
+                .then(() => showSuccess('Tautan reset sandi telah dikirim ke ' + email + '. Cek inbox atau spam.'))
+                .catch((err) => showError(terjemahkanError(err.code), false));
+        };
+
+        // Role switcher
+        const peranUrl = new URLSearchParams(location.search).get('peran');
+        window.currentRole = (peranUrl === 'guru' || peranUrl === 'siswa') ? peranUrl
+            : (localStorage.getItem('peranTerakhir') || 'siswa');
+        window.setRole = function (role) {
+            window.currentRole = role;
+            try { localStorage.setItem('peranTerakhir', role); } catch (e) { }
+            const guru = role === 'guru';
+            [['btn-siswa', 'btn-guru'], ['reg-btn-siswa', 'reg-btn-guru']].forEach(([s, g]) => {
+                const bs = document.getElementById(s), bg = document.getElementById(g);
+                bs.classList.toggle('active', !guru); bg.classList.toggle('active', guru);
+                bs.setAttribute('aria-selected', String(!guru)); bg.setAttribute('aria-selected', String(guru));
+            });
+            document.getElementById('btn-submit').innerHTML = guru ? 'Masuk ke Dashboard Guru' : 'Masuk ke Laboratorium';
+            document.getElementById('btn-register').innerHTML = guru ? 'Buat Akun Guru' : 'Buat Akun Peneliti';
+            document.querySelector('#register-modal .modal-header p').textContent = guru
+                ? 'Daftar sebagai guru pendamping untuk memantau siswa'
+                : 'Bergabung dengan komunitas peneliti EduKinetika';
+        };
+
+        // Toggle password
+        window.togglePassword = function () {
+            const input = document.getElementById('login-password');
+            const icon = document.getElementById('eye-icon');
+            const isHidden = input.type === 'password';
+            input.type = isHidden ? 'text' : 'password';
+            icon.innerHTML = isHidden
+                ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'
+                : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+        };
+
+        // Modal
+        window.toggleRegisterModal = function (show) {
+            const overlay = document.getElementById('register-modal');
+            if (show) { overlay.classList.add('show'); document.body.style.overflow = 'hidden'; }
+            else { overlay.classList.remove('show'); document.body.style.overflow = ''; document.getElementById('register-form').reset(); showError(null, true); }
+        };
+        window.overlayClose = function (e) {
+            if (e.target === document.getElementById('register-modal')) toggleRegisterModal(false);
+        };
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') toggleRegisterModal(false); });
+
+        // Terapkan peran terakhir saat halaman dibuka
+        window.setRole(window.currentRole);
+
+        // Guru yang sesinya masih aktif langsung diteruskan ke dashboard guru
+        let sedangLogin = false;
+        ['handleLogin', 'handleRegister', 'handleGoogleLogin'].forEach(fn => {
+            const asli = window[fn];
+            window[fn] = function (...a) { sedangLogin = true; return asli.apply(this, a); };
+        });
+        const offAuth = onAuthStateChanged(auth, async (u) => {
+            offAuth();
+            if (!u || sedangLogin) return;
+            if (await getRoleTersimpan(u.uid) === 'guru' && !sedangLogin) {
+                showSuccess('Sesi guru masih aktif. Membuka dashboard guru...');
+                window.location.href = 'dashboard-guru.html';
+            }
+        });
+    </script>
+
+    <!-- Particle Generator -->
+    <script>
+        (function () {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const left = Math.random() * 100;
+                const duration = 10 + Math.random() * 20;
+                const delay = Math.random() * 20;
+                const dx = (Math.random() - 0.5) * 200;
+                p.style.cssText = 'left:' + left + '%;animation-duration:' + duration + 's;animation-delay:-' + delay + 's;--dx:' + dx + 'px;width:' + (Math.random() > 0.7 ? 3 : 2) + 'px;height:' + (Math.random() > 0.7 ? 3 : 2) + 'px;opacity:' + (0.3 + Math.random() * 0.7) + ';';
+                container.appendChild(p);
+            }
+        })();
+    </script>
+</body>
+
+</html>

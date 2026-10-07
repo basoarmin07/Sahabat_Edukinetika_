@@ -1,0 +1,3140 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Menara Orde: Orde Reaksi dan Waktu Paruh - EduKinetika</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- ============================================================
+         CSS HALAMAN MATERI POS 4: MENARA ORDE
+         Semua kelas diawali "ekp-" agar tidak bentrok dengan gaya lain.
+         ============================================================ -->
+    <style>
+        :root {
+            --ekp-biru: #2563eb;
+            --ekp-biru-tua: #1e3a8a;
+            --ekp-ungu: #6d28d9;
+            --ekp-teks: #1e293b;
+            --ekp-redup: #64748b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            color: #334155;
+            background: #eaf0fb;
+            min-height: 100vh;
+        }
+
+        /* ---------- Latar belakang halaman (tidak putih polos) ---------- */
+        .ekp-latar {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(700px 480px at 0% 0%, rgba(59, 130, 246, .22), transparent 62%),
+                radial-gradient(640px 460px at 100% 8%, rgba(139, 92, 246, .2), transparent 62%),
+                radial-gradient(900px 560px at 50% 105%, rgba(16, 185, 129, .18), transparent 62%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cg fill='none' stroke='%236366f1' stroke-opacity='.09' stroke-width='1.2'%3E%3Cpath d='M28 1 L54 16 L54 46 L28 61 L2 46 L2 16 Z'/%3E%3Cpath d='M28 61 L28 97'/%3E%3C/g%3E%3C/svg%3E"),
+                linear-gradient(180deg, #eef3ff 0%, #f1efff 50%, #ecfbf4 100%);
+        }
+
+        .ekp-wadah {
+            position: relative;
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 2rem 1rem 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            box-sizing: border-box;
+        }
+
+        .ekp-wadah *,
+        .ekp-wadah *::before,
+        .ekp-wadah *::after {
+            box-sizing: border-box;
+        }
+
+        .ekp-ik {
+            width: 1em;
+            height: 1em;
+            display: inline-block;
+            vertical-align: -.125em;
+            flex-shrink: 0;
+        }
+
+        /* ---------- Bilah atas: logo, XP, tombol dashboard ---------- */
+        .ekp-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, .86);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e2e8f0;
+            padding-top: env(safe-area-inset-top, 0px);
+        }
+
+        .ekp-nav-isi {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: .7rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+            box-sizing: border-box;
+        }
+
+        .ekp-logo {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .ekp-logo-ikon {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: .75rem;
+            display: grid;
+            place-items: center;
+            background: #2563eb;
+            color: #fff;
+            font-size: 1.15rem;
+        }
+
+        .ekp-logo-teks {
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: -.01em;
+            color: #1e293b;
+        }
+
+        .ekp-logo-teks b {
+            color: #2563eb;
+        }
+
+        .ekp-xp {
+            flex: 1;
+            max-width: 20rem;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+        }
+
+        .ekp-xp-ikon {
+            width: 2.25rem;
+            height: 2.25rem;
+            flex-shrink: 0;
+            border-radius: .75rem;
+            display: grid;
+            place-items: center;
+            background: #fef3c7;
+            color: #d97706;
+            font-size: 1.1rem;
+        }
+
+        .ekp-xp-teks {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ekp-xp-baris {
+            display: flex;
+            justify-content: space-between;
+            gap: .5rem;
+            font-size: .68rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .ekp-xp-baris span:first-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .ekp-xp-bar {
+            height: .5rem;
+            margin-top: .25rem;
+            border-radius: 999px;
+            overflow: hidden;
+            background: #f1f5f9;
+        }
+
+        .ekp-xp-bar i {
+            display: block;
+            height: 100%;
+            width: 4%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #fbbf24, #f97316);
+            transition: width .6s;
+        }
+
+        .ekp-kembali {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            flex-shrink: 0;
+            text-decoration: none;
+            font-size: .85rem;
+            font-weight: 700;
+            color: #475569;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: .75rem;
+            padding: .5rem .8rem;
+            transition: color .2s, border-color .2s;
+        }
+
+        .ekp-kembali:hover {
+            color: #2563eb;
+            border-color: #93c5fd;
+        }
+
+        .ekp-kembali:focus-visible,
+        .ekp-logo:focus-visible {
+            outline: 3px solid #93c5fd;
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 640px) {
+            .ekp-logo-teks,
+            .ekp-kembali span {
+                display: none;
+            }
+        }
+
+
+        /* ================== MATERI POS 1: TAMAN WAKTU ================== */
+        .ekp-wadah [hidden] {
+            display: none !important;
+        }
+
+        .ekp-tombol {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            border: 0;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 800;
+            font-size: .92rem;
+            border-radius: .95rem;
+            padding: .75rem 1.15rem;
+            transition: transform .15s, filter .15s;
+        }
+
+        .ekp-tombol:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+
+        .ekp-tombol:focus-visible,
+        .ekp-pil:focus-visible,
+        .ekp-opsi:focus-visible {
+            outline: 3px solid #93c5fd;
+            outline-offset: 2px;
+        }
+
+        .ekp-tombol.biru { background: #2563eb; color: #fff; box-shadow: 0 8px 16px -10px #2563eb; }
+        .ekp-tombol.oranye { background: #f97316; color: #fff; box-shadow: 0 8px 16px -10px #f97316; }
+        .ekp-tombol.hijau { background: #059669; color: #fff; box-shadow: 0 8px 16px -10px #059669; }
+        .ekp-tombol.abu { background: #f1f5f9; color: #475569; }
+        .ekp-tombol.putih { background: #fff; color: #1d4ed8; }
+
+        .ekp-ajakan {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            color: #fff;
+            border-radius: 1.6rem;
+            padding: 1.1rem 1.25rem;
+            background: linear-gradient(135deg, #1d4ed8, #4f46e5 60%, #7c3aed);
+            box-shadow: 0 18px 34px -22px rgba(37, 99, 235, .9);
+        }
+
+        .ekp-ajakan-ikon {
+            width: 3.2rem;
+            height: 3.2rem;
+            border-radius: 1rem;
+            display: grid;
+            place-items: center;
+            font-size: 1.7rem;
+            background: rgba(255, 255, 255, .18);
+            border: 1px solid rgba(255, 255, 255, .3);
+            animation: ekp-ketuk 1.6s ease-in-out infinite;
+        }
+
+        @keyframes ekp-ketuk {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .ekp-ajakan-teks {
+            flex: 1 1 240px;
+            min-width: 0;
+        }
+
+        .ekp-ajakan h3 { margin: 0; font-size: 1.08rem; font-weight: 800; }
+        .ekp-ajakan p { margin: .2rem 0 0; font-size: .88rem; color: rgba(255, 255, 255, .88); line-height: 1.55; }
+
+        .ekp-pos {
+            display: flex;
+            flex-direction: column;
+            gap: 1.4rem;
+            scroll-margin-top: 80px;
+        }
+
+        /* Banner */
+        .ekp-banner {
+            position: relative;
+            overflow: hidden;
+            color: #fff;
+            border-radius: 2rem;
+            padding: 1.6rem 1.5rem 1.5rem;
+            min-height: 230px;
+            background:
+                radial-gradient(circle at 12% 20%, rgba(255, 255, 255, .22), transparent 35%),
+                linear-gradient(135deg, #0ea5e9 0%, #2563eb 55%, #4338ca 100%);
+            box-shadow: 0 24px 44px -28px rgba(37, 99, 235, .9);
+        }
+
+        .ekp-banner-taman {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: min(620px, 100%);
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .ekp-jarum-menit {
+            transform-box: fill-box;
+            transform-origin: 0% 50%;
+            animation: ekp-putar 6s linear infinite;
+        }
+
+        .ekp-jarum-jam {
+            transform-box: fill-box;
+            transform-origin: 50% 100%;
+            animation: ekp-putar 72s linear infinite;
+        }
+
+        @keyframes ekp-putar { to { transform: rotate(360deg); } }
+
+        .ekp-banner-isi {
+            position: relative;
+            z-index: 1;
+            max-width: 38rem;
+        }
+
+        .ekp-banner-pos {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            margin: 0;
+            font-size: .8rem;
+            font-weight: 800;
+            background: rgba(255, 255, 255, .18);
+            border-radius: 999px;
+            padding: .3rem .75rem;
+        }
+
+        .ekp-banner h2 {
+            margin: .6rem 0 .4rem;
+            font-size: clamp(1.6rem, 4.4vw, 2.3rem);
+            font-weight: 800;
+            letter-spacing: -.02em;
+            line-height: 1.15;
+        }
+
+        .ekp-banner-tujuan {
+            margin: 0;
+            font-size: .9rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, .92);
+        }
+
+        .ekp-sapa {
+            display: flex;
+            align-items: flex-end;
+            gap: .7rem;
+            margin-top: 1rem;
+        }
+
+        .ekp-sapa-tokoh {
+            width: 52px;
+            height: 72px;
+            flex-shrink: 0;
+        }
+
+        .ekp-sapa-tokoh svg { width: 100%; height: 100%; }
+
+        .ekp-sapa p {
+            position: relative;
+            margin: 0;
+            color: #334155;
+            background: #fff;
+            border-radius: 1rem 1rem 1rem .3rem;
+            padding: .7rem .9rem;
+            font-size: .86rem;
+            line-height: 1.55;
+            box-shadow: 0 10px 20px -14px rgba(15, 23, 42, .6);
+        }
+
+        .ekp-sapa p strong { color: #1d4ed8; }
+
+        /* Navigasi stasiun */
+        .ekp-stasiun-nav {
+            position: sticky;
+            top: 64px;
+            z-index: 20;
+            display: flex;
+            gap: .45rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: .55rem;
+            border-radius: 1.2rem;
+            background: rgba(255, 255, 255, .88);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid #e0e7ff;
+            box-shadow: 0 10px 22px -18px rgba(30, 58, 138, .7);
+        }
+
+        .ekp-stasiun-nav::-webkit-scrollbar { display: none; }
+
+        .ekp-stasiun-nav a {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            text-decoration: none;
+            font-size: .8rem;
+            font-weight: 700;
+            color: #475569;
+            border-radius: 999px;
+            padding: .35rem .75rem .35rem .35rem;
+            transition: background .2s, color .2s;
+        }
+
+        .ekp-stasiun-nav a b {
+            width: 1.45rem;
+            height: 1.45rem;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: .72rem;
+            color: #fff;
+            background: #94a3b8;
+        }
+
+        .ekp-stasiun-nav a:hover,
+        .ekp-stasiun-nav a.aktif {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .ekp-stasiun-nav a.aktif b { background: #2563eb; }
+
+        /* Kartu stasiun */
+        .ekp-stasiun {
+            position: relative;
+            scroll-margin-top: 140px;
+            background: #fff;
+            border-radius: 1.8rem;
+            padding: 1.4rem 1.4rem 1.5rem;
+            border: 1px solid #e2e8f0;
+            border-top: 6px solid var(--w);
+            box-shadow: 0 22px 40px -32px rgba(30, 58, 138, .6);
+        }
+
+        .ekp-st-kepala {
+            display: flex;
+            align-items: center;
+            gap: .85rem;
+            margin-bottom: .6rem;
+        }
+
+        .ekp-st-no {
+            width: 2.8rem;
+            height: 2.8rem;
+            flex-shrink: 0;
+            border-radius: 1rem;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #fff;
+            background: var(--w);
+            box-shadow: 0 8px 16px -10px var(--w);
+            transform: rotate(-5deg);
+        }
+
+        .ekp-st-sub {
+            margin: 0;
+            font-size: .75rem;
+            font-weight: 700;
+            color: var(--w);
+        }
+
+        .ekp-st-kepala h3 {
+            margin: .1rem 0 0;
+            font-size: clamp(1.15rem, 3vw, 1.4rem);
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .ekp-paragraf {
+            margin: .4rem 0 1rem;
+            font-size: .95rem;
+            line-height: 1.75;
+            color: #334155;
+            max-width: 62rem;
+        }
+
+        .ekp-kecil {
+            font-size: .8rem;
+            line-height: 1.55;
+            color: #64748b;
+            margin: .5rem 0 0;
+        }
+
+        .ekp-kecil.tengah { text-align: center; }
+
+        .ekp-dua {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .ekp-dua.kecil { margin-top: 1rem; }
+
+        .ekp-baris-tombol {
+            display: flex;
+            gap: .5rem;
+            margin-top: 1rem;
+        }
+
+        .ekp-baris-tombol .ekp-tombol:first-child { flex: 1; }
+
+        /* Stasiun 1 */
+        .ekp-panel-anim {
+            margin: 0;
+            border-radius: 1.3rem;
+            padding: .9rem;
+            background: var(--w-muda);
+            display: flex;
+            flex-direction: column;
+            gap: .7rem;
+        }
+
+        .ekp-anim-judul {
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+            font-weight: 800;
+            font-size: .9rem;
+            color: #1e3a8a;
+        }
+
+        .ekp-jalan-raya {
+            position: relative;
+            height: 120px;
+            border-radius: 1rem;
+            overflow: hidden;
+            background:
+                linear-gradient(180deg, #bae6fd 0 45%, #86efac 45% 58%, #475569 58% 100%);
+        }
+
+        .ekp-jalan-raya::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 78%;
+            height: 3px;
+            background: repeating-linear-gradient(90deg, #fde047 0 16px, transparent 16px 30px);
+        }
+
+        .ekp-patok {
+            position: absolute;
+            left: 6%;
+            right: 6%;
+            top: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: .62rem;
+            font-weight: 800;
+            color: #1e3a8a;
+        }
+
+        .ekp-mobil {
+            position: absolute;
+            left: 0;
+            top: 52%;
+            width: 76px;
+            height: 38px;
+            transform: translateX(0);
+        }
+
+        .ekp-gelas {
+            position: relative;
+            height: 120px;
+            border-radius: .6rem .6rem 1.4rem 1.4rem;
+            border: 3px solid #94a3b8;
+            border-top: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, .7), rgba(186, 230, 253, .7));
+            overflow: hidden;
+        }
+
+        .ekp-gelas span {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #fecdd3, #e11d48);
+            transition: background .5s, transform .5s;
+            animation: ekp-goyang 2.4s ease-in-out infinite;
+        }
+
+        .ekp-gelas span {
+            transition: background .5s, transform .5s, left .6s ease, top .6s ease, opacity .4s .3s;
+        }
+
+        .ekp-gelas span.b {
+            background: radial-gradient(circle at 35% 30%, #bfdbfe, #2563eb);
+        }
+
+        .ekp-gelas span.jadi {
+            background: radial-gradient(circle at 35% 30%, #fef9c3, #eab308);
+            transform: scale(1.3);
+            box-shadow: 0 0 10px rgba(250, 204, 21, .8);
+        }
+
+        .ekp-gelas span.gabung {
+            opacity: 0;
+        }
+
+        .ekp-persamaan-abc {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: .35rem .5rem;
+            padding: .5rem .7rem;
+            border-radius: .9rem;
+            background: #fff;
+            border: 1px solid #bfdbfe;
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: #0f172a;
+        }
+
+        .ekp-persamaan-abc .zat {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+        }
+
+        .ekp-persamaan-abc .op {
+            color: #64748b;
+        }
+
+        .ekp-persamaan-abc .ket-reaksi {
+            flex-basis: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 2.4rem;
+            font-size: .68rem;
+            font-weight: 700;
+        }
+
+        .ekp-persamaan-abc .ket-reaksi em {
+            font-style: normal;
+            border-radius: 999px;
+            padding: .05rem .5rem;
+        }
+
+        .ekp-persamaan-abc .ket-reaksi em:first-child {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .ekp-persamaan-abc .ket-reaksi em:last-child {
+            background: #fef9c3;
+            color: #a16207;
+        }
+
+        .bola {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .bola.a { background: radial-gradient(circle at 35% 30%, #fecdd3, #e11d48); }
+        .bola.b { background: radial-gradient(circle at 35% 30%, #bfdbfe, #2563eb); }
+        .bola.c { background: radial-gradient(circle at 35% 30%, #fef9c3, #eab308); }
+
+        .ekp-legenda-abc {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .35rem .8rem;
+            font-size: .74rem;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        /* partikel bergerak & tumbukan efektif */
+        .ekp-gelas span.ptk {
+            left: 0;
+            top: 0;
+            animation: none;
+            transition: background .35s, box-shadow .35s, opacity .3s;
+            will-change: transform;
+        }
+
+        .ekp-gelas span.ptk.gabung { opacity: 0; transition: opacity .15s; }
+
+        .ekp-gelas .ledak {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 34px;
+            height: 34px;
+            margin: -17px 0 0 -17px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(254, 240, 138, .95) 0 25%, rgba(250, 204, 21, .5) 45%, transparent 70%);
+            box-shadow: 0 0 0 2px rgba(250, 204, 21, .6);
+            pointer-events: none;
+            animation: ekp-ledak .6s ease-out forwards;
+        }
+
+        @keyframes ekp-ledak {
+            from { transform: var(--pos) scale(.3); opacity: 1; }
+            to { transform: var(--pos) scale(1.9); opacity: 0; }
+        }
+
+        .ekp-gelas .teks-tumbukan {
+            position: absolute;
+            left: 0;
+            top: 0;
+            white-space: nowrap;
+            font-size: .62rem;
+            font-weight: 800;
+            color: #92400e;
+            background: #fef9c3;
+            border: 1px solid #facc15;
+            border-radius: 999px;
+            padding: .05rem .4rem;
+            pointer-events: none;
+            animation: ekp-teks-naik 1.1s ease-out forwards;
+        }
+
+        @keyframes ekp-teks-naik {
+            0% { transform: var(--pos) translateY(0); opacity: 0; }
+            15% { opacity: 1; }
+            100% { transform: var(--pos) translateY(-22px); opacity: 0; }
+        }
+
+        .ekp-legenda-abc .kilau {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fef08a 0 30%, rgba(250, 204, 21, .5) 50%, transparent 72%);
+            box-shadow: 0 0 0 1.5px #facc15;
+        }
+
+        .ekp-angka4.dalam { margin-top: 0; }
+        b.biru { color: #2563eb !important; }
+        b.kuning { color: #ca8a04 !important; }
+
+        .ekp-legenda-abc span {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+        }
+
+        @keyframes ekp-goyang {
+            0%, 100% { translate: 0 0; }
+            50% { translate: 3px -4px; }
+        }
+
+        .ekp-angka3,
+        .ekp-angka4 {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: .45rem;
+        }
+
+        .ekp-angka4 {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            margin-top: .8rem;
+        }
+
+        .ekp-angka3 div,
+        .ekp-angka4 div {
+            background: #fff;
+            border-radius: .8rem;
+            padding: .45rem .5rem;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .ekp-angka3 span,
+        .ekp-angka4 span {
+            display: block;
+            font-size: .66rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .ekp-angka3 b,
+        .ekp-angka4 b {
+            font-size: .9rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .ekp-angka3 .sorot,
+        .ekp-angka4 .sorot {
+            background: #1e3a8a;
+            border-color: #1e3a8a;
+        }
+
+        .ekp-angka3 .sorot span,
+        .ekp-angka4 .sorot span { color: #bfdbfe; }
+
+        .ekp-angka3 .sorot b,
+        .ekp-angka4 .sorot b { color: #fff; }
+
+        b.merah { color: #e11d48 !important; }
+        b.hijau { color: #059669 !important; }
+
+        .ekp-panel-anim figcaption {
+            font-size: .8rem;
+            line-height: 1.5;
+            color: #334155;
+        }
+
+        .ekp-kotak-pikir,
+        .ekp-kotak-awas {
+            display: flex;
+            gap: .6rem;
+            align-items: flex-start;
+            margin-top: 1rem;
+            border-radius: 1rem;
+            padding: .75rem .9rem;
+            font-size: .88rem;
+        }
+
+        .ekp-kotak-pikir { background: #fefce8; border: 1px dashed #facc15; }
+        .ekp-kotak-pikir > .ekp-ik { color: #ca8a04; font-size: 1.3rem; }
+        .ekp-kotak-awas { background: #fff1f2; border: 1px dashed #fb7185; }
+        .ekp-kotak-awas > .ekp-ik { color: #e11d48; font-size: 1.3rem; }
+        .ekp-kotak-pikir p, .ekp-kotak-awas p { margin: 0; line-height: 1.6; }
+
+        /* Stasiun 2 */
+        .ekp-pilih {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem;
+            margin-bottom: .9rem;
+        }
+
+        .ekp-pil {
+            font-family: inherit;
+            cursor: pointer;
+            font-size: .82rem;
+            font-weight: 700;
+            color: #475569;
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: .8rem;
+            padding: .45rem .85rem;
+            transition: all .15s;
+        }
+
+        .ekp-pil:hover { border-color: var(--w, #2563eb); }
+
+        .ekp-pil.aktif {
+            color: #fff;
+            background: var(--w, #2563eb);
+            border-color: var(--w, #2563eb);
+        }
+
+        .ekp-pilih.kecil .ekp-pil { font-size: .76rem; padding: .35rem .7rem; }
+
+        .ekp-dapur {
+            --bola: 20px;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto auto auto minmax(0, 1fr);
+            align-items: end;
+            gap: .5rem;
+            padding: 1rem .8rem 1.1rem;
+            border-radius: 1.3rem;
+            border: 1px solid #fed7aa;
+            background:
+                linear-gradient(90deg, rgba(251, 146, 60, .1) 1px, transparent 1px) 0 0 / 22px 22px,
+                linear-gradient(rgba(251, 146, 60, .1) 1px, transparent 1px) 0 0 / 22px 22px,
+                linear-gradient(180deg, #fffbeb, #ffedd5);
+        }
+
+        .ekp-dapur .zona { display: flex; flex-direction: column; align-items: center; gap: .5rem; min-width: 0; }
+
+        .ekp-dapur .zona-label {
+            font-size: .72rem;
+            font-weight: 800;
+            color: #9a3412;
+            background: #fff;
+            border: 1px solid #fed7aa;
+            border-radius: 999px;
+            padding: .15rem .6rem;
+            white-space: nowrap;
+        }
+
+        .ekp-dapur .panah { color: #fb923c; font-size: 1.2rem; margin-bottom: 2.2rem; }
+        .ekp-dapur .isi { display: grid; grid-template-columns: repeat(4, var(--bola)); gap: 4px; justify-content: center; }
+
+        .ekp-dapur .mangkuk {
+            width: 100%;
+            max-width: 150px;
+            padding: 8px 8px 22px;
+            background: linear-gradient(180deg, #bae6fd, #7dd3fc);
+            border-radius: 12px 12px 70px 70px / 12px 12px 46px 46px;
+            border-top: 5px solid #38bdf8;
+        }
+
+        .ekp-dapur .adonan {
+            width: var(--bola);
+            height: var(--bola);
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #fffbeb, #fcd34d 70%);
+            border: 1.5px solid #f59e0b;
+            transition: transform .35s, opacity .35s;
+        }
+
+        .ekp-dapur .adonan.habis { transform: scale(.2) translateY(-20px); opacity: 0; }
+
+        .ekp-dapur .nampan {
+            width: 100%;
+            max-width: 150px;
+            padding: 8px;
+            background: #e2e8f0;
+            border: 3px solid #94a3b8;
+            border-radius: 10px;
+        }
+
+        .ekp-dapur .slot {
+            width: var(--bola);
+            height: var(--bola);
+            border-radius: 50%;
+            border: 1.5px dashed #cbd5e1;
+            display: grid;
+            place-items: center;
+        }
+
+        .ekp-dapur .kue {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 30% 35%, #5b3a1e 0 1.6px, transparent 2.2px),
+                radial-gradient(circle at 66% 58%, #5b3a1e 0 1.6px, transparent 2.2px),
+                radial-gradient(circle at 40% 38%, #f6c177, #c47a2c 80%);
+            transform: scale(0);
+            transition: transform .4s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .ekp-dapur .slot.jadi { border-color: transparent; }
+        .ekp-dapur .slot.jadi .kue { transform: scale(1); }
+
+        .ekp-dapur .oven {
+            width: 92px;
+            border-radius: 12px;
+            background: #334155;
+            padding: 6px;
+            box-shadow: 0 6px 0 #1e293b;
+            margin-bottom: 6px;
+        }
+
+        .ekp-dapur .oven-panel { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+        .ekp-dapur .oven-panel i { width: 10px; height: 10px; border-radius: 50%; background: #94a3b8; border: 2px solid #475569; }
+
+        .ekp-dapur .oven-panel span {
+            font-family: ui-monospace, monospace;
+            font-size: .62rem;
+            font-weight: 700;
+            color: #4ade80;
+            background: #0f172a;
+            border-radius: 4px;
+            padding: 0 4px;
+        }
+
+        .ekp-dapur .jendela {
+            height: 58px;
+            border-radius: 8px;
+            background: #1e293b;
+            border: 3px solid #64748b;
+            display: grid;
+            place-items: center;
+            transition: background .4s;
+        }
+
+        .ekp-dapur .jendela span {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 38%, #fde68a, #f59e0b 80%);
+            opacity: .35;
+        }
+
+        .ekp-dapur .oven.menyala .jendela { background: radial-gradient(circle at 50% 70%, #fdba74, #ea580c 55%, #7c2d12); }
+        .ekp-dapur .oven.menyala .jendela span { opacity: 1; animation: ekp-putar 1.6s linear infinite; }
+
+        .ekp-hitungan {
+            margin-top: .8rem;
+            border-radius: 1rem;
+            padding: .8rem .95rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            font-size: .86rem;
+            line-height: 1.65;
+            color: #334155;
+        }
+
+        .ekp-hitungan p { margin: 0; }
+        .ekp-hitungan .kode { font-family: ui-monospace, 'SFMono-Regular', monospace; font-size: .82rem; }
+
+        .ekp-padanan { display: grid; gap: .4rem; margin-top: 1rem; }
+
+        .ekp-padanan > div {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+            align-items: center;
+            gap: .5rem;
+            font-size: .82rem;
+        }
+
+        .ekp-padanan > div > .ekp-ik { color: #94a3b8; }
+        .ekp-padanan .dp, .ekp-padanan .km { border-radius: .7rem; padding: .4rem .7rem; font-weight: 700; }
+        .ekp-padanan .dp { background: #fff7ed; color: #9a3412; border: 1px solid #fed7aa; }
+        .ekp-padanan .km { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+        .ekp-padanan .km.merah { background: #fff1f2; color: #be123c; border-color: #fecdd3; }
+        .ekp-padanan .km.hijau { background: #f0fdfa; color: #0f766e; border-color: #99f6e4; }
+
+        /* Stasiun 3 */
+        .ekp-definisi {
+            position: relative;
+            border-radius: 1.3rem;
+            padding: 1.2rem 1.3rem 1.2rem 3.4rem;
+            background: linear-gradient(135deg, #f5f3ff, #fff);
+            border: 1.5px solid #ddd6fe;
+        }
+
+        .ekp-kutip {
+            position: absolute;
+            left: .9rem;
+            top: .1rem;
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1;
+            color: #c4b5fd;
+        }
+
+        .ekp-definisi p { margin: 0; font-size: 1rem; line-height: 1.75; color: #1e293b; }
+
+        .ekp-alur-def {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+            align-items: center;
+            gap: .8rem;
+            margin-top: 1rem;
+        }
+
+        .ekp-alur-def .kotak {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .15rem;
+            border-radius: 1.1rem;
+            padding: .8rem;
+            text-align: center;
+        }
+
+        .ekp-alur-def .kotak b { font-size: 1rem; }
+        .ekp-alur-def .kotak span { font-size: .78rem; }
+        .ekp-alur-def .kotak em { font-style: normal; font-weight: 800; font-size: .82rem; }
+        .ekp-alur-def .kotak.merah { background: #fff1f2; color: #9f1239; border: 1.5px solid #fecdd3; }
+        .ekp-alur-def .kotak.hijau { background: #ecfdf5; color: #065f46; border: 1.5px solid #a7f3d0; }
+
+        .ekp-alur-def .panah-besar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #7c3aed;
+            font-size: 1.8rem;
+        }
+
+        .ekp-alur-def .panah-besar small { font-size: .66rem; font-weight: 800; }
+
+        .ekp-satuan {
+            display: flex;
+            gap: .8rem;
+            align-items: flex-start;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            background: #ecfdf5;
+            border: 1.5px solid #a7f3d0;
+        }
+
+        .ekp-satuan .ikon {
+            width: 2.7rem;
+            height: 2.7rem;
+            flex-shrink: 0;
+            border-radius: .9rem;
+            display: grid;
+            place-items: center;
+            font-size: 1.4rem;
+            color: #fff;
+            background: #10b981;
+        }
+
+        .ekp-satuan p { margin: .2rem 0 0; font-size: .86rem; }
+        .ekp-satuan .besar { font-size: 1.05rem; font-weight: 800; color: #065f46; }
+
+        .ekp-tanda {
+            border-radius: 1.2rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            font-size: .86rem;
+        }
+
+        .ekp-tanda p { margin: .45rem 0 0; line-height: 1.55; }
+        .ekp-tanda .catatan { color: #64748b; font-size: .8rem; }
+
+        .lencana {
+            display: inline-grid;
+            place-items: center;
+            width: 1.4rem;
+            height: 1.4rem;
+            border-radius: .45rem;
+            font-weight: 800;
+            color: #fff;
+            margin-right: .25rem;
+        }
+
+        .lencana.merah { background: #e11d48; }
+        .lencana.hijau { background: #059669; }
+
+        .ekp-rumus-utama {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: .45rem;
+            margin-top: 1.1rem;
+            padding: 1rem;
+            border-radius: 1.2rem;
+            background: #1e1b4b;
+            color: #fff;
+            font-size: 1.08rem;
+            font-weight: 800;
+            overflow-x: auto;
+        }
+
+        .ekp-rumus-utama.biru { background: #083344; }
+        .ekp-rumus-utama.hijau { background: #064e3b; }
+        .ekp-rumus-utama.lebar { font-size: .98rem; }
+
+        .ekp-rumus-utama .grup {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            white-space: nowrap;
+        }
+
+        .ekp-kunci b { white-space: nowrap; }
+
+        .pecahan {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            line-height: 1.2;
+        }
+
+        .pecahan i {
+            font-style: normal;
+            padding: 0 .3rem;
+        }
+
+        .pecahan i:first-child { border-bottom: 2px solid currentColor; padding-bottom: .12rem; }
+        .pecahan i:last-child { padding-top: .12rem; }
+        .pecahan.kecil { font-size: .85em; font-weight: 800; }
+
+        /* Stasiun 4 */
+        .ekp-lab-molar {
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            gap: 1.2rem;
+            align-items: center;
+            margin-top: 1.1rem;
+            padding: 1rem;
+            border-radius: 1.3rem;
+            background: linear-gradient(135deg, #ecfeff, #f0f9ff);
+            border: 1.5px solid #a5f3fc;
+        }
+
+        .ekp-gelas-ukur svg { width: 100%; height: auto; display: block; }
+        #ekpCairan { transition: y .3s, height .3s, opacity .3s; }
+
+        .ekp-kendali { display: flex; flex-direction: column; gap: .9rem; }
+
+        .ekp-label-slider {
+            display: flex;
+            justify-content: space-between;
+            gap: .5rem;
+            font-size: .8rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: .35rem;
+        }
+
+        .ekp-label-slider b { color: var(--w, #2563eb); }
+
+        .ekp-wadah input[type="range"] {
+            width: 100%;
+            accent-color: var(--w, #2563eb);
+            height: 1.5rem;
+        }
+
+        .ekp-hasil-molar {
+            border-radius: 1rem;
+            padding: .8rem 1rem;
+            background: #fff;
+            border: 1.5px solid #a5f3fc;
+            font-size: .9rem;
+            line-height: 1.6;
+        }
+
+        .ekp-hasil-molar strong { font-size: 1.3rem; color: #0e7490; }
+
+        .ekp-contoh,
+        .ekp-soal {
+            position: relative;
+            border-radius: 1.2rem;
+            padding: 1.3rem 1rem 1rem;
+            background: #fff;
+            border: 1.5px solid var(--w-muda);
+            font-size: .88rem;
+            line-height: 1.6;
+        }
+
+        .ekp-contoh p, .ekp-soal p { margin: 0; }
+
+        .ekp-contoh-label {
+            position: absolute;
+            top: -.7rem;
+            left: 1rem;
+            font-size: .72rem;
+            font-weight: 800;
+            color: #fff;
+            background: var(--w);
+            border-radius: 999px;
+            padding: .15rem .7rem;
+        }
+
+        .ekp-contoh details { margin-top: .6rem; }
+
+        .ekp-contoh summary {
+            cursor: pointer;
+            font-weight: 800;
+            color: var(--w);
+        }
+
+        .ekp-contoh ol { margin: .4rem 0 0; padding-left: 1.2rem; }
+
+        /* Stasiun 5 */
+        .ekp-reaksi-umum {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: .5rem;
+            margin: .3rem 0 1rem;
+        }
+
+        .ekp-reaksi-umum .zat {
+            font-size: 1.3rem;
+            font-weight: 800;
+            border-radius: 1rem;
+            padding: .45rem .9rem;
+        }
+
+        .ekp-reaksi-umum .zat i { font-style: italic; font-weight: 700; margin-right: .1rem; }
+        .ekp-reaksi-umum .zat.merah { background: #fff1f2; color: #be123c; border: 1.5px solid #fecdd3; }
+        .ekp-reaksi-umum .zat.hijau { background: #ecfdf5; color: #047857; border: 1.5px solid #a7f3d0; }
+        .ekp-reaksi-umum .op { font-size: 1.3rem; font-weight: 800; color: #64748b; }
+        .ekp-reaksi-umum .panah { color: #059669; font-size: 1.6rem; }
+
+        .ekp-tiga-hubungan {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: .6rem;
+        }
+
+        .ekp-tiga-hubungan div {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: .35rem;
+            border-radius: 1rem;
+            padding: .7rem .8rem;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            font-size: .84rem;
+            font-weight: 600;
+        }
+
+        .ekp-tiga-hubungan .no {
+            width: 1.4rem;
+            height: 1.4rem;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: .72rem;
+            font-weight: 800;
+            color: #fff;
+            background: #059669;
+        }
+
+        .ekp-kunci {
+            margin-top: 1rem;
+            text-align: center;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #fef9c3, #fef3c7);
+            border: 2px solid #facc15;
+        }
+
+        .ekp-kunci > span {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            font-size: .72rem;
+            font-weight: 800;
+            color: #a16207;
+            background: #fff;
+            border-radius: 999px;
+            padding: .15rem .6rem;
+        }
+
+        .ekp-kunci p { margin: .5rem 0 .3rem; font-size: .88rem; color: #713f12; }
+        .ekp-kunci b { font-size: 1.25rem; color: #422006; }
+
+        .ekp-mesin {
+            margin-top: 1.2rem;
+            border-radius: 1.3rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border: 1.5px solid #d1fae5;
+        }
+
+        .ekp-mesin-kepala {
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+            font-size: 1rem;
+            color: #065f46;
+        }
+
+        .ekp-mesin-kepala .ekp-ik { font-size: 1.3rem; }
+        .ekp-mesin .ekp-pilih { margin: .8rem 0; }
+
+        .ekp-mesin-isi {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+            gap: 1rem;
+        }
+
+        #ekpGrafik {
+            width: 100%;
+            height: 240px;
+            display: block;
+            background: #fff;
+            border-radius: 1rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .ekp-legenda {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem .8rem;
+            margin-top: .5rem;
+            font-size: .76rem;
+            font-weight: 700;
+        }
+
+        .ekp-legenda span { display: inline-flex; align-items: center; gap: .3rem; }
+        .ekp-legenda i { width: 16px; height: 4px; border-radius: 2px; display: inline-block; }
+
+        .ekp-batang {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: .5rem;
+            margin-top: .8rem;
+        }
+
+        .ekp-batang > div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .25rem;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: .9rem;
+            padding: .5rem .3rem;
+            font-size: .72rem;
+        }
+
+        .ekp-batang .tiang {
+            height: 80px;
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .ekp-batang .tiang i {
+            display: block;
+            width: 26px;
+            border-radius: 6px 6px 0 0;
+            transition: height .35s;
+        }
+
+        .ekp-batang b { font-size: .8rem; }
+        .ekp-batang small { color: #64748b; }
+
+        .ekp-soal { margin-top: 1.4rem; }
+        .ekp-langkah-soal { display: grid; gap: .45rem; margin: .8rem 0; }
+
+        .ekp-langkah-soal .lk {
+            display: none;
+            border-radius: .9rem;
+            padding: .6rem .8rem;
+            background: #ecfdf5;
+            border-left: 4px solid #10b981;
+            animation: ekp-muncul .4s ease;
+        }
+
+        .ekp-langkah-soal .lk.tampil { display: block; }
+
+        @keyframes ekp-muncul {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: none; }
+        }
+
+        /* Stasiun 6 */
+        .ekp-rangkuman {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: .7rem;
+        }
+
+        .ekp-rangkuman div {
+            display: flex;
+            flex-direction: column;
+            gap: .4rem;
+            border-radius: 1.1rem;
+            padding: .85rem;
+            background: #fdf2f8;
+            border: 1px solid #fbcfe8;
+        }
+
+        .ekp-rangkuman .ekp-ik { font-size: 1.5rem; color: #db2777; }
+        .ekp-rangkuman p { margin: 0; font-size: .84rem; line-height: 1.5; font-weight: 600; }
+
+        .ekp-kuis { display: grid; gap: 1rem; margin-top: 1.2rem; }
+
+        .ekp-soal-kuis {
+            border-radius: 1.2rem;
+            padding: 1rem;
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+        }
+
+        .ekp-soal-kuis > p { margin: 0 0 .7rem; font-weight: 700; font-size: .92rem; line-height: 1.55; }
+        .ekp-soal-kuis > p b { color: #db2777; margin-right: .3rem; }
+
+        .ekp-opsi-daftar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+
+        .ekp-opsi {
+            font-family: inherit;
+            text-align: left;
+            cursor: pointer;
+            font-size: .86rem;
+            font-weight: 600;
+            color: #334155;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: .9rem;
+            padding: .6rem .8rem;
+            transition: all .15s;
+        }
+
+        .ekp-opsi:hover:not(:disabled) { border-color: #f472b6; background: #fdf2f8; }
+        .ekp-opsi.benar { background: #ecfdf5; border-color: #10b981; color: #065f46; }
+        .ekp-opsi.salah { background: #fff1f2; border-color: #fb7185; color: #9f1239; }
+        .ekp-opsi:disabled { cursor: default; }
+
+        .ekp-umpan {
+            margin-top: .6rem;
+            font-size: .84rem;
+            line-height: 1.55;
+            border-radius: .8rem;
+            padding: .55rem .75rem;
+        }
+
+        .ekp-umpan.benar { background: #ecfdf5; color: #065f46; }
+        .ekp-umpan.salah { background: #fff1f2; color: #9f1239; }
+
+        .ekp-skor {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .5rem;
+            font-size: .85rem;
+            font-weight: 700;
+            color: #9d174d;
+        }
+
+        .ekp-hadiah {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.2rem;
+            border-radius: 1.4rem;
+            padding: 1.1rem 1.2rem;
+            color: #fff;
+            background: linear-gradient(135deg, #059669, #0d9488 50%, #2563eb);
+            animation: ekp-muncul .5s ease;
+        }
+
+        .ekp-hadiah > div { flex: 1 1 220px; }
+        .ekp-hadiah b { font-size: 1.08rem; }
+        .ekp-hadiah p { margin: .2rem 0 0; font-size: .86rem; color: rgba(255, 255, 255, .9); }
+
+        .ekp-hadiah-lencana {
+            width: 3.6rem;
+            height: 3.6rem;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 2rem;
+            color: #f59e0b;
+            background: #fff;
+            box-shadow: 0 0 0 6px rgba(255, 255, 255, .25);
+            animation: ekp-ketuk 1.6s ease-in-out infinite;
+        }
+
+        .ekp-konfeti {
+            position: fixed;
+            top: -12px;
+            z-index: 100;
+            width: 9px;
+            height: 14px;
+            border-radius: 2px;
+            pointer-events: none;
+            animation: ekp-jatuh 2.6s linear forwards;
+        }
+
+        @keyframes ekp-jatuh {
+            to { transform: translateY(105vh) rotate(720deg); opacity: .4; }
+        }
+
+        .ekp-pos-lain {
+            align-items: center;
+            text-align: center;
+            background: #fff;
+            border-radius: 1.8rem;
+            padding: 2rem 1.3rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .ekp-pos-lain h2 { margin: 0; font-size: 1.4rem; font-weight: 800; color: #0f172a; }
+        .ekp-pos-lain p { margin: 0; color: #64748b; max-width: 32rem; line-height: 1.6; }
+
+        .ekp-gembok {
+            width: 3.6rem;
+            height: 3.6rem;
+            border-radius: 1.2rem;
+            display: grid;
+            place-items: center;
+            font-size: 1.9rem;
+            color: #fff;
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
+        }
+
+        /* Responsif materi */
+        @media (max-width: 900px) {
+            .ekp-rangkuman { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .ekp-mesin-isi { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 640px) {
+            .ekp-dua { grid-template-columns: 1fr; }
+            .ekp-stasiun { padding: 1.1rem 1rem 1.2rem; border-radius: 1.4rem; }
+            .ekp-banner { padding: 1.2rem 1.1rem; border-radius: 1.5rem; }
+            .ekp-banner-taman { opacity: .45; }
+            .ekp-lab-molar { grid-template-columns: 1fr; }
+            .ekp-gelas-ukur { max-width: 190px; margin: 0 auto; }
+            .ekp-angka4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .ekp-opsi-daftar { grid-template-columns: 1fr; }
+            .ekp-alur-def { grid-template-columns: 1fr; }
+            .ekp-alur-def .panah-besar { flex-direction: row; gap: .4rem; font-size: 1.4rem; }
+            .ekp-alur-def .panah-besar .ekp-ik { transform: rotate(90deg); }
+            .ekp-kunci b { font-size: 1rem; }
+            .ekp-reaksi-umum { gap: .3rem; }
+            .ekp-reaksi-umum .zat { font-size: 1rem; padding: .35rem .6rem; }
+            .ekp-reaksi-umum .op { font-size: 1rem; }
+            .ekp-definisi { padding-left: 2.6rem; }
+            .ekp-definisi p { font-size: .93rem; }
+            .ekp-kutip { left: .55rem; font-size: 3.2rem; }
+            .ekp-rumus-utama { font-size: .9rem; row-gap: .7rem; }
+            .ekp-rumus-utama.lebar { font-size: .82rem; }
+            .ekp-stasiun-nav { top: 58px; }
+        }
+
+        @media (max-width: 520px) {
+            .ekp-dapur { --bola: 14px; gap: .25rem; padding: .8rem .45rem .9rem; }
+            .ekp-dapur .isi { gap: 3px; }
+            .ekp-dapur .oven { width: 66px; }
+            .ekp-dapur .jendela { height: 42px; }
+            .ekp-dapur .panah { font-size: .9rem; margin-bottom: 1.6rem; }
+            .ekp-dapur .zona-label { font-size: .62rem; padding: .1rem .4rem; }
+            .ekp-rangkuman { grid-template-columns: 1fr; }
+            .ekp-padanan > div { font-size: .76rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .ekp-jarum-menit, .ekp-jarum-jam, .ekp-gelas span, .ekp-ajakan-ikon,
+            .ekp-hadiah-lencana, .ekp-dapur .oven.menyala .jendela span { animation: none; }
+        }
+
+        /* ---------- Jejak kembali ke peta ---------- */
+        .ekp-jejak {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: .6rem;
+        }
+
+        .ekp-ke-peta {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            text-decoration: none;
+            font-size: .88rem;
+            font-weight: 800;
+            color: #14532d;
+            background: #fff;
+            border: 2px solid #bbf7d0;
+            border-radius: 999px;
+            padding: .45rem .95rem .45rem .5rem;
+            box-shadow: 0 8px 16px -12px rgba(20, 83, 45, .6);
+            transition: transform .15s, border-color .15s;
+        }
+
+        .ekp-ke-peta:hover { transform: translateY(-2px); border-color: #4ade80; }
+        .ekp-ke-peta:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+
+        .ekp-ke-peta .bulat {
+            width: 1.8rem;
+            height: 1.8rem;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: #16a34a;
+        }
+
+        .ekp-remah {
+            font-size: .8rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .ekp-remah b { color: #1d4ed8; }
+        a.ekp-tombol { text-decoration: none; }
+
+        /* ================== POS 4: MENARA ORDE ================== */
+        .ekp-banner.menara {
+            background:
+                radial-gradient(circle at 12% 20%, rgba(255, 255, 255, .22), transparent 35%),
+                linear-gradient(135deg, #0891b2 0%, #4f46e5 55%, #9333ea 100%);
+            box-shadow: 0 24px 44px -28px rgba(79, 70, 229, .9);
+        }
+
+        .ekp-banner.menara .ekp-sapa p strong { color: #4f46e5; }
+        .ekp-lift { animation: ekp-lift 6s ease-in-out infinite; }
+
+        @keyframes ekp-lift {
+            0%, 15% { transform: translateY(0); }
+            35%, 50% { transform: translateY(-46px); }
+            70%, 85% { transform: translateY(-92px); }
+            100% { transform: translateY(0); }
+        }
+
+        .ekp-garis-banner { stroke-dasharray: 80; stroke-dashoffset: 80; animation: ekp-gores 3s ease-in-out infinite; }
+
+        @keyframes ekp-gores {
+            0% { stroke-dashoffset: 80; }
+            50%, 100% { stroke-dashoffset: 0; }
+        }
+
+        .ekp-tombol.kecil { font-size: .84rem; padding: .6rem 1rem; }
+        .ekp-tombol.warna { background: var(--w); color: #fff; box-shadow: 0 8px 16px -10px var(--w); }
+        .ekp-tombol.indigo { background: #4f46e5; color: #fff; box-shadow: 0 8px 16px -10px #4f46e5; }
+
+        .ekp-mesin.biru { border-color: #bfdbfe; }
+        .ekp-mesin.biru .ekp-mesin-kepala { color: #1d4ed8; }
+        .ekp-mesin.oranye { border-color: #fed7aa; }
+        .ekp-mesin.oranye .ekp-mesin-kepala { color: #9a3412; }
+        .ekp-mesin.hijau { border-color: #a7f3d0; }
+        .ekp-mesin.indigo { border-color: #c7d2fe; }
+        .ekp-mesin.indigo .ekp-mesin-kepala { color: #3730a3; }
+
+        .ekp-lipat {
+            margin-top: .8rem;
+            border-radius: 1rem;
+            padding: .7rem .95rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            font-size: .88rem;
+            line-height: 1.65;
+        }
+
+        .ekp-lipat summary { cursor: pointer; font-weight: 800; color: var(--w, #2563eb); }
+        .ekp-lipat ol { margin: .5rem 0 0; padding-left: 1.2rem; }
+
+        .ekp-rujukan { display: flex; align-items: center; gap: .4rem; margin: 1.2rem 0 0; font-size: .76rem; color: #64748b; }
+
+        /* Tabel */
+        .ekp-tabel-bungkus {
+            overflow-x: auto;
+            border-radius: 1rem;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            margin-top: .8rem;
+        }
+
+        .ekp-tabel { width: 100%; border-collapse: collapse; font-size: .86rem; min-width: 380px; }
+
+        .ekp-tabel th {
+            text-align: center;
+            font-size: .74rem;
+            font-weight: 800;
+            color: #1e3a8a;
+            background: #eff6ff;
+            padding: .6rem .5rem;
+        }
+
+        .ekp-tabel td {
+            text-align: center;
+            padding: .55rem .5rem;
+            border-top: 1px solid #f1f5f9;
+            font-weight: 600;
+            transition: background .25s, color .25s;
+        }
+
+        .ekp-tabel.ringkas { min-width: 560px; }
+        .ekp-tabel.ringkas b { display: inline-grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; color: #fff; }
+        .ekp-tabel .o0 { background: #0891b2; } .ekp-tabel .o1 { background: #7c3aed; } .ekp-tabel .o2 { background: #db2777; }
+        .ekp-tabel tr.pilih td { background: #fefce8; }
+        .ekp-tabel td.beda { background: #fde68a !important; color: #78350f; font-weight: 800; }
+        .ekp-tabel td.sama { background: #f1f5f9 !important; color: #64748b; }
+        .ekp-tabel td.pakai { background: #dcfce7 !important; color: #065f46; font-weight: 800; }
+
+        .ekp-tabel.isian input {
+            width: 100%;
+            max-width: 110px;
+            font-family: inherit;
+            font-size: .88rem;
+            font-weight: 700;
+            text-align: center;
+            border: 1.5px solid #c7d2fe;
+            border-radius: .6rem;
+            padding: .4rem .3rem;
+            background: #f8faff;
+        }
+
+        .ekp-tabel.isian input:focus-visible { outline: 3px solid #a5b4fc; outline-offset: 1px; }
+
+        /* Langkah bertahap */
+        .ekp-langkah-bertahap { display: grid; grid-template-columns: minmax(0, 1fr); gap: .45rem; margin: .8rem 0; }
+        .ekp-langkah-bertahap .lk, .ekp-derivasi .lk { display: none; }
+        .ekp-langkah-bertahap .lk.tampil, .ekp-derivasi .lk.tampil { display: block; animation: ekp-muncul .4s ease; }
+
+        .ekp-langkah-bertahap .lk {
+            border-radius: .9rem;
+            padding: .65rem .85rem;
+            background: var(--w-muda);
+            border-left: 4px solid var(--w);
+            font-size: .9rem;
+            line-height: 1.65;
+            overflow-x: auto;
+        }
+
+        .ekp-langkah-bertahap .rumus-baris { display: block; margin: .3rem 0; font-weight: 800; font-size: .98rem; overflow-x: auto; white-space: nowrap; }
+        #ekpTebak .ekp-pil:disabled { opacity: 1; cursor: default; }
+
+        .ekp-langkah-bertahap .lk.akhir { background: var(--w); color: #fff; border-left-color: #fde047; }
+
+        /* Lantai 1: laboratorium grafik */
+        .ekp-labgrafik {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+            gap: 1rem;
+        }
+
+        .ekp-labgrafik .kiri { display: flex; flex-direction: column; gap: .75rem; min-width: 0; }
+
+        #ekpLabGelas {
+            width: 100%;
+            height: 170px;
+            display: block;
+            border-radius: 1.1rem;
+            background: radial-gradient(circle at 50% 35%, #1e3a8a, #0f172a);
+        }
+
+        .ekp-labgrafik .kanan {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: .6rem;
+            min-width: 0;
+        }
+
+        .ekp-panel-grafik {
+            margin: 0;
+            border-radius: 1rem;
+            padding: .5rem .6rem .4rem;
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            transition: border-color .3s, box-shadow .3s;
+        }
+
+        .ekp-panel-grafik figcaption {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .5rem;
+            font-size: .8rem;
+            font-weight: 800;
+            color: #334155;
+        }
+
+        .ekp-panel-grafik canvas { width: 100%; height: 118px; display: block; }
+
+        .lencana-lurus {
+            font-size: .68rem;
+            font-weight: 800;
+            color: #065f46;
+            background: #d1fae5;
+            border-radius: 999px;
+            padding: .1rem .55rem;
+            opacity: 0;
+            transform: scale(.8);
+            transition: opacity .3s, transform .3s;
+        }
+
+        .ekp-panel-grafik.lurus { border-color: #10b981; box-shadow: 0 0 0 4px rgba(16, 185, 129, .15); }
+        .ekp-panel-grafik.lurus .lencana-lurus { opacity: 1; transform: scale(1); }
+
+        /* Lantai 2–4: stasiun orde */
+        .ekp-orde-atas {
+            display: grid;
+            grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+            gap: 1rem;
+        }
+
+        .ekp-kartu-reaksi {
+            display: flex;
+            flex-direction: column;
+            gap: .2rem;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            background: var(--w-muda);
+            border: 1.5px solid var(--w-muda);
+        }
+
+        .ekp-kartu-reaksi .lbl { font-size: .7rem; font-weight: 800; color: var(--w); margin-top: .3rem; }
+        .ekp-kartu-reaksi b { font-size: 1rem; color: #0f172a; }
+        .ekp-kartu-reaksi b.besar { font-size: 1.5rem; }
+        .ekp-kartu-reaksi p { margin: .5rem 0 0; font-size: .86rem; line-height: 1.55; }
+
+        .ekp-derivasi {
+            border-radius: 1.2rem;
+            padding: 1rem;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-width: 0;
+        }
+
+        .ekp-derivasi .judul-derivasi { display: flex; align-items: center; gap: .4rem; font-weight: 800; font-size: .9rem; color: #fff; margin-bottom: .6rem; }
+        .ekp-derivasi .daftar { display: grid; gap: .45rem; margin-bottom: .8rem; }
+
+        .ekp-derivasi .lk {
+            border-radius: .8rem;
+            padding: .55rem .75rem;
+            background: rgba(255, 255, 255, .06);
+            border-left: 3px solid var(--w);
+            font-size: .82rem;
+        }
+
+        .ekp-derivasi .lk b { color: #cbd5e1; font-weight: 700; }
+
+        .ekp-derivasi .rumus-baris {
+            display: block;
+            margin-top: .25rem;
+            font-size: 1rem;
+            font-weight: 800;
+            color: #fde047;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .ekp-linear {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .7rem;
+            margin-top: 1rem;
+            border-radius: 1.3rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #fefce8, #fff7ed);
+            border: 2px solid #facc15;
+        }
+
+        .ekp-linear .rumus-besar {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: .35rem;
+            font-size: clamp(1.15rem, 3.4vw, 1.6rem);
+            font-weight: 800;
+            color: #422006;
+        }
+
+        .peta-ymxc { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .4rem; }
+        .peta-ymxc .ymxc { font-weight: 800; font-size: .95rem; color: #713f12; margin-right: .3rem; }
+
+        .chip-peta {
+            font-size: .82rem;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: .25rem .7rem;
+            background: #fff;
+            border: 2px solid var(--c);
+            color: #0f172a;
+        }
+
+        .chip-peta b { color: var(--c); }
+
+        .ekp-ciri,
+        .ekp-fenomena-daftar,
+        .ekp-soal-orde,
+        .ekp-soal-besar {
+            position: relative;
+            border-radius: 1.2rem;
+            padding: 1.3rem 1rem 1rem;
+            background: #fff;
+            border: 1.5px solid var(--w-muda);
+        }
+
+        .ekp-ciri canvas { width: 100%; height: 170px; display: block; border-radius: .8rem; background: #f8fafc; }
+        .ekp-ciri p { margin: .6rem 0 0; font-size: .86rem; line-height: 1.6; }
+        .ekp-fenomena-daftar { display: flex; flex-direction: column; gap: .6rem; }
+
+        .fenomena-kecil {
+            display: flex;
+            gap: .7rem;
+            align-items: flex-start;
+            border-radius: .9rem;
+            padding: .6rem .7rem;
+            background: #f8fafc;
+        }
+
+        .fenomena-kecil .emoji { font-size: 1.6rem; line-height: 1; }
+        .fenomena-kecil b { font-size: .88rem; color: #0f172a; }
+        .fenomena-kecil p { margin: .15rem 0 0; font-size: .8rem; line-height: 1.5; color: #475569; }
+        .fenomena-kecil .pers { font-weight: 800; color: var(--w); }
+
+        .ekp-soal-orde, .ekp-soal-besar { margin-top: 1.3rem; font-size: .9rem; line-height: 1.6; }
+        .ekp-soal-orde > p, .ekp-soal-besar > p { margin: 0; }
+
+        .ekp-kalkulator {
+            margin-top: 1rem;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border: 1.5px dashed var(--w);
+        }
+
+        .ekp-kalkulator .ekp-mesin-kepala { color: var(--w); }
+        .ekp-kalkulator .isian { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; margin-top: .6rem; }
+        .ekp-kalkulator label { display: flex; flex-direction: column; gap: .25rem; font-size: .76rem; font-weight: 800; color: #475569; }
+
+        .ekp-kalkulator input {
+            font-family: inherit;
+            font-size: .95rem;
+            font-weight: 700;
+            border: 1.5px solid #cbd5e1;
+            border-radius: .7rem;
+            padding: .5rem .6rem;
+            background: #fff;
+            width: 100%;
+        }
+
+        .ekp-kalkulator input:focus-visible { outline: 3px solid var(--w-muda); border-color: var(--w); }
+
+        .ekp-meteran-sisa { height: 10px; margin-top: .45rem; border-radius: 999px; background: #e2e8f0; overflow: hidden; }
+        .ekp-meteran-sisa i { display: block; height: 100%; border-radius: inherit; transition: width .3s; }
+
+        /* Lantai 5: waktu paruh */
+        .ekp-tiga-paruh { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; }
+
+        .ekp-tiga-paruh > div {
+            border-radius: 1.1rem;
+            padding: .9rem;
+            text-align: center;
+            border: 1.5px solid;
+        }
+
+        .ekp-tiga-paruh span { font-size: .72rem; font-weight: 800; }
+        .ekp-tiga-paruh b { display: flex; align-items: center; justify-content: center; gap: .3rem; font-size: 1.15rem; margin: .4rem 0; }
+        .ekp-tiga-paruh p { margin: 0; font-size: .8rem; line-height: 1.5; }
+        .ekp-tiga-paruh .o0 { background: #ecfeff; border-color: #67e8f9; color: #155e75; }
+        .ekp-tiga-paruh .o1 { background: #f5f3ff; border-color: #c4b5fd; color: #5b21b6; }
+        .ekp-tiga-paruh .o2 { background: #fdf2f8; border-color: #f9a8d4; color: #9d174d; }
+
+        #ekpParuhGrafik {
+            width: 100%;
+            height: 220px;
+            display: block;
+            margin-top: .6rem;
+            background: #fff;
+            border-radius: 1rem;
+            border: 1px solid #fed7aa;
+        }
+
+        .ekp-pita-paruh { display: flex; gap: 3px; margin-top: .6rem; height: 34px; }
+
+        .ekp-pita-paruh span {
+            display: grid;
+            place-items: center;
+            font-size: .68rem;
+            font-weight: 800;
+            color: #fff;
+            border-radius: .5rem;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: ekp-muncul .4s ease;
+        }
+
+        .ekp-galeri-paruh { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; margin-top: 1rem; }
+
+        .ekp-galeri-paruh > div {
+            border-radius: 1.1rem;
+            padding: .85rem;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+        }
+
+        .ekp-galeri-paruh .emoji { font-size: 1.6rem; }
+        .ekp-galeri-paruh b { display: block; margin-top: .2rem; color: #7c2d12; }
+        .ekp-galeri-paruh p { margin: .2rem 0 0; font-size: .82rem; line-height: 1.5; }
+
+        /* Lantai 6: detektif */
+        .ekp-detektif-kepala { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; }
+        .ekp-detektif-kepala .ekp-mesin-kepala { color: #065f46; }
+        .ekp-detektif-kepala .skor { font-size: .86rem; font-weight: 700; color: #065f46; background: #d1fae5; border-radius: 999px; padding: .25rem .8rem; }
+
+        .ekp-detektif {
+            display: grid;
+            grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+            gap: 1rem;
+            margin-top: .4rem;
+        }
+
+        .ekp-detektif .ekp-tabel { min-width: 200px; }
+        .ekp-detektif .ekp-pilih { margin: .8rem 0 .5rem; }
+
+        #ekpGrafikKasus {
+            width: 100%;
+            height: 220px;
+            display: block;
+            background: #fff;
+            border-radius: 1rem;
+            border: 1px solid #d1fae5;
+        }
+
+        .ekp-tebak-judul { margin: 1rem 0 .5rem; font-weight: 800; color: #065f46; }
+        #ekpTebak .ekp-pil.benar { background: #059669; border-color: #059669; color: #fff; }
+        #ekpTebak .ekp-pil.salah { background: #e11d48; border-color: #e11d48; color: #fff; }
+
+        /* Responsif pos 4 */
+        @media (max-width: 900px) {
+            .ekp-labgrafik, .ekp-orde-atas, .ekp-detektif { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 640px) {
+            .ekp-tiga-paruh, .ekp-galeri-paruh { grid-template-columns: 1fr; }
+            .ekp-kalkulator .isian { grid-template-columns: 1fr; }
+            .ekp-kartu-reaksi b.besar { font-size: 1.25rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .ekp-lift, .ekp-garis-banner { animation: none; }
+            .ekp-garis-banner { stroke-dashoffset: 0; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ekp-latar" aria-hidden="true"></div>
+
+    <!-- ============================================================
+         BILAH ATAS: logo, XP, dan tombol kembali ke dashboard (index.html)
+         ============================================================ -->
+    <nav class="ekp-nav" aria-label="Navigasi utama">
+        <div class="ekp-nav-isi">
+            <a href="index.html" class="ekp-logo" aria-label="EduKinetika, ke dashboard">
+                <span class="ekp-logo-ikon"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M221.69,199.77,160,96.92V40h8a8,8,0,0,0,0-16H88a8,8,0,0,0,0,16h8V96.92L34.31,199.77A16,16,0,0,0,48,224H208a16,16,0,0,0,13.72-24.23Zm-90.08-42.91c-15.91-8.05-31.05-12.32-45.22-12.81l24.47-40.8A7.93,7.93,0,0,0,112,99.14V40h32V99.14a7.93,7.93,0,0,0,1.14,4.11L183.36,167C171.4,169.34,154.29,168.34,131.61,156.86Z"/></svg></span>
+                <span class="ekp-logo-teks">Edu<b>Kinetika</b></span>
+            </a>
+            <div class="ekp-xp" aria-label="Poin pengalaman">
+                <span class="ekp-xp-ikon"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"/></svg></span>
+                <div class="ekp-xp-teks">
+                    <div class="ekp-xp-baris"><span id="ekpNamaLevel">Penjelajah Pemula</span><span><span
+                                id="ekpAngkaXP">0</span> XP</span></div>
+                    <div class="ekp-xp-bar"><i id="ekpBarXP"></i></div>
+                </div>
+            </div>
+            <a href="index.html" class="ekp-kembali"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a8,8,0,0,1-8,8H120v64a8,8,0,0,1-13.66,5.66l-72-72a8,8,0,0,1,0-11.32l72-72A8,8,0,0,1,120,56v64h96A8,8,0,0,1,224,128Z"/></svg><span>Kembali ke Dashboard</span></a>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+         ISI HALAMAN: materi Pos 4 Menara Orde
+         ============================================================ -->
+    <main class="ekp-wadah">
+
+        <div class="ekp-jejak">
+            <a href="ekspedisi-kota-kinetika.html" class="ekp-ke-peta"><span class="bulat"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M228.92,49.69a8,8,0,0,0-6.86-1.45L160.93,63.52,99.58,32.84a8,8,0,0,0-5.52-.6l-64,16A8,8,0,0,0,24,56V200a8,8,0,0,0,9.94,7.76l61.13-15.28,61.35,30.68A8.15,8.15,0,0,0,160,224a8,8,0,0,0,1.94-.24l64-16A8,8,0,0,0,232,200V56A8,8,0,0,0,228.92,49.69ZM96,176a8,8,0,0,0-1.94.24L40,189.75V62.25L95.07,48.48l.93.46Zm120,17.75-55.07,13.77-.93-.46V80a8,8,0,0,0,1.94-.23L216,66.25Z"/></svg></span> Kembali ke Peta Ekspedisi</a>
+            <span class="ekp-remah">Peta Kota Kinetika › <b>Menara Orde</b></span>
+        </div>
+
+        <section class="ekp-pos" id="ekpPos4" aria-label="Pos 4 Menara Orde: Orde Reaksi dan Waktu Paruh">
+
+            <!-- Banner pos -->
+            <div class="ekp-banner menara">
+                <svg class="ekp-banner-taman" viewBox="0 0 600 220" preserveAspectRatio="xMaxYMax meet" aria-hidden="true">
+                    <g transform="translate(430 18)">
+                        <rect x="-50" y="30" width="100" height="172" rx="8" fill="#e0f2fe" />
+                        <path d="M-60 34 L0 -10 L60 34 Z" fill="#7dd3fc" />
+                        <circle cx="0" cy="12" r="7" fill="#fde047" />
+                        <rect x="-40" y="50" width="80" height="38" rx="6" fill="#fce7f3" />
+                        <rect x="-40" y="96" width="80" height="38" rx="6" fill="#ede9fe" />
+                        <rect x="-40" y="142" width="80" height="38" rx="6" fill="#cffafe" />
+                        <text x="0" y="75" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="15" font-weight="800" fill="#db2777">Orde 2</text>
+                        <text x="0" y="121" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="15" font-weight="800" fill="#7c3aed">Orde 1</text>
+                        <text x="0" y="167" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="15" font-weight="800" fill="#0891b2">Orde 0</text>
+                        <rect class="ekp-lift" x="44" y="146" width="16" height="30" rx="4" fill="#f97316" />
+                        <line x1="52" y1="34" x2="52" y2="198" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4" />
+                    </g>
+                    <g transform="translate(300 60)">
+                        <rect x="0" y="0" width="84" height="64" rx="10" fill="#fff" opacity=".95" />
+                        <path d="M10 12 L10 54 L76 54" stroke="#94a3b8" stroke-width="2" fill="none" />
+                        <path class="ekp-garis-banner" d="M12 16 L74 50" stroke="#0891b2" stroke-width="4" fill="none" stroke-linecap="round" />
+                    </g>
+                    <path d="M0 205 C160 192 300 214 460 198 S560 200 600 204 V220 H0 Z" fill="#4ade80" opacity=".45" />
+                </svg>
+                <div class="ekp-banner-isi">
+                    <p class="ekp-banner-pos"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M128,16a88.1,88.1,0,0,0-88,88c0,75.3,80,132.17,83.41,134.55a8,8,0,0,0,9.18,0C136,236.17,216,179.3,216,104A88.1,88.1,0,0,0,128,16Zm0,56a32,32,0,1,1-32,32A32,32,0,0,1,128,72Z"/></svg> Pos 4 dari 6 · Menara Orde</p>
+                    <h2>Reaksi Orde Nol, Satu, Dua dan Waktu Paruh</h2>
+                    <p class="ekp-banner-tujuan"><strong>Tujuan belajar:</strong> menurunkan bentuk garis lurus persamaan laju
+                        orde 0, 1, dan 2, mengenali orde dari bentuk grafik, menghitung konsentrasi dan waktu paruh, serta
+                        menentukan orde, rumus laju, dan nilai k dari data percobaan.</p>
+                    <div class="ekp-sapa">
+                        <span class="ekp-sapa-tokoh" aria-hidden="true"><svg viewBox="0 0 48 66" xmlns="http://www.w3.org/2000/svg"><ellipse cx="22" cy="63" rx="13" ry="2.6" fill="rgba(15,23,42,.2)"/><rect x="15" y="48" width="5.5" height="13" rx="2" fill="#334155"/><rect x="23.5" y="48" width="5.5" height="13" rx="2" fill="#334155"/><ellipse cx="17" cy="61.5" rx="4.5" ry="2.2" fill="#1e293b"/><ellipse cx="27" cy="61.5" rx="4.5" ry="2.2" fill="#1e293b"/><path d="M13 27 Q22 22 31 27 L33 51 Q22 54 11 51 Z" fill="#fff" stroke="#94a3b8" stroke-width="1.2"/><path d="M18.5 25 L22 33 L25.5 25 Z" fill="#3b82f6"/><path d="M22 33 V50" stroke="#cbd5e1" stroke-width="1"/><circle cx="22" cy="38" r=".9" fill="#94a3b8"/><circle cx="22" cy="43" r=".9" fill="#94a3b8"/><rect x="24.5" y="37" width="5" height="3" rx="1" fill="#2563eb"/><rect x="14.5" y="42" width="5" height="5" rx="1" fill="none" stroke="#cbd5e1"/><path d="M13.5 28 L9 41" stroke="#fff" stroke-width="5.5" stroke-linecap="round"/><path d="M13.5 28 L9 41" stroke="#94a3b8" stroke-width="7" stroke-linecap="round" opacity=".25"/><circle cx="9" cy="42.5" r="2.4" fill="#f5c9a4"/><path d="M30.5 28 L37 33" stroke="#fff" stroke-width="5.5" stroke-linecap="round"/><circle cx="38" cy="33.5" r="2.4" fill="#f5c9a4"/><g class="labu"><path d="M36 20 h5 v5 l4.5 8 a2.5 2.5 0 0 1 -2.2 3.6 h-9.6 a2.5 2.5 0 0 1 -2.2 -3.6 l4.5 -8 z" fill="#ecfeff" stroke="#0891b2" stroke-width="1"/><path d="M33.2 31 h11.6 l.9 1.7 a2.5 2.5 0 0 1 -2.2 3.6 h-9 a2.5 2.5 0 0 1 -2.2 -3.6 z" fill="#34d399"/><circle class="gel g1" cx="38" cy="18" r="1.3" fill="#6ee7b7"/><circle class="gel g2" cx="40" cy="15" r="1" fill="#6ee7b7"/></g><rect x="19" y="21" width="6" height="5" fill="#f5c9a4"/><circle cx="22" cy="14" r="9" fill="#f5c9a4"/><path d="M13 14 Q13 4 22 4.5 Q31 4 31 14 Q29 8.5 22 9 Q15 8.5 13 14 Z" fill="#3f2d23"/><circle cx="22" cy="4" r="3.3" fill="#3f2d23"/><path d="M13.5 13 H30.5" stroke="#0ea5e9" stroke-width="1.6"/><circle cx="18.3" cy="14" r="3" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.3" opacity=".95"/><circle cx="25.7" cy="14" r="3" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.3" opacity=".95"/><circle cx="18.3" cy="14.3" r=".9" fill="#1e293b"/><circle cx="25.7" cy="14.3" r=".9" fill="#1e293b"/><path d="M19 18.6 Q22 20.6 25 18.6" stroke="#b45309" stroke-width="1.1" fill="none" stroke-linecap="round"/><circle cx="16" cy="18" r="1.3" fill="#fca5a5" opacity=".7"/><circle cx="28" cy="18" r="1.3" fill="#fca5a5" opacity=".7"/></svg></span>
+                        <p><strong>Kak Kina:</strong> Selamat datang di Menara Orde! Setiap lantai menyimpan satu orde
+                            reaksi. Kuncinya: setiap orde punya <em>grafik garis lurus</em> yang khas, seperti sidik jari.
+                            Ayo naik lantai demi lantai!</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="ekp-stasiun-nav" aria-label="Lantai di Menara Orde">
+                <a href="#ekpM1"><b>1</b> Sidik jari grafik</a>
+                <a href="#ekpM2"><b>2</b> Orde 0</a>
+                <a href="#ekpM3"><b>3</b> Orde 1</a>
+                <a href="#ekpM4"><b>4</b> Orde 2</a>
+                <a href="#ekpM5"><b>5</b> Waktu paruh</a>
+                <a href="#ekpM6"><b>6</b> Detektif orde</a>
+                <a href="#ekpM7"><b>7</b> Contoh soal</a>
+                <a href="#ekpM8"><b>8</b> Misi</a>
+            </nav>
+
+            <!-- STASIUN 1 -->
+            <article class="ekp-stasiun" id="ekpM1" style="--w:#2563eb;--w-muda:#dbeafe">
+                <header class="ekp-st-kepala">
+                    <span class="ekp-st-no">1</span>
+                    <div>
+                        <p class="ekp-st-sub">Lantai 1 · Gagasan utama</p>
+                        <h3>Grafik garis lurus: sidik jari setiap orde</h3>
+                    </div>
+                </header>
+                <p class="ekp-paragraf">Setiap orde memiliki <strong>bentuk integral</strong> persamaan laju yang berbeda.
+                    Jika besaran yang tepat diplot terhadap waktu (t), hasilnya berupa <strong>garis lurus</strong> dengan
+                    bentuk <strong>y = mx + c</strong>. Grafik mana yang lurus itulah yang menunjukkan orde reaksinya.</p>
+
+                <div class="ekp-mesin biru">
+                    <div class="ekp-mesin-kepala"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M126.42,24C70.73,24.85,25.21,70.09,24,125.81a103.53,103.53,0,0,0,13.52,53.54,4,4,0,0,0,7.1-.3,119.35,119.35,0,0,0,11.37-51A71.77,71.77,0,0,1,83,71.83a8,8,0,1,1,9.86,12.61A55.82,55.82,0,0,0,72,128.07a135.28,135.28,0,0,1-18.45,68.35,4,4,0,0,0,.61,4.85c2,2,4.09,4,6.25,5.82a4,4,0,0,0,6-1A151.18,151.18,0,0,0,85,158.49a8,8,0,1,1,15.68,3.19,167.33,167.33,0,0,1-21.07,53.64,4,4,0,0,0,1.6,5.63c2.47,1.25,5,2.41,7.57,3.47a4,4,0,0,0,5-1.61A183,183,0,0,0,120,128.28a8.16,8.16,0,0,1,7.44-8.21,8,8,0,0,1,8.56,8,198.94,198.94,0,0,1-25.21,97.16,4,4,0,0,0,2.95,5.92q4.55.63,9.21.86a4,4,0,0,0,3.67-2.1A214.88,214.88,0,0,0,152,128.8c.05-13.25-10.3-24.49-23.54-24.74A24,24,0,0,0,104,128a8.1,8.1,0,0,1-7.29,8,8,8,0,0,1-8.71-8,40,40,0,0,1,40.42-40c22,.23,39.68,19.17,39.57,41.16a231.37,231.37,0,0,1-20.52,94.57,4,4,0,0,0,4.62,5.51,103.49,103.49,0,0,0,10.26-3,4,4,0,0,0,2.35-2.22,243.76,243.76,0,0,0,11.48-34,8,8,0,1,1,15.5,4q-1.12,4.37-2.4,8.7a4,4,0,0,0,6.46,4.17A104,104,0,0,0,126.42,24ZM198,161.08a8,8,0,0,1-7.92,7,8.39,8.39,0,0,1-1-.06,8,8,0,0,1-6.95-8.93,252.57,252.57,0,0,0,1.92-31,56.08,56.08,0,0,0-56-56,56.78,56.78,0,0,0-7,.43,8,8,0,0,1-2-15.89,72.1,72.1,0,0,1,81,71.49A266.93,266.93,0,0,1,198,161.08Z"/></svg> <b>Laboratorium grafik</b></div>
+                    <p class="ekp-kecil">Pilih orde reaksi, atur k dan [A]₀, lalu jalankan. Ketiga grafik digambar bersamaan.
+                        Amati grafik mana yang menjadi garis lurus.</p>
+                    <div class="ekp-pilih" id="ekpLabOrde" role="group" aria-label="Pilih orde reaksi">
+                        <button type="button" class="ekp-pil aktif" data-n="0">Orde 0</button>
+                        <button type="button" class="ekp-pil" data-n="1">Orde 1</button>
+                        <button type="button" class="ekp-pil" data-n="2">Orde 2</button>
+                    </div>
+                    <div class="ekp-labgrafik">
+                        <div class="kiri">
+                            <canvas id="ekpLabGelas" aria-label="Partikel A di dalam wadah"></canvas>
+                            <div class="ekp-angka3">
+                                <div><span>t</span><b id="ekpLabT">0 s</b></div>
+                                <div><span>[A]</span><b id="ekpLabA" class="merah">1,00 M</b></div>
+                                <div class="sorot"><span>v (M/detik)</span><b id="ekpLabV">–</b></div>
+                            </div>
+                            <label>
+                                <span class="ekp-label-slider"><span>Tetapan laju k</span><b id="ekpLabKLabel"></b></span>
+                                <input type="range" id="ekpLabK" min="0.5" max="1.5" step="0.05" value="1" aria-label="Tetapan laju">
+                            </label>
+                            <label>
+                                <span class="ekp-label-slider"><span>[A]₀</span><b id="ekpLabA0Label">1,00 M</b></span>
+                                <input type="range" id="ekpLabA0" min="0.5" max="2" step="0.1" value="1" aria-label="Konsentrasi awal">
+                            </label>
+                            <div class="ekp-baris-tombol">
+                                <button type="button" class="ekp-tombol biru" id="ekpLabMain"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg> <span>Jalankan reaksi</span></button>
+                                <button type="button" class="ekp-tombol abu" id="ekpLabUlang" aria-label="Ulangi"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a96,96,0,0,1-94.71,96H128A95.38,95.38,0,0,1,62.1,197.8a8,8,0,0,1,11-11.63A80,80,0,1,0,71.43,71.39a3.07,3.07,0,0,1-.26.25L60.63,81.29l17,17A8,8,0,0,1,72,112H24a8,8,0,0,1-8-8V56A8,8,0,0,1,29.66,50.3L49.31,70,60.25,60A96,96,0,0,1,224,128Z"/></svg></button>
+                            </div>
+                        </div>
+                        <div class="kanan">
+                            <figure class="ekp-panel-grafik" data-g="0"><figcaption>[A] terhadap t <span class="lencana-lurus">✓ garis lurus</span></figcaption><canvas aria-label="Grafik konsentrasi terhadap waktu"></canvas></figure>
+                            <figure class="ekp-panel-grafik" data-g="1"><figcaption>log [A] terhadap t <span class="lencana-lurus">✓ garis lurus</span></figcaption><canvas aria-label="Grafik log konsentrasi terhadap waktu"></canvas></figure>
+                            <figure class="ekp-panel-grafik" data-g="2"><figcaption>1/[A] terhadap t <span class="lencana-lurus">✓ garis lurus</span></figcaption><canvas aria-label="Grafik satu per konsentrasi terhadap waktu"></canvas></figure>
+                        </div>
+                    </div>
+                    <div class="ekp-hitungan" id="ekpLabKesimpulan"></div>
+                </div>
+
+                <div class="ekp-tabel-bungkus">
+                    <table class="ekp-tabel ringkas">
+                        <thead><tr><th>Orde</th><th>Persamaan laju</th><th>Bentuk garis lurus</th><th>Grafik linear</th><th>Gradien (m)</th></tr></thead>
+                        <tbody>
+                            <tr><td><b class="o0">0</b></td><td>v = k</td><td>[A] = −kt + [A]₀</td><td>[A] vs t (turun)</td><td>−k</td></tr>
+                            <tr><td><b class="o1">1</b></td><td>v = k [A]</td><td>log [A] = (−k/2,303)t + log [A]₀</td><td>log [A] vs t (turun)</td><td>−k/2,303</td></tr>
+                            <tr><td><b class="o2">2</b></td><td>v = k [A]²</td><td>1/[A] = kt + 1/[A]₀</td><td>1/[A] vs t (naik)</td><td>k</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+            <!-- STASIUN 2 -->
+            <article class="ekp-stasiun" id="ekpM2" style="--w:#0891b2;--w-muda:#cffafe">
+                <header class="ekp-st-kepala">
+                    <span class="ekp-st-no">2</span>
+                    <div>
+                        <p class="ekp-st-sub">Lantai 2 · Orde 0</p>
+                        <h3>Reaksi orde nol</h3>
+                    </div>
+                </header>
+                <div class="ekp-orde-atas">
+                    <div class="ekp-kartu-reaksi">
+                        <span class="lbl">Reaksi</span><b>A → hasil reaksi</b>
+                        <span class="lbl">Persamaan laju</span><b class="besar">v = k [A]⁰ = k</b>
+                        <p>Laju <strong>tidak bergantung</strong> pada konsentrasi A. Berapa pun [A], laju tetap sama.</p>
+                    </div>
+                    <div class="ekp-derivasi" data-derivasi>
+                        <div class="judul-derivasi"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM176,72H159.92a16,16,0,0,0-15.73,13l-6.55,35H168a8,8,0,0,1,0,16H134.64l-7.11,37.9A32,32,0,0,1,96.08,200H80a8,8,0,0,1,0-16H96.08A16,16,0,0,0,111.81,171L118.36,136H88a8,8,0,0,1,0-16h33.36l7.11-37.9A32,32,0,0,1,159.92,56H176a8,8,0,0,1,0,16Z"/></svg> Dari persamaan laju ke bentuk garis lurus</div>
+                        <div class="daftar"><div class="lk"><b>Tulis persamaan diferensial.</b><span class="rumus-baris">−d[A]/dt = k  ⇒  d[A] = −k dt</span></div><div class="lk"><b>Integrasikan dari [A]₀ ke [A] dan dari 0 ke t.</b><span class="rumus-baris">[A] − [A]₀ = −kt</span></div><div class="lk"><b>Susun menjadi bentuk garis lurus.</b><span class="rumus-baris">[A] = −kt + [A]₀</span></div></div>
+                        <button type="button" class="ekp-tombol kecil warna" data-lanjut><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM117.66,149.66l-32,32a8,8,0,0,1-11.32,0l-16-16a8,8,0,0,1,11.32-11.32L80,164.69l26.34-26.35a8,8,0,0,1,11.32,11.32Zm0-64-32,32a8,8,0,0,1-11.32,0l-16-16A8,8,0,0,1,69.66,90.34L80,100.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM192,168H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Zm0-64H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Z"/></svg> <span>Tampilkan langkah berikutnya</span></button>
+                    </div>
+                </div>
+
+                <div class="ekp-linear">
+                    <div class="bentuk"><span class="rumus-besar">[A] = −k t + [A]₀</span></div>
+                    <div class="peta-ymxc"><span class="ymxc">y = m x + c</span><span class="chip-peta" style="--c:#0891b2"><b>y</b> = [A]</span><span class="chip-peta" style="--c:#e11d48"><b>m</b> = −k</span><span class="chip-peta" style="--c:#64748b"><b>x</b> = t</span><span class="chip-peta" style="--c:#7c3aed"><b>c</b> = [A]₀</span></div>
+                </div>
+
+                <div class="ekp-dua kecil">
+                    <div class="ekp-ciri">
+                        <span class="ekp-contoh-label">Ciri khas</span>
+                        <canvas class="ekp-grafik-ciri" data-orde="0" aria-label="Grafik ciri orde 0"></canvas>
+                        <p>Grafik <strong>[A] terhadap t</strong> berupa <strong>garis lurus menurun</strong> dengan kemiringan −k. Konsentrasi berkurang dengan jumlah yang sama setiap detik.</p>
+                    </div>
+                    <div class="ekp-fenomena-daftar">
+                        <span class="ekp-contoh-label">Contoh di sekitar kita</span>
+                        <div class="fenomena-kecil"><span class="emoji" aria-hidden="true">⚙️</span><div><b>Penguraian amonia pada permukaan platina panas</b><p class="pers">2NH₃(g) → N₂(g) + 3H₂(g)</p><p>Permukaan logam sudah penuh terisi, jadi menambah NH₃ tidak mempercepat reaksi.</p></div></div><div class="fenomena-kecil"><span class="emoji" aria-hidden="true">🍷</span><div><b>Penguraian alkohol di hati</b><p class="pers">enzim hati jenuh</p><p>Enzim bekerja pada kapasitas maksimum, sehingga alkohol berkurang dengan laju yang hampir tetap.</p></div></div>
+                    </div>
+                </div>
+
+                <div class="ekp-soal-orde">
+                    <span class="ekp-contoh-label">Contoh soal</span>
+                    <p>Reaksi orde nol memiliki k = 2,5 × 10⁻⁴ M/detik. Konsentrasi awal NH₃ = 0,050 M. Tentukan (a) [NH₃] setelah 80 detik dan (b) waktu sampai NH₃ habis.</p>
+                    <div class="ekp-langkah-bertahap"><div class="lk"><b>Langkah 1.</b> Gunakan [A] = −kt + [A]₀.</div><div class="lk"><b>Langkah 2.</b> (a) [A] = −(2,5 × 10⁻⁴)(80) + 0,050 = −0,020 + 0,050 = <strong>0,030 M</strong>.</div><div class="lk"><b>Langkah 3.</b> (b) Habis berarti [A] = 0: 0 = −(2,5 × 10⁻⁴)t + 0,050 ⇒ t = 0,050 ÷ 2,5 × 10⁻⁴ = <strong>200 detik</strong>.</div></div>
+                    <button type="button" class="ekp-tombol kecil warna" data-lanjut-soal><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM117.66,149.66l-32,32a8,8,0,0,1-11.32,0l-16-16a8,8,0,0,1,11.32-11.32L80,164.69l26.34-26.35a8,8,0,0,1,11.32,11.32Zm0-64-32,32a8,8,0,0,1-11.32,0l-16-16A8,8,0,0,1,69.66,90.34L80,100.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM192,168H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Zm0-64H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Z"/></svg> <span>Tampilkan langkah berikutnya</span></button>
+                </div>
+
+                <div class="ekp-kalkulator" data-kalk="0">
+                    <div class="ekp-mesin-kepala"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M200,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V40A16,16,0,0,0,200,24ZM88,200a12,12,0,1,1,12-12A12,12,0,0,1,88,200Zm0-40a12,12,0,1,1,12-12A12,12,0,0,1,88,160Zm40,40a12,12,0,1,1,12-12A12,12,0,0,1,128,200Zm0-40a12,12,0,1,1,12-12A12,12,0,0,1,128,160Zm40,40a12,12,0,1,1,12-12A12,12,0,0,1,168,200Zm0-40a12,12,0,1,1,12-12A12,12,0,0,1,168,160Zm16-56a8,8,0,0,1-8,8H80a8,8,0,0,1-8-8V64a8,8,0,0,1,8-8h96a8,8,0,0,1,8,8Z"/></svg> <b>Kalkulator orde 0</b></div>
+                    <div class="isian">
+                        <label><span>[A]₀ (M)</span><input type="number" step="any" min="0" value="0.05" data-a0></label>
+                        <label><span>k (M/detik)</span><input type="number" step="any" min="0" value="0.00025" data-k></label>
+                        <label><span>t (detik)</span><input type="number" step="any" min="0" value="80" data-t></label>
+                    </div>
+                    <div class="ekp-hitungan" data-hasil></div>
+                </div>
+            </article>
+
+
+            <!-- STASIUN 3 -->
+            <article class="ekp-stasiun" id="ekpM3" style="--w:#7c3aed;--w-muda:#ede9fe">
+                <header class="ekp-st-kepala">
+                    <span class="ekp-st-no">3</span>
+                    <div>
+                        <p class="ekp-st-sub">Lantai 3 · Orde 1</p>
+                        <h3>Reaksi orde satu</h3>
+                    </div>
+                </header>
+                <div class="ekp-orde-atas">
+                    <div class="ekp-kartu-reaksi">
+                        <span class="lbl">Reaksi</span><b>A → hasil reaksi</b>
+                        <span class="lbl">Persamaan laju</span><b class="besar">v = k [A]</b>
+                        <p>Laju <strong>sebanding</strong> dengan [A]. Makin sedikit A, makin lambat reaksinya.</p>
+                    </div>
+                    <div class="ekp-derivasi" data-derivasi>
+                        <div class="judul-derivasi"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM176,72H159.92a16,16,0,0,0-15.73,13l-6.55,35H168a8,8,0,0,1,0,16H134.64l-7.11,37.9A32,32,0,0,1,96.08,200H80a8,8,0,0,1,0-16H96.08A16,16,0,0,0,111.81,171L118.36,136H88a8,8,0,0,1,0-16h33.36l7.11-37.9A32,32,0,0,1,159.92,56H176a8,8,0,0,1,0,16Z"/></svg> Dari persamaan laju ke bentuk garis lurus</div>
+                        <div class="daftar"><div class="lk"><b>Tulis persamaan diferensial.</b><span class="rumus-baris">−d[A]/dt = k[A]  ⇒  d[A]/[A] = −k dt</span></div><div class="lk"><b>Integrasikan.</b><span class="rumus-baris">ln([A]/[A]₀) = −kt</span></div><div class="lk"><b>Ubah ln menjadi log (ln x = 2,303 log x).</b><span class="rumus-baris">log [A] − log [A]₀ = −kt / 2,303</span></div><div class="lk"><b>Susun menjadi bentuk garis lurus.</b><span class="rumus-baris">log [A] = (−k/2,303) t + log [A]₀</span></div></div>
+                        <button type="button" class="ekp-tombol kecil warna" data-lanjut><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM117.66,149.66l-32,32a8,8,0,0,1-11.32,0l-16-16a8,8,0,0,1,11.32-11.32L80,164.69l26.34-26.35a8,8,0,0,1,11.32,11.32Zm0-64-32,32a8,8,0,0,1-11.32,0l-16-16A8,8,0,0,1,69.66,90.34L80,100.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM192,168H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Zm0-64H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Z"/></svg> <span>Tampilkan langkah berikutnya</span></button>
+                    </div>
+                </div>
+
+                <div class="ekp-linear">
+                    <div class="bentuk"><span class="rumus-besar">log [A] = <span class="pecahan"><i>−k</i><i>2,303</i></span> t + log [A]₀</span></div>
+                    <div class="peta-ymxc"><span class="ymxc">y = m x + c</span><span class="chip-peta" style="--c:#7c3aed"><b>y</b> = log [A]</span><span class="chip-peta" style="--c:#e11d48"><b>m</b> = −k/2,303</span><span class="chip-peta" style="--c:#64748b"><b>x</b> = t</span><span class="chip-peta" style="--c:#0891b2"><b>c</b> = log [A]₀</span></div>
+                </div>
+
+                <div class="ekp-dua kecil">
+                    <div class="ekp-ciri">
+                        <span class="ekp-contoh-label">Ciri khas</span>
+                        <canvas class="ekp-grafik-ciri" data-orde="1" aria-label="Grafik ciri orde 1"></canvas>
+                        <p>Grafik <strong>log [A] terhadap t</strong> berupa <strong>garis lurus menurun</strong> dengan kemiringan −k/2,303. Grafik [A] terhadap t sendiri melengkung.</p>
+                    </div>
+                    <div class="ekp-fenomena-daftar">
+                        <span class="ekp-contoh-label">Contoh di sekitar kita</span>
+                        <div class="fenomena-kecil"><span class="emoji" aria-hidden="true">☢️</span><div><b>Peluruhan zat radioaktif</b><p class="pers">¹⁴C → ¹⁴N + e⁻</p><p>Waktu paruh karbon-14 sekitar 5.730 tahun, dipakai untuk menentukan umur fosil.</p></div></div><div class="fenomena-kecil"><span class="emoji" aria-hidden="true">🫧</span><div><b>Penguraian hidrogen peroksida</b><p class="pers">2H₂O₂(aq) → 2H₂O(l) + O₂(g)</p><p>Laju penguraian sebanding dengan konsentrasi H₂O₂ yang tersisa.</p></div></div><div class="fenomena-kecil"><span class="emoji" aria-hidden="true">💊</span><div><b>Obat dalam tubuh</b><p class="pers">kadar obat berkurang separuh tiap t½</p><p>Karena itu dokter mengatur jadwal minum obat setiap beberapa jam.</p></div></div>
+                    </div>
+                </div>
+
+                <div class="ekp-soal-orde">
+                    <span class="ekp-contoh-label">Contoh soal</span>
+                    <p>Penguraian H₂O₂ berorde satu dengan k = 1,155 × 10⁻³ detik⁻¹. Jika [H₂O₂]₀ = 0,80 M, berapa [H₂O₂] setelah 1.800 detik (30 menit)?</p>
+                    <div class="ekp-langkah-bertahap"><div class="lk"><b>Langkah 1.</b> Gunakan log [A] = (−k/2,303) t + log [A]₀.</div><div class="lk"><b>Langkah 2.</b> (−k/2,303) t = −(1,155 × 10⁻³ × 1.800) ÷ 2,303 = −0,903.</div><div class="lk"><b>Langkah 3.</b> log [A] = −0,903 + log 0,80 = −0,903 + (−0,097) = −1,000.</div><div class="lk"><b>Langkah 4.</b> [A] = 10⁻¹ = <strong>0,10 M</strong>. Artinya tersisa ⅛ bagian, yaitu setelah 3 kali waktu paruh (t½ = 600 detik).</div></div>
+                    <button type="button" class="ekp-tombol kecil warna" data-lanjut-soal><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM117.66,149.66l-32,32a8,8,0,0,1-11.32,0l-16-16a8,8,0,0,1,11.32-11.32L80,164.69l26.34-26.35a8,8,0,0,1,11.32,11.32Zm0-64-32,32a8,8,0,0,1-11.32,0l-16-16A8,8,0,0,1,69.66,90.34L80,100.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM192,168H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Zm0-64H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Z"/></svg> <span>Tampilkan langkah berikutnya</span></button>
+                </div>
+
+                <div class="ekp-kalkulator" data-kalk="1">
+                    <div class="ekp-mesin-kepala"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M200,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V40A16,16,0,0,0,200,24ZM88,200a12,12,0,1,1,12-12A12,12,0,0,1,88,200Zm0-40a12,12,0,1,1,12-12A12,12,0,0,1,88,160Zm40,40a12,12,0,1,1,12-12A12,12,0,0,1,128,200Zm0-40a12,12,0,1,1,12-12A12,12,0,0,1,128,160Zm40,40a12,12,0,1,1,12-12A12,12,0,0,1,168,200Zm0-40a12,12,0,1,1,12-12A12,12,0,0,1,168,160Zm16-56a8,8,0,0,1-8,8H80a8,8,0,0,1-8-8V64a8,8,0,0,1,8-8h96a8,8,0,0,1,8,8Z"/></svg> <b>Kalkulator orde 1</b></div>
+                    <div class="isian">
+                        <label><span>[A]₀ (M)</span><input type="number" step="any" min="0" value="0.8" data-a0></label>
+                        <label><span>k (detik⁻¹)</span><input type="number" step="any" min="0" value="0.001155" data-k></label>
+                        <label><span>t (detik)</span><input type="number" step="any" min="0" value="1800" data-t></label>
+                    </div>
+                    <div class="ekp-hitungan" data-hasil></div>
+                </div>
+            </article>
+
+
+            <!-- STASIUN 4 -->
+            <article class="ekp-stasiun" id="ekpM4" style="--w:#db2777;--w-muda:#fce7f3">
+                <header class="ekp-st-kepala">
+                    <span class="ekp-st-no">4</span>
+                    <div>
+                        <p class="ekp-st-sub">Lantai 4 · Orde 2</p>
+                        <h3>Reaksi orde dua</h3>
+                    </div>
+                </header>
+                <div class="ekp-orde-atas">
+                    <div class="ekp-kartu-reaksi">
+                        <span class="lbl">Reaksi</span><b>A → hasil reaksi</b>
+                        <span class="lbl">Persamaan laju</span><b class="besar">v = k [A]²</b>
+                        <p>Laju sebanding dengan <strong>kuadrat</strong> [A]. Jika [A] turun separuh, laju turun menjadi seperempat.</p>
+                    </div>
+                    <div class="ekp-derivasi" data-derivasi>
+                        <div class="judul-derivasi"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM176,72H159.92a16,16,0,0,0-15.73,13l-6.55,35H168a8,8,0,0,1,0,16H134.64l-7.11,37.9A32,32,0,0,1,96.08,200H80a8,8,0,0,1,0-16H96.08A16,16,0,0,0,111.81,171L118.36,136H88a8,8,0,0,1,0-16h33.36l7.11-37.9A32,32,0,0,1,159.92,56H176a8,8,0,0,1,0,16Z"/></svg> Dari persamaan laju ke bentuk garis lurus</div>
+                        <div class="daftar"><div class="lk"><b>Tulis persamaan diferensial.</b><span class="rumus-baris">−d[A]/dt = k[A]²  ⇒  d[A]/[A]² = −k dt</span></div><div class="lk"><b>Integrasikan dari [A]₀ ke [A] dan dari 0 ke t.</b><span class="rumus-baris">1/[A] − 1/[A]₀ = kt</span></div><div class="lk"><b>Susun menjadi bentuk garis lurus.</b><span class="rumus-baris">1/[A] = kt + 1/[A]₀</span></div></div>
+                        <button type="button" class="ekp-tombol kecil warna" data-lanjut><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM117.66,149.66l-32,32a8,8,0,0,1-11.32,0l-16-16a8,8,0,0,1,11.32-11.32L80,164.69l26.34-26.35a8,8,0,0,1,11.32,11.32Zm0-64-32,32a8,8,0,0,1-11.32,0l-16-16A8,8,0,0,1,69.66,90.34L80,100.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM192,168H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Zm0-64H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Z"/></svg> <span>Tampilkan langkah berikutnya</span></button>
+                    </div>
+                </div>
+
+                <div class="ekp-linear">
+                    <div class="bentuk"><span class="rumus-besar"><span class="pecahan"><i>1</i><i>[A]</i></span> = k t + <span class="pecahan"><i>1</i><i>[A]₀</i></span></span></div>
+                    <div class="peta-ymxc"><span class="ymxc">y = m x + c</span><span class="chip-peta" style="--c:#db2777"><b>y</b> = 1/[A]</span><span class="chip-peta" style="--c:#059669"><b>m</b> = k</span><span class="chip-peta" style="--c:#64748b"><b>x</b> = t</span><span class="chip-peta" style="--c:#7c3aed"><b>c</b> = 1/[A]₀</span></div>
+                </div>
+
+                <div class="ekp-dua kecil">
+                    <div class="ekp-ciri">
+                        <span class="ekp-contoh-label">Ciri khas</span>
+                        <canvas class="ekp-grafik-ciri" data-orde="2" aria-label="Grafik ciri orde 2"></canvas>
+                        <p>Grafik <strong>1/[A] terhadap t</strong> berupa <strong>garis lurus menaik</strong> dengan kemiringan +k. Perhatikan: hasil integrasinya <strong>+kt</strong>, sehingga garisnya naik.</p>
+                    </div>
+                    <div class="ekp-fenomena-daftar">
+                        <span class="ekp-contoh-label">Contoh di sekitar kita</span>
+                        <div class="fenomena-kecil"><span class="emoji" aria-hidden="true">🟤</span><div><b>Penguraian nitrogen dioksida</b><p class="pers">2NO₂(g) → 2NO(g) + O₂(g)</p><p>Gas cokelat NO₂ terurai; lajunya sebanding dengan [NO₂]².</p></div></div><div class="fenomena-kecil"><span class="emoji" aria-hidden="true">🟣</span><div><b>Penguraian hidrogen iodida</b><p class="pers">2HI(g) → H₂(g) + I₂(g)</p><p>Dua molekul HI harus bertumbukan untuk bereaksi, sehingga lajunya bergantung pada [HI]².</p></div></div>
+                    </div>
+                </div>
+
+                <div class="ekp-soal-orde">
+                    <span class="ekp-contoh-label">Contoh soal</span>
+                    <p>Penguraian HI berorde dua dengan k = 0,050 M⁻¹ detik⁻¹ dan [HI]₀ = 0,50 M. Berapa [HI] setelah 40 detik?</p>
+                    <div class="ekp-langkah-bertahap"><div class="lk"><b>Langkah 1.</b> Gunakan 1/[A] = kt + 1/[A]₀.</div><div class="lk"><b>Langkah 2.</b> 1/[A] = (0,050)(40) + 1/0,50 = 2 + 2 = 4 M⁻¹.</div><div class="lk"><b>Langkah 3.</b> [A] = 1/4 = <strong>0,25 M</strong>. Ternyata 40 detik ini tepat sama dengan waktu paruh pertamanya.</div></div>
+                    <button type="button" class="ekp-tombol kecil warna" data-lanjut-soal><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM117.66,149.66l-32,32a8,8,0,0,1-11.32,0l-16-16a8,8,0,0,1,11.32-11.32L80,164.69l26.34-26.35a8,8,0,0,1,11.32,11.32Zm0-64-32,32a8,8,0,0,1-11.32,0l-16-16A8,8,0,0,1,69.66,90.34L80,100.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM192,168H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Zm0-64H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Z"/></svg> <span>Tampilkan langkah berikutnya</span></button>
+                </div>
+
+                <div class="ekp-kalkulator" data-kalk="2">
+                    <div class="ekp-mesin-kepala"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M200,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V40A16,16,0,0,0,200,24ZM88,200a12,12,0,1,1,12-12A12,12,0,0,1,88,200Zm0-40a12,12,0,1,1,12-12A12,12,0,0,1,88,160Zm40,40a12,12,0,1,1,12-12A12,12,0,0,1,128,200Zm0-40a12,12,0,1,1,12-12A12,12,0,0,1,128,160Zm40,40a12,12,0,1,1,12-12A12,12,0,0,1,168,200Zm0-40a12,12,0,1,1,12-12A12,12,0,0,1,168,160Zm16-56a8,8,0,0,1-8,8H80a8,8,0,0,1-8-8V64a8,8,0,0,1,8-8h96a8,8,0,0,1,8,8Z"/></svg> <b>Kalkulator orde 2</b></div>
+                    <div class="isian">
+                        <label><span>[A]₀ (M)</span><input type="number" step="any" min="0" value="0.5" data-a0></label>
+                        <label><span>k (M⁻¹ detik⁻¹)</span><input type="number" step="any" min="0" value="0.05" data-k></label>
+                        <label><span>t (detik)</span><input type="number" step="any" min="0" value="40" data-t></label>
+                    </div>
+                    <div class="ekp-hitungan" data-hasil></div>
+                </div>
+            </article>
+
+            <!-- STASIUN 5 -->
+            <article class="ekp-stasiun" id="ekpM5" style="--w:#ea580c;--w-muda:#ffedd5">
+                <header class="ekp-st-kepala">
+                    <span class="ekp-st-no">5</span>
+                    <div>
+                        <p class="ekp-st-sub">Lantai 5 · Pengembangan</p>
+                        <h3>Waktu paruh (t½)</h3>
+                    </div>
+                </header>
+                <p class="ekp-paragraf"><strong>Waktu paruh</strong> adalah waktu yang diperlukan agar konsentrasi pereaksi
+                    tinggal <strong>separuh</strong> dari semula. Rumusnya diperoleh dengan memasukkan [A] = ½[A]₀ ke dalam
+                    bentuk integral tiap orde.</p>
+                <div class="ekp-tiga-paruh">
+                    <div class="o0"><span>Orde 0</span><b>t½ = <span class="pecahan"><i>[A]₀</i><i>2k</i></span></b><p>Sebanding dengan [A]₀. Waktu paruh berikutnya makin <strong>pendek</strong>.</p></div>
+                    <div class="o1"><span>Orde 1</span><b>t½ = <span class="pecahan"><i>0,693</i><i>k</i></span></b><p><strong>Tidak bergantung</strong> pada [A]₀. Setiap waktu paruh sama panjang.</p></div>
+                    <div class="o2"><span>Orde 2</span><b>t½ = <span class="pecahan"><i>1</i><i>k[A]₀</i></span></b><p>Berbanding terbalik dengan [A]₀. Waktu paruh berikutnya makin <strong>panjang</strong>.</p></div>
+                </div>
+
+                <div class="ekp-mesin oranye">
+                    <div class="ekp-mesin-kepala"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M200,75.64V40a16,16,0,0,0-16-16H72A16,16,0,0,0,56,40V76a16.07,16.07,0,0,0,6.4,12.8L114.67,128,62.4,167.2A16.07,16.07,0,0,0,56,180v36a16,16,0,0,0,16,16H184a16,16,0,0,0,16-16V180.36a16.09,16.09,0,0,0-6.35-12.77L141.27,128l52.38-39.59A16.09,16.09,0,0,0,200,75.64ZM184,180.36V216H72V180l48-36v24a8,8,0,0,0,16,0V144.08Zm0-104.72L178.23,80H77.33L72,76V40H184Z"/></svg> <b>Penggaris waktu paruh</b></div>
+                    <p class="ekp-kecil">Pilih orde dan ubah [A]₀. Titik-titik oranye menandai saat konsentrasi tinggal ½,
+                        ¼, dan ⅛. Bandingkan jarak antartitiknya!</p>
+                    <div class="ekp-pilih" id="ekpParuhOrde" role="group" aria-label="Pilih orde">
+                        <button type="button" class="ekp-pil" data-n="0">Orde 0</button>
+                        <button type="button" class="ekp-pil aktif" data-n="1">Orde 1</button>
+                        <button type="button" class="ekp-pil" data-n="2">Orde 2</button>
+                    </div>
+                    <label>
+                        <span class="ekp-label-slider"><span>[A]₀</span><b id="ekpParuhA0Label">1,00 M</b></span>
+                        <input type="range" id="ekpParuhA0" min="0.5" max="2" step="0.1" value="1" aria-label="Konsentrasi awal">
+                    </label>
+                    <canvas id="ekpParuhGrafik" aria-label="Grafik konsentrasi dengan tanda waktu paruh"></canvas>
+                    <div class="ekp-pita-paruh" id="ekpPitaParuh"></div>
+                    <div class="ekp-hitungan" id="ekpParuhHasil"></div>
+                </div>
+
+                <div class="ekp-galeri-paruh">
+                    <div><span class="emoji" aria-hidden="true">🦴</span><b>Karbon-14</b><p>t½ ≈ 5.730 tahun (orde 1). Dipakai untuk menaksir umur fosil dan benda purba.</p></div>
+                    <div><span class="emoji" aria-hidden="true">🏥</span><b>Iodin-131</b><p>t½ ≈ 8 hari (orde 1). Dipakai dalam pengobatan kelenjar tiroid.</p></div>
+                    <div><span class="emoji" aria-hidden="true">💊</span><b>Parasetamol</b><p>t½ dalam tubuh sekitar 2–3 jam, sehingga obat diminum beberapa kali sehari.</p></div>
+                </div>
+            </article>
+
+            <!-- STASIUN 6 -->
+            <article class="ekp-stasiun" id="ekpM6" style="--w:#059669;--w-muda:#d1fae5">
+                <header class="ekp-st-kepala">
+                    <span class="ekp-st-no">6</span>
+                    <div>
+                        <p class="ekp-st-sub">Lantai 6 · Permainan</p>
+                        <h3>Detektif orde reaksi</h3>
+                    </div>
+                </header>
+                <p class="ekp-paragraf">Sebuah laboratorium mengirim data konsentrasi terhadap waktu, tetapi ordenya
+                    dirahasiakan. Tugasmu: <strong>plot data dengan tiga cara</strong>, temukan grafik yang paling lurus,
+                    lalu tebak ordenya. Setiap kasus datanya berbeda!</p>
+                <div class="ekp-mesin hijau">
+                    <div class="ekp-detektif-kepala">
+                        <div class="ekp-mesin-kepala"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M256,120a8,8,0,0,1-8,8H8a8,8,0,0,1,0-16H35.92l47.5-65.41a16,16,0,0,1,25.31-.72l12.85,14.9.2.23a7.95,7.95,0,0,0,12.44,0l.2-.23,12.85-14.9a16,16,0,0,1,25.31.72L220.08,112H248A8,8,0,0,1,256,120Zm-76,24a36,36,0,0,0-35.77,32H111.77a36,36,0,1,0-1.83,16h36.12A36,36,0,1,0,180,144Z"/></svg> <b>Kasus <span id="ekpKasusNo">1</span></b></div>
+                        <div class="skor">Skor: <b id="ekpSkorDetektif">0</b> / <span id="ekpJumlahKasus">0</span></div>
+                    </div>
+                    <div class="ekp-detektif">
+                        <div>
+                            <div class="ekp-tabel-bungkus"><table class="ekp-tabel" id="ekpTabelKasus"></table></div>
+                        </div>
+                        <div>
+                            <div class="ekp-pilih kecil" id="ekpPlotPilih" role="group" aria-label="Pilih cara plot">
+                                <button type="button" class="ekp-pil aktif" data-p="0">[A] vs t</button>
+                                <button type="button" class="ekp-pil" data-p="1">log [A] vs t</button>
+                                <button type="button" class="ekp-pil" data-p="2">1/[A] vs t</button>
+                            </div>
+                            <canvas id="ekpGrafikKasus" aria-label="Grafik data kasus"></canvas>
+                            <p class="ekp-kecil" id="ekpR2">Kelurusan garis (R²): –</p>
+                        </div>
+                    </div>
+                    <p class="ekp-tebak-judul">Menurutmu, reaksi ini berorde berapa?</p>
+                    <div class="ekp-pilih" id="ekpTebak" role="group" aria-label="Tebak orde">
+                        <button type="button" class="ekp-pil" data-n="0">Orde 0</button>
+                        <button type="button" class="ekp-pil" data-n="1">Orde 1</button>
+                        <button type="button" class="ekp-pil" data-n="2">Orde 2</button>
+                    </div>
+                    <div class="ekp-hitungan" id="ekpHasilDetektif"><p>Coba ketiga cara plot, lalu pilih jawabanmu.</p></div>
+                    <div class="ekp-baris-tombol">
+                        <button type="button" class="ekp-tombol hijau" id="ekpKasusBaru"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M168,112a56,56,0,1,1-56-56A56,56,0,0,1,168,112Zm61.66,117.66a8,8,0,0,1-11.32,0l-50.06-50.07a88,88,0,1,1,11.32-11.31l50.06,50.06A8,8,0,0,1,229.66,229.66ZM112,184a72,72,0,1,0-72-72A72.08,72.08,0,0,0,112,184Z"/></svg> <span>Kasus baru</span></button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- STASIUN 7 -->
+            <article class="ekp-stasiun" id="ekpM7" style="--w:#4f46e5;--w-muda:#e0e7ff">
+                <header class="ekp-st-kepala">
+                    <span class="ekp-st-no">7</span>
+                    <div>
+                        <p class="ekp-st-sub">Lantai 7 · Latihan terpadu</p>
+                        <h3>Contoh soal: orde, rumus laju, satuan, dan nilai k</h3>
+                    </div>
+                </header>
+
+                <div class="ekp-soal-besar" id="ekpSoal63">
+                    <span class="ekp-contoh-label">Contoh Soal 6.3</span>
+                    <p>Pada reaksi <strong>2P + 3Q → P₂Q₃</strong> diperoleh data percobaan berikut. Tentukan (a) orde P dan
+                        orde Q, (b) rumus laju reaksi, (c) satuan k, dan (d) nilai k.</p>
+                    <div class="ekp-tabel-bungkus">
+                        <table class="ekp-tabel data" id="ekpTabel63">
+                            <thead><tr><th>No.</th><th>[P] (M)</th><th>[Q] (M)</th><th>v (M/detik)</th></tr></thead>
+                            <tbody>
+                                <tr data-r="1"><td>1</td><td class="p">0,1</td><td class="q">0,03</td><td class="v">4</td></tr>
+                                <tr data-r="2"><td>2</td><td class="p">0,1</td><td class="q">0,12</td><td class="v">16</td></tr>
+                                <tr data-r="3"><td>3</td><td class="p">0,3</td><td class="q">0,03</td><td class="v">36</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="ekp-kecil">Misalkan orde P = x dan orde Q = y. Tekan tombol untuk membuka penyelesaian bagian demi bagian.</p>
+                    <div class="ekp-langkah-bertahap" id="ekpLangkah63"></div>
+                    <button type="button" class="ekp-tombol indigo" id="ekpLanjut63"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM117.66,149.66l-32,32a8,8,0,0,1-11.32,0l-16-16a8,8,0,0,1,11.32-11.32L80,164.69l26.34-26.35a8,8,0,0,1,11.32,11.32Zm0-64-32,32a8,8,0,0,1-11.32,0l-16-16A8,8,0,0,1,69.66,90.34L80,100.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM192,168H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Zm0-64H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Z"/></svg> <span>Tampilkan langkah berikutnya</span></button>
+                </div>
+
+                <div class="ekp-soal-besar">
+                    <span class="ekp-contoh-label">Contoh soal tambahan</span>
+                    <p>Reaksi <strong>2NO(g) + O₂(g) → 2NO₂(g)</strong> memberikan data berikut. Tentukan orde NO, orde O₂,
+                        orde total, dan nilai k.</p>
+                    <div class="ekp-tabel-bungkus">
+                        <table class="ekp-tabel data">
+                            <thead><tr><th>No.</th><th>[NO] (M)</th><th>[O₂] (M)</th><th>v (M/detik)</th></tr></thead>
+                            <tbody>
+                                <tr><td>1</td><td>0,10</td><td>0,10</td><td>2,0 × 10⁻³</td></tr>
+                                <tr><td>2</td><td>0,20</td><td>0,10</td><td>8,0 × 10⁻³</td></tr>
+                                <tr><td>3</td><td>0,10</td><td>0,20</td><td>4,0 × 10⁻³</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <details class="ekp-lipat">
+                        <summary>Lihat penyelesaian</summary>
+                        <ol>
+                            <li>Orde NO (data 1 dan 2, [O₂] tetap): (0,20/0,10)ˣ = 8,0/2,0 ⇒ 2ˣ = 4 ⇒ <strong>x = 2</strong>.</li>
+                            <li>Orde O₂ (data 1 dan 3, [NO] tetap): (0,20/0,10)ʸ = 4,0/2,0 ⇒ 2ʸ = 2 ⇒ <strong>y = 1</strong>.</li>
+                            <li>Rumus laju: v = k [NO]² [O₂]; orde total = 2 + 1 = <strong>3</strong>.</li>
+                            <li>k = v ÷ ([NO]²[O₂]) = 2,0 × 10⁻³ ÷ (0,01 × 0,10) = <strong>2,0 M⁻² detik⁻¹</strong>.</li>
+                        </ol>
+                    </details>
+                </div>
+
+                <div class="ekp-mesin indigo">
+                    <div class="ekp-mesin-kepala"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M212,76V72a44,44,0,0,0-74.86-31.31,3.93,3.93,0,0,0-1.14,2.8v88.72a4,4,0,0,0,6.2,3.33A47.67,47.67,0,0,1,167.68,128a8.18,8.18,0,0,1,8.31,7.58,8,8,0,0,1-8,8.42,32,32,0,0,0-32,32v33.88a4,4,0,0,0,1.49,3.12,47.92,47.92,0,0,0,74.21-17.16,4,4,0,0,0-4.49-5.56A68.06,68.06,0,0,1,192,192h-7.73a8.18,8.18,0,0,1-8.25-7.47,8,8,0,0,1,8-8.53h8a51.6,51.6,0,0,0,24-5.88v0A52,52,0,0,0,212,76Zm-12,36h-4a36,36,0,0,1-36-36V72a8,8,0,0,1,16,0v4a20,20,0,0,0,20,20h4a8,8,0,0,1,0,16ZM88,28A44.05,44.05,0,0,0,44,72v4a52,52,0,0,0-4,94.12h0A51.6,51.6,0,0,0,64,176h7.73A8.18,8.18,0,0,1,80,183.47,8,8,0,0,1,72,192H64a67.48,67.48,0,0,1-15.21-1.73,4,4,0,0,0-4.5,5.55A47.93,47.93,0,0,0,118.51,213a4,4,0,0,0,1.49-3.12V176a32,32,0,0,0-32-32,8,8,0,0,1-8-8.42A8.18,8.18,0,0,1,88.32,128a47.67,47.67,0,0,1,25.48,7.54,4,4,0,0,0,6.2-3.33V43.49a4,4,0,0,0-1.14-2.81A43.85,43.85,0,0,0,88,28Zm8,48a36,36,0,0,1-36,36H56a8,8,0,0,1,0-16h4A20,20,0,0,0,80,76V72a8,8,0,0,1,16,0Z"/></svg> <b>Penghitung orde otomatis</b></div>
+                    <p class="ekp-kecil">Masukkan data tiga percobaan milikmu (misalnya dari soal latihan). Isian awal adalah
+                        data Contoh Soal 6.3. Sistem akan mencari pasangan data yang tepat dan menunjukkan langkahnya.</p>
+                    <div class="ekp-tabel-bungkus">
+                        <table class="ekp-tabel isian" id="ekpTabelIsian">
+                            <thead><tr><th>No.</th><th>[P] (M)</th><th>[Q] (M)</th><th>v (M/detik)</th></tr></thead>
+                            <tbody>
+                                <tr><td>1</td><td><input type="number" step="any" value="0.1" aria-label="P percobaan 1"></td><td><input type="number" step="any" value="0.03" aria-label="Q percobaan 1"></td><td><input type="number" step="any" value="4" aria-label="v percobaan 1"></td></tr>
+                                <tr><td>2</td><td><input type="number" step="any" value="0.1" aria-label="P percobaan 2"></td><td><input type="number" step="any" value="0.12" aria-label="Q percobaan 2"></td><td><input type="number" step="any" value="16" aria-label="v percobaan 2"></td></tr>
+                                <tr><td>3</td><td><input type="number" step="any" value="0.3" aria-label="P percobaan 3"></td><td><input type="number" step="any" value="0.03" aria-label="Q percobaan 3"></td><td><input type="number" step="any" value="36" aria-label="v percobaan 3"></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="ekp-hitungan" id="ekpHasilOtomatis"></div>
+                </div>
+            </article>
+
+            <!-- STASIUN 8 -->
+            <article class="ekp-stasiun" id="ekpM8" style="--w:#db2777;--w-muda:#fce7f3">
+                <header class="ekp-st-kepala">
+                    <span class="ekp-st-no">8</span>
+                    <div>
+                        <p class="ekp-st-sub">Lantai 8 · Puncak menara</p>
+                        <h3>Misi Menara Orde</h3>
+                    </div>
+                </header>
+                <div class="ekp-rangkuman">
+                    <div><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM200,192H56a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0V92.69l32,32,34.34-34.35a8,8,0,0,1,11.32,0L176,124.69V104a8,8,0,0,1,16,0v40a8,8,0,0,1-8,8H144a8,8,0,0,1,0-16h20.69L136,107.31l-34.34,34.35a8,8,0,0,1-11.32,0L64,115.31V176H200a8,8,0,0,1,0,16Z"/></svg><p>Orde 0: [A] vs t lurus turun, m = −k, t½ = [A]₀/2k.</p></div>
+                    <div><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM200,192H56a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0V92.69l32,32,34.34-34.35a8,8,0,0,1,11.32,0L176,124.69V104a8,8,0,0,1,16,0v40a8,8,0,0,1-8,8H144a8,8,0,0,1,0-16h20.69L136,107.31l-34.34,34.35a8,8,0,0,1-11.32,0L64,115.31V176H200a8,8,0,0,1,0,16Z"/></svg><p>Orde 1: log [A] vs t lurus turun, m = −k/2,303, t½ = 0,693/k.</p></div>
+                    <div><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM200,192H56a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v76.69l34.34-34.35a8,8,0,0,1,11.32,0L128,132.69,172.69,88H144a8,8,0,0,1,0-16h48a8,8,0,0,1,8,8v48a8,8,0,0,1-16,0V99.31l-50.34,50.35a8,8,0,0,1-11.32,0L104,131.31l-40,40V176H200a8,8,0,0,1,0,16Z"/></svg><p>Orde 2: 1/[A] vs t lurus naik, m = k, t½ = 1/(k[A]₀).</p></div>
+                    <div><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM40,112H80v32H40Zm56,0H216v32H96ZM40,160H80v32H40Zm176,32H96V160H216v32Z"/></svg><p>Dari data: bandingkan percobaan yang hanya berbeda satu konsentrasi.</p></div>
+                </div>
+                <div class="ekp-kuis" id="ekpKuis"></div>
+                <div class="ekp-hadiah" id="ekpHadiah" hidden>
+                    <span class="ekp-hadiah-lencana"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,96A88,88,0,1,0,72,163.83V240a8,8,0,0,0,11.58,7.16L128,225l44.43,22.21A8.07,8.07,0,0,0,176,248a8,8,0,0,0,8-8V163.83A87.85,87.85,0,0,0,216,96ZM56,96a72,72,0,1,1,72,72A72.08,72.08,0,0,1,56,96Zm16,0a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"/></svg></span>
+                    <div>
+                        <b>Lencana “Penakluk Menara” diraih!</b>
+                        <p id="ekpHadiahTeks">Kamu mendapat 100 XP.</p>
+                    </div>
+                    <a href="ekspedisi-kota-kinetika.html" class="ekp-tombol putih" id="ekpLanjutPos">Kembali ke peta, lanjut ke
+                        Jembatan Hubungan <svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M221.66,133.66l-72,72A8,8,0,0,1,136,200V136H40a8,8,0,0,1,0-16h96V56a8,8,0,0,1,13.66-5.66l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
+                </div>
+                <p class="ekp-rujukan"><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M232,48H168a32,32,0,0,0-32,32v87.73a8.17,8.17,0,0,1-7.47,8.25,8,8,0,0,1-8.53-8V80A32,32,0,0,0,88,48H24a8,8,0,0,0-8,8V200a8,8,0,0,0,8,8H96a24,24,0,0,1,24,23.94,7.9,7.9,0,0,0,5.12,7.55A8,8,0,0,0,136,232a24,24,0,0,1,24-24h72a8,8,0,0,0,8-8V56A8,8,0,0,0,232,48ZM208,168H168.27a8.17,8.17,0,0,1-8.25-7.47,8,8,0,0,1,8-8.53h39.73a8.17,8.17,0,0,1,8.25,7.47A8,8,0,0,1,208,168Zm0-32H168.27a8.17,8.17,0,0,1-8.25-7.47,8,8,0,0,1,8-8.53h39.73a8.17,8.17,0,0,1,8.25,7.47A8,8,0,0,1,208,136Zm0-32H168.27A8.17,8.17,0,0,1,160,96.53,8,8,0,0,1,168,88h39.73A8.17,8.17,0,0,1,216,95.47,8,8,0,0,1,208,104Z"/></svg> Diolah dari materi Orde Nol, Satu, Dua dan Contoh Soal 6.3 (buku Kimia Kelas XI).</p>
+            </article>
+        </section>
+
+    </main>
+
+    <!-- ============================================================
+         JAVASCRIPT HALAMAN MATERI POS 4
+         - Progres (XP, lencana) disimpan di localStorage
+           'ekspedisiLajuReaksi_v1', sama dengan halaman peta.
+         ============================================================ -->
+    <script>
+        (function () {
+            const gerakDikurangi = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const KUNCI = 'ekspedisiLajuReaksi_v1';
+            let prog = { selesai: [], pos: 4, xp: 0 };
+            try { prog = Object.assign(prog, JSON.parse(localStorage.getItem(KUNCI) || '{}')); } catch (e) { }
+            const simpan = () => { try { localStorage.setItem(KUNCI, JSON.stringify(prog)); } catch (e) { } };
+            const fmt = (x, d = 2) => Number(x).toFixed(d).replace('.', ',');
+            const fmtP = x => String(parseFloat(Number(x).toFixed(3))).replace('.', ',');
+            const $ = id => document.getElementById(id);
+
+            // XP & level di bilah atas
+            function renderXP() {
+                const LEVEL = [[0, 'Penjelajah Pemula'], [200, 'Pengamat Laju'], [400, 'Perumus Muda'], [600, 'Analis Orde'], [800, 'Juara Kinetika']];
+                const xp = +prog.xp || 0;
+                let idx = 0;
+                LEVEL.forEach((l, i) => { if (xp >= l[0]) idx = i; });
+                const bawah = LEVEL[idx][0], atas = LEVEL[idx + 1] ? LEVEL[idx + 1][0] : bawah + 200;
+                document.getElementById('ekpNamaLevel').textContent = LEVEL[idx][1];
+                document.getElementById('ekpAngkaXP').textContent = xp;
+                document.getElementById('ekpBarXP').style.width = Math.max(4, Math.min(100, (xp - bawah) / (atas - bawah) * 100)) + '%';
+            }
+            renderXP();
+
+            prog.pos = 4; simpan();
+
+            /* ---------- Alat bantu ---------- */
+            const WARNA_ORDE = ['#0891b2', '#7c3aed', '#db2777'];
+            const K_DASAR = [0.02, 0.06, 0.2];
+            const SATUAN_K = ['M/detik', 'detik⁻¹', 'M⁻¹ detik⁻¹'];
+            const SUP = s => String(s).replace(/-/g, '⁻').replace(/[0-9]/g, d => '⁰¹²³⁴⁵⁶⁷⁸⁹'[d]);
+            function ilmiah(x, d = 2) {
+                if (!isFinite(x)) return '–';
+                if (x === 0) return '0';
+                const ax = Math.abs(x);
+                if (ax >= 0.01 && ax < 1000) return fmtP(Number(x.toPrecision(3)));
+                const e = Math.floor(Math.log10(ax));
+                const m = x / Math.pow(10, e);
+                return fmt(m, d) + ' × 10' + SUP(e);
+            }
+            function konsentrasi(n, k, A0, t) {
+                if (n === 0) return Math.max(0, A0 - k * t);
+                if (n === 1) return A0 * Math.exp(-k * t);
+                return 1 / (1 / A0 + k * t);
+            }
+            function siapKanvas(kv) {
+                const dpr = Math.min(2, window.devicePixelRatio || 1);
+                const W = kv.clientWidth, H = kv.clientHeight;
+                kv.width = W * dpr; kv.height = H * dpr;
+                const c = kv.getContext('2d');
+                c.setTransform(dpr, 0, 0, dpr, 0, 0);
+                return { c, W, H };
+            }
+            // Menggambar grafik sederhana: sumbu, garis, dan titik
+            function plot(kv, o) {
+                if (!kv.clientWidth) return null;
+                const { c, W, H } = siapKanvas(kv);
+                const kiri = o.kiri || 42, bawah = o.bawah || 30, atas = 10, kanan = 10;
+                const x0 = kiri, x1 = W - kanan, y0 = atas, y1 = H - bawah;
+                const X = x => x0 + (x - o.xmin) / (o.xmax - o.xmin) * (x1 - x0);
+                const Y = y => y1 - (y - o.ymin) / (o.ymax - o.ymin) * (y1 - y0);
+                c.strokeStyle = '#eef2f7'; c.lineWidth = 1;
+                for (let i = 1; i <= 4; i++) { const yy = y0 + (y1 - y0) * i / 4; c.beginPath(); c.moveTo(x0, yy); c.lineTo(x1, yy); c.stroke(); }
+                c.strokeStyle = '#94a3b8'; c.lineWidth = 1.5;
+                c.beginPath(); c.moveTo(x0, y0); c.lineTo(x0, y1); c.lineTo(x1, y1); c.stroke();
+                c.fillStyle = '#64748b'; c.font = '700 10px "Plus Jakarta Sans", sans-serif';
+                c.textAlign = 'center'; c.textBaseline = 'top';
+                for (let i = 0; i <= 4; i++) {
+                    const xv = o.xmin + (o.xmax - o.xmin) * i / 4;
+                    c.fillText(fmtP(Number(xv.toFixed(xv < 10 ? 1 : 0))), X(xv), y1 + 3);
+                }
+                c.fillText(o.xlab || 't (detik)', (x0 + x1) / 2, y1 + 14);
+                c.textAlign = 'right'; c.textBaseline = 'middle';
+                [o.ymin, o.ymax].forEach(v => c.fillText(fmtP(Number(v.toFixed(2))), x0 - 4, Y(v)));
+                c.textAlign = 'left'; c.textBaseline = 'top';
+                if (o.ylab) c.fillText(o.ylab, x0 + 6, y0 + 2);
+                (o.garis || []).forEach(g => {
+                    if (!g.pts.length) return;
+                    c.beginPath();
+                    g.pts.forEach(([x, y], i) => i ? c.lineTo(X(x), Y(y)) : c.moveTo(X(x), Y(y)));
+                    c.strokeStyle = g.warna; c.lineWidth = g.tebal || 3; c.setLineDash(g.putus ? [5, 5] : []);
+                    c.lineCap = 'round'; c.stroke(); c.setLineDash([]);
+                });
+                (o.titik || []).forEach(t => {
+                    c.beginPath(); c.arc(X(t[0]), Y(t[1]), t[3] || 4.5, 0, Math.PI * 2);
+                    c.fillStyle = t[2]; c.fill(); c.strokeStyle = '#fff'; c.lineWidth = 2; c.stroke();
+                });
+                return { c, X, Y, x0, x1, y0, y1 };
+            }
+            function regresi(pts) {
+                const n = pts.length;
+                const mx = pts.reduce((s, p) => s + p[0], 0) / n, my = pts.reduce((s, p) => s + p[1], 0) / n;
+                let sxy = 0, sxx = 0, syy = 0;
+                pts.forEach(([x, y]) => { sxy += (x - mx) * (y - my); sxx += (x - mx) ** 2; syy += (y - my) ** 2; });
+                const m = sxy / sxx, c = my - m * mx;
+                const r2 = syy === 0 ? 1 : (sxy * sxy) / (sxx * syy);
+                return { m, c, r2 };
+            }
+            const TRANS = [a => a, a => Math.log10(a), a => 1 / a];
+            const NAMA_TRANS = ['[A]', 'log [A]', '1/[A]'];
+
+            // Sorot stasiun yang sedang dibaca
+            const tautanSt = [...document.querySelectorAll('.ekp-stasiun-nav a')];
+            if ('IntersectionObserver' in window) {
+                const io = new IntersectionObserver(es => {
+                    es.forEach(e => {
+                        if (e.isIntersecting) tautanSt.forEach(a => a.classList.toggle('aktif', a.getAttribute('href') === '#' + e.target.id));
+                    });
+                }, { rootMargin: '-45% 0px -50% 0px' });
+                document.querySelectorAll('.ekp-stasiun').forEach(s => io.observe(s));
+            }
+
+            /* ---------- Lantai 1: laboratorium grafik ---------- */
+            (function () {
+                const gelas = $('ekpLabGelas');
+                const panel = [...document.querySelectorAll('.ekp-panel-grafik')];
+                const S = { n: 0, faktor: 1, A0: 1, t: 0, main: false, lalu: 0, id: null, selesai: false };
+                const partikel = Array.from({ length: 60 }, () => ({ x: Math.random(), y: Math.random(), vx: (Math.random() - .5) * .25, vy: (Math.random() - .5) * .25 }));
+                const k = () => K_DASAR[S.n] * S.faktor;
+                const tAkhir = () => S.n === 0 ? Math.min(40, (S.A0 * .97) / k()) : 40;
+                function data(tMaks) {
+                    const pts = [];
+                    for (let t = 0; t <= tMaks + 1e-9; t += tAkhir() / 60) pts.push([t, konsentrasi(S.n, k(), S.A0, t)]);
+                    return pts;
+                }
+                function gambarGelas(dt) {
+                    const { c, W, H } = siapKanvas(gelas);
+                    const A = konsentrasi(S.n, k(), S.A0, S.t);
+                    const tampil = Math.round(Math.min(60, A / 2 * 60));
+                    partikel.forEach((p, i) => {
+                        if (S.main) {
+                            p.x += p.vx * dt; p.y += p.vy * dt;
+                            if (p.x < .03 || p.x > .97) p.vx *= -1;
+                            if (p.y < .05 || p.y > .95) p.vy *= -1;
+                        }
+                        if (i >= tampil) return;
+                        c.beginPath(); c.arc(p.x * W, p.y * H, 5.5, 0, Math.PI * 2);
+                        c.fillStyle = '#fb7185'; c.fill();
+                    });
+                    c.fillStyle = 'rgba(255,255,255,.85)'; c.font = '800 11px "Plus Jakarta Sans", sans-serif';
+                    c.fillText('partikel A', 10, 18);
+                }
+                function gambarGrafik() {
+                    const tE = tAkhir(), penuh = data(tE), kini = penuh.filter(p => p[0] <= S.t + 1e-9);
+                    panel.forEach((f, g) => {
+                        const ubah = penuh.map(([t, a]) => [t, TRANS[g](a)]);
+                        const ys = ubah.map(p => p[1]);
+                        let ymin = Math.min(...ys), ymax = Math.max(...ys);
+                        const pad = (ymax - ymin) * .12 || .1; ymin -= pad; ymax += pad;
+                        if (g === 0) ymin = 0;
+                        plot(f.querySelector('canvas'), {
+                            xmin: 0, xmax: 40, ymin, ymax, ylab: NAMA_TRANS[g],
+                            garis: [{ pts: kini.map(([t, a]) => [t, TRANS[g](a)]), warna: WARNA_ORDE[S.n] }],
+                            titik: kini.length ? [[kini[kini.length - 1][0], TRANS[g](kini[kini.length - 1][1]), WARNA_ORDE[S.n]]] : []
+                        });
+                        const r2 = regresi(ubah).r2;
+                        f.classList.toggle('lurus', S.selesai && r2 > 0.9995);
+                    });
+                    const A = konsentrasi(S.n, k(), S.A0, S.t);
+                    $('ekpLabT').textContent = Math.round(S.t) + ' s';
+                    $('ekpLabA').textContent = fmt(A) + ' M';
+                    $('ekpLabV').textContent = S.t > 0 || S.main ? ilmiah(k() * Math.pow(A, S.n)) : ilmiah(k() * Math.pow(S.A0, S.n));
+                    const nama = ['[A] terhadap t', 'log [A] terhadap t', '1/[A] terhadap t'][S.n];
+                    $('ekpLabKesimpulan').innerHTML = S.selesai
+                        ? `<p>✅ Grafik <strong>${nama}</strong> berupa garis lurus${S.n === 2 ? ' <strong>menaik</strong>' : ' <strong>menurun</strong>'}. Grafik lainnya melengkung. Inilah tanda <strong>reaksi orde ${S.n}</strong>.</p>
+                           <p style="margin-top:.3rem;color:#64748b">Persamaan laju: ${['v = k', 'v = k [A]', 'v = k [A]²'][S.n]}. ${S.n === 0 ? 'Laju tetap sepanjang reaksi.' : 'Laju makin kecil seiring berkurangnya [A].'}</p>`
+                        : '<p>Tekan <strong>Jalankan reaksi</strong> dan tunggu hingga selesai. Grafik yang lurus akan diberi tanda ✓.</p>';
+                }
+                function label() {
+                    $('ekpLabKLabel').textContent = ilmiah(k()) + ' ' + SATUAN_K[S.n];
+                    $('ekpLabA0Label').textContent = fmt(S.A0) + ' M';
+                }
+                function ulang() { S.main = false; cancelAnimationFrame(S.id); S.t = 0; S.selesai = false; tombol(); label(); gambarGrafik(); gambarGelas(0); }
+                function tombol() { $('ekpLabMain').innerHTML = S.main ? `<svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg> <span>Jeda</span>` : `<svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg> <span>${S.selesai ? 'Jalankan lagi' : S.t > 0 ? 'Lanjutkan' : 'Jalankan reaksi'}</span>`; }
+                function langkah(now) {
+                    const dt = Math.min(.05, (now - S.lalu) / 1000); S.lalu = now;
+                    S.t = Math.min(tAkhir(), S.t + dt * 10);
+                    if (S.t >= tAkhir()) { S.main = false; S.selesai = true; tombol(); }
+                    gambarGelas(dt); gambarGrafik();
+                    if (S.main) S.id = requestAnimationFrame(langkah);
+                }
+                $('ekpLabMain').addEventListener('click', () => {
+                    if (S.main) { S.main = false; tombol(); return; }
+                    if (S.selesai) { S.t = 0; S.selesai = false; }
+                    S.main = true; S.lalu = performance.now(); tombol(); S.id = requestAnimationFrame(langkah);
+                });
+                $('ekpLabUlang').addEventListener('click', ulang);
+                $('ekpLabOrde').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+                    $('ekpLabOrde').querySelectorAll('button').forEach(x => x.classList.remove('aktif'));
+                    b.classList.add('aktif'); S.n = +b.dataset.n; ulang();
+                }));
+                $('ekpLabK').addEventListener('input', e => { S.faktor = +e.target.value; ulang(); });
+                $('ekpLabA0').addEventListener('input', e => { S.A0 = +e.target.value; ulang(); });
+                window.addEventListener('resize', () => { gambarGrafik(); gambarGelas(0); });
+                ulang();
+            })();
+
+            /* ---------- Lantai 2–4: derivasi, contoh soal, grafik ciri, kalkulator ---------- */
+            function pasangBertahap(tombol, butir, kelasAkhir) {
+                let i = 0;
+                const teksAwal = tombol.innerHTML;
+                tombol.addEventListener('click', () => {
+                    if (i >= butir.length) { butir.forEach(b => b.classList.remove('tampil')); i = 0; tombol.innerHTML = teksAwal; return; }
+                    butir[i].classList.add('tampil');
+                    if (kelasAkhir && i === butir.length - 1) butir[i].classList.add('akhir');
+                    i++;
+                    if (i >= butir.length) tombol.innerHTML = `<svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a96,96,0,0,1-94.71,96H128A95.38,95.38,0,0,1,62.1,197.8a8,8,0,0,1,11-11.63A80,80,0,1,0,71.43,71.39a3.07,3.07,0,0,1-.26.25L60.63,81.29l17,17A8,8,0,0,1,72,112H24a8,8,0,0,1-8-8V56A8,8,0,0,1,29.66,50.3L49.31,70,60.25,60A96,96,0,0,1,224,128Z"/></svg> <span>Ulangi dari awal</span>`;
+                });
+            }
+            document.querySelectorAll('[data-derivasi]').forEach(d => pasangBertahap(d.querySelector('[data-lanjut]'), [...d.querySelectorAll('.lk')]));
+            document.querySelectorAll('.ekp-soal-orde').forEach(s => pasangBertahap(s.querySelector('[data-lanjut-soal]'), [...s.querySelectorAll('.lk')], true));
+
+            function gambarCiri() {
+                document.querySelectorAll('.ekp-grafik-ciri').forEach(kv => {
+                    const n = +kv.dataset.orde, k = K_DASAR[n], A0 = 1;
+                    const tE = n === 0 ? 45 : 40;
+                    const pts = [];
+                    for (let t = 0; t <= tE; t += 1) pts.push([t, TRANS[n](konsentrasi(n, k, A0, t))]);
+                    const ys = pts.map(p => p[1]);
+                    let ymin = Math.min(...ys), ymax = Math.max(...ys); const pad = (ymax - ymin) * .12;
+                    plot(kv, {
+                        xmin: 0, xmax: tE, ymin: n === 0 ? 0 : ymin - pad, ymax: ymax + pad, ylab: NAMA_TRANS[n],
+                        garis: [{ pts, warna: WARNA_ORDE[n], tebal: 4 }],
+                        titik: [pts[0], pts[pts.length - 1]].map(p => [p[0], p[1], WARNA_ORDE[n]])
+                    });
+                });
+            }
+
+            document.querySelectorAll('.ekp-kalkulator').forEach(box => {
+                const n = +box.dataset.kalk;
+                const inA0 = box.querySelector('[data-a0]'), inK = box.querySelector('[data-k]'), inT = box.querySelector('[data-t]'), out = box.querySelector('[data-hasil]');
+                function hitung() {
+                    const A0 = parseFloat(inA0.value), k = parseFloat(inK.value), t = parseFloat(inT.value);
+                    if (!(A0 > 0) || !(k > 0) || !(t >= 0)) { out.innerHTML = '<p>Isi [A]₀ dan k dengan angka positif, serta t ≥ 0.</p>'; return; }
+                    let baris = '', A;
+                    if (n === 0) {
+                        A = A0 - k * t;
+                        const habis = A0 / k;
+                        baris = `<p class="kode">[A] = −k t + [A]₀ = −(${ilmiah(k)})(${fmtP(t)}) + ${fmtP(A0)}</p>` +
+                            (A <= 0 ? `<p>Hasilnya ≤ 0, artinya A <strong>sudah habis</strong> pada t = ${ilmiah(habis)} detik.</p>` : `<p>[A] = <strong>${ilmiah(A)} M</strong></p>`);
+                    } else if (n === 1) {
+                        const logA = -k * t / 2.303 + Math.log10(A0); A = Math.pow(10, logA);
+                        baris = `<p class="kode">log [A] = −(${ilmiah(k)} × ${fmtP(t)}) / 2,303 + log ${fmtP(A0)} = ${fmt(logA, 3)}</p><p>[A] = 10^(${fmt(logA, 3)}) ≈ <strong>${ilmiah(A)} M</strong></p>`;
+                    } else {
+                        const inv = k * t + 1 / A0; A = 1 / inv;
+                        baris = `<p class="kode">1/[A] = (${ilmiah(k)})(${fmtP(t)}) + 1/${fmtP(A0)} = ${ilmiah(inv)} M⁻¹</p><p>[A] = <strong>${ilmiah(A)} M</strong></p>`;
+                    }
+                    const tp = n === 0 ? A0 / (2 * k) : n === 1 ? 0.693 / k : 1 / (k * A0);
+                    const sisa = A > 0 ? Math.max(0, Math.min(100, A / A0 * 100)) : 0;
+                    out.innerHTML = baris + `<p style="margin-top:.35rem">Sisa A: <strong>${fmt(sisa, 1)}%</strong> · Waktu paruh t½ = <strong>${ilmiah(tp)} detik</strong></p>
+                        <div class="ekp-meteran-sisa"><i style="width:${sisa.toFixed(1)}%;background:var(--w)"></i></div>`;
+                }
+                [inA0, inK, inT].forEach(i => i.addEventListener('input', hitung));
+                hitung();
+            });
+
+            /* ---------- Lantai 5: waktu paruh ---------- */
+            (function () {
+                let n = 1;
+                function gambar() {
+                    const A0 = +$('ekpParuhA0').value, k = K_DASAR[n];
+                    $('ekpParuhA0Label').textContent = fmt(A0) + ' M';
+                    const tHalf = []; let A = A0, total = 0;
+                    for (let i = 0; i < 3; i++) {
+                        const tp = n === 0 ? A / (2 * k) : n === 1 ? 0.693 / k : 1 / (k * A);
+                        total += tp; tHalf.push({ tp, total, A: A / 2 }); A /= 2;
+                    }
+                    const xmax = total * 1.12;
+                    const pts = []; for (let i = 0; i <= 120; i++) { const t = xmax * i / 120; pts.push([t, konsentrasi(n, k, A0, t)]); }
+                    const g = plot($('ekpParuhGrafik'), {
+                        xmin: 0, xmax, ymin: 0, ymax: A0 * 1.08, ylab: '[A] (M)',
+                        garis: [{ pts, warna: WARNA_ORDE[n] }],
+                        titik: [[0, A0, WARNA_ORDE[n]]].concat(tHalf.map(h => [h.total, h.A, '#f97316', 6]))
+                    });
+                    if (g) {
+                        g.c.setLineDash([4, 4]); g.c.strokeStyle = '#fb923c'; g.c.lineWidth = 1.5;
+                        g.c.fillStyle = '#9a3412'; g.c.font = '800 10px "Plus Jakarta Sans", sans-serif'; g.c.textAlign = 'left';
+                        tHalf.forEach((h, i) => {
+                            g.c.beginPath(); g.c.moveTo(g.X(h.total), g.Y(0)); g.c.lineTo(g.X(h.total), g.Y(h.A)); g.c.lineTo(g.X(0), g.Y(h.A)); g.c.stroke();
+                            g.c.fillText(['½', '¼', '⅛'][i], g.X(h.total) + 6, g.Y(h.A) - 10);
+                        });
+                        g.c.setLineDash([]);
+                    }
+                    const warnaPita = ['#f97316', '#fb923c', '#fdba74'];
+                    $('ekpPitaParuh').innerHTML = tHalf.map((h, i) => `<span style="flex:${h.tp.toFixed(3)};background:${warnaPita[i]}">t½ ke-${i + 1}: ${fmt(h.tp, 1)} s</span>`).join('');
+                    const rumus = n === 0 ? `t½ = [A]₀ / 2k = ${fmt(A0)} / (2 × ${fmtP(k)})` : n === 1 ? `t½ = 0,693 / k = 0,693 / ${fmtP(k)}` : `t½ = 1 / (k[A]₀) = 1 / (${fmtP(k)} × ${fmt(A0)})`;
+                    $('ekpParuhHasil').innerHTML = `<p class="kode">${rumus} = <strong>${fmt(tHalf[0].tp, 1)} detik</strong> (k = ${fmtP(k)} ${SATUAN_K[n]})</p>
+                        <p style="margin-top:.35rem">${n === 0 ? 'Orde 0: setiap waktu paruh berikutnya <strong>makin pendek</strong> (menjadi separuhnya), karena konsentrasi yang harus dihabiskan makin sedikit sementara lajunya tetap.' : n === 1 ? 'Orde 1: ketiga waktu paruh <strong>sama panjang</strong>. Ubah [A]₀, dan t½ tetap tidak berubah!' : 'Orde 2: setiap waktu paruh berikutnya <strong>makin panjang</strong> (dua kali lipat), karena laju turun sangat tajam saat [A] mengecil.'}</p>`;
+                }
+                $('ekpParuhOrde').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+                    $('ekpParuhOrde').querySelectorAll('button').forEach(x => x.classList.remove('aktif'));
+                    b.classList.add('aktif'); n = +b.dataset.n; gambar();
+                }));
+                $('ekpParuhA0').addEventListener('input', gambar);
+                window.ekpGambarParuh = gambar;
+            })();
+
+            /* ---------- Lantai 6: detektif orde ---------- */
+            (function () {
+                const REAKSI = ['A → hasil', 'X → produk', 'Senyawa Z terurai', 'Zat obat dalam darah', 'Gas G terurai'];
+                let kasus = null, plotKe = 0, skor = 0, jumlah = 0, dijawab = false, no = 0;
+                const acak = (a, b) => a + Math.random() * (b - a);
+                function buatKasus() {
+                    const n = Math.floor(Math.random() * 3);
+                    const A0 = +acak(.8, 1.0).toFixed(2);
+                    const k = n === 0 ? +acak(.011, .015).toFixed(4) : n === 1 ? +acak(.03, .045).toFixed(3) : +acak(.15, .3).toFixed(2);
+                    const data = [0, 10, 20, 30, 40, 50].map(t => [t, +konsentrasi(n, k, A0, t).toFixed(3)]);
+                    kasus = { n, A0, k, data, nama: REAKSI[Math.floor(Math.random() * REAKSI.length)] };
+                    no++; dijawab = false; plotKe = 0;
+                    $('ekpKasusNo').textContent = no;
+                    $('ekpTabelKasus').innerHTML = `<thead><tr><th>t (detik)</th><th>[A] (M)</th></tr></thead><tbody>${data.map(([t, a]) => `<tr><td>${t}</td><td>${fmt(a, 3)}</td></tr>`).join('')}</tbody>`;
+                    $('ekpTebak').querySelectorAll('button').forEach(b => { b.classList.remove('benar', 'salah'); b.disabled = false; });
+                    $('ekpPlotPilih').querySelectorAll('button').forEach((b, i) => b.classList.toggle('aktif', i === 0));
+                    $('ekpHasilDetektif').innerHTML = `<p>Data reaksi: <strong>${kasus.nama}</strong>. Coba ketiga cara plot, bandingkan nilai R², lalu pilih jawabanmu.</p>`;
+                    gambar();
+                }
+                function gambar() {
+                    if (!kasus) return;
+                    const pts = kasus.data.map(([t, a]) => [t, TRANS[plotKe](a)]);
+                    const r = regresi(pts);
+                    const ys = pts.map(p => p[1]); let ymin = Math.min(...ys), ymax = Math.max(...ys); const pad = (ymax - ymin) * .15;
+                    plot($('ekpGrafikKasus'), {
+                        xmin: 0, xmax: 50, ymin: ymin - pad, ymax: ymax + pad, ylab: NAMA_TRANS[plotKe],
+                        garis: [{ pts: [[0, r.c], [50, r.m * 50 + r.c]], warna: '#94a3b8', tebal: 2, putus: true }],
+                        titik: pts.map(p => [p[0], p[1], '#059669', 5])
+                    });
+                    $('ekpR2').innerHTML = `Kelurusan garis (R²) untuk <strong>${NAMA_TRANS[plotKe]} vs t</strong>: <strong>${fmt(r.r2, 4)}</strong> ${r.r2 > .9995 ? '→ sangat lurus!' : '→ melengkung'}`;
+                }
+                $('ekpPlotPilih').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+                    $('ekpPlotPilih').querySelectorAll('button').forEach(x => x.classList.remove('aktif'));
+                    b.classList.add('aktif'); plotKe = +b.dataset.p; gambar();
+                }));
+                $('ekpTebak').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+                    if (dijawab) return;
+                    dijawab = true; jumlah++;
+                    const pilih = +b.dataset.n, ok = pilih === kasus.n;
+                    if (ok) skor++;
+                    $('ekpTebak').querySelectorAll('button').forEach(x => { x.disabled = true; if (+x.dataset.n === kasus.n) x.classList.add('benar'); });
+                    if (!ok) b.classList.add('salah');
+                    $('ekpSkorDetektif').textContent = skor; $('ekpJumlahKasus').textContent = jumlah;
+                    const r = regresi(kasus.data.map(([t, a]) => [t, TRANS[kasus.n](a)]));
+                    const kHit = kasus.n === 0 ? -r.m : kasus.n === 1 ? -2.303 * r.m : r.m;
+                    const rumusK = ['k = −m', 'k = −2,303 × m', 'k = m'][kasus.n];
+                    $('ekpHasilDetektif').innerHTML = `<p>${ok ? '🎉 <strong>Tepat!</strong>' : '🔎 <strong>Belum tepat.</strong>'} Reaksi ini berorde <strong>${kasus.n}</strong>, karena grafik <strong>${NAMA_TRANS[kasus.n]} vs t</strong> paling lurus.</p>
+                        <p class="kode" style="margin-top:.3rem">gradien m = ${ilmiah(r.m, 3)} ⇒ ${rumusK} = <strong>${ilmiah(kHit, 3)} ${SATUAN_K[kasus.n]}</strong></p>
+                        <p style="margin-top:.3rem;color:#64748b">Tekan <strong>Kasus baru</strong> untuk data yang berbeda.</p>`;
+                }));
+                $('ekpKasusBaru').addEventListener('click', buatKasus);
+                window.addEventListener('resize', gambar);
+                buatKasus();
+                window.ekpGambarKasus = gambar;
+            })();
+
+            /* ---------- Lantai 7: Contoh Soal 6.3 ---------- */
+            (function () {
+                const baris = [...document.querySelectorAll('#ekpTabel63 tbody tr')];
+                const LANGKAH = [
+                    { t: '<b>a. Orde P.</b> Bandingkan data 1 dan 3 ([Q] sama = 0,03 M).<span class="rumus-baris">(0,3/0,1)ˣ = 36/4 ⇒ 3ˣ = 9 ⇒ x = 2</span>Jadi orde P = <strong>2</strong>.', r: [1, 3], beda: 'p', sama: 'q' },
+                    { t: '<b>a. Orde Q.</b> Bandingkan data 1 dan 2 ([P] sama = 0,1 M).<span class="rumus-baris">(0,12/0,03)ʸ = 16/4 ⇒ 4ʸ = 4 ⇒ y = 1</span>Jadi orde Q = <strong>1</strong>.', r: [1, 2], beda: 'q', sama: 'p' },
+                    { t: '<b>b. Rumus laju reaksi.</b><span class="rumus-baris">v = k [P]² [Q]¹</span>Orde total = 2 + 1 = 3. Perhatikan: orde P (2) dan Q (1) tidak sama dengan koefisien reaksinya (2 dan 3).' },
+                    { t: '<b>c. Satuan k.</b><span class="rumus-baris">k = v / ([P]²[Q]) = (mol L⁻¹ det⁻¹) / (mol L⁻¹)³</span>Satuan k = <strong>mol⁻² L² det⁻¹</strong> (= M⁻² detik⁻¹).' },
+                    { t: '<b>d. Nilai k</b> (memakai data nomor 1).<span class="rumus-baris">4 = k (0,1)² (0,03)¹ ⇒ k = 4 / (10⁻² × 3 × 10⁻²) = 4 / (3 × 10⁻⁴)</span>k ≈ <strong>1,33 × 10⁴ mol⁻² L² det⁻¹</strong>.', r: [1], pakai: true }
+                ];
+                const wadah = $('ekpLangkah63');
+                wadah.innerHTML = LANGKAH.map((l, i) => `<div class="lk${i === LANGKAH.length - 1 ? ' akhir' : ''}">${l.t}</div>`).join('');
+                const lk = [...wadah.children];
+                let i = 0;
+                function sorot(L) {
+                    baris.forEach(tr => { tr.classList.remove('pilih'); tr.querySelectorAll('td').forEach(td => td.classList.remove('beda', 'sama', 'pakai')); });
+                    if (!L || !L.r) return;
+                    baris.forEach(tr => {
+                        if (!L.r.includes(+tr.dataset.r)) return;
+                        tr.classList.add('pilih');
+                        if (L.pakai) tr.querySelectorAll('td').forEach(td => td.classList.add('pakai'));
+                        else { tr.querySelector('.' + L.beda).classList.add('beda'); tr.querySelector('.' + L.sama).classList.add('sama'); }
+                    });
+                }
+                $('ekpLanjut63').addEventListener('click', () => {
+                    if (i >= lk.length) { lk.forEach(x => x.classList.remove('tampil')); i = 0; sorot(null); $('ekpLanjut63').innerHTML = `<svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM117.66,149.66l-32,32a8,8,0,0,1-11.32,0l-16-16a8,8,0,0,1,11.32-11.32L80,164.69l26.34-26.35a8,8,0,0,1,11.32,11.32Zm0-64-32,32a8,8,0,0,1-11.32,0l-16-16A8,8,0,0,1,69.66,90.34L80,100.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM192,168H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Zm0-64H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Z"/></svg> <span>Tampilkan langkah berikutnya</span>`; return; }
+                    lk[i].classList.add('tampil'); sorot(LANGKAH[i]); i++;
+                    if (i >= lk.length) $('ekpLanjut63').innerHTML = `<svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a96,96,0,0,1-94.71,96H128A95.38,95.38,0,0,1,62.1,197.8a8,8,0,0,1,11-11.63A80,80,0,1,0,71.43,71.39a3.07,3.07,0,0,1-.26.25L60.63,81.29l17,17A8,8,0,0,1,72,112H24a8,8,0,0,1-8-8V56A8,8,0,0,1,29.66,50.3L49.31,70,60.25,60A96,96,0,0,1,224,128Z"/></svg> <span>Ulangi dari awal</span>`;
+                });
+            })();
+
+            /* ---------- Lantai 7: penghitung orde otomatis ---------- */
+            (function () {
+                const input = [...document.querySelectorAll('#ekpTabelIsian input')];
+                const sama = (a, b) => Math.abs(a - b) <= 1e-9 * Math.max(1, Math.abs(a), Math.abs(b));
+                const bulat = x => { const r = Math.round(x * 2) / 2; return Math.abs(r - x) < .08 ? r : Math.round(x * 100) / 100; };
+                const tampilOrde = x => Number.isInteger(x) ? String(x) : fmtP(x);
+                function hitung() {
+                    const d = [0, 1, 2].map(i => ({ P: parseFloat(input[i * 3].value), Q: parseFloat(input[i * 3 + 1].value), v: parseFloat(input[i * 3 + 2].value) }));
+                    if (d.some(r => !(r.P > 0) || !(r.Q > 0) || !(r.v > 0))) { $('ekpHasilOtomatis').innerHTML = '<p>Isi semua kolom dengan angka positif.</p>'; return; }
+                    let x = null, y = null, lx = '', ly = '';
+                    for (let i = 0; i < 3; i++) for (let j = i + 1; j < 3; j++) {
+                        const a = d[i], b = d[j];
+                        if (x === null && sama(a.Q, b.Q) && !sama(a.P, b.P)) {
+                            x = bulat(Math.log(b.v / a.v) / Math.log(b.P / a.P));
+                            lx = `<p><strong>Orde P:</strong> data ${i + 1} dan ${j + 1} ([Q] sama) → (${fmtP(b.P)}/${fmtP(a.P)})ˣ = ${fmtP(b.v)}/${fmtP(a.v)} → ${fmtP(+(b.P / a.P).toFixed(3))}ˣ = ${fmtP(+(b.v / a.v).toFixed(3))} → <strong>x = ${tampilOrde(x)}</strong></p>`;
+                        }
+                        if (y === null && sama(a.P, b.P) && !sama(a.Q, b.Q)) {
+                            y = bulat(Math.log(b.v / a.v) / Math.log(b.Q / a.Q));
+                            ly = `<p><strong>Orde Q:</strong> data ${i + 1} dan ${j + 1} ([P] sama) → (${fmtP(b.Q)}/${fmtP(a.Q)})ʸ = ${fmtP(b.v)}/${fmtP(a.v)} → ${fmtP(+(b.Q / a.Q).toFixed(3))}ʸ = ${fmtP(+(b.v / a.v).toFixed(3))} → <strong>y = ${tampilOrde(y)}</strong></p>`;
+                        }
+                    }
+                    if (x === null || y === null) {
+                        $('ekpHasilOtomatis').innerHTML = (lx + ly) + `<p>⚠️ Tidak ditemukan pasangan data yang hanya berbeda satu konsentrasi untuk ${x === null ? 'P' : 'Q'}. Buat dua percobaan dengan salah satu konsentrasi dibuat sama.</p>`;
+                        return;
+                    }
+                    const total = x + y;
+                    const k = d[0].v / (Math.pow(d[0].P, x) * Math.pow(d[0].Q, y));
+                    const e = 1 - total;
+                    const satuan = e === 0 ? 'detik⁻¹' : `M${SUP(tampilOrde(e).replace(',', '.').replace('.5', '½'))} detik⁻¹`;
+                    const rumus = `v = k${x ? ' [P]' + (x !== 1 ? SUP(tampilOrde(x)) : '') : ''}${y ? ' [Q]' + (y !== 1 ? SUP(tampilOrde(y)) : '') : ''}`;
+                    $('ekpHasilOtomatis').innerHTML = lx + ly +
+                        `<p><strong>Rumus laju:</strong> ${rumus} · orde total = ${tampilOrde(total)}</p>
+                         <p><strong>Nilai k</strong> (data 1): k = ${fmtP(d[0].v)} / ((${fmtP(d[0].P)})${SUP(tampilOrde(x))} × (${fmtP(d[0].Q)})${SUP(tampilOrde(y))}) ≈ <strong>${ilmiah(k)} ${satuan}</strong></p>`;
+                }
+                input.forEach(i => i.addEventListener('input', hitung));
+                hitung();
+            })();
+
+            /* ---------- Lantai 8: misi ---------- */
+            (function () {
+                const SOAL = [
+                    { t: 'Grafik [A] terhadap waktu suatu reaksi berupa garis lurus menurun. Reaksi tersebut berorde …', o: ['nol', 'satu', 'dua', 'tiga'], b: 0, p: 'Pada orde nol, [A] = −kt + [A]₀ sehingga grafik [A] vs t lurus menurun.' },
+                    { t: 'Untuk reaksi orde satu, grafik yang berupa garis lurus adalah …', o: ['log [A] terhadap t', '[A] terhadap t', '1/[A] terhadap t', '[A]² terhadap t'], b: 0, p: 'log [A] = (−k/2,303)t + log [A]₀ berbentuk y = mx + c.' },
+                    { t: 'Pada reaksi orde dua, gradien grafik 1/[A] terhadap t sama dengan …', o: ['k', '−k', '−k/2,303', '1/k'], b: 0, p: '1/[A] = kt + 1/[A]₀, jadi gradiennya +k dan garisnya naik.' },
+                    { t: 'Waktu paruh yang tidak bergantung pada konsentrasi awal dimiliki oleh reaksi orde …', o: ['satu', 'nol', 'dua', 'semua orde'], b: 0, p: 't½ = 0,693/k pada orde satu, tanpa [A]₀.' },
+                    { t: 'Reaksi orde satu memiliki t½ = 20 menit. Jika [A]₀ = 0,80 M, konsentrasi A setelah 60 menit adalah …', o: ['0,10 M', '0,20 M', '0,40 M', '0,27 M'], b: 0, p: '60 menit = 3 × t½, sehingga [A] = 0,80 × (½)³ = 0,10 M.' },
+                    { t: 'Satuan tetapan laju (k) untuk reaksi orde dua adalah …', o: ['M⁻¹ detik⁻¹', 'M detik⁻¹', 'detik⁻¹', 'M⁻² detik⁻¹'], b: 0, p: 'k = v/[A]² = (M detik⁻¹)/M² = M⁻¹ detik⁻¹.' },
+                    { t: 'Pada suatu reaksi, jika [X] dinaikkan 2 kali (zat lain tetap), laju menjadi 4 kali. Orde terhadap X adalah …', o: ['2', '1', '4', '½'], b: 0, p: '2ˣ = 4 ⇒ x = 2.' }
+                ];
+                SOAL.forEach(s => {
+                    const urut = s.o.map((o, i) => [o, i]).sort(() => Math.random() - .5);
+                    s.b = urut.findIndex(u => u[1] === s.b); s.o = urut.map(u => u[0]);
+                });
+                const MIN = 6;
+                let benar = 0, dijawab = 0;
+                const wadah = $('ekpKuis');
+                wadah.innerHTML = `<div class="ekp-skor"><span>Jawab semua soal untuk meraih lencana. Minimal ${MIN} dari ${SOAL.length} benar.</span><span id="ekpSkor">0/${SOAL.length}</span></div>` +
+                    SOAL.map((s, i) => `<div class="ekp-soal-kuis" data-i="${i}">
+                        <p><b>${i + 1}.</b>${s.t}</p>
+                        <div class="ekp-opsi-daftar">${s.o.map((o, j) => `<button type="button" class="ekp-opsi" data-j="${j}">${String.fromCharCode(65 + j)}. ${o}</button>`).join('')}</div>
+                        <div class="ekp-umpan-tempat"></div></div>`).join('') +
+                    `<button type="button" class="ekp-tombol abu" id="ekpUlangKuis" hidden><svg aria-hidden="true" class="ekp-ik" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a96,96,0,0,1-94.71,96H128A95.38,95.38,0,0,1,62.1,197.8a8,8,0,0,1,11-11.63A80,80,0,1,0,71.43,71.39a3.07,3.07,0,0,1-.26.25L60.63,81.29l17,17A8,8,0,0,1,72,112H24a8,8,0,0,1-8-8V56A8,8,0,0,1,29.66,50.3L49.31,70,60.25,60A96,96,0,0,1,224,128Z"/></svg> <span>Coba lagi</span></button>`;
+                wadah.querySelectorAll('.ekp-soal-kuis').forEach(kotak => {
+                    const s = SOAL[+kotak.dataset.i];
+                    kotak.querySelectorAll('.ekp-opsi').forEach(btn => btn.addEventListener('click', () => {
+                        const ok = +btn.dataset.j === s.b;
+                        kotak.querySelectorAll('.ekp-opsi').forEach((x, k) => { x.disabled = true; if (k === s.b) x.classList.add('benar'); });
+                        if (!ok) btn.classList.add('salah');
+                        kotak.querySelector('.ekp-umpan-tempat').innerHTML = `<div class="ekp-umpan ${ok ? 'benar' : 'salah'}"><strong>${ok ? 'Tepat!' : 'Belum tepat.'}</strong> ${s.p}</div>`;
+                        dijawab++; if (ok) benar++;
+                        $('ekpSkor').textContent = `${benar}/${SOAL.length}`;
+                        if (dijawab === SOAL.length) selesai();
+                    }));
+                });
+                function selesai() {
+                    if (benar >= MIN) {
+                        const baru = !prog.selesai.includes(4);
+                        if (baru) { prog.selesai.push(4); prog.xp = (+prog.xp || 0) + 100; simpan(); renderXP(); }
+                        $('ekpHadiahTeks').textContent = baru ? 'Kamu mendapat 100 XP. Jalan menuju Jembatan Hubungan kini terbuka.' : 'Lencana ini sudah kamu miliki. Pemahamanmu tetap kuat!';
+                        $('ekpHadiah').hidden = false;
+                        konfeti();
+                    } else $('ekpUlangKuis').hidden = false;
+                }
+                $('ekpUlangKuis').addEventListener('click', () => {
+                    benar = 0; dijawab = 0; $('ekpSkor').textContent = `0/${SOAL.length}`; $('ekpUlangKuis').hidden = true;
+                    wadah.querySelectorAll('.ekp-opsi').forEach(x => { x.disabled = false; x.classList.remove('benar', 'salah'); });
+                    wadah.querySelectorAll('.ekp-umpan-tempat').forEach(x => x.innerHTML = '');
+                });
+                function konfeti() {
+                    if (gerakDikurangi) return;
+                    const w = ['#f43f5e', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899'];
+                    for (let i = 0; i < 70; i++) {
+                        const k = document.createElement('span');
+                        k.className = 'ekp-konfeti';
+                        k.style.left = Math.random() * 100 + 'vw';
+                        k.style.background = w[i % w.length];
+                        k.style.animationDelay = Math.random() * .6 + 's';
+                        k.style.animationDuration = 2 + Math.random() * 1.5 + 's';
+                        document.body.appendChild(k);
+                        setTimeout(() => k.remove(), 4500);
+                    }
+                }
+                $('ekpLanjutPos').addEventListener('click', () => { prog.pos = 5; simpan(); });
+            })();
+
+            // Gambar ulang grafik statis saat ukuran layar berubah
+            function gambarStatis() { gambarCiri(); window.ekpGambarParuh(); }
+            gambarStatis();
+            let jedaUkur;
+            window.addEventListener('resize', () => { clearTimeout(jedaUkur); jedaUkur = setTimeout(gambarStatis, 150); });
+        })();
+    </script>
+</body>
+
+</html>

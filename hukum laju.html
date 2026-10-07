@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hukum Laju & Orde Reaksi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .poppins {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            border: 4px solid #f8fafc;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+        }
+
+        /* Slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 999px;
+            background: #e0e7ff;
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #4f46e5;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 6px rgba(79, 70, 229, .5);
+            cursor: pointer;
+        }
+
+        input[type=range]::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #4f46e5;
+            border: 3px solid #fff;
+            cursor: pointer;
+        }
+
+        .range-red::-webkit-slider-thumb {
+            background: #ef4444 !important;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, .5) !important;
+        }
+
+        .range-red::-moz-range-thumb {
+            background: #ef4444 !important;
+        }
+
+        .range-blue::-webkit-slider-thumb {
+            background: #3b82f6 !important;
+        }
+
+        .range-blue::-moz-range-thumb {
+            background: #3b82f6 !important;
+        }
+
+        /* Tombol pilihan */
+        .pill {
+            padding: .5rem 1rem;
+            border-radius: .75rem;
+            font-weight: 700;
+            border: 2px solid #e5e7eb;
+            background: #fff;
+            transition: all .15s ease;
+        }
+
+        .pill:hover {
+            border-color: #a5b4fc;
+        }
+
+        .pill.aktif {
+            background: #4f46e5;
+            border-color: #4f46e5;
+            color: #fff;
+            box-shadow: 0 6px 14px -4px rgba(79, 70, 229, .6);
+        }
+
+        /* Tabel data */
+        .tabel-data {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 6px;
+        }
+
+        .tabel-data th {
+            font-size: .78rem;
+            color: #6b7280;
+            font-weight: 700;
+            padding: .4rem .6rem;
+            text-align: center;
+        }
+
+        .tabel-data td {
+            background: #fff;
+            padding: .7rem .6rem;
+            text-align: center;
+            font-weight: 600;
+            border-top: 2px solid #eef2ff;
+            border-bottom: 2px solid #eef2ff;
+            transition: all .15s ease;
+        }
+
+        .tabel-data td:first-child {
+            border-left: 2px solid #eef2ff;
+            border-radius: .8rem 0 0 .8rem;
+        }
+
+        .tabel-data td:last-child {
+            border-right: 2px solid #eef2ff;
+            border-radius: 0 .8rem .8rem 0;
+        }
+
+        .tabel-data tr.bisa-pilih {
+            cursor: pointer;
+        }
+
+        .tabel-data tr.bisa-pilih:hover td {
+            background: #eef2ff;
+        }
+
+        .tabel-data tr.dipilih td {
+            background: #e0e7ff;
+            border-color: #6366f1;
+        }
+
+        .tabel-data tr.pasangan-a td {
+            background: #dbeafe;
+            border-color: #3b82f6;
+        }
+
+        .tabel-data tr.pasangan-b td {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .tabel-data tr.pasangan-ab td {
+            background: linear-gradient(90deg, #dbeafe, #fee2e2);
+        }
+
+        .rumus-box {
+            background: linear-gradient(135deg, #eef2ff, #faf5ff);
+            border: 2px dashed #a5b4fc;
+            border-radius: 1rem;
+            padding: 1rem 1.25rem;
+            font-weight: 700;
+            color: #1e1b4b;
+        }
+
+        .langkah-selesai {
+            border-left: 5px solid #10b981;
+            background: #ecfdf5;
+            border-radius: .9rem;
+            padding: .8rem 1rem;
+        }
+
+        @keyframes goyang {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-6px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(6px);
+            }
+        }
+
+        .goyang {
+            animation: goyang .4s ease;
+        }
+
+        @keyframes muncul {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .muncul {
+            animation: muncul .35s ease both;
+        }
+
+        /* Kartu urutan presentasi */
+        .kartu-urut {
+            text-align: left;
+            background: #fff;
+            border: 2px solid #e5e7eb;
+            border-radius: 1rem;
+            padding: .9rem 1rem;
+            font-weight: 600;
+            color: #374151;
+            transition: all .15s ease;
+        }
+
+        .kartu-urut:hover:not(:disabled) {
+            border-color: #a5b4fc;
+            transform: translateY(-2px);
+        }
+
+        .kartu-urut:disabled {
+            background: #ecfdf5;
+            border-color: #10b981;
+            color: #065f46;
+            cursor: default;
+        }
+
+        /* Mode presentasi */
+        #presentasi {
+            display: none;
+        }
+
+        #presentasi.buka {
+            display: flex;
+        }
+
+        input.isian {
+            border: 2px solid #e5e7eb;
+            border-radius: .75rem;
+            padding: .55rem .8rem;
+            font-weight: 700;
+            width: 100%;
+            outline: none;
+            font-size: 16px;
+        }
+
+        input.isian:focus,
+        select.isian:focus {
+            border-color: #6366f1;
+        }
+
+        select.isian {
+            border: 2px solid #e5e7eb;
+            border-radius: .75rem;
+            padding: .55rem .8rem;
+            font-weight: 700;
+            width: 100%;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .benar {
+            border-color: #10b981 !important;
+            background: #ecfdf5 !important;
+        }
+
+        .salah {
+            border-color: #ef4444 !important;
+            background: #fef2f2 !important;
+        }
+
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #818cf8;
+            outline-offset: 2px;
+        }
+
+        /* ===== RESPONSIF ===== */
+        @media (max-width: 768px) {
+            .tabel-data th {
+                font-size: .7rem;
+                padding: .3rem .4rem;
+            }
+
+            .tabel-data td {
+                font-size: .82rem;
+                padding: .5rem .4rem;
+            }
+
+            .pill {
+                font-size: .72rem;
+                padding: .4rem .7rem;
+            }
+
+            .rumus-box {
+                padding: .75rem 1rem;
+                font-size: .9rem;
+            }
+
+            .langkah-selesai {
+                padding: .6rem .8rem;
+                font-size: .88rem;
+            }
+
+            input.isian,
+            select.isian {
+                padding: .45rem .65rem;
+                border-radius: .6rem;
+            }
+
+            .kartu-urut {
+                padding: .7rem .8rem;
+                font-size: .85rem;
+            }
+
+            canvas {
+                border-radius: 1rem;
+                border-width: 3px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tabel-data {
+                font-size: .76rem;
+            }
+
+            .tabel-data th {
+                font-size: .62rem;
+                padding: .25rem .3rem;
+            }
+
+            .tabel-data td {
+                font-size: .76rem;
+                padding: .4rem .3rem;
+            }
+
+            .pill {
+                font-size: .68rem;
+                padding: .35rem .6rem;
+            }
+
+            .rumus-box {
+                padding: .6rem .8rem;
+                font-size: .82rem;
+                border-radius: .75rem;
+            }
+
+            .kartu-urut {
+                padding: .6rem .7rem;
+                font-size: .8rem;
+                border-radius: .8rem;
+            }
+
+            .glass-card {
+                border-radius: 1.2rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8 min-h-screen text-gray-800 overflow-x-hidden">
+
+    <div class="max-w-6xl mx-auto space-y-10 relative z-10">
+
+        <!-- Efek Blur Background -->
+        <div
+            class="absolute -top-10 -left-20 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 -z-10 animate-pulse">
+        </div>
+        <div
+            class="absolute top-1/3 -right-20 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 -z-10">
+        </div>
+        <div
+            class="absolute -bottom-20 left-1/4 w-96 h-96 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 -z-10">
+        </div>
+
+        <!-- Tombol Kembali ke Menu Utama -->
+        <div>
+            <a href="kartu-belajar.html"
+                class="inline-flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-indigo-600 transition-colors glass-card px-5 py-2.5 rounded-xl shadow-sm border border-white/80 hover:shadow-md">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Menu Utama
+            </a>
+        </div>
+
+        <!-- ================= HEADER ================= -->
+        <header
+            class="text-center glass-card p-8 md:p-14 rounded-[2rem] shadow-xl border border-white/80 relative overflow-hidden">
+            <div
+                class="inline-block bg-gradient-to-r from-emerald-100 to-indigo-100 text-indigo-700 px-5 py-1.5 rounded-full text-sm font-bold tracking-widest mb-6 uppercase shadow-sm border border-indigo-50">
+                <i class="fa-solid fa-chart-line mr-2"></i> Kimia Fisik Interaktif
+            </div>
+            <h1
+                class="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-indigo-600 to-emerald-600 mb-6 drop-shadow-sm pb-2">
+                Hukum Laju & Orde Reaksi
+            </h1>
+            <p class="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+                Dari sekumpulan data percobaan, kita bisa membongkar <span
+                    class="font-bold text-indigo-600 border-b-2 border-indigo-300 border-dashed">"resep rahasia"</span>
+                sebuah reaksi: seberapa besar pengaruh setiap reaktan terhadap lajunya.
+            </p>
+
+            <!-- Tujuan pembelajaran -->
+            <div class="mt-10 text-left grid md:grid-cols-3 gap-4">
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50/60 rounded-2xl p-5 border border-blue-100">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-blue-500 text-white flex items-center justify-center mb-3 shadow">
+                        <i class="fa-solid fa-calculator"></i></div>
+                    <h3 class="font-bold text-blue-900 mb-1">Menentukan orde</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">Menentukan orde reaksi total dari data eksperimen
+                        dengan perhitungan yang tepat.</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-50 to-fuchsia-50/60 rounded-2xl p-5 border border-purple-100">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-purple-500 text-white flex items-center justify-center mb-3 shadow">
+                        <i class="fa-solid fa-pen-nib"></i></div>
+                    <h3 class="font-bold text-purple-900 mb-1">Merumuskan persamaan</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">Merumuskan persamaan laju reaksi secara benar
+                        melalui latihan soal.</p>
+                </div>
+                <div class="bg-gradient-to-br from-emerald-50 to-teal-50/60 rounded-2xl p-5 border border-emerald-100">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center mb-3 shadow">
+                        <i class="fa-solid fa-person-chalkboard"></i></div>
+                    <h3 class="font-bold text-emerald-900 mb-1">Mempresentasikan</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">Mempresentasikan perhitungan orde reaksi total
+                        dengan runtut dan tepat.</p>
+                </div>
+            </div>
+
+            <!-- Navigasi cepat -->
+            <nav class="mt-8 flex flex-wrap justify-center gap-2 text-sm font-bold">
+                <a href="#bagian-persamaan"
+                    class="px-4 py-2 rounded-full bg-white border border-gray-200 hover:border-indigo-300 hover:text-indigo-600 transition">1.
+                    Persamaan laju</a>
+                <a href="#bagian-orde"
+                    class="px-4 py-2 rounded-full bg-white border border-gray-200 hover:border-indigo-300 hover:text-indigo-600 transition">2.
+                    Makna orde</a>
+                <a href="#bagian-contoh"
+                    class="px-4 py-2 rounded-full bg-white border border-gray-200 hover:border-indigo-300 hover:text-indigo-600 transition">3.
+                    Pecahkan data</a>
+                <a href="#bagian-latihan"
+                    class="px-4 py-2 rounded-full bg-white border border-gray-200 hover:border-indigo-300 hover:text-indigo-600 transition">4.
+                    Latihan</a>
+                <a href="#bagian-presentasi"
+                    class="px-4 py-2 rounded-full bg-white border border-gray-200 hover:border-indigo-300 hover:text-indigo-600 transition">5.
+                    Presentasi</a>
+            </nav>
+        </header>
+
+        <!-- ================= 1. PERSAMAAN LAJU ================= -->
+        <section id="bagian-persamaan"
+            class="glass-card p-6 md:p-12 rounded-[2rem] shadow-lg border border-white/80 hover:shadow-2xl transition-all duration-300 scroll-mt-6">
+            <div class="md:flex md:space-x-12 items-start">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-blue-200 transform -rotate-6">
+                            <i class="fa-solid fa-square-root-variable"></i>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Persamaan Laju Reaksi</h2>
+                    </div>
+                    <p class="text-gray-700 mb-5 leading-relaxed text-lg">
+                        Untuk reaksi <strong>aA + bB → produk</strong>, laju reaksi dinyatakan dengan persamaan:
+                    </p>
+                    <div class="rumus-box text-center text-2xl md:text-3xl mb-5">
+                        v = k [A]<sup class="text-blue-600">x</sup> [B]<sup class="text-red-500">y</sup>
+                    </div>
+                    <ul class="space-y-3 text-gray-700 mb-6">
+                        <li class="flex gap-3"><span class="font-bold text-indigo-600 w-6">v</span> laju reaksi (M
+                            s<sup>−1</sup>)</li>
+                        <li class="flex gap-3"><span class="font-bold text-indigo-600 w-6">k</span> tetapan laju, hanya
+                            berubah jika suhu berubah</li>
+                        <li class="flex gap-3"><span class="font-bold text-blue-600 w-6">x</span> orde reaksi terhadap A
+                        </li>
+                        <li class="flex gap-3"><span class="font-bold text-red-500 w-6">y</span> orde reaksi terhadap B
+                        </li>
+                    </ul>
+                    <div
+                        class="bg-gradient-to-r from-amber-50 to-orange-50 p-5 rounded-2xl border border-amber-200 shadow-md flex items-start gap-4">
+                        <div class="text-amber-500 text-3xl bg-white rounded-full p-2 shadow-inner"><i
+                                class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div>
+                            <h4 class="font-bold text-amber-900 mb-1">Jebakan yang sering terjadi</h4>
+                            <p class="text-gray-700 leading-relaxed text-sm">
+                                Orde <strong>x</strong> dan <strong>y</strong> <u>tidak</u> sama dengan koefisien a dan
+                                b pada persamaan reaksi.
+                                Orde hanya bisa ditentukan dari <strong>data eksperimen</strong>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulator -->
+                <div class="md:w-1/2 flex flex-col items-center">
+                    <div class="relative w-full max-w-[420px] group">
+                        <div
+                            class="absolute -inset-2 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-2xl blur-lg opacity-25 group-hover:opacity-40 transition duration-300">
+                        </div>
+                        <canvas id="kanvasPartikel" width="420" height="280" class="relative w-full bg-white z-10"
+                            aria-label="Simulasi partikel A dan B bereaksi"></canvas>
+                    </div>
+
+                    <div
+                        class="mt-6 bg-white p-5 rounded-2xl shadow-md border border-gray-100 w-full max-w-[420px] space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm font-bold mb-2">
+                                <span class="text-blue-600"><i class="fa-solid fa-circle mr-1"></i>[A]</span>
+                                <span id="labelA" class="text-gray-700">0,5 M</span>
+                            </div>
+                            <input id="sliderA" type="range" min="0.1" max="1" step="0.1" value="0.5" class="range-blue"
+                                aria-label="Konsentrasi A">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm font-bold mb-2">
+                                <span class="text-red-500"><i class="fa-solid fa-circle mr-1"></i>[B]</span>
+                                <span id="labelB" class="text-gray-700">0,5 M</span>
+                            </div>
+                            <input id="sliderB" type="range" min="0.1" max="1" step="0.1" value="0.5" class="range-red"
+                                aria-label="Konsentrasi B">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <p class="text-xs font-bold text-gray-500 mb-1.5">Orde terhadap A (x)</p>
+                                <div class="flex gap-1.5" id="pilihX">
+                                    <button type="button" class="pill flex-1" data-v="0">0</button>
+                                    <button type="button" class="pill flex-1 aktif" data-v="1">1</button>
+                                    <button type="button" class="pill flex-1" data-v="2">2</button>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-gray-500 mb-1.5">Orde terhadap B (y)</p>
+                                <div class="flex gap-1.5" id="pilihY">
+                                    <button type="button" class="pill flex-1" data-v="0">0</button>
+                                    <button type="button" class="pill flex-1 aktif" data-v="1">1</button>
+                                    <button type="button" class="pill flex-1" data-v="2">2</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rumus-box text-center text-base" id="rumusHidup"></div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-gray-500 mb-1.5">
+                                <span>Kecepatan reaksi</span><span id="teksKecepatan"></span>
+                            </div>
+                            <div class="h-3 bg-gray-100 rounded-full overflow-hidden">
+                                <div id="barLaju"
+                                    class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-red-500 rounded-full transition-all duration-300"
+                                    style="width: 50%"></div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <button type="button" id="gandakanA"
+                                class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold rounded-xl py-2.5 text-sm border border-blue-100 transition"><i
+                                    class="fa-solid fa-xmark mr-1"></i>2 [A]</button>
+                            <button type="button" id="gandakanB"
+                                class="bg-red-50 hover:bg-red-100 text-red-600 font-bold rounded-xl py-2.5 text-sm border border-red-100 transition"><i
+                                    class="fa-solid fa-xmark mr-1"></i>2 [B]</button>
+                        </div>
+                        <div id="pesanGanda"
+                            class="text-sm text-center text-gray-600 min-h-[3rem] flex items-center justify-center px-2">
+                            Coba gandakan [A] atau [B], lalu amati berapa kali laju reaksinya naik.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 2. MAKNA ORDE ================= -->
+        <section id="bagian-orde"
+            class="glass-card p-6 md:p-12 rounded-[2rem] shadow-lg border border-white/80 hover:shadow-2xl transition-all duration-300 scroll-mt-6">
+            <div class="md:flex md:flex-row-reverse items-start gap-12">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-500 text-white flex items-center justify-center text-2xl shadow-lg shadow-purple-200 transform rotate-6">
+                            <i class="fa-solid fa-stairs"></i>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Apa Arti Orde Reaksi?</h2>
+                    </div>
+                    <p class="text-gray-700 mb-6 leading-relaxed text-lg">
+                        Orde reaksi menunjukkan <strong>seberapa kuat</strong> perubahan konsentrasi suatu zat
+                        memengaruhi laju reaksi.
+                        Pilih orde di bawah dan geser konsentrasinya.
+                    </p>
+
+                    <div class="flex gap-2 mb-5" id="pilihOrdeGrafik">
+                        <button type="button" class="pill flex-1" data-v="0">Orde 0</button>
+                        <button type="button" class="pill flex-1 aktif" data-v="1">Orde 1</button>
+                        <button type="button" class="pill flex-1" data-v="2">Orde 2</button>
+                    </div>
+
+                    <div id="penjelasanOrde"
+                        class="bg-gradient-to-br from-purple-50 to-indigo-50/50 rounded-2xl p-5 border border-purple-100 shadow-inner mb-6 min-h-[120px]">
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-center border-separate border-spacing-y-1.5 min-w-[340px]">
+                            <thead>
+                                <tr class="text-gray-500 text-xs">
+                                    <th class="py-1">Konsentrasi naik</th>
+                                    <th>Orde 0</th>
+                                    <th>Orde 1</th>
+                                    <th>Orde 2</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelKelipatan" class="font-bold"></tbody>
+                        </table>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 text-center">Rumus kuncinya: laju naik sebesar (kelipatan
+                        konsentrasi)<sup>orde</sup></p>
+                </div>
+
+                <div class="md:w-1/2 flex flex-col items-center">
+                    <div class="relative w-full max-w-[450px] group">
+                        <div
+                            class="absolute -inset-2 bg-gradient-to-r from-purple-400 to-fuchsia-500 rounded-2xl blur-lg opacity-20 group-hover:opacity-40 transition duration-300">
+                        </div>
+                        <canvas id="kanvasGrafik" width="450" height="340" class="relative w-full bg-white z-10"
+                            aria-label="Grafik laju terhadap konsentrasi"></canvas>
+                    </div>
+                    <div class="mt-6 bg-white p-5 rounded-2xl shadow-md border border-gray-100 w-full max-w-[450px]">
+                        <div class="flex justify-between text-sm font-bold mb-2">
+                            <span class="text-indigo-600">[A]</span>
+                            <span id="labelGrafik" class="text-gray-700"></span>
+                        </div>
+                        <input id="sliderGrafik" type="range" min="0.05" max="1" step="0.05" value="0.5"
+                            aria-label="Konsentrasi pada grafik">
+                        <div class="grid grid-cols-3 gap-3 mt-4 text-xs font-semibold text-gray-600">
+                            <div class="flex items-center gap-2"><span
+                                    class="w-5 h-1 bg-emerald-500 rounded-full"></span>Orde 0</div>
+                            <div class="flex items-center gap-2"><span
+                                    class="w-5 h-1 bg-blue-500 rounded-full"></span>Orde 1</div>
+                            <div class="flex items-center gap-2"><span
+                                    class="w-5 h-1 bg-fuchsia-500 rounded-full"></span>Orde 2</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 3. CONTOH TERBIMBING ================= -->
+        <section id="bagian-contoh"
+            class="glass-card p-6 md:p-12 rounded-[2rem] shadow-lg border border-white/80 hover:shadow-2xl transition-all duration-300 scroll-mt-6">
+            <div class="flex items-center gap-4 mb-6">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-emerald-200 transform -rotate-6">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Pecahkan Data Eksperimen</h2>
+                    <p class="text-gray-500 text-sm md:text-base">Ikuti langkah demi langkah. Kamu yang mengerjakan,
+                        halaman ini yang memeriksa.</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 md:p-5 border border-gray-100 shadow-sm mb-6">
+                <p class="text-gray-700 font-semibold">
+                    Reaksi: <span class="rumus-box !py-1 !px-3 inline-block text-base">2NO(g) + Br<sub>2</sub>(g) →
+                        2NOBr(g)</span>
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-[1fr_1.1fr] gap-8">
+                <div>
+                    <div class="overflow-x-auto">
+                        <table class="tabel-data min-w-[360px]">
+                            <thead>
+                                <tr>
+                                    <th>Percobaan</th>
+                                    <th>[NO] (M)</th>
+                                    <th>[Br<sub>2</sub>] (M)</th>
+                                    <th>v (M s<sup>−1</sup>)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelContoh"></tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex justify-between text-xs font-bold text-gray-500 mb-1.5">
+                            <span>Kemajuan</span><span id="teksProgres">0/7</span>
+                        </div>
+                        <div class="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                            <div id="barProgres"
+                                class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full transition-all duration-500"
+                                style="width:0%"></div>
+                        </div>
+                    </div>
+                    <div id="riwayatContoh" class="mt-5 space-y-2"></div>
+                </div>
+
+                <div>
+                    <div id="panelLangkah"
+                        class="bg-gradient-to-br from-emerald-50 to-teal-50/50 rounded-2xl p-5 md:p-6 border border-emerald-100 shadow-inner min-h-[260px]">
+                    </div>
+                    <button type="button" id="ulangContoh"
+                        class="mt-4 text-sm font-bold text-gray-500 hover:text-indigo-600 transition"><i
+                            class="fa-solid fa-rotate-left mr-1"></i> Ulangi dari awal</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 4. LATIHAN ================= -->
+        <section id="bagian-latihan"
+            class="glass-card p-6 md:p-12 rounded-[2rem] shadow-lg border border-white/80 hover:shadow-2xl transition-all duration-300 scroll-mt-6">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 text-white flex items-center justify-center text-2xl shadow-lg shadow-orange-200 transform rotate-6">
+                        <i class="fa-solid fa-dumbbell"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Latihan Soal</h2>
+                        <p class="text-gray-500 text-sm md:text-base">Setiap soal dibuat acak. Latihan sampai kamu
+                            yakin.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div
+                        class="bg-white border border-gray-200 rounded-xl px-4 py-2 text-sm font-bold text-gray-700 shadow-sm">
+                        <i class="fa-solid fa-star text-amber-400 mr-1"></i> Skor <span id="skor">0</span>/<span
+                            id="jumlahSoal">0</span>
+                    </div>
+                    <div
+                        class="bg-white border border-gray-200 rounded-xl px-4 py-2 text-sm font-bold text-gray-700 shadow-sm">
+                        <i class="fa-solid fa-fire text-orange-500 mr-1"></i> Beruntun <span id="beruntun">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 md:p-5 border border-gray-100 shadow-sm mb-5">
+                <p class="text-gray-700 font-semibold">
+                    Reaksi: <span id="reaksiSoal" class="rumus-box !py-1 !px-3 inline-block text-base"></span>
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div>
+                    <div class="overflow-x-auto">
+                        <table class="tabel-data min-w-[360px]">
+                            <thead>
+                                <tr>
+                                    <th>Percobaan</th>
+                                    <th id="thA">[A] (M)</th>
+                                    <th id="thB">[B] (M)</th>
+                                    <th>v (M s<sup>−1</sup>)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelSoal"></tbody>
+                        </table>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-3"><i class="fa-solid fa-circle-info mr-1"></i> Untuk harga k,
+                        tulis angka biasa (0,025) atau notasi ilmiah (2,5e-2).</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="grid grid-cols-3 gap-3">
+                        <label class="block">
+                            <span class="text-xs font-bold text-gray-500" id="labelX">Orde A (x)</span>
+                            <select id="jawabX" class="isian mt-1">
+                                <option value="">–</option>
+                                <option>0</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </select>
+                        </label>
+                        <label class="block">
+                            <span class="text-xs font-bold text-gray-500" id="labelY">Orde B (y)</span>
+                            <select id="jawabY" class="isian mt-1">
+                                <option value="">–</option>
+                                <option>0</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </select>
+                        </label>
+                        <label class="block">
+                            <span class="text-xs font-bold text-gray-500">Orde total</span>
+                            <select id="jawabTotal" class="isian mt-1">
+                                <option value="">–</option>
+                                <option>0</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                            </select>
+                        </label>
+                    </div>
+                    <label class="block">
+                        <span class="text-xs font-bold text-gray-500">Persamaan laju reaksi</span>
+                        <select id="jawabHukum" class="isian mt-1"></select>
+                    </label>
+                    <div class="grid grid-cols-[1.3fr_1fr] gap-3">
+                        <label class="block">
+                            <span class="text-xs font-bold text-gray-500">Harga k</span>
+                            <input id="jawabK" class="isian mt-1" inputmode="decimal" placeholder="contoh: 12"
+                                autocomplete="off">
+                        </label>
+                        <label class="block">
+                            <span class="text-xs font-bold text-gray-500">Satuan k</span>
+                            <select id="jawabSatuan" class="isian mt-1">
+                                <option value="">–</option>
+                                <option value="0">M s⁻¹</option>
+                                <option value="1">s⁻¹</option>
+                                <option value="2">M⁻¹ s⁻¹</option>
+                                <option value="3">M⁻² s⁻¹</option>
+                                <option value="4">M⁻³ s⁻¹</option>
+                                <option value="5">M⁻⁴ s⁻¹</option>
+                                <option value="6">M⁻⁵ s⁻¹</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="flex flex-wrap gap-3 pt-1">
+                        <button type="button" id="periksa"
+                            class="flex-1 min-w-[140px] bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold rounded-xl py-3 shadow-lg shadow-indigo-200 hover:shadow-xl hover:-translate-y-0.5 transition"><i
+                                class="fa-solid fa-check mr-2"></i>Periksa jawaban</button>
+                        <button type="button" id="soalBaru"
+                            class="flex-1 min-w-[140px] bg-white border-2 border-gray-200 text-gray-700 font-bold rounded-xl py-3 hover:border-indigo-300 transition"><i
+                                class="fa-solid fa-shuffle mr-2"></i>Soal baru</button>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <button type="button" id="petunjuk"
+                            class="text-sm font-bold text-amber-600 hover:text-amber-700 transition"><i
+                                class="fa-solid fa-lightbulb mr-1"></i>Minta petunjuk</button>
+                        <button type="button" id="lihatBahas"
+                            class="text-sm font-bold text-indigo-600 hover:text-indigo-700 transition"><i
+                                class="fa-solid fa-book-open mr-1"></i>Lihat pembahasan</button>
+                    </div>
+                    <div id="umpanBalik" class="min-h-[1rem]"></div>
+                </div>
+            </div>
+
+            <div id="pembahasan"
+                class="hidden mt-8 bg-gradient-to-br from-indigo-50 to-purple-50/40 rounded-2xl p-5 md:p-7 border border-indigo-100">
+            </div>
+        </section>
+
+        <!-- ================= 5. PRESENTASI ================= -->
+        <section id="bagian-presentasi"
+            class="glass-card p-6 md:p-12 rounded-[2rem] shadow-lg border border-white/80 hover:shadow-2xl transition-all duration-300 scroll-mt-6">
+            <div class="flex items-center gap-4 mb-6">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500 to-pink-500 text-white flex items-center justify-center text-2xl shadow-lg shadow-rose-200 transform -rotate-6">
+                    <i class="fa-solid fa-person-chalkboard"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Siap Presentasi</h2>
+                    <p class="text-gray-500 text-sm md:text-base">Presentasi yang baik itu runtut. Susun alurnya dulu,
+                        lalu tampilkan di depan kelas.</p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-1 text-lg"><i
+                            class="fa-solid fa-list-ol text-rose-500 mr-2"></i>Susun alur perhitungan</h3>
+                    <p class="text-sm text-gray-500 mb-4">Klik langkah-langkah di bawah sesuai urutan yang benar.</p>
+                    <div id="kotakUrut" class="grid gap-2.5"></div>
+                    <div id="hasilUrut" class="mt-4 text-sm font-semibold min-h-[1.5rem]"></div>
+                    <button type="button" id="acakUrut"
+                        class="mt-2 text-sm font-bold text-gray-500 hover:text-indigo-600 transition"><i
+                            class="fa-solid fa-shuffle mr-1"></i> Acak ulang</button>
+                </div>
+
+                <div
+                    class="bg-gradient-to-br from-rose-50 to-pink-50/50 rounded-2xl p-6 border border-rose-100 shadow-inner flex flex-col">
+                    <h3 class="font-bold text-gray-800 mb-2 text-lg"><i
+                            class="fa-solid fa-display text-rose-500 mr-2"></i>Mode presentasi</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-4">
+                        Tampilkan penyelesaian soal latihan yang sedang aktif sebagai slide layar penuh.
+                        Gunakan tombol panah atau tombol di layar untuk berpindah slide.
+                    </p>
+                    <div class="bg-white rounded-xl p-4 border border-rose-100 mb-5">
+                        <p class="text-xs font-bold text-gray-500 mb-2">Kerangka presentasi yang baik</p>
+                        <ol class="text-sm text-gray-700 space-y-1.5 list-decimal list-inside">
+                            <li>Sampaikan data yang diketahui</li>
+                            <li>Jelaskan cara memilih pasangan percobaan</li>
+                            <li>Tunjukkan perhitungan orde tiap zat</li>
+                            <li>Simpulkan orde total dan persamaan laju</li>
+                            <li>Hitung k beserta satuannya</li>
+                        </ol>
+                    </div>
+                    <div class="mt-auto grid sm:grid-cols-2 gap-3">
+                        <button type="button" id="mulaiPresentasiContoh"
+                            class="bg-white border-2 border-rose-200 text-rose-600 font-bold rounded-xl py-3 hover:border-rose-400 transition"><i
+                                class="fa-solid fa-flask mr-2"></i>Soal contoh</button>
+                        <button type="button" id="mulaiPresentasi"
+                            class="bg-gradient-to-r from-rose-500 to-pink-500 text-white font-bold rounded-xl py-3 shadow-lg shadow-rose-200 hover:shadow-xl hover:-translate-y-0.5 transition"><i
+                                class="fa-solid fa-play mr-2"></i>Soal latihan</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-gray-500 font-medium py-6 flex flex-col items-center gap-2">
+            <div class="w-16 h-1 bg-gradient-to-r from-blue-300 to-purple-300 rounded-full mb-2"></div>
+            <p>Animasi Interaktif &copy; 2026</p>
+            <p class="text-sm">Didesain dengan <i class="fa-solid fa-heart text-red-400 mx-1"></i> untuk Pembelajaran
+                Kimia yang Menyenangkan</p>
+        </footer>
+    </div>
+
+    <!-- ================= OVERLAY PRESENTASI ================= -->
+    <div id="presentasi" class="fixed inset-0 z-50 bg-slate-900/95 flex-col items-center justify-center p-4 md:p-10"
+        role="dialog" aria-modal="true" aria-label="Mode presentasi">
+        <button type="button" id="tutupPresentasi"
+            class="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white text-lg transition"
+            aria-label="Tutup presentasi"><i class="fa-solid fa-xmark"></i></button>
+        <div class="w-full max-w-4xl bg-white rounded-[2rem] shadow-2xl p-6 md:p-12 min-h-[60vh] flex flex-col">
+            <p id="nomorSlide" class="text-sm font-bold text-indigo-500 mb-2"></p>
+            <h2 id="judulSlide" class="text-2xl md:text-4xl font-extrabold text-gray-800 mb-6"></h2>
+            <div id="isiSlide" class="text-lg md:text-2xl text-gray-700 leading-relaxed flex-1"></div>
+            <div class="flex items-center justify-between mt-8 gap-4">
+                <button type="button" id="slideSebelum"
+                    class="px-5 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 font-bold text-gray-700 transition"><i
+                        class="fa-solid fa-chevron-left mr-2"></i>Sebelumnya</button>
+                <div id="titikSlide" class="flex gap-2"></div>
+                <button type="button" id="slideBerikut"
+                    class="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 font-bold text-white transition">Berikutnya<i
+                        class="fa-solid fa-chevron-right ml-2"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =====================================================
+        // UTILITAS
+        // =====================================================
+        const $ = id => document.getElementById(id);
+
+        // Format angka gaya Indonesia (koma desimal), notasi ilmiah untuk angka sangat kecil/besar
+        function fmt(n) {
+            if (n === 0) return '0';
+            const e = Math.floor(Math.log10(Math.abs(n)));
+            if (e >= -3 && e <= 3) {
+                return parseFloat(n.toPrecision(4)).toString().replace('.', ',');
+            }
+            let m = parseFloat((n / Math.pow(10, e)).toPrecision(4));
+            let ee = e;
+            if (Math.abs(m) >= 10) { m = m / 10; ee++; }
+            return `${m.toString().replace('.', ',')} × 10<sup>${ee}</sup>`;
+        }
+
+        // Ubah input pengguna menjadi angka: menerima 0,025 · 2,5e-2 · 2,5x10^-2 · 2,5×10^-2
+        function parseAngka(teks) {
+            if (!teks) return NaN;
+            let t = teks.trim().replace(/\s/g, '').replace(/,/g, '.');
+            t = t.replace(/[x×]10\^?/i, 'e');
+            return Number(t);
+        }
+
+        const pangkat = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+        const superscript = n => String(n).split('').map(c => pangkat[c] || c).join('');
+
+        // Satuan k untuk orde total n → M^(1-n) s^-1
+        function satuanK(n) {
+            const p = 1 - n;
+            if (p === 0) return 's<sup>−1</sup>';
+            if (p === 1) return 'M s<sup>−1</sup>';
+            return `M<sup>${String(p).replace('-', '−')}</sup> s<sup>−1</sup>`;
+        }
+
+        // Tulis persamaan laju: v = k[A]^x[B]^y (orde 0 tidak ditulis, orde 1 tanpa pangkat)
+        function tulisHukum(namaA, namaB, x, y) {
+            const suku = (nama, p) => p === 0 ? '' : `[${nama}]${p === 1 ? '' : `<sup>${p}</sup>`}`;
+            return `v = k${suku(namaA, x)}${suku(namaB, y)}`;
+        }
+        const polos = html => html.replace(/<sup>(.*?)<\/sup>/g, (_, p) => superscript(p)).replace(/<sub>(.*?)<\/sub>/g, (_, s) => s.replace(/\d/g, d => '₀₁₂₃₄₅₆₇₈₉'[d])).replace(/<[^>]+>/g, '');
+
+        const acak = arr => arr[Math.floor(Math.random() * arr.length)];
+        function kocok(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        // =====================================================
+        // 1. SIMULATOR PERSAMAAN LAJU (partikel)
+        // =====================================================
+        const kp = $('kanvasPartikel');
+        const ctxP = kp.getContext('2d');
+        const sim = { A: 0.5, B: 0.5, x: 1, y: 1 };
+        let partikel = [];
+        let kilatan = [];
+        let jumlahProduk = 0;
+
+        const lajuSim = () => Math.pow(sim.A, sim.x) * Math.pow(sim.B, sim.y); // k = 1
+
+        function buatPartikel(jenis) {
+            return {
+                jenis,
+                x: 20 + Math.random() * (kp.width - 40),
+                y: 40 + Math.random() * (kp.height - 60),
+                vx: (Math.random() - .5) * 2.4,
+                vy: (Math.random() - .5) * 2.4
+            };
+        }
+
+        function sinkronPartikel() {
+            ['A', 'B'].forEach(j => {
+                const target = Math.round(sim[j] * 22);
+                let sekarang = partikel.filter(p => p.jenis === j);
+                while (sekarang.length < target) { const p = buatPartikel(j); partikel.push(p); sekarang.push(p); }
+                while (sekarang.length > target) {
+                    const buang = sekarang.pop();
+                    partikel.splice(partikel.indexOf(buang), 1);
+                }
+            });
+        }
+
+        function perbaruiPanelSim() {
+            $('labelA').textContent = fmt(sim.A) + ' M';
+            $('labelB').textContent = fmt(sim.B) + ' M';
+            $('sliderA').value = sim.A;
+            $('sliderB').value = sim.B;
+            const v = lajuSim();
+            $('rumusHidup').innerHTML =
+                `v = k[A]<sup class="text-blue-600">${sim.x}</sup>[B]<sup class="text-red-500">${sim.y}</sup>
+                 = 1 × (${fmt(sim.A)})<sup>${sim.x}</sup> × (${fmt(sim.B)})<sup>${sim.y}</sup>
+                 = <span class="text-indigo-600">${fmt(v)}</span> M s<sup>−1</sup>`;
+            // skala logaritmik 10^-4 .. 1
+            const persen = Math.max(3, Math.min(100, (Math.log10(v) + 4) / 4 * 100));
+            $('barLaju').style.width = persen + '%';
+            $('teksKecepatan').textContent = v >= 0.5 ? 'Sangat cepat' : v >= 0.1 ? 'Cepat' : v >= 0.01 ? 'Sedang' : v >= 0.001 ? 'Lambat' : 'Sangat lambat';
+            sinkronPartikel();
+        }
+
+        function gambarPartikel() {
+            ctxP.clearRect(0, 0, kp.width, kp.height);
+            ctxP.strokeStyle = '#f3f4f6';
+            ctxP.lineWidth = 1;
+            for (let i = 0; i < kp.width; i += 20) { ctxP.beginPath(); ctxP.moveTo(i, 0); ctxP.lineTo(i, kp.height); ctxP.stroke(); }
+            for (let i = 0; i < kp.height; i += 20) { ctxP.beginPath(); ctxP.moveTo(0, i); ctxP.lineTo(kp.width, i); ctxP.stroke(); }
+
+            partikel.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 10 || p.x > kp.width - 10) p.vx *= -1;
+                if (p.y < 36 || p.y > kp.height - 10) p.vy *= -1;
+                ctxP.beginPath();
+                ctxP.arc(p.x, p.y, 9, 0, Math.PI * 2);
+                ctxP.fillStyle = p.jenis === 'A' ? '#3B82F6' : '#EF4444';
+                ctxP.fill();
+                ctxP.fillStyle = '#fff';
+                ctxP.font = 'bold 10px Inter';
+                ctxP.textAlign = 'center';
+                ctxP.textBaseline = 'middle';
+                ctxP.fillText(p.jenis, p.x, p.y);
+            });
+
+            // Peluang terjadinya reaksi per frame sebanding dengan laju
+            if (Math.random() < lajuSim() * 0.14 && partikel.length) {
+                const pA = partikel.find(p => p.jenis === 'A');
+                const tempat = pA || partikel[0];
+                kilatan.push({ x: tempat.x, y: tempat.y, umur: 0 });
+                jumlahProduk++;
+            }
+            kilatan = kilatan.filter(k => k.umur < 22);
+            kilatan.forEach(k => {
+                k.umur++;
+                ctxP.beginPath();
+                ctxP.arc(k.x, k.y, 10 + k.umur * 1.4, 0, Math.PI * 2);
+                ctxP.fillStyle = `rgba(139, 92, 246, ${0.55 * (1 - k.umur / 22)})`;
+                ctxP.fill();
+            });
+
+            // Panel info di atas kanvas
+            ctxP.fillStyle = 'rgba(255,255,255,.92)';
+            ctxP.fillRect(0, 0, kp.width, 28);
+            ctxP.fillStyle = '#4b5563';
+            ctxP.font = '600 12px Inter';
+            ctxP.textAlign = 'left';
+            ctxP.textBaseline = 'middle';
+            ctxP.fillText(`Produk terbentuk: ${jumlahProduk}`, 12, 15);
+            ctxP.textAlign = 'right';
+            ctxP.fillStyle = '#8b5cf6';
+            ctxP.fillText('● reaksi terjadi', kp.width - 12, 15);
+
+            requestAnimationFrame(gambarPartikel);
+        }
+
+        $('sliderA').addEventListener('input', e => { sim.A = parseFloat(e.target.value); perbaruiPanelSim(); });
+        $('sliderB').addEventListener('input', e => { sim.B = parseFloat(e.target.value); perbaruiPanelSim(); });
+
+        function pasangPilihan(idGrup, callback) {
+            $(idGrup).querySelectorAll('button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    $(idGrup).querySelectorAll('button').forEach(b => b.classList.remove('aktif'));
+                    btn.classList.add('aktif');
+                    callback(parseInt(btn.dataset.v));
+                });
+            });
+        }
+        pasangPilihan('pilihX', v => { sim.x = v; perbaruiPanelSim(); });
+        pasangPilihan('pilihY', v => { sim.y = v; perbaruiPanelSim(); });
+
+        function gandakan(zat) {
+            const orde = zat === 'A' ? sim.x : sim.y;
+            let awal = sim[zat];
+            if (awal * 2 > 1.001) { awal = Math.round(awal / 4 * 10) / 10 || 0.1; sim[zat] = awal; perbaruiPanelSim(); }
+            const vAwal = lajuSim();
+            sim[zat] = Math.round(awal * 2 * 10) / 10;
+            perbaruiPanelSim();
+            const kali = lajuSim() / vAwal;
+            const warna = zat === 'A' ? 'text-blue-600' : 'text-red-500';
+            $('pesanGanda').innerHTML =
+                `<span class="muncul">[${zat}] ${fmt(awal)} → ${fmt(sim[zat])} M (naik <b>2×</b>) sehingga laju naik
+                 <b class="${warna}">2<sup>${orde}</sup> = ${fmt(kali)}×</b>.</span>`;
+        }
+        $('gandakanA').addEventListener('click', () => gandakan('A'));
+        $('gandakanB').addEventListener('click', () => gandakan('B'));
+
+        perbaruiPanelSim();
+        gambarPartikel();
+
+        // =====================================================
+        // 2. GRAFIK MAKNA ORDE
+        // =====================================================
+        const kg = $('kanvasGrafik');
+        const ctxG = kg.getContext('2d');
+        let ordeGrafik = 1;
+        let cGrafik = 0.5;
+        const warnaOrde = ['#10B981', '#3B82F6', '#D946EF'];
+        const G = { x0: 50, y0: 300, lebar: 370, tinggi: 260 };
+
+        const keLayar = (c, v) => [G.x0 + c * G.lebar, G.y0 - v * G.tinggi];
+
+        const infoOrde = [
+            `<h4 class="font-bold text-emerald-700 mb-2"><i class="fa-solid fa-equals mr-1"></i> Orde 0</h4>
+             <p class="text-gray-700 text-sm leading-relaxed">Laju reaksi <strong>tidak dipengaruhi</strong> konsentrasi zat tersebut. Konsentrasi dinaikkan berapa kali pun, lajunya tetap. Grafiknya berupa garis <strong>mendatar</strong>.</p>`,
+            `<h4 class="font-bold text-blue-700 mb-2"><i class="fa-solid fa-arrow-trend-up mr-1"></i> Orde 1</h4>
+             <p class="text-gray-700 text-sm leading-relaxed">Laju reaksi <strong>sebanding lurus</strong> dengan konsentrasi. Konsentrasi naik 2×, laju naik 2<sup>1</sup> = 2×. Grafiknya berupa garis <strong>lurus miring</strong>.</p>`,
+            `<h4 class="font-bold text-fuchsia-700 mb-2"><i class="fa-solid fa-rocket mr-1"></i> Orde 2</h4>
+             <p class="text-gray-700 text-sm leading-relaxed">Laju reaksi sebanding dengan <strong>kuadrat</strong> konsentrasi. Konsentrasi naik 2×, laju naik 2<sup>2</sup> = 4×. Grafiknya berupa <strong>parabola</strong> yang makin curam.</p>`
+        ];
+
+        function gambarGrafik() {
+            ctxG.clearRect(0, 0, kg.width, kg.height);
+
+            // Kisi
+            ctxG.strokeStyle = '#f3f4f6';
+            ctxG.lineWidth = 1;
+            for (let i = 0; i <= 10; i++) {
+                const [gx] = keLayar(i / 10, 0);
+                const [, gy] = keLayar(0, i / 10);
+                ctxG.beginPath(); ctxG.moveTo(gx, G.y0); ctxG.lineTo(gx, G.y0 - G.tinggi); ctxG.stroke();
+                ctxG.beginPath(); ctxG.moveTo(G.x0, gy); ctxG.lineTo(G.x0 + G.lebar, gy); ctxG.stroke();
+            }
+
+            // Sumbu
+            ctxG.strokeStyle = '#4B5563';
+            ctxG.lineWidth = 2;
+            ctxG.beginPath(); ctxG.moveTo(G.x0, G.y0 + 5); ctxG.lineTo(G.x0, 22); ctxG.stroke();
+            ctxG.beginPath(); ctxG.moveTo(G.x0 - 5, G.y0); ctxG.lineTo(G.x0 + G.lebar + 12, G.y0); ctxG.stroke();
+            ctxG.beginPath(); ctxG.moveTo(G.x0 - 5, 32); ctxG.lineTo(G.x0, 22); ctxG.lineTo(G.x0 + 5, 32); ctxG.stroke();
+            ctxG.beginPath(); ctxG.moveTo(G.x0 + G.lebar + 2, G.y0 - 5); ctxG.lineTo(G.x0 + G.lebar + 12, G.y0); ctxG.lineTo(G.x0 + G.lebar + 2, G.y0 + 5); ctxG.stroke();
+
+            ctxG.fillStyle = '#4B5563';
+            ctxG.font = '600 12px Inter';
+            ctxG.textAlign = 'left';
+            ctxG.fillText('Laju (v)', G.x0 + 8, 30);
+            ctxG.textAlign = 'right';
+            ctxG.fillText('Konsentrasi [A]', G.x0 + G.lebar + 8, G.y0 + 26);
+
+            // Kurva ketiga orde
+            [0, 1, 2].forEach(n => {
+                const dipilih = n === ordeGrafik;
+                ctxG.beginPath();
+                for (let c = 0; c <= 1.0001; c += 0.01) {
+                    const [px, py] = keLayar(c, Math.pow(c, n));
+                    c === 0 ? ctxG.moveTo(px, py) : ctxG.lineTo(px, py);
+                }
+                ctxG.strokeStyle = warnaOrde[n];
+                ctxG.globalAlpha = dipilih ? 1 : 0.25;
+                ctxG.lineWidth = dipilih ? 4.5 : 2.5;
+                ctxG.setLineDash(dipilih ? [] : [6, 5]);
+                ctxG.stroke();
+                ctxG.setLineDash([]);
+                ctxG.globalAlpha = 1;
+            });
+
+            // Titik pada kurva terpilih + titik pembanding 2×
+            const v = Math.pow(cGrafik, ordeGrafik);
+            const [tx, ty] = keLayar(cGrafik, v);
+
+            ctxG.setLineDash([4, 4]);
+            ctxG.strokeStyle = '#9CA3AF';
+            ctxG.lineWidth = 1.5;
+            ctxG.beginPath(); ctxG.moveTo(tx, G.y0); ctxG.lineTo(tx, ty); ctxG.lineTo(G.x0, ty); ctxG.stroke();
+            ctxG.setLineDash([]);
+
+            if (cGrafik * 2 <= 1.0001) {
+                const v2 = Math.pow(cGrafik * 2, ordeGrafik);
+                const [tx2, ty2] = keLayar(cGrafik * 2, v2);
+                ctxG.beginPath();
+                ctxG.arc(tx2, ty2, 7, 0, Math.PI * 2);
+                ctxG.fillStyle = '#fff';
+                ctxG.fill();
+                ctxG.lineWidth = 3;
+                ctxG.strokeStyle = warnaOrde[ordeGrafik];
+                ctxG.stroke();
+                ctxG.fillStyle = '#374151';
+                ctxG.font = 'bold 11px Inter';
+                ctxG.textAlign = 'center';
+                ctxG.fillText('2× [A]', tx2, ty2 - 14);
+            }
+
+            ctxG.beginPath();
+            ctxG.arc(tx, ty, 9, 0, Math.PI * 2);
+            ctxG.fillStyle = '#F59E0B';
+            ctxG.fill();
+            ctxG.lineWidth = 3;
+            ctxG.strokeStyle = '#fff';
+            ctxG.stroke();
+
+            $('labelGrafik').innerHTML = `${fmt(cGrafik)} M → v = ${fmt(v)} (k = 1)`;
+        }
+
+        function perbaruiTabelKelipatan() {
+            const baris = [2, 3, 4].map(f => {
+                const sel = n => `<td class="py-2 rounded-lg ${n === ordeGrafik ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700'}">${Math.pow(f, n)}×</td>`;
+                return `<tr><td class="py-2 bg-gray-50 rounded-lg text-gray-700">${f}×</td>${sel(0)}${sel(1)}${sel(2)}</tr>`;
+            });
+            $('tabelKelipatan').innerHTML = baris.join('');
+            $('penjelasanOrde').innerHTML = `<div class="muncul">${infoOrde[ordeGrafik]}</div>`;
+        }
+
+        pasangPilihan('pilihOrdeGrafik', v => { ordeGrafik = v; perbaruiTabelKelipatan(); gambarGrafik(); });
+        $('sliderGrafik').addEventListener('input', e => { cGrafik = parseFloat(e.target.value); gambarGrafik(); });
+        perbaruiTabelKelipatan();
+        gambarGrafik();
+
+        // =====================================================
+        // 3. CONTOH TERBIMBING (data NO + Br2)
+        // =====================================================
+        const CONTOH = {
+            reaksi: '2NO(g) + Br<sub>2</sub>(g) → 2NOBr(g)',
+            namaA: 'NO', namaB: 'Br<sub>2</sub>',
+            baris: [
+                { a: 0.1, b: 0.1, v: 0.012 },
+                { a: 0.2, b: 0.1, v: 0.048 },
+                { a: 0.1, b: 0.2, v: 0.024 },
+                { a: 0.3, b: 0.3, v: 0.324 }
+            ],
+            x: 2, y: 1, k: 12
+        };
+
+        const TOTAL_LANGKAH = 7;
+        let langkah = 0;
+        let dipilih = [];
+        let pasanganA = null, pasanganB = null;
+
+        function renderTabelContoh() {
+            const bisaPilih = langkah === 0 || langkah === 2;
+            $('tabelContoh').innerHTML = CONTOH.baris.map((r, i) => {
+                let kelas = bisaPilih ? 'bisa-pilih' : '';
+                const diA = pasanganA && pasanganA.includes(i);
+                const diB = pasanganB && pasanganB.includes(i);
+                if (diA && diB) kelas += ' pasangan-ab';
+                else if (diA) kelas += ' pasangan-a';
+                else if (diB) kelas += ' pasangan-b';
+                if (dipilih.includes(i)) kelas += ' dipilih';
+                return `<tr class="${kelas}" data-i="${i}" ${bisaPilih ? 'tabindex="0" role="button"' : ''}>
+                    <td>${i + 1}</td><td>${fmt(r.a)}</td><td>${fmt(r.b)}</td><td>${fmt(r.v)}</td></tr>`;
+            }).join('');
+            $('tabelContoh').querySelectorAll('tr.bisa-pilih').forEach(tr => {
+                const pilih = () => klikBarisContoh(parseInt(tr.dataset.i));
+                tr.addEventListener('click', pilih);
+                tr.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pilih(); } });
+            });
+        }
+
+        function tambahRiwayat(html) {
+            const div = document.createElement('div');
+            div.className = 'langkah-selesai muncul text-sm text-gray-700';
+            div.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i>${html}`;
+            $('riwayatContoh').appendChild(div);
+        }
+
+        function klikBarisContoh(i) {
+            if (dipilih.includes(i)) dipilih = dipilih.filter(d => d !== i);
+            else if (dipilih.length < 2) dipilih.push(i);
+            renderTabelContoh();
+            if (dipilih.length < 2) return;
+
+            const [p, q] = dipilih.map(d => CONTOH.baris[d]);
+            const cariA = langkah === 0;
+            const tetap = cariA ? p.b === q.b : p.a === q.a;
+            const berubah = cariA ? p.a !== q.a : p.b !== q.b;
+            const zatTetap = cariA ? '[Br<sub>2</sub>]' : '[NO]';
+            const zatDicari = cariA ? '[NO]' : '[Br<sub>2</sub>]';
+
+            if (tetap && berubah) {
+                const pasangan = [...dipilih].sort((m, n) => (cariA ? CONTOH.baris[m].a - CONTOH.baris[n].a : CONTOH.baris[m].b - CONTOH.baris[n].b));
+                if (cariA) pasanganA = pasangan; else pasanganB = pasangan;
+                tambahRiwayat(`Percobaan ${pasangan[0] + 1} & ${pasangan[1] + 1}: ${zatTetap} tetap, ${zatDicari} berubah.`);
+                dipilih = [];
+                langkah++;
+                renderLangkah();
+            } else {
+                const alasan = !tetap
+                    ? `${zatTetap} pada kedua percobaan ini <b>berbeda</b>, jadi pengaruhnya ikut tercampur.`
+                    : `${zatDicari} pada kedua percobaan ini sama, jadi tidak ada perubahan yang bisa diamati.`;
+                tampilkanPesan(`<i class="fa-solid fa-circle-xmark mr-1"></i> ${alasan} Pilih pasangan lain.`, false);
+                dipilih = [];
+                setTimeout(renderTabelContoh, 350);
+            }
+        }
+
+        function tampilkanPesan(html, benar) {
+            const el = $('pesanLangkah');
+            if (!el) return;
+            el.innerHTML = html;
+            el.className = `mt-4 text-sm font-semibold rounded-xl px-4 py-3 ${benar ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-700 goyang'}`;
+        }
+
+        function tombolPilihan(nilai, benar, onBenar, pesanSalah) {
+            return nilai.map(n => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'pill min-w-[3.5rem]';
+                b.innerHTML = n.label ?? n;
+                b.addEventListener('click', () => {
+                    const val = n.nilai ?? n;
+                    if (val === benar) { onBenar(); }
+                    else { b.classList.add('salah'); tampilkanPesan(`<i class="fa-solid fa-circle-xmark mr-1"></i> ${pesanSalah}`, false); }
+                });
+                return b;
+            });
+        }
+
+        function persamaanRasio(pasangan, zat) {
+            const [i, j] = pasangan;
+            const r1 = CONTOH.baris[i], r2 = CONTOH.baris[j];
+            const c1 = zat === 'a' ? r1.a : r1.b, c2 = zat === 'a' ? r2.a : r2.b;
+            const nama = zat === 'a' ? 'NO' : 'Br<sub>2</sub>';
+            const faktor = c2 / c1, rasio = r2.v / r1.v;
+            return {
+                html: `<div class="rumus-box text-center space-y-1.5 text-sm md:text-base">
+                        <div>v<sub>${j + 1}</sub> / v<sub>${i + 1}</sub> = ([${nama}]<sub>${j + 1}</sub> / [${nama}]<sub>${i + 1}</sub>)<sup>?</sup></div>
+                        <div>${fmt(r2.v)} / ${fmt(r1.v)} = (${fmt(c2)} / ${fmt(c1)})<sup>?</sup></div>
+                        <div class="text-indigo-700 text-lg">${fmt(rasio)} = ${fmt(faktor)}<sup>?</sup></div>
+                       </div>`,
+                faktor, rasio
+            };
+        }
+
+        function renderLangkah() {
+            renderTabelContoh();
+            $('teksProgres').textContent = `${langkah}/${TOTAL_LANGKAH}`;
+            $('barProgres').style.width = (langkah / TOTAL_LANGKAH * 100) + '%';
+            const panel = $('panelLangkah');
+            const kepala = (no, judul) => `<p class="text-xs font-bold text-emerald-600 mb-1">Langkah ${no} dari ${TOTAL_LANGKAH}</p><h3 class="text-xl font-bold text-gray-800 mb-3">${judul}</h3>`;
+            const wadahTombol = '<div id="wadahTombol" class="flex flex-wrap gap-2 mt-4"></div><div id="pesanLangkah"></div>';
+
+            if (langkah === 0) {
+                panel.innerHTML = kepala(1, 'Pilih data untuk mencari orde NO') + `
+                    <p class="text-gray-700 leading-relaxed">Supaya hanya pengaruh [NO] yang terlihat, zat lain harus <strong>dibuat tetap</strong>.</p>
+                    <p class="text-gray-700 leading-relaxed mt-2"><i class="fa-solid fa-hand-pointer text-indigo-500 mr-1"></i> Klik <strong>dua baris</strong> pada tabel yang [Br<sub>2</sub>]-nya sama, tetapi [NO]-nya berbeda.</p>` + wadahTombol;
+            } else if (langkah === 1) {
+                const r = persamaanRasio(pasanganA, 'a');
+                panel.innerHTML = kepala(2, 'Hitung orde terhadap NO (x)') + r.html +
+                    `<p class="text-gray-700 mt-4">${fmt(r.faktor)} dipangkatkan berapa agar hasilnya ${fmt(r.rasio)}?</p>` + wadahTombol;
+                tombolPilihan([0, 1, 2, 3], 2, () => {
+                    tambahRiwayat(`${fmt(r.rasio)} = ${fmt(r.faktor)}<sup>x</sup> → <b>x = 2</b> (orde 2 terhadap NO)`);
+                    langkah++; renderLangkah();
+                }, `${fmt(r.faktor)} pangkat itu bukan ${fmt(r.rasio)}. Coba hitung lagi.`).forEach(b => $('wadahTombol').appendChild(b));
+            } else if (langkah === 2) {
+                panel.innerHTML = kepala(3, 'Pilih data untuk mencari orde Br₂') + `
+                    <p class="text-gray-700 leading-relaxed">Sekarang kebalikannya: [NO] harus <strong>tetap</strong>, dan [Br<sub>2</sub>] berubah.</p>
+                    <p class="text-gray-700 leading-relaxed mt-2"><i class="fa-solid fa-hand-pointer text-indigo-500 mr-1"></i> Klik <strong>dua baris</strong> yang sesuai pada tabel.</p>` + wadahTombol;
+            } else if (langkah === 3) {
+                const r = persamaanRasio(pasanganB, 'b');
+                panel.innerHTML = kepala(4, 'Hitung orde terhadap Br₂ (y)') + r.html +
+                    `<p class="text-gray-700 mt-4">${fmt(r.faktor)} dipangkatkan berapa agar hasilnya ${fmt(r.rasio)}?</p>` + wadahTombol;
+                tombolPilihan([0, 1, 2, 3], 1, () => {
+                    tambahRiwayat(`${fmt(r.rasio)} = ${fmt(r.faktor)}<sup>y</sup> → <b>y = 1</b> (orde 1 terhadap Br<sub>2</sub>)`);
+                    langkah++; renderLangkah();
+                }, `${fmt(r.faktor)} pangkat itu bukan ${fmt(r.rasio)}. Coba hitung lagi.`).forEach(b => $('wadahTombol').appendChild(b));
+            } else if (langkah === 4) {
+                panel.innerHTML = kepala(5, 'Tentukan orde reaksi total') + `
+                    <div class="rumus-box text-center text-lg">Orde total = x + y = 2 + 1 = ?</div>` + wadahTombol;
+                tombolPilihan([1, 2, 3, 4], 3, () => {
+                    tambahRiwayat('Orde total = x + y = 2 + 1 = <b>3</b>');
+                    langkah++; renderLangkah();
+                }, 'Orde total adalah jumlah semua orde, bukan hasil kali.').forEach(b => $('wadahTombol').appendChild(b));
+            } else if (langkah === 5) {
+                panel.innerHTML = kepala(6, 'Rumuskan persamaan laju') + `
+                    <p class="text-gray-700 mb-2">Pilih persamaan laju yang benar untuk reaksi ini.</p>` + wadahTombol;
+                const opsi = kocok([
+                    { label: tulisHukum('NO', 'Br<sub>2</sub>', 2, 1), nilai: 'benar' },
+                    { label: tulisHukum('NO', 'Br<sub>2</sub>', 1, 2), nilai: 'a' },
+                    { label: tulisHukum('NO', 'Br<sub>2</sub>', 2, 2), nilai: 'b' },
+                    { label: 'v = k[NOBr]<sup>2</sup>', nilai: 'c' }
+                ]);
+                tombolPilihan(opsi, 'benar', () => {
+                    tambahRiwayat(`Persamaan laju: <b>${tulisHukum('NO', 'Br<sub>2</sub>', 2, 1)}</b>`);
+                    langkah++; renderLangkah();
+                }, 'Periksa lagi: pangkat NO = x dan pangkat Br₂ = y. Produk tidak masuk persamaan laju.').forEach(b => { b.classList.add('w-full', 'text-left'); $('wadahTombol').appendChild(b); });
+            } else if (langkah === 6) {
+                panel.innerHTML = kepala(7, 'Hitung harga k beserta satuannya') + `
+                    <p class="text-gray-700 mb-3">Substitusikan data percobaan 1 ke persamaan laju:</p>
+                    <div class="rumus-box text-center text-sm md:text-base space-y-1">
+                        <div>k = v / ([NO]<sup>2</sup>[Br<sub>2</sub>])</div>
+                        <div>k = 0,012 / ((0,1)<sup>2</sup> × 0,1)</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mt-4">
+                        <input id="isiK" class="isian" inputmode="decimal" placeholder="nilai k" autocomplete="off">
+                        <select id="isiSatuanK" class="isian">
+                            <option value="">satuan</option>
+                            <option value="1">s⁻¹</option>
+                            <option value="2">M⁻¹ s⁻¹</option>
+                            <option value="3">M⁻² s⁻¹</option>
+                            <option value="0">M s⁻¹</option>
+                        </select>
+                    </div>
+                    <button type="button" id="cekK" class="mt-3 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl py-2.5 transition">Periksa</button>
+                    <div id="pesanLangkah"></div>`;
+                $('cekK').addEventListener('click', () => {
+                    const nilai = parseAngka($('isiK').value);
+                    const satuan = $('isiSatuanK').value;
+                    const okNilai = Math.abs(nilai - 12) / 12 < 0.02;
+                    const okSatuan = satuan === '3';
+                    $('isiK').classList.toggle('benar', okNilai); $('isiK').classList.toggle('salah', !okNilai);
+                    $('isiSatuanK').classList.toggle('benar', okSatuan); $('isiSatuanK').classList.toggle('salah', !okSatuan);
+                    if (okNilai && okSatuan) {
+                        tambahRiwayat(`k = 0,012 / 0,001 = <b>12 M<sup>−2</sup> s<sup>−1</sup></b>`);
+                        langkah++; renderLangkah();
+                    } else {
+                        tampilkanPesan(`<i class="fa-solid fa-circle-xmark mr-1"></i> ${!okNilai ? 'Nilai k belum tepat: hitung (0,1)² × 0,1 lebih dulu. ' : ''}${!okSatuan ? 'Satuan k untuk orde total n adalah M<sup>1−n</sup> s<sup>−1</sup>.' : ''}`, false);
+                    }
+                });
+            } else {
+                panel.innerHTML = `
+                    <div class="text-center py-4 muncul">
+                        <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 text-white flex items-center justify-center text-3xl shadow-lg mb-4"><i class="fa-solid fa-trophy"></i></div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Data berhasil dipecahkan!</h3>
+                        <div class="rumus-box inline-block text-lg mb-3">v = 12 [NO]<sup>2</sup>[Br<sub>2</sub>]</div>
+                        <p class="text-gray-600">Orde total 3. Sekarang coba sendiri di bagian latihan.</p>
+                        <a href="#bagian-latihan" class="inline-flex mt-5 items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl px-6 py-3 shadow-lg hover:-translate-y-0.5 transition"><i class="fa-solid fa-dumbbell"></i> Mulai latihan</a>
+                    </div>`;
+            }
+        }
+
+        $('ulangContoh').addEventListener('click', () => {
+            langkah = 0; dipilih = []; pasanganA = null; pasanganB = null;
+            $('riwayatContoh').innerHTML = '';
+            renderLangkah();
+        });
+        renderLangkah();
+
+        // =====================================================
+        // 4. GENERATOR LATIHAN SOAL
+        // =====================================================
+        const DAFTAR_REAKSI = [
+            { reaksi: '2NO(g) + O<sub>2</sub>(g) → 2NO<sub>2</sub>(g)', A: 'NO', B: 'O<sub>2</sub>' },
+            { reaksi: 'H<sub>2</sub>(g) + 2ICl(g) → I<sub>2</sub>(g) + 2HCl(g)', A: 'H<sub>2</sub>', B: 'ICl' },
+            { reaksi: '2NO(g) + 2H<sub>2</sub>(g) → N<sub>2</sub>(g) + 2H<sub>2</sub>O(g)', A: 'NO', B: 'H<sub>2</sub>' },
+            { reaksi: 'P + Q → R', A: 'P', B: 'Q' },
+            { reaksi: 'A + 2B → C', A: 'A', B: 'B' },
+            { reaksi: 'CH<sub>3</sub>Br + OH<sup>−</sup> → CH<sub>3</sub>OH + Br<sup>−</sup>', A: 'CH<sub>3</sub>Br', B: 'OH<sup>−</sup>' }
+        ];
+
+        let soal = null;
+        let skor = 0, jumlahSoal = 0, beruntun = 0, sudahDinilai = false, petunjukKe = 0;
+
+        function buatSoal() {
+            const r = acak(DAFTAR_REAKSI);
+            const x = acak([0, 1, 1, 2, 2]);
+            const y = acak([0, 1, 1, 2, 2]);
+            const k = acak([0.5, 2, 4, 5, 8, 10, 20, 25, 40, 50]);
+            const a0 = acak([0.1, 0.2]), b0 = acak([0.1, 0.2]);
+            const fA = acak([2, 3]), fB = acak([2, 3]);
+            const v = (a, b) => k * Math.pow(a, x) * Math.pow(b, y);
+            const bulat = n => parseFloat(n.toPrecision(6));
+            const dasar = [
+                { a: a0, b: b0 },
+                { a: bulat(a0 * fA), b: b0 },
+                { a: a0, b: bulat(b0 * fB) },
+                { a: bulat(a0 * fA), b: bulat(b0 * fB) }
+            ].map(d => ({ ...d, v: bulat(v(d.a, d.b)) }));
+            // Baris pertama tetap sebagai acuan, sisanya diacak supaya siswa harus mencari pasangannya sendiri
+            const baris = [dasar[0], ...kocok(dasar.slice(1))];
+            return { ...r, x, y, k, baris, n: x + y };
+        }
+
+        function cariPasangan(s, zat) {
+            // zat 'a': cari dua baris dengan b sama dan a berbeda
+            for (let i = 0; i < s.baris.length; i++) for (let j = 0; j < s.baris.length; j++) {
+                if (i === j) continue;
+                const p = s.baris[i], q = s.baris[j];
+                if (zat === 'a' && p.b === q.b && q.a > p.a) return [i, j];
+                if (zat === 'b' && p.a === q.a && q.b > p.b) return [i, j];
+            }
+            return null;
+        }
+
+        function tampilkanSoal() {
+            soal = buatSoal();
+            sudahDinilai = false;
+            petunjukKe = 0;
+            $('reaksiSoal').innerHTML = soal.reaksi;
+            $('thA').innerHTML = `[${soal.A}] (M)`;
+            $('thB').innerHTML = `[${soal.B}] (M)`;
+            $('labelX').innerHTML = `Orde ${soal.A} (x)`;
+            $('labelY').innerHTML = `Orde ${soal.B} (y)`;
+            $('tabelSoal').innerHTML = soal.baris.map((r, i) =>
+                `<tr><td>${i + 1}</td><td>${fmt(r.a)}</td><td>${fmt(r.b)}</td><td>${fmt(r.v)}</td></tr>`).join('');
+
+            // Pilihan persamaan laju (1 benar + 3 pengecoh)
+            const kombinasi = new Set([`${soal.x},${soal.y}`]);
+            const pengecoh = [[soal.y, soal.x], [soal.x + 1, soal.y], [soal.x, soal.y + 1], [1, 1], [2, 1], [1, 2], [2, 2], [0, 1], [1, 0]];
+            const opsi = [{ x: soal.x, y: soal.y }];
+            for (const [px, py] of kocok(pengecoh)) {
+                if (opsi.length >= 4) break;
+                const kunci = `${px},${py}`;
+                if (!kombinasi.has(kunci) && px <= 3 && py <= 3) { kombinasi.add(kunci); opsi.push({ x: px, y: py }); }
+            }
+            $('jawabHukum').innerHTML = '<option value="">– pilih persamaan –</option>' +
+                kocok(opsi).map(o => `<option value="${o.x},${o.y}">${polos(tulisHukum(soal.A, soal.B, o.x, o.y))}</option>`).join('');
+
+            ['jawabX', 'jawabY', 'jawabTotal', 'jawabHukum', 'jawabK', 'jawabSatuan'].forEach(id => {
+                $(id).value = '';
+                $(id).classList.remove('benar', 'salah');
+            });
+            $('umpanBalik').innerHTML = '';
+            $('pembahasan').classList.add('hidden');
+        }
+
+        function langkahPenyelesaian(s) {
+            const pA = cariPasangan(s, 'a'), pB = cariPasangan(s, 'b');
+            const L = [];
+            const baris = s.baris;
+            L.push({
+                judul: 'Data yang diketahui',
+                isi: `<p class="mb-4">Reaksi: <b>${s.reaksi}</b></p>
+                      <div class="overflow-x-auto"><table class="w-full text-center text-base md:text-xl border-separate border-spacing-y-1">
+                      <tr class="text-gray-500 text-sm md:text-base"><th>No</th><th>[${s.A}]</th><th>[${s.B}]</th><th>v</th></tr>
+                      ${baris.map((r, i) => `<tr class="bg-gray-50"><td class="py-1.5 rounded-l-lg">${i + 1}</td><td>${fmt(r.a)}</td><td>${fmt(r.b)}</td><td class="rounded-r-lg">${fmt(r.v)}</td></tr>`).join('')}
+                      </table></div>
+                      <p class="mt-4">Bentuk umum: <b>v = k[${s.A}]<sup>x</sup>[${s.B}]<sup>y</sup></b></p>`
+            });
+            const langkahOrde = (pas, zat, nama, orde, huruf) => {
+                const [i, j] = pas;
+                const c1 = zat === 'a' ? baris[i].a : baris[i].b, c2 = zat === 'a' ? baris[j].a : baris[j].b;
+                const lain = zat === 'a' ? s.B : s.A;
+                const faktor = c2 / c1, rasio = baris[j].v / baris[i].v;
+                return {
+                    judul: `Orde terhadap ${nama} (${huruf})`,
+                    isi: `<p class="mb-3">Pilih percobaan <b>${i + 1}</b> dan <b>${j + 1}</b> karena [${lain}] tetap.</p>
+                          <div class="rumus-box space-y-2 text-center">
+                            <div>v<sub>${j + 1}</sub> / v<sub>${i + 1}</sub> = ([${nama}]<sub>${j + 1}</sub> / [${nama}]<sub>${i + 1}</sub>)<sup>${huruf}</sup></div>
+                            <div>${fmt(baris[j].v)} / ${fmt(baris[i].v)} = (${fmt(c2)} / ${fmt(c1)})<sup>${huruf}</sup></div>
+                            <div>${fmt(rasio)} = ${fmt(faktor)}<sup>${huruf}</sup></div>
+                            <div class="text-indigo-700">${huruf} = ${orde}</div>
+                          </div>
+                          ${orde === 0 ? `<p class="mt-3 text-base">Laju tidak berubah walaupun [${nama}] berubah, jadi orde 0.</p>` : ''}`
+                };
+            };
+            L.push(langkahOrde(pA, 'a', s.A, s.x, 'x'));
+            L.push(langkahOrde(pB, 'b', s.B, s.y, 'y'));
+            L.push({
+                judul: 'Orde reaksi total',
+                isi: `<div class="rumus-box text-center">Orde total = x + y = ${s.x} + ${s.y} = <span class="text-indigo-700">${s.n}</span></div>`
+            });
+            L.push({
+                judul: 'Persamaan laju reaksi',
+                isi: `<div class="rumus-box text-center text-2xl md:text-3xl">${tulisHukum(s.A, s.B, s.x, s.y)}</div>
+                      <p class="mt-4 text-base">Orde 1 tidak perlu ditulis pangkatnya, dan zat berorde 0 tidak ditulis di persamaan.</p>`
+            });
+            const r1 = baris[0];
+            const penyebut = Math.pow(r1.a, s.x) * Math.pow(r1.b, s.y);
+            const faktorTeks = [s.x ? `(${fmt(r1.a)})${s.x > 1 ? `<sup>${s.x}</sup>` : ''}` : '', s.y ? `(${fmt(r1.b)})${s.y > 1 ? `<sup>${s.y}</sup>` : ''}` : ''].filter(Boolean).join(' × ') || '1';
+            L.push({
+                judul: 'Harga tetapan laju (k)',
+                isi: `<p class="mb-3">Substitusikan data percobaan 1:</p>
+                      <div class="rumus-box space-y-2 text-center">
+                        <div>k = v / ${polos(tulisHukum(s.A, s.B, s.x, s.y)).replace('v = k', '') || '1'}</div>
+                        <div>k = ${fmt(r1.v)} / ${faktorTeks.includes('×') ? `(${faktorTeks})` : faktorTeks}</div>
+                        <div>k = ${fmt(r1.v)} / ${fmt(penyebut)}</div>
+                        <div class="text-indigo-700">k = ${fmt(s.k)} ${satuanK(s.n)}</div>
+                      </div>
+                      <p class="mt-3 text-base">Satuan k untuk orde total ${s.n}: M<sup>1−${s.n}</sup> s<sup>−1</sup> = ${satuanK(s.n)}</p>`
+            });
+            return L;
+        }
+
+        function periksa() {
+            const x = $('jawabX').value, y = $('jawabY').value, tot = $('jawabTotal').value;
+            const hukum = $('jawabHukum').value, kVal = parseAngka($('jawabK').value), sat = $('jawabSatuan').value;
+            if ([x, y, tot, hukum, sat].some(v => v === '') || isNaN(kVal)) {
+                $('umpanBalik').innerHTML = `<div class="bg-amber-100 text-amber-800 rounded-xl px-4 py-3 text-sm font-semibold goyang"><i class="fa-solid fa-pen mr-1"></i> Lengkapi semua isian dulu, termasuk nilai k.</div>`;
+                return;
+            }
+            const cek = {
+                jawabX: +x === soal.x,
+                jawabY: +y === soal.y,
+                jawabTotal: +tot === soal.n,
+                jawabHukum: hukum === `${soal.x},${soal.y}`,
+                jawabK: Math.abs(kVal - soal.k) / soal.k < 0.03,
+                jawabSatuan: +sat === soal.n
+            };
+            Object.entries(cek).forEach(([id, ok]) => {
+                $(id).classList.toggle('benar', ok);
+                $(id).classList.toggle('salah', !ok);
+            });
+            const semua = Object.values(cek).every(Boolean);
+            const jumlahBenar = Object.values(cek).filter(Boolean).length;
+
+            if (!sudahDinilai) {
+                jumlahSoal++;
+                if (semua) { skor++; beruntun++; } else { beruntun = 0; }
+                sudahDinilai = true;
+                $('skor').textContent = skor;
+                $('jumlahSoal').textContent = jumlahSoal;
+                $('beruntun').textContent = beruntun;
+            }
+
+            if (semua) {
+                $('umpanBalik').innerHTML = `<div class="bg-emerald-100 text-emerald-800 rounded-xl px-4 py-3 text-sm font-semibold muncul">
+                    <i class="fa-solid fa-circle-check mr-1"></i> Semua benar! ${beruntun >= 3 ? `${beruntun} soal beruntun, kamu siap presentasi.` : 'Lanjut ke soal baru atau presentasikan penyelesaianmu.'}</div>`;
+            } else {
+                const saran = [];
+                if (!cek.jawabX || !cek.jawabY) saran.push('cek lagi pasangan percobaan: pilih yang salah satu konsentrasinya tetap');
+                if (cek.jawabX && cek.jawabY && !cek.jawabTotal) saran.push('orde total = x + y');
+                if (!cek.jawabHukum) saran.push('pangkat pada persamaan laju = orde tiap zat');
+                if (!cek.jawabK) saran.push('substitusikan satu data percobaan ke persamaan laju untuk mencari k');
+                if (!cek.jawabSatuan) saran.push('satuan k = M<sup>1−n</sup> s<sup>−1</sup>, n = orde total');
+                $('umpanBalik').innerHTML = `<div class="bg-red-50 text-red-700 border border-red-100 rounded-xl px-4 py-3 text-sm font-semibold goyang">
+                    <i class="fa-solid fa-circle-exclamation mr-1"></i> ${jumlahBenar} dari 6 isian benar. Petunjuk: ${saran.join('; ')}.
+                    Perbaiki isian yang merah lalu periksa lagi.</div>`;
+            }
+        }
+
+        function tampilkanPetunjuk() {
+            const pA = cariPasangan(soal, 'a'), pB = cariPasangan(soal, 'b');
+            const daftar = [
+                `Untuk orde ${soal.A}, cari dua percobaan yang [${soal.B}]-nya sama. Coba percobaan <b>${pA[0] + 1}</b> dan <b>${pA[1] + 1}</b>.`,
+                `Untuk orde ${soal.B}, cari dua percobaan yang [${soal.A}]-nya sama. Coba percobaan <b>${pB[0] + 1}</b> dan <b>${pB[1] + 1}</b>.`,
+                `Bandingkan: (rasio laju) = (rasio konsentrasi)<sup>orde</sup>. Jika rasio konsentrasi 2 dan rasio laju 4, ordenya 2.`,
+                `Untuk k, masukkan data percobaan 1 ke persamaan laju, lalu k = v ÷ (konsentrasi berpangkat orde).`
+            ];
+            const teks = daftar[Math.min(petunjukKe, daftar.length - 1)];
+            petunjukKe++;
+            $('umpanBalik').innerHTML = `<div class="bg-amber-50 text-amber-800 border border-amber-100 rounded-xl px-4 py-3 text-sm font-semibold muncul">
+                <i class="fa-solid fa-lightbulb mr-1"></i> Petunjuk ${Math.min(petunjukKe, daftar.length)}/${daftar.length}: ${teks}</div>`;
+        }
+
+        function tampilkanPembahasan() {
+            const L = langkahPenyelesaian(soal);
+            $('pembahasan').innerHTML = `<h3 class="text-xl font-bold text-gray-800 mb-5"><i class="fa-solid fa-book-open text-indigo-500 mr-2"></i>Pembahasan</h3>
+                <div class="grid md:grid-cols-2 gap-4">` +
+                L.map((l, i) => `<div class="bg-white rounded-2xl p-5 border border-indigo-100 muncul" style="animation-delay:${i * 60}ms">
+                    <p class="text-xs font-bold text-indigo-500 mb-1">Langkah ${i + 1}</p>
+                    <h4 class="font-bold text-gray-800 mb-3">${l.judul}</h4>
+                    <div class="text-sm text-gray-700">${l.isi.replace(/text-base md:text-xl/g, 'text-sm').replace(/text-2xl md:text-3xl/g, 'text-lg')}</div></div>`).join('') +
+                `</div>`;
+            $('pembahasan').classList.remove('hidden');
+            $('pembahasan').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (!sudahDinilai) { sudahDinilai = true; jumlahSoal++; beruntun = 0; $('jumlahSoal').textContent = jumlahSoal; $('beruntun').textContent = 0; }
+        }
+
+        $('periksa').addEventListener('click', periksa);
+        $('soalBaru').addEventListener('click', tampilkanSoal);
+        $('petunjuk').addEventListener('click', tampilkanPetunjuk);
+        $('lihatBahas').addEventListener('click', tampilkanPembahasan);
+        // Orde total otomatis membantu? Tidak: siswa tetap mengisi sendiri agar melatih konsep penjumlahan orde.
+        tampilkanSoal();
+
+        // =====================================================
+        // 5. PRESENTASI: susun alur + mode slide
+        // =====================================================
+        const ALUR = [
+            'Tuliskan data yang diketahui dan bentuk umum v = k[A]ˣ[B]ʸ',
+            'Pilih dua percobaan dengan [B] tetap, lalu hitung orde A (x)',
+            'Pilih dua percobaan dengan [A] tetap, lalu hitung orde B (y)',
+            'Jumlahkan orde: orde total = x + y',
+            'Tuliskan persamaan laju dengan pangkat hasil perhitungan',
+            'Substitusikan satu data percobaan untuk menghitung k dan satuannya'
+        ];
+        let urutanBerikut = 0;
+
+        function siapkanUrut() {
+            urutanBerikut = 0;
+            $('hasilUrut').innerHTML = '';
+            $('kotakUrut').innerHTML = '';
+            kocok(ALUR.map((t, i) => ({ t, i }))).forEach(item => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'kartu-urut flex items-center gap-3';
+                b.innerHTML = `<span class="nomor w-8 h-8 shrink-0 rounded-lg bg-gray-100 text-gray-400 flex items-center justify-center font-bold"><i class="fa-solid fa-grip-lines"></i></span><span>${item.t}</span>`;
+                b.addEventListener('click', () => {
+                    if (item.i === urutanBerikut) {
+                        urutanBerikut++;
+                        b.disabled = true;
+                        b.querySelector('.nomor').className = 'nomor w-8 h-8 shrink-0 rounded-lg bg-emerald-500 text-white flex items-center justify-center font-bold';
+                        b.querySelector('.nomor').textContent = urutanBerikut;
+                        b.style.order = urutanBerikut - 10;
+                        if (urutanBerikut === ALUR.length) {
+                            $('hasilUrut').innerHTML = `<span class="text-emerald-700 muncul inline-block"><i class="fa-solid fa-circle-check mr-1"></i> Alurmu sudah runtut. Gunakan urutan ini saat presentasi!</span>`;
+                        } else {
+                            $('hasilUrut').innerHTML = `<span class="text-emerald-700">Tepat! Langkah berikutnya?</span>`;
+                        }
+                    } else {
+                        b.classList.remove('goyang'); void b.offsetWidth; b.classList.add('goyang');
+                        $('hasilUrut').innerHTML = `<span class="text-red-600">Belum tepat. Pikirkan: langkah apa yang harus selesai sebelum langkah ini?</span>`;
+                    }
+                });
+                $('kotakUrut').appendChild(b);
+            });
+        }
+        $('acakUrut').addEventListener('click', siapkanUrut);
+        siapkanUrut();
+
+        // Mode presentasi
+        let slide = [];
+        let posisiSlide = 0;
+
+        function soalContohSebagaiSoal() {
+            return {
+                reaksi: CONTOH.reaksi, A: CONTOH.namaA, B: CONTOH.namaB,
+                x: CONTOH.x, y: CONTOH.y, k: CONTOH.k, n: CONTOH.x + CONTOH.y,
+                baris: CONTOH.baris
+            };
+        }
+
+        function bukaPresentasi(sumber) {
+            slide = langkahPenyelesaian(sumber);
+            slide.push({
+                judul: 'Kesimpulan',
+                isi: `<ul class="space-y-3">
+                        <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Orde terhadap ${sumber.A} = ${sumber.x}</li>
+                        <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Orde terhadap ${sumber.B} = ${sumber.y}</li>
+                        <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Orde reaksi total = ${sumber.n}</li>
+                        <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>${tulisHukum(sumber.A, sumber.B, sumber.x, sumber.y).replace('v = k', `v = ${fmt(sumber.k)}`)}</li>
+                      </ul>`
+            });
+            posisiSlide = 0;
+            $('presentasi').classList.add('buka');
+            document.body.style.overflow = 'hidden';
+            tampilkanSlide();
+            $('slideBerikut').focus();
+        }
+
+        function tampilkanSlide() {
+            const s = slide[posisiSlide];
+            $('nomorSlide').textContent = `Slide ${posisiSlide + 1} dari ${slide.length}`;
+            $('judulSlide').innerHTML = s.judul;
+            $('isiSlide').innerHTML = `<div class="muncul">${s.isi}</div>`;
+            $('slideSebelum').disabled = posisiSlide === 0;
+            $('slideSebelum').classList.toggle('opacity-40', posisiSlide === 0);
+            const akhir = posisiSlide === slide.length - 1;
+            $('slideBerikut').innerHTML = akhir ? 'Selesai<i class="fa-solid fa-check ml-2"></i>' : 'Berikutnya<i class="fa-solid fa-chevron-right ml-2"></i>';
+            $('titikSlide').innerHTML = slide.map((_, i) =>
+                `<span class="w-2.5 h-2.5 rounded-full ${i === posisiSlide ? 'bg-indigo-600' : 'bg-gray-300'}"></span>`).join('');
+        }
+
+        function tutupPresentasi() {
+            $('presentasi').classList.remove('buka');
+            document.body.style.overflow = '';
+        }
+
+        $('mulaiPresentasi').addEventListener('click', () => bukaPresentasi(soal));
+        $('mulaiPresentasiContoh').addEventListener('click', () => bukaPresentasi(soalContohSebagaiSoal()));
+        $('tutupPresentasi').addEventListener('click', tutupPresentasi);
+        $('slideSebelum').addEventListener('click', () => { if (posisiSlide > 0) { posisiSlide--; tampilkanSlide(); } });
+        $('slideBerikut').addEventListener('click', () => {
+            if (posisiSlide < slide.length - 1) { posisiSlide++; tampilkanSlide(); } else tutupPresentasi();
+        });
+        document.addEventListener('keydown', e => {
+            if (!$('presentasi').classList.contains('buka')) return;
+            if (e.key === 'ArrowRight') $('slideBerikut').click();
+            if (e.key === 'ArrowLeft') $('slideSebelum').click();
+            if (e.key === 'Escape') tutupPresentasi();
+        });
+    </script>
+</body>
+
+</html>

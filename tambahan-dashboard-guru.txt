@@ -1,0 +1,116 @@
+/* =====================================================================
+   TAMBAHAN UNTUK dashboard-guru.html
+   Agar LKPD Pertemuan 1–3 tampil di menu LKPD dan bisa dinilai guru.
+
+   CARA PASANG
+   1. Buka dashboard-guru.html, cari baris:   const LKPD_DEF = {
+   2. Cari penutup objek LKPD_DEF tersebut (tanda  };  miliknya).
+   3. Tempel SELURUH blok "Object.assign(...)" di bawah ini TEPAT SETELAH penutup itu.
+   4. (Disarankan) Lakukan juga LANGKAH 5 agar judul fase di laci penilaian benar.
+   5. Simpan, unggah ke GitHub, lalu buka dashboard dengan Ctrl + Shift + R.
+
+   Data siswa tersimpan di Firebase:  lkpd/{uid}/lkpd_p1 | lkpd_p2 | lkpd_p3
+     status        : 'draf' | 'dikumpulkan' | 'revisi' | 'dinilai'
+     jawaban       : { qid: teks jawaban siap baca }
+     soal / fase   : { qid: teks pertanyaan } / { qid: nama fase PBL }
+     isian         : jawaban mentah (dipakai LKPD untuk memuat ulang)
+     identitas     : { nama, kelas, kelompok, anggota }
+     progres       : persen soal wajib yang terisi
+     dikumpulkanPada, diperbarui
+   Guru menulis: nilai, catatanGuru, catatanSoal { qid: teks }, dinilaiPada
+   (sama seperti LKPD sebelumnya, jadi tombol Nilai / Kembalikan untuk revisi
+   di dashboard langsung bekerja dan siswa melihat hasilnya secara langsung).
+   ===================================================================== */
+Object.assign(LKPD_DEF, {
+  lkpd_p1: { judul: "LKPD 1: Teori Tumbukan dan Energi Aktivasi", lab: null, soal: [
+    ["q1","Tuliskan informasi penting yang kamu temukan dari permasalahan di atas."],
+    ["q2","Rumuskan pertanyaan (rumusan masalah) yang akan kamu selidiki."],
+    ["q3","Tuliskan dugaan awal (hipotesis): mengapa reaksi baru terjadi setelah ada percikan api?"],
+    ["q4","Tuliskan pembagian peran dalam kelompokmu."],
+    ["q5","Catat hasil pengamatan simulasimu pada tabel berikut."],
+    ["q6","Berdasarkan tabel, rumuskan syarat terjadinya tumbukan efektif."],
+    ["q7","Reaksi A memiliki Ea = 50 kJ dan reaksi B memiliki Ea = 150 kJ pada suhu yang sama. Reaksi manakah yang berlangsung lebih cepat?"],
+    ["q8","Apa yang terjadi pada jumlah partikel yang mampu melampaui Ea jika energi aktivasinya diperkecil? Bagaimana pengaruhnya terhadap laju reaksi?"],
+    ["q9","Pilih label yang tepat untuk setiap penanda pada diagram energi."],
+    ["q10","Jelaskan perbedaan energi aktivasi (Ea) dengan perubahan entalpi (ΔH) berdasarkan diagram di atas."],
+    ["q11","Gunakan diagram energi tersebut untuk menjelaskan mengapa gas LPG baru meledak setelah ada percikan api."],
+    ["q12","Bandingkan diagram energi reaksi eksoterm (seperti pembakaran LPG) dengan reaksi endoterm. Apa perbedaan letak energi produk dan tanda ΔH-nya?"],
+    ["q13","Tuliskan penjelasan solusi permasalahan gas LPG yang akan kelompokmu presentasikan (kaitkan dengan tumbukan efektif, energi aktivasi, dan kompleks teraktivasi)."],
+    ["q14","Tautan poster/slide kelompok (jika ada)."],
+    ["q15","Catat satu tanggapan atau pertanyaan dari kelompok lain beserta jawabannya."],
+    ["q16","Bandingkan hipotesis awalmu (soal 3) dengan temuan dari simulasi dan diskusi. Apakah hipotesismu terbukti? Jelaskan."],
+    ["q17","Tentukan benar atau salah pernyataan berikut, lalu beri alasan singkat."],
+    ["q18","Tuliskan kesimpulan tentang teori tumbukan, tumbukan efektif, energi aktivasi, dan kompleks teraktivasi."],
+    ["q19","3 hal yang telah kamu pelajari hari ini."],
+    ["q20","2 hal yang paling menarik bagimu."],
+    ["q21","1 pertanyaan yang masih ingin kamu ketahui."]
+  ] },
+  lkpd_p2: { judul: "LKPD 2: Faktor-Faktor yang Memengaruhi Laju Reaksi", lab: "surface", soal: [
+    ["q1","Tuliskan hasil pengamatanmu terhadap demonstrasi tersebut."],
+    ["q2","Rumuskan masalah yang akan kalian selidiki."],
+    ["q3","Tuliskan hipotesis untuk setiap faktor."],
+    ["q4","Tuliskan pembagian peran dalam kelompokmu."],
+    ["q5","Lengkapi tabel variabel untuk setiap percobaan."],
+    ["q6","Percobaan A: Luas permukaan. CaCO₃ bermassa sama dalam tiga bentuk direaksikan dengan HCl yang konsentrasi dan suhunya sama."],
+    ["q7","Bagaimana pengaruh luas permukaan terhadap laju reaksi berdasarkan datamu? Jelaskan dengan teori tumbukan."],
+    ["q8","Percobaan B: Konsentrasi. Konsentrasi HCl divariasikan, sedangkan bentuk padatan dan suhu tetap."],
+    ["q9","Bagaimana pengaruh konsentrasi terhadap laju reaksi berdasarkan datamu? Jelaskan dengan teori tumbukan."],
+    ["q10","Percobaan C: Suhu. Suhu larutan divariasikan, sedangkan variabel lain tetap."],
+    ["q11","Bagaimana pengaruh suhu terhadap laju reaksi berdasarkan datamu? Kaitkan dengan energi kinetik dan energi aktivasi."],
+    ["q12","Percobaan D: Katalis. Larutan H₂O₂ diuraikan tanpa katalis dan dengan katalis."],
+    ["q13","Bagaimana pengaruh katalis terhadap laju reaksi berdasarkan datamu? Kaitkan dengan energi aktivasi."],
+    ["q14","Bandingkan ketiga katalis (MnO₂, KI, FeCl₃). Katalis mana yang paling efektif menurut datamu? Mengapa katalis yang berbeda menghasilkan laju yang berbeda?"],
+    ["q15","Susun kesimpulan untuk setiap faktor berdasarkan gabungan data kelompok."],
+    ["q16","Faktor yang dipresentasikan kelompokmu (diundi guru):"],
+    ["q17","Tuliskan naskah presentasi faktor tersebut secara runtut: hipotesis → data → analisis teori tumbukan → kesimpulan."],
+    ["q18","Bandingkan data kelompok penyaji lain dengan datamu. Apakah hasilnya sama? Tuliskan tanggapanmu."],
+    ["q19","Bandingkan hipotesis awal (soal 3) dengan data percobaan. Hipotesis mana yang terbukti dan mana yang perlu diperbaiki?"],
+    ["q20","Susun rekomendasi akhir untuk perusahaan farmasi agar tablet vitamin bereaksi secepat mungkin. Sertakan bukti data."],
+    ["q21","Tentukan benar atau salah pernyataan berikut, lalu beri alasan singkat."],
+    ["q22","Bagian percobaan mana yang paling menarik bagimu? Mengapa?"],
+    ["q23","Kesulitan apa yang kamu alami selama praktikum, dan bagaimana cara kamu mengatasinya?"],
+    ["q24","Tindak lanjut: cermati data percobaan konsentrasi. Jika konsentrasi dinaikkan dua kali, apakah laju reaksi juga naik dua kali? Tuliskan dugaanmu."]
+  ] },
+  lkpd_p3: { judul: "LKPD 3: Persamaan Laju Reaksi dan Orde Reaksi", lab: null, soal: [
+    ["q1","Tuliskan informasi yang diketahui dan yang ditanyakan dari permasalahan."],
+    ["q2","Dugaan awal: apakah orde reaksi pasti sama dengan koefisien reaksinya (NO = 2, O₂ = 1)?"],
+    ["q3","Tuliskan pembagian peran dalam kelompokmu."],
+    ["q4","Tentukan orde reaksi terhadap NO."],
+    ["q5","Tentukan orde reaksi terhadap O₂."],
+    ["q6","Orde reaksi total = …"],
+    ["q7","Tuliskan persamaan laju reaksinya."],
+    ["q8","Hitung tetapan laju reaksi k beserta satuannya (tuliskan langkahnya)."],
+    ["q9","Prediksi: jika [NO] di udara meningkat tiga kali akibat kemacetan ([O₂] tetap), berapa kali laju pembentukan NO₂ meningkat? Tunjukkan perhitungannya."],
+    ["level","Pilih level latihan:"],
+    ["q10","Tentukan hasil berikut dari data reaksi P + Q → R."],
+    ["q11","Tuliskan langkah perhitunganmu."],
+    ["q12","Tentukan hasil berikut dari data reaksi A + B → C."],
+    ["q13","Tuliskan langkah perhitunganmu, termasuk perhitungan nilai k."],
+    ["q14","Tentukan hasil berikut dari data reaksi X + Y → Z."],
+    ["q15","Tuliskan langkah perhitunganmu. Apa arti orde yang kamu temukan untuk zat Y?"],
+    ["q16","Susun naskah presentasi perhitungan kelompokmu secara runtut: data → pemilihan pasangan percobaan → orde tiap zat → orde total → persamaan laju → nilai k → prediksi."],
+    ["q17","Tautan slide/foto kertas plano kelompok (jika ada)."],
+    ["q18","Hasil verifikasi: apakah perhitungan kelompok penyaji lain sama dengan milikmu? Tuliskan koreksi atau tanggapanmu."],
+    ["q19","Kesalahan apa yang paling sering terjadi saat menentukan orde reaksi? Bagaimana cara menghindarinya?"],
+    ["q20","Tentukan benar atau salah pernyataan berikut, lalu beri alasan singkat."],
+    ["q21","Jawab kembali permasalahan awal: bagaimana persamaan laju pembentukan NO₂ dan apa rekomendasimu untuk mengurangi emisi NO dari kendaraan bermotor?"],
+    ["q22","Simpulkan cara menentukan orde reaksi, orde reaksi total, persamaan laju, dan tetapan laju reaksi."],
+    ["q23","Jelaskan hubungan antara teori tumbukan, faktor-faktor yang memengaruhi laju reaksi, dan persamaan laju reaksi."],
+    ["q24","Bagian mana yang masih sulit bagimu, dan bagaimana rencanamu untuk mengatasinya?"]
+  ] }
+});
+
+/* ---------------------------------------------------------------------
+   LANGKAH 5 (disarankan): judul fase di laci penilaian
+   Laci penilaian lama memberi judul setiap soal dengan FASE[i] (hanya 5 fase),
+   sedangkan LKPD baru punya 21–25 soal. Cari potongan ini di dashboard-guru.html:
+
+       <h3><span>${i + 1}</span> ${FASE[i]}</h3>
+
+   lalu ganti menjadi:
+
+       <h3><span>${i + 1}</span> ${(rec.fase && rec.fase[qid]) || FASE[i] || ''}</h3>
+
+   Dengan begitu setiap soal diberi nama fase PBL yang benar (Orientasi masalah,
+   Penyelidikan, dst.) sesuai yang dikirim LKPD.
+   --------------------------------------------------------------------- */

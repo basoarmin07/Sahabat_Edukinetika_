@@ -1,0 +1,2729 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>LKPD 3: Faktor-Faktor yang Memengaruhi Laju Reaksi - EduKinetika</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --aksen: #059669;
+            --aksen-muda: #d1fae5;
+            --tinta: #0f172a;
+            --teks: #334155;
+            --redup: #64748b;
+            --garis: #e2e8f0;
+            --latar: #f4f7fa;
+            --kartu: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            color: var(--teks);
+            background: var(--latar);
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 28px 28px;
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--aksen);
+        }
+
+        .fase,
+        #bagian-identitas,
+        .soal {
+            scroll-margin-top: 120px;
+        }
+
+        .wadah {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* ---------- Bilah alat ---------- */
+        .bilah {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(255, 255, 255, .92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--garis);
+        }
+
+        .bilah-isi {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 10px 16px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .bilah .judul-kecil {
+            font-weight: 800;
+            color: var(--tinta);
+            font-size: .92rem;
+            flex: 1 1 180px;
+            min-width: 0;
+        }
+
+        .bilah .judul-kecil small {
+            display: block;
+            font-weight: 600;
+            color: var(--redup);
+            font-size: .72rem;
+        }
+
+        .simpan-info {
+            font-size: .75rem;
+            font-weight: 700;
+            color: var(--redup);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .simpan-info .titik {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #cbd5e1;
+        }
+
+        .simpan-info.ok .titik {
+            background: #10b981;
+        }
+
+        .simpan-info.proses .titik {
+            background: #f59e0b;
+        }
+
+        .simpan-info.lokal .titik {
+            background: #3b82f6;
+        }
+
+        .simpan-info.galat .titik {
+            background: #ef4444;
+        }
+
+        .tombol {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font: inherit;
+            font-weight: 800;
+            font-size: .85rem;
+            border: 2px solid var(--garis);
+            background: #fff;
+            color: var(--tinta);
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform .1s, background .15s, border-color .15s;
+        }
+
+        .tombol:hover {
+            border-color: var(--aksen);
+        }
+
+        .tombol:active {
+            transform: scale(.98);
+        }
+
+        .tombol.utama {
+            background: var(--aksen);
+            border-color: var(--aksen);
+            color: #fff;
+        }
+
+        .tombol.utama:hover {
+            filter: brightness(1.07);
+        }
+
+        .tombol:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .progres {
+            height: 4px;
+            background: #eef2f7;
+        }
+
+        .progres span {
+            display: block;
+            height: 100%;
+            background: var(--aksen);
+            width: 0;
+            transition: width .4s;
+        }
+
+        /* ---------- Langkah fase ---------- */
+        .langkah {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding: 8px 16px 10px;
+            max-width: 900px;
+            margin: 0 auto;
+            scrollbar-width: none;
+        }
+
+        .langkah::-webkit-scrollbar {
+            display: none;
+        }
+
+        .langkah a {
+            flex: 0 0 auto;
+            text-decoration: none;
+            font-size: .74rem;
+            font-weight: 800;
+            color: var(--redup);
+            background: #fff;
+            border: 1px solid var(--garis);
+            border-radius: 999px;
+            padding: 5px 11px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .langkah a .n {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #eef2f7;
+            display: grid;
+            place-items: center;
+            font-size: .66rem;
+        }
+
+        .langkah a.aktif {
+            background: var(--aksen);
+            color: #fff;
+            border-color: var(--aksen);
+        }
+
+        .langkah a.aktif .n {
+            background: rgba(255, 255, 255, .25);
+        }
+
+        .langkah a.lengkap .n {
+            background: #10b981;
+            color: #fff;
+        }
+
+        /* ---------- Kartu umum ---------- */
+        .kartu {
+            background: var(--kartu);
+            border: 1px solid #edf1f6;
+            border-radius: 22px;
+            box-shadow: 0 10px 30px -22px rgba(15, 23, 42, .45);
+            padding: 20px;
+            margin: 18px 0;
+        }
+
+        .sampul {
+            position: relative;
+            overflow: hidden;
+            margin-top: 22px;
+            background: linear-gradient(135deg, var(--aksen), var(--aksen-gelap, #1e3a8a));
+            color: #fff;
+            border: 0;
+        }
+
+        .sampul .label {
+            display: inline-block;
+            background: rgba(255, 255, 255, .18);
+            border: 1px solid rgba(255, 255, 255, .3);
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: .75rem;
+            font-weight: 800;
+        }
+
+        .sampul h1 {
+            margin: 12px 0 6px;
+            font-size: clamp(1.5rem, 4.2vw, 2.2rem);
+            line-height: 1.15;
+            letter-spacing: -.02em;
+            color: #fff;
+        }
+
+        .sampul p {
+            margin: 0;
+            opacity: .92;
+            max-width: 60ch;
+        }
+
+        .sampul .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .sampul .meta span {
+            background: rgba(255, 255, 255, .15);
+            border-radius: 10px;
+            padding: 6px 10px;
+            font-size: .78rem;
+            font-weight: 700;
+        }
+
+        .sampul .hiasan {
+            position: absolute;
+            right: -30px;
+            bottom: -40px;
+            width: 220px;
+            opacity: .16;
+            pointer-events: none;
+        }
+
+        h2.judul-bagian {
+            font-size: 1.25rem;
+            margin: 0;
+            color: var(--tinta);
+            letter-spacing: -.01em;
+        }
+
+        h3 {
+            color: var(--tinta);
+        }
+
+        .kepala-fase {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .kepala-fase .no {
+            width: 46px;
+            height: 46px;
+            flex: 0 0 46px;
+            border-radius: 14px;
+            background: var(--aksen-muda);
+            color: var(--aksen);
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 1.05rem;
+        }
+
+        .kepala-fase .sub {
+            font-size: .75rem;
+            font-weight: 800;
+            color: var(--aksen);
+        }
+
+        .kepala-fase .ket {
+            font-size: .85rem;
+            color: var(--redup);
+            margin-top: 2px;
+        }
+
+        .daftar {
+            margin: 8px 0 0;
+            padding-left: 20px;
+        }
+
+        .daftar li {
+            margin: 4px 0;
+        }
+
+        .info {
+            background: #f8fafc;
+            border: 1px solid var(--garis);
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin: 14px 0;
+        }
+
+        .info.masalah {
+            background: linear-gradient(180deg, #fff7ed, #fff);
+            border-color: #fed7aa;
+        }
+
+        .info.masalah .tag {
+            color: #c2410c;
+        }
+
+        .info .tag {
+            font-size: .75rem;
+            font-weight: 800;
+            color: var(--aksen);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        details.bantuan {
+            border: 1px dashed #93c5fd;
+            background: #eff6ff;
+            border-radius: 14px;
+            padding: 0 14px;
+            margin: 12px 0;
+        }
+
+        details.bantuan summary {
+            cursor: pointer;
+            font-weight: 800;
+            font-size: .85rem;
+            color: #1d4ed8;
+            padding: 10px 0;
+            list-style: none;
+        }
+
+        details.bantuan summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details.bantuan summary::before {
+            content: '💡 ';
+        }
+
+        details.bantuan[open] {
+            padding-bottom: 12px;
+        }
+
+        details.bantuan .isi {
+            font-size: .88rem;
+        }
+
+        .tautan-daftar {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            margin: 12px 0;
+        }
+
+        .tautan-daftar a {
+            display: block;
+            text-decoration: none;
+            background: #fff;
+            border: 2px solid var(--garis);
+            border-radius: 14px;
+            padding: 12px 14px;
+            color: var(--tinta);
+        }
+
+        .tautan-daftar a:hover {
+            border-color: var(--aksen);
+        }
+
+        .tautan-daftar a strong {
+            display: block;
+        }
+
+        .tautan-daftar a span {
+            font-size: .78rem;
+            color: var(--redup);
+        }
+
+        /* ---------- Soal ---------- */
+        .soal {
+            margin: 18px 0 6px;
+            padding-top: 16px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .soal:first-child {
+            border-top: 0;
+            padding-top: 0;
+        }
+
+        .soal .tanya {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .soal .nomor {
+            flex: 0 0 auto;
+            min-width: 30px;
+            height: 30px;
+            padding: 0 6px;
+            border-radius: 9px;
+            background: var(--tinta);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: .8rem;
+        }
+
+        .soal.terisi .nomor {
+            background: #10b981;
+        }
+
+        .soal .teks-tanya {
+            font-weight: 700;
+            color: var(--tinta);
+        }
+
+        .chip {
+            display: inline-block;
+            font-size: .68rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 999px;
+            margin-left: 4px;
+            vertical-align: 2px;
+        }
+
+        .chip.tp {
+            background: var(--aksen-muda);
+            color: var(--aksen);
+        }
+
+        .chip.opsional {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .soal .jawab {
+            margin: 10px 0 0 40px;
+        }
+
+        textarea,
+        input[type=text],
+        input[type=number],
+        select {
+            width: 100%;
+            font: inherit;
+            font-size: 16px;
+            color: var(--tinta);
+            border: 2px solid var(--garis);
+            border-radius: 12px;
+            padding: 10px 12px;
+            background: #fff;
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 88px;
+            line-height: 1.55;
+        }
+
+        textarea:focus,
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--aksen);
+            box-shadow: 0 0 0 4px var(--aksen-muda);
+        }
+
+        textarea:disabled,
+        input:disabled,
+        select:disabled {
+            background: #f8fafc;
+            color: #475569;
+        }
+
+        .tabel-wadah {
+            overflow-x: auto;
+            border: 1px solid var(--garis);
+            border-radius: 14px;
+        }
+
+        table.lkpd {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 480px;
+            font-size: .88rem;
+        }
+
+        table.lkpd th,
+        table.lkpd td {
+            border-bottom: 1px solid #eef2f7;
+            padding: 8px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        table.lkpd th {
+            background: #f8fafc;
+            font-size: .76rem;
+            color: var(--redup);
+            font-weight: 800;
+        }
+
+        table.lkpd td:first-child {
+            font-weight: 700;
+            color: var(--tinta);
+            white-space: nowrap;
+        }
+
+        table.lkpd input,
+        table.lkpd select {
+            padding: 8px 10px;
+            border-radius: 10px;
+        }
+
+        table.lkpd tr:last-child td {
+            border-bottom: 0;
+        }
+
+        table.data {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: .9rem;
+            margin: 10px 0;
+        }
+
+        table.data th,
+        table.data td {
+            border: 1px solid var(--garis);
+            padding: 8px 10px;
+            text-align: center;
+        }
+
+        table.data th {
+            background: #f1f5f9;
+            color: var(--tinta);
+        }
+
+        .pilihan-daftar {
+            display: grid;
+            gap: 8px;
+        }
+
+        .pilihan-daftar label {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            border: 2px solid var(--garis);
+            border-radius: 12px;
+            padding: 10px 12px;
+            cursor: pointer;
+            background: #fff;
+        }
+
+        .pilihan-daftar label:has(input:checked) {
+            border-color: var(--aksen);
+            background: var(--aksen-muda);
+        }
+
+        .pilihan-daftar input {
+            margin-top: 5px;
+            accent-color: var(--aksen);
+        }
+
+        .diagram {
+            background: #fff;
+            border: 1px solid var(--garis);
+            border-radius: 14px;
+            padding: 10px;
+        }
+
+        .diagram svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .penanda-daftar {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            margin-top: 10px;
+        }
+
+        .penanda-daftar label {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-weight: 800;
+            color: var(--tinta);
+        }
+
+        .penanda-daftar .bulat {
+            width: 26px;
+            height: 26px;
+            flex: 0 0 26px;
+            border-radius: 50%;
+            background: var(--aksen);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: .8rem;
+        }
+
+        .grafik {
+            margin-top: 10px;
+            background: #fff;
+            border: 1px solid var(--garis);
+            border-radius: 14px;
+            padding: 10px 12px;
+        }
+
+        .grafik .jdl {
+            font-size: .76rem;
+            font-weight: 800;
+            color: var(--redup);
+            margin-bottom: 4px;
+        }
+
+        .grafik svg {
+            width: 100%;
+            max-width: 560px;
+            height: auto;
+            display: block;
+        }
+
+        .data-lab {
+            margin-top: 10px;
+            font-size: .82rem;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 10px 12px;
+        }
+
+        .data-lab strong {
+            color: #166534;
+        }
+
+        .data-lab ul {
+            margin: 6px 0 0;
+            padding-left: 18px;
+        }
+
+        .catatan-guru {
+            margin: 10px 0 0 40px;
+            background: #fff7ed;
+            border: 1px solid #fdba74;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: .85rem;
+            color: #9a3412;
+        }
+
+        .catatan-guru::before {
+            content: '✏️ Catatan guru: ';
+            font-weight: 800;
+        }
+
+        .spanduk {
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin: 16px 0 0;
+            font-size: .9rem;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .spanduk.biru {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e3a8a;
+        }
+
+        .spanduk.kuning {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #92400e;
+        }
+
+        .spanduk.hijau {
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+        }
+
+        .spanduk.merah {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+
+        .spanduk .nilai-besar {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .identitas {
+            display: grid;
+            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        .identitas label {
+            font-size: .78rem;
+            font-weight: 800;
+            color: var(--redup);
+            display: grid;
+            gap: 4px;
+        }
+
+        .kirim {
+            text-align: center;
+        }
+
+        .kirim p {
+            color: var(--redup);
+            font-size: .88rem;
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+            transform: translate(-50%, 20px);
+            background: var(--tinta);
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: .88rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: .25s;
+            z-index: 90;
+            max-width: calc(100vw - 32px);
+            text-align: center;
+        }
+
+        .toast.tampil {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        .modal-latar {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .55);
+            z-index: 80;
+            display: grid;
+            place-items: center;
+            padding: 16px;
+        }
+
+        .modal-latar[hidden] {
+            display: none;
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 20px;
+            max-width: 440px;
+            width: 100%;
+            padding: 22px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, .3);
+        }
+
+        .modal h3 {
+            margin: 0 0 6px;
+        }
+
+        .modal .aksi {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .modal ul {
+            font-size: .86rem;
+            max-height: 180px;
+            overflow: auto;
+            padding-left: 18px;
+        }
+
+        .salah-isi {
+            border-color: #f87171 !important;
+        }
+
+        .cetak-saja,
+        .nilai-cetak {
+            display: none;
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        summary:focus-visible {
+            outline: 3px solid var(--aksen-muda);
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 560px) {
+            .kartu {
+                padding: 16px;
+                border-radius: 18px;
+            }
+
+            .soal .jawab,
+            .catatan-guru {
+                margin-left: 0;
+            }
+
+            .bilah-isi {
+                gap: 8px;
+                padding: 8px 12px;
+            }
+
+            .bilah .judul-kecil {
+                flex: 1 1 0;
+                font-size: .8rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .bilah .judul-kecil small {
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .bilah-isi .tombol {
+                padding: 8px 10px;
+            }
+
+            #tombolCetak .teks-tombol {
+                display: none;
+            }
+
+            .simpan-info {
+                order: 5;
+                flex-basis: 100%;
+                font-size: .7rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            * {
+                transition: none !important;
+            }
+        }
+
+        /* ---------- CETAK / PDF ---------- */
+        @page {
+            size: A4;
+            margin: 16mm 14mm;
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                font-size: 11pt;
+                color: #000;
+            }
+
+            .bilah,
+            .langkah,
+            .tautan-daftar,
+            details.bantuan,
+            .kirim,
+            .toast,
+            .modal-latar,
+            .layar-saja,
+            .data-lab {
+                display: none !important;
+            }
+
+            .wadah {
+                max-width: none;
+                padding: 0;
+            }
+
+            .kartu {
+                box-shadow: none;
+                border: 1px solid #cbd5e1;
+                border-radius: 8px;
+                padding: 12px 14px;
+                margin: 10px 0;
+                break-inside: auto;
+            }
+
+            .sampul {
+                background: #fff !important;
+                color: #000;
+                border: 2px solid #000;
+            }
+
+            .sampul h1,
+            .sampul p,
+            .sampul .label,
+            .sampul .meta span {
+                color: #000 !important;
+                background: none !important;
+                border-color: #000 !important;
+            }
+
+            .sampul .hiasan {
+                display: none;
+            }
+
+            .soal {
+                break-inside: avoid;
+            }
+
+            .kepala-fase {
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+
+            .info,
+            .tabel-wadah,
+            .diagram,
+            .grafik,
+            .pilihan-daftar {
+                break-inside: avoid;
+            }
+
+            .cetak-saja {
+                display: block;
+            }
+
+            textarea {
+                display: none !important;
+            }
+
+            .nilai-cetak {
+                display: block;
+                white-space: pre-wrap;
+                border: 1px solid #94a3b8;
+                border-radius: 6px;
+                padding: 6px 8px;
+                min-height: 42px;
+                font-size: 10.5pt;
+            }
+
+            input,
+            select {
+                border: 1px solid #94a3b8 !important;
+                border-radius: 6px !important;
+                box-shadow: none !important;
+                background: #fff !important;
+                color: #000 !important;
+            }
+
+            table.lkpd {
+                min-width: 0;
+            }
+
+            .tabel-wadah {
+                overflow: visible;
+                border-color: #94a3b8;
+            }
+
+            .kepala-fase .no {
+                border: 1px solid #000;
+                background: #fff;
+                color: #000;
+            }
+
+            .soal .nomor {
+                background: #fff !important;
+                color: #000;
+                border: 1px solid #000;
+            }
+
+            .spanduk {
+                break-inside: avoid;
+            }
+
+            a {
+                color: #000;
+                text-decoration: none;
+            }
+        }
+    </style>
+    <style>
+        /* =====================================================================
+           TAMBAHAN: animasi orientasi masalah + penyesuaian responsif
+           ===================================================================== */
+        body {
+            overflow-x: clip;
+        }
+
+        img,
+        svg,
+        canvas,
+        video {
+            max-width: 100%;
+        }
+
+        .bilah {
+            padding-top: env(safe-area-inset-top, 0px);
+        }
+
+        .bilah-isi,
+        .langkah,
+        .wadah {
+            padding-left: max(16px, env(safe-area-inset-left, 0px));
+            padding-right: max(16px, env(safe-area-inset-right, 0px));
+        }
+
+        .wadah {
+            padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+        }
+
+        .tautan-daftar {
+            grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+        }
+
+        .penanda-daftar {
+            grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
+        }
+
+        .identitas {
+            grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+        }
+
+        .info,
+        .soal,
+        .teks-tanya {
+            overflow-wrap: anywhere;
+        }
+
+        .info>div[style*="overflow-x"] {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .pilihan-daftar label span {
+            min-width: 0;
+        }
+
+        @media (min-width: 1280px) {
+
+            .wadah,
+            .bilah-isi,
+            .langkah {
+                max-width: 1000px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .kepala-fase {
+                gap: 10px;
+            }
+
+            .kepala-fase .no {
+                width: 40px;
+                height: 40px;
+                flex-basis: 40px;
+                border-radius: 12px;
+            }
+
+            h2.judul-bagian {
+                font-size: 1.1rem;
+            }
+
+            .sampul .hiasan {
+                width: 150px;
+            }
+
+            .info {
+                padding: 12px 13px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .bilah-isi .tombol .teks-tombol {
+                display: none;
+            }
+
+            .kartu {
+                padding: 14px;
+            }
+
+            .soal .tanya {
+                gap: 8px;
+            }
+        }
+
+        /* ---------- Animasi orientasi masalah ---------- */
+        .anim-orientasi {
+            margin: 16px 0 8px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--tinta);
+            color: #e2e8f0;
+            box-shadow: 0 18px 40px -26px rgba(15, 23, 42, .7);
+        }
+
+        .anim-kepala {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 14px;
+            font-size: .78rem;
+            font-weight: 800;
+        }
+
+        .anim-tag {
+            color: #fff;
+            min-width: 0;
+        }
+
+        .anim-hitung {
+            color: #94a3b8;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .anim-layar {
+            position: relative;
+            aspect-ratio: 480 / 300;
+            background: #e2e8f0;
+        }
+
+        .anim-layar canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .anim-mulai {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 0;
+            border-radius: 999px;
+            padding: 12px 20px 12px 14px;
+            background: var(--aksen);
+            color: #fff;
+            font: inherit;
+            font-weight: 800;
+            font-size: .95rem;
+            box-shadow: 0 10px 24px -8px rgba(15, 23, 42, .6);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .anim-mulai[hidden] {
+            display: none;
+        }
+
+        .anim-mulai .segitiga {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .22);
+            position: relative;
+        }
+
+        .anim-mulai .segitiga::after {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 8px;
+            border-left: 11px solid #fff;
+            border-top: 7px solid transparent;
+            border-bottom: 7px solid transparent;
+        }
+
+        .anim-bawah {
+            padding: 12px 14px 14px;
+            margin: 0;
+        }
+
+        .anim-teks {
+            margin: 0 0 12px;
+            font-size: .95rem;
+            line-height: 1.55;
+            color: #f1f5f9;
+            min-height: 3.1em;
+        }
+
+        .anim-teks strong {
+            color: #fff;
+        }
+
+        .anim-kendali {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .anim-titik {
+            display: flex;
+            gap: 6px;
+            flex: 1 1 110px;
+            min-width: 0;
+        }
+
+        .anim-titik button {
+            flex: 1 1 0;
+            min-width: 18px;
+            height: 24px;
+            padding: 0;
+            border: 0;
+            background: none;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .anim-titik button::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 10px;
+            height: 5px;
+            border-radius: 99px;
+            background: rgba(255, 255, 255, .2);
+        }
+
+        .anim-titik button.lewat::before {
+            background: rgba(255, 255, 255, .55);
+        }
+
+        .anim-titik button i {
+            position: absolute;
+            left: 0;
+            top: 10px;
+            height: 5px;
+            width: 0;
+            border-radius: 99px;
+            background: var(--aksen);
+            display: none;
+        }
+
+        .anim-titik button.aktif i {
+            display: block;
+        }
+
+        .anim-titik button:hover::before {
+            background: rgba(255, 255, 255, .4);
+        }
+
+        .anim-tombol {
+            border: 1.5px solid rgba(255, 255, 255, .28);
+            background: rgba(255, 255, 255, .06);
+            color: #fff;
+            border-radius: 10px;
+            padding: 7px 12px;
+            font: inherit;
+            font-size: .8rem;
+            font-weight: 800;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .anim-tombol {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 36px;
+        }
+
+        .anim-tombol .ikn {
+            font-size: .78rem;
+        }
+
+        .anim-tombol:hover {
+            background: rgba(255, 255, 255, .14);
+        }
+
+        .anim-orientasi.tamat [data-aksi="ulang"] {
+            background: var(--aksen);
+            border-color: var(--aksen);
+        }
+
+        .anim-orientasi button:focus-visible {
+            outline: 3px solid #fff;
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 560px) {
+            .anim-orientasi {
+                margin-left: -4px;
+                margin-right: -4px;
+                border-radius: 16px;
+            }
+
+            .anim-teks {
+                font-size: .9rem;
+            }
+
+            .anim-kepala {
+                padding: 9px 12px;
+                font-size: .74rem;
+            }
+
+            .anim-bawah {
+                padding: 10px 12px 12px;
+            }
+
+            .anim-mulai {
+                padding: 9px 16px 9px 10px;
+                font-size: .88rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .anim-tombol {
+                padding: 6px 11px;
+            }
+
+            .anim-tombol .tks {
+                display: none;
+            }
+
+            .anim-tombol .ikn {
+                font-size: .9rem;
+            }
+        }
+
+        @media print {
+            .anim-orientasi {
+                display: none !important;
+            }
+        }
+    </style>
+    <style>
+        /* ---------- Mode periksa guru (dibuka dari dashboard guru) ---------- */
+        .mode-periksa #tombolKirimAtas,
+        .mode-periksa #bagianKirim,
+        .mode-periksa #spandukMasuk {
+            display: none !important;
+        }
+
+        .mode-periksa textarea:disabled,
+        .mode-periksa input:disabled,
+        .mode-periksa select:disabled {
+            color: var(--tinta);
+            -webkit-text-fill-color: var(--tinta);
+            opacity: 1;
+            background: #fff;
+            cursor: default;
+        }
+
+        .mode-periksa textarea {
+            resize: none;
+            overflow: hidden;
+        }
+
+        .mode-periksa .soal:not(.terisi)>.tanya .nomor {
+            background: #f59e0b;
+        }
+
+        .mode-periksa .pilihan-daftar label:has(input:disabled) {
+            cursor: default;
+        }
+
+        .soal.sorot {
+            animation: sorot-soal 2s ease;
+            border-radius: 14px;
+        }
+
+        @keyframes sorot-soal {
+
+            0%,
+            55% {
+                box-shadow: 0 0 0 6px #fde68a;
+                background: #fffbeb;
+            }
+
+            100% {
+                box-shadow: 0 0 0 6px transparent;
+                background: transparent;
+            }
+        }
+
+        .spanduk.periksa {
+            background: #f5f3ff;
+            border: 1px solid #ddd6fe;
+            color: #4c1d95;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Bilah alat atas -->
+    <header class="bilah">
+        <div class="bilah-isi">
+            <div class="judul-kecil"><span id="judulBilah"></span><small id="namaBilah">Memuat…</small></div>
+            <div class="simpan-info" id="simpanInfo" role="status" aria-live="polite"><span
+                    class="titik"></span><span>Memuat…</span></div>
+            <button type="button" class="tombol" id="tombolCetak" title="Cetak atau simpan sebagai PDF"
+                aria-label="Cetak atau simpan PDF">🖨️<span class="teks-tombol"> Cetak / PDF</span></button>
+            <button type="button" class="tombol utama" id="tombolKirimAtas">📤<span class="teks-tombol">
+                    Kumpulkan</span></button>
+        </div>
+        <div class="progres" aria-hidden="true"><span id="barProgres"></span></div>
+        <nav class="langkah" id="langkahFase" aria-label="Bagian LKPD"></nav>
+    </header>
+
+    <main class="wadah" id="isiLkpd"></main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <div class="modal-latar" id="modal" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalJudul">
+            <h3 id="modalJudul"></h3>
+            <div id="modalIsi"></div>
+            <div class="aksi" id="modalAksi"></div>
+        </div>
+    </div>
+
+    <script>
+        /* =====================================================================
+           DEFINISI LKPD (isi, soal, dan struktur fase PBL)
+           ===================================================================== */
+        window.LKPD = {
+            id: 'lkpd_p2',
+            pertemuan: 2,
+            judul: 'LKPD 2: Faktor-Faktor yang Memengaruhi Laju Reaksi',
+            subjudul: 'Kalian adalah tim peneliti sebuah perusahaan farmasi. Rancang dan lakukan percobaan di laboratorium virtual EduKinetika untuk membuktikan faktor yang membuat tablet vitamin bereaksi secepat mungkin.',
+            alokasi: '2 × 45 menit',
+            warnaGelap: '#065f46',
+            tujuan: [
+                'Melalui diskusi kelompok, peserta didik dapat menganalisis pengaruh luas permukaan, konsentrasi, suhu, dan katalis terhadap laju reaksi dengan kesimpulan yang benar.',
+                'Melalui praktikum mandiri pada laboratorium virtual EduKinetika, peserta didik dapat menganalisis pengaruh luas permukaan, konsentrasi, suhu, dan katalis terhadap laju reaksi dengan kesimpulan yang akurat berdasarkan data.',
+                'Setelah melakukan serangkaian eksperimen virtual, peserta didik dapat menyajikan kesimpulan hasil percobaan mengenai faktor-faktor yang memengaruhi laju reaksi secara sistematis dan komunikatif.'
+            ],
+            petunjuk: [
+                'Isi identitas dan nama anggota kelompok terlebih dahulu.',
+                'Diskusikan rancangan percobaan bersama kelompok, lalu lakukan <strong>praktikum mandiri</strong> di laboratorium virtual EduKinetika.',
+                'Salin waktu reaksi dan volume gas dari tabel data laboratorium virtual ke tabel LKPD. <strong>Grafik akan terbentuk otomatis.</strong>',
+                'Jawabanmu <strong>tersimpan otomatis</strong>. Buka <strong>Kartu bantuan</strong> jika kesulitan; soal <em>Tantangan</em> bersifat opsional.',
+                'Tekan <strong>Kumpulkan</strong> setelah selesai. Gunakan tombol <strong>Cetak / PDF</strong> untuk mencetak atau menyimpan LKPD.'
+            ],
+            bagian: [
+                {
+                    label: 'Fase 1', nama: 'Orientasi pada Masalah', pendek: 'Orientasi masalah', ikon: '1',
+                    ket: 'Amati demonstrasi guru, pahami masalah, lalu tuliskan hipotesis untuk setiap faktor.',
+                    blok: [
+                        { tipe: 'animasi', adegan: 'tablet' },
+                        { tipe: 'info', tag: '👀 Demonstrasi', html: 'Guru memasukkan satu tablet <em>effervescent</em> <strong>utuh ke air dingin</strong> dan satu tablet yang <strong>telah digerus ke air hangat</strong>. Amati kecepatan terbentuknya gelembung gas dan waktu habisnya tablet.' },
+                        { id: 'q1', tipe: 'uraian', label: 'Tuliskan hasil pengamatanmu terhadap demonstrasi tersebut.', baris: 3 },
+                        {
+                            tipe: 'info', gaya: 'masalah', tag: '💊 Permasalahan',
+                            html: `<p style="margin:0">Sebuah perusahaan farmasi ingin membuat tablet vitamin yang dapat larut dan bereaksi <strong>secepat mungkin</strong> ketika dikonsumsi. Sebagai tim peneliti, faktor apa saja yang perlu kalian rekomendasikan kepada perusahaan tersebut? <strong>Buktikan rekomendasi kalian dengan data percobaan!</strong></p>`
+                        },
+                        { id: 'q2', tipe: 'uraian', label: 'Rumuskan masalah yang akan kalian selidiki.', baris: 2 },
+                        {
+                            id: 'q3', tipe: 'tabel', label: 'Tuliskan hipotesis untuk setiap faktor.', kepala: 'Faktor',
+                            baris: ['Luas permukaan', 'Konsentrasi', 'Suhu', 'Katalis'],
+                            kolom: [{ judul: 'Hipotesis (dugaan pengaruhnya terhadap laju reaksi)', tipe: 'teks', ph: 'Jika …, maka laju reaksi …' }]
+                        }
+                    ]
+                },
+                {
+                    label: 'Fase 2', nama: 'Mengorganisasikan Peserta Didik untuk Belajar', pendek: 'Organisasi belajar', ikon: '2',
+                    ket: 'Bagi peran kelompok, masuk ke akun EduKinetika, dan buka laboratorium virtual.',
+                    blok: [
+                        {
+                            id: 'q4', tipe: 'tabel', label: 'Tuliskan pembagian peran dalam kelompokmu.', kepala: 'Peran',
+                            baris: ['Ketua', 'Pencatat', 'Penyaji', 'Pengelola waktu'],
+                            kolom: [{ judul: 'Nama anggota', tipe: 'teks' }]
+                        },
+                        {
+                            tipe: 'tautan', item: [
+                                { label: 'Laboratorium Virtual', href: 'lab111.html', ket: 'Tempat praktikum mandiri: atur variabel lalu jalankan reaksi.' },
+                                { label: 'Materi Faktor Laju Reaksi', href: 'faktorpenentulaju.html', ket: 'Animasi balapan reaksi untuk setiap faktor.' }
+                            ]
+                        },
+                        {
+                            tipe: 'bantuan', judul: 'Kartu bantuan: langkah praktikum di laboratorium virtual',
+                            html: `<ol class="daftar"><li>Pilih eksperimen di panel kanan (luas permukaan, suhu, konsentrasi, atau katalis).</li><li>Ketuk wadah di meja untuk mengatur konsentrasi, volume, dan suhu.</li><li>Tekan TARE, timbang padatan di kaca arloji, lalu tuangkan ke setiap wadah.</li><li>Amati partikel submikroskopis, lalu baca <strong>waktu reaksi</strong> dan <strong>volume gas</strong> di tabel Data Pengamatan.</li></ol>`
+                        }
+                    ]
+                },
+                {
+                    label: 'Fase 3', nama: 'Membimbing Penyelidikan Individu dan Kelompok', pendek: 'Penyelidikan', ikon: '3',
+                    ket: 'Rancang variabel percobaan bersama kelompok, lalu lakukan empat percobaan secara mandiri.',
+                    blok: [
+                        { tipe: 'info', tag: '💬 Diskusi kelompok (7 menit)', html: 'Tentukan variabel percobaan untuk setiap faktor. <strong>Variabel bebas</strong> sengaja diubah, <strong>variabel terikat</strong> diukur (waktu reaksi atau volume gas), <strong>variabel kontrol</strong> dibuat sama.' },
+                        {
+                            id: 'q5', tipe: 'tabel', tp: 'TP 4', label: 'Lengkapi tabel variabel untuk setiap percobaan.', kepala: 'Percobaan',
+                            baris: ['Luas permukaan', 'Konsentrasi', 'Suhu', 'Katalis'],
+                            kolom: [{ judul: 'Variabel bebas', tipe: 'teks' }, { judul: 'Variabel terikat', tipe: 'teks' }, { judul: 'Variabel kontrol', tipe: 'teks' }]
+                        },
+                        { tipe: 'info', tag: '🧪 Praktikum mandiri di EduKinetika (23 menit)', html: 'Lakukan empat percobaan berikut. Salin data dari tabel Data Pengamatan laboratorium virtual. Makin singkat waktu reaksi, makin cepat laju reaksinya.' },
+
+                        {
+                            id: 'q6', tipe: 'tabel', tp: 'TP 5', label: '<strong>Percobaan A: Luas permukaan.</strong> CaCO₃ bermassa sama dalam tiga bentuk direaksikan dengan HCl yang konsentrasi dan suhunya sama.', kepala: 'Bentuk CaCO₃',
+                            baris: ['Bongkahan', 'Kepingan', 'Serbuk'],
+                            kolom: [{ judul: 'Massa (g)', tipe: 'angka' }, { judul: 'Waktu reaksi (s)', tipe: 'angka' }, { judul: 'Volume gas CO₂ (mL)', tipe: 'angka' }],
+                            grafik: { kolom: 1, judul: 'waktu reaksi setiap bentuk', satuan: 's' }
+                        },
+                        { tipe: 'datalab', lab: 'surface', nama: 'luas permukaan' },
+                        { id: 'q7', tipe: 'uraian', tp: 'TP 5', label: 'Bagaimana pengaruh luas permukaan terhadap laju reaksi berdasarkan datamu? Jelaskan dengan teori tumbukan.', baris: 3 },
+
+                        {
+                            id: 'q8', tipe: 'tabel', tp: 'TP 5', label: '<strong>Percobaan B: Konsentrasi.</strong> Konsentrasi HCl divariasikan, sedangkan bentuk padatan dan suhu tetap.', kepala: 'Konsentrasi HCl',
+                            baris: ['0,5 M', '1 M', '2 M'],
+                            kolom: [{ judul: 'Waktu reaksi (s)', tipe: 'angka' }, { judul: 'Volume gas (mL)', tipe: 'angka' }],
+                            grafik: { kolom: 0, judul: 'waktu reaksi setiap konsentrasi', satuan: 's' }
+                        },
+                        { tipe: 'datalab', lab: 'conc', nama: 'konsentrasi' },
+                        { id: 'q9', tipe: 'uraian', tp: 'TP 5', label: 'Bagaimana pengaruh konsentrasi terhadap laju reaksi berdasarkan datamu? Jelaskan dengan teori tumbukan.', baris: 3 },
+
+                        {
+                            id: 'q10', tipe: 'tabel', tp: 'TP 5', label: '<strong>Percobaan C: Suhu.</strong> Suhu larutan divariasikan, sedangkan variabel lain tetap.', kepala: 'Suhu larutan',
+                            baris: ['25 °C', '35 °C', '45 °C'],
+                            kolom: [{ judul: 'Waktu reaksi (s)', tipe: 'angka' }, { judul: 'Volume gas (mL)', tipe: 'angka' }],
+                            grafik: { kolom: 0, judul: 'waktu reaksi setiap suhu', satuan: 's' }
+                        },
+                        { tipe: 'datalab', lab: 'temp', nama: 'suhu' },
+                        { id: 'q11', tipe: 'uraian', tp: 'TP 5', label: 'Bagaimana pengaruh suhu terhadap laju reaksi berdasarkan datamu? Kaitkan dengan energi kinetik dan energi aktivasi.', baris: 3 },
+
+                        {
+                            id: 'q12', tipe: 'tabel', tp: 'TP 5', label: '<strong>Percobaan D: Katalis.</strong> Larutan H₂O₂ diuraikan tanpa katalis dan dengan katalis.', kepala: 'Perlakuan',
+                            baris: ['Tanpa katalis', 'Dengan MnO₂', 'Dengan KI', 'Dengan FeCl₃'],
+                            kolom: [{ judul: 'Waktu reaksi (s)', tipe: 'angka', ph: 'tulis – jika tak teramati' }, { judul: 'Volume gas O₂ (mL)', tipe: 'angka' }],
+                            grafik: { kolom: 0, judul: 'waktu penguraian H₂O₂', satuan: 's' }
+                        },
+                        { tipe: 'datalab', lab: 'cat', nama: 'katalis' },
+                        { id: 'q13', tipe: 'uraian', tp: 'TP 5', label: 'Bagaimana pengaruh katalis terhadap laju reaksi berdasarkan datamu? Kaitkan dengan energi aktivasi.', baris: 3 },
+                        {
+                            tipe: 'bantuan', judul: 'Kartu bantuan: menjelaskan dengan teori tumbukan',
+                            html: `<ul class="daftar"><li><strong>Luas permukaan</strong> dan <strong>konsentrasi</strong> → mengubah <em>frekuensi</em> tumbukan.</li><li><strong>Suhu</strong> → partikel bergerak lebih cepat dan lebih banyak partikel berenergi ≥ E<sub>a</sub>.</li><li><strong>Katalis</strong> → jalur reaksi lain dengan E<sub>a</sub> lebih rendah.</li></ul>`
+                        },
+                        { id: 'q14', tipe: 'uraian', opsional: true, label: 'Bandingkan ketiga katalis (MnO₂, KI, FeCl₃). Katalis mana yang paling efektif menurut datamu? Mengapa katalis yang berbeda menghasilkan laju yang berbeda?', baris: 3 }
+                    ]
+                },
+                {
+                    label: 'Fase 4', nama: 'Mengembangkan dan Menyajikan Hasil Karya', pendek: 'Menyajikan hasil', ikon: '4',
+                    ket: 'Gabungkan data anggota kelompok, susun kesimpulan, dan presentasikan satu faktor.',
+                    blok: [
+                        {
+                            id: 'q15', tipe: 'tabel', tp: 'TP 6', label: 'Susun kesimpulan untuk setiap faktor berdasarkan gabungan data kelompok.', kepala: 'Faktor',
+                            baris: ['Luas permukaan', 'Konsentrasi', 'Suhu', 'Katalis'],
+                            kolom: [{ judul: 'Kesimpulan (hubungan dengan laju reaksi)', tipe: 'teks' }, { judul: 'Penjelasan teori tumbukan', tipe: 'teks' }]
+                        },
+                        { id: 'q16', tipe: 'pilihan', tp: 'TP 6', label: 'Faktor yang dipresentasikan kelompokmu (diundi guru):', opsi: ['Luas permukaan', 'Konsentrasi', 'Suhu', 'Katalis'] },
+                        { id: 'q17', tipe: 'uraian', tp: 'TP 6', label: 'Tuliskan naskah presentasi faktor tersebut secara runtut: hipotesis → data → analisis teori tumbukan → kesimpulan.', baris: 5 },
+                        { id: 'q18', tipe: 'uraian', label: 'Bandingkan data kelompok penyaji lain dengan datamu. Apakah hasilnya sama? Tuliskan tanggapanmu.', baris: 3 }
+                    ]
+                },
+                {
+                    label: 'Fase 5', nama: 'Menganalisis dan Mengevaluasi Proses Pemecahan Masalah', pendek: 'Evaluasi', ikon: '5',
+                    ket: 'Uji hipotesismu terhadap data dan susun rekomendasi akhir.',
+                    blok: [
+                        { id: 'q19', tipe: 'uraian', label: 'Bandingkan hipotesis awal (soal 3) dengan data percobaan. Hipotesis mana yang terbukti dan mana yang perlu diperbaiki?', baris: 3 },
+                        { id: 'q20', tipe: 'uraian', label: 'Susun rekomendasi akhir untuk perusahaan farmasi agar tablet vitamin bereaksi secepat mungkin. Sertakan bukti data.', baris: 4 },
+                        {
+                            id: 'q21', tipe: 'bs', label: 'Tentukan benar atau salah pernyataan berikut, lalu beri alasan singkat.',
+                            pernyataan: ['Katalis tidak ikut bereaksi sama sekali.', 'Katalis mengubah nilai ΔH reaksi.', 'Kenaikan suhu membuat lebih banyak partikel memiliki energi melampaui E<sub>a</sub>.', 'Serbuk dan bongkahan bermassa sama memiliki luas permukaan yang sama.']
+                        }
+                    ]
+                },
+                {
+                    label: 'Penutup', nama: 'Kesimpulan, Refleksi, dan Tindak Lanjut', pendek: 'Refleksi', ikon: '✓',
+                    ket: 'Simpulkan hasil belajar dan renungkan proses praktikummu.',
+                    blok: [
+                        { id: 'q22', tipe: 'uraian', label: 'Bagian percobaan mana yang paling menarik bagimu? Mengapa?', baris: 2 },
+                        { id: 'q23', tipe: 'uraian', label: 'Kesulitan apa yang kamu alami selama praktikum, dan bagaimana cara kamu mengatasinya?', baris: 3 },
+                        { id: 'q24', tipe: 'uraian', label: 'Tindak lanjut: cermati data percobaan konsentrasi. Jika konsentrasi dinaikkan dua kali, apakah laju reaksi juga naik dua kali? Tuliskan dugaanmu.', baris: 3 }
+                    ]
+                }
+            ]
+        };
+
+    </script>
+
+    <script>
+        /* =====================================================================
+           ANIMASI ORIENTASI MASALAH (Fase 1 PBL)
+           Mesin animasi kanvas kecil: adegan bertahap + teks penjelas,
+           tombol putar/jeda, ulangi, dan lompat ke adegan tertentu.
+           ===================================================================== */
+        (function () {
+            'use strict';
+            const W = 480, H = 300;
+            const ADEGAN = {};
+            const kurangiGerak = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+            // Bilangan acak berbenih agar animasi selalu sama ketika diulang
+            function acak(benih) {
+                let s = (benih >>> 0) || 1;
+                return () => { s ^= s << 13; s >>>= 0; s ^= s >>> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; };
+            }
+
+            /* ---------- Alat gambar ---------- */
+            const ATOM = {
+                C: ['#4b5563', 5], O: ['#ef4444', 4.8], H: ['#f8fafc', 2.8], N: ['#3b82f6', 5.2]
+            };
+            const BENTUK = {
+                C3H8: [['H', -14, -1], ['H', -10, 8], ['H', 0, -10], ['H', 10, 8], ['H', 14, -1], ['C', -9, 2], ['C', 0, -3], ['C', 9, 2]],
+                O2: [['O', -4.2, 0], ['O', 4.2, 0]],
+                CO2: [['O', -8, 0], ['O', 8, 0], ['C', 0, 0]],
+                H2O: [['O', 0, 0], ['H', -5.5, 4], ['H', 5.5, 4]],
+                NO: [['N', -4.3, 0], ['O', 4.3, 0]],
+                NO2: [['O', -7, 4], ['O', 7, 4], ['N', 0, -1]]
+            };
+            const U = {
+                W, H, ts: 1,
+                uk(n) { return n * U.ts; },
+                kotak(ctx, x, y, w, h, r) {
+                    r = Math.min(r, w / 2, h / 2);
+                    ctx.beginPath(); ctx.moveTo(x + r, y);
+                    ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+                    ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+                },
+                huruf(ukuran, tebal) { return `${tebal || 700} ${ukuran || 12}px "Plus Jakarta Sans", system-ui, sans-serif`; },
+                teks(ctx, s, x, y, o) {
+                    o = o || {};
+                    ctx.font = U.huruf(o.ukuran, o.tebal); ctx.fillStyle = o.warna || '#0f172a';
+                    ctx.textAlign = o.rata || 'left'; ctx.textBaseline = o.dasar || 'alphabetic';
+                    ctx.fillText(s, x, y);
+                },
+                label(ctx, s, x, y, o) {
+                    o = o || {};
+                    const uk = o.ukuran || 11;
+                    ctx.font = U.huruf(uk, o.tebal || 800);
+                    const w = ctx.measureText(s).width + 14, h = uk + 9;
+                    const x0 = o.rata === 'center' ? x - w / 2 : o.rata === 'right' ? x - w : x;
+                    U.kotak(ctx, x0, y - h / 2, w, h, h / 2);
+                    ctx.fillStyle = o.latar || 'rgba(255,255,255,.94)'; ctx.fill();
+                    if (o.garis) { ctx.lineWidth = 1.2; ctx.strokeStyle = o.garis; ctx.stroke(); }
+                    ctx.fillStyle = o.warna || '#0f172a'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+                    ctx.fillText(s, x0 + 7, y + .5);
+                    return w;
+                },
+                atom(ctx, jenis, x, y) {
+                    const [warna, r] = ATOM[jenis];
+                    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fillStyle = warna; ctx.fill();
+                    ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(15,23,42,.55)'; ctx.stroke();
+                    ctx.beginPath(); ctx.arc(x - r * .35, y - r * .38, r * .34, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255,255,255,.6)'; ctx.fill();
+                },
+                molekul(ctx, jenis, x, y, sudut, skala, alpha) {
+                    ctx.save(); ctx.translate(x, y); ctx.rotate(sudut || 0);
+                    if (skala && skala !== 1) ctx.scale(skala, skala);
+                    ctx.globalAlpha = alpha == null ? 1 : alpha;
+                    if (jenis === 'NO2') { ctx.beginPath(); ctx.arc(0, 1, 13, 0, Math.PI * 2); ctx.fillStyle = 'rgba(180,83,9,.28)'; ctx.fill(); }
+                    BENTUK[jenis].forEach(([a, dx, dy]) => U.atom(ctx, a, dx, dy));
+                    ctx.restore();
+                },
+                // Panel gelap berisi baris teks; tiap baris = [[teks, warna], ...]
+                panel(ctx, baris, x, y, ekstra) {
+                    const uk = U.uk(11.5), tinggiBaris = uk + 6;
+                    ctx.font = U.huruf(uk, 800);
+                    const lebar = Math.max(...baris.map(b => b.reduce((s, [t]) => s + ctx.measureText(t).width, 0)));
+                    const w = lebar + 20, h = baris.length * tinggiBaris + 12 + (ekstra || 0);
+                    U.kotak(ctx, x, y, w, h, 10); ctx.fillStyle = 'rgba(15,23,42,.86)'; ctx.fill();
+                    ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+                    baris.forEach((b, i) => {
+                        let cx = x + 10; const cy = y + 6 + tinggiBaris * i + tinggiBaris / 2;
+                        b.forEach(([t, warna]) => { ctx.fillStyle = warna || '#fff'; ctx.fillText(t, cx, cy); cx += ctx.measureText(t).width; });
+                    });
+                    return { x, y, w, h, bawah: y + baris.length * tinggiBaris + 6 };
+                },
+                // Keterangan simbol di bagian bawah adegan; item = [jenis, label panjang, label pendek]
+                legenda(ctx, item, y) {
+                    const uk = U.uk(11), sk = Math.min(1.25, .9 * U.ts);
+                    U.kotak(ctx, 8, y - 17, W - 16, 34, 12);
+                    ctx.fillStyle = 'rgba(255,255,255,.93)'; ctx.fill();
+                    ctx.font = U.huruf(uk, 700);
+                    const ikon = 34 * sk, jarak = 18;
+                    let pakai = 1, lebar = item.map(it => ikon + ctx.measureText(it[1]).width);
+                    let total = lebar.reduce((a, b) => a + b, 0) + jarak * (item.length - 1);
+                    if (total > W - 36) {
+                        pakai = 2; lebar = item.map(it => ikon + ctx.measureText(it[2] || it[1]).width);
+                        total = lebar.reduce((a, b) => a + b, 0) + jarak * (item.length - 1);
+                    }
+                    const sisa = Math.max(0, (W - 36 - total) / (item.length + 1));
+                    let x = 18 + sisa;
+                    item.forEach((it, i) => {
+                        U.molekul(ctx, it[0], x + ikon / 2 - 4, y, 0, sk);
+                        U.teks(ctx, it[pakai] || it[1], x + ikon, y + uk * .36, { ukuran: uk, tebal: 700, warna: '#334155' });
+                        x += lebar[i] + jarak + sisa;
+                    });
+                }
+            };
+
+            /* ---------- Markup ---------- */
+            function html(it) {
+                const a = ADEGAN[it.adegan];
+                if (!a) return '';
+                const titik = a.langkah.map((l, i) =>
+                    `<button type="button" data-i="${i}" aria-label="Adegan ${i + 1}: ${l.pendek || ''}"><i></i></button>`).join('');
+                return `<figure class="anim-orientasi layar-saja" data-adegan="${it.adegan}">
+                    <div class="anim-kepala"><span class="anim-tag">🎬 ${a.judul}</span><span class="anim-hitung">Adegan 1/${a.langkah.length}</span></div>
+                    <div class="anim-layar">
+                        <canvas role="img" aria-label="${a.alt}"></canvas>
+                        <button type="button" class="anim-mulai"><span class="segitiga" aria-hidden="true"></span>Putar animasi</button>
+                    </div>
+                    <figcaption class="anim-bawah">
+                        <p class="anim-teks" aria-live="polite">${a.langkah[0].teks}</p>
+                        <div class="anim-kendali">
+                            <div class="anim-titik" role="group" aria-label="Pilih adegan">${titik}</div>
+                            <button type="button" class="anim-tombol" data-aksi="putar" aria-label="Putar animasi"><span class="ikn" aria-hidden="true">▶</span><span class="tks">Putar</span></button>
+                            <button type="button" class="anim-tombol" data-aksi="ulang" aria-label="Ulangi animasi"><span class="ikn" aria-hidden="true">↺</span><span class="tks">Ulangi</span></button>
+                        </div>
+                    </figcaption>
+                </figure>`;
+            }
+
+            /* ---------- Pemutar ---------- */
+            function pasang(el) {
+                if (el.dataset.terpasang) return;
+                const a = ADEGAN[el.dataset.adegan];
+                if (!a) return;
+                el.dataset.terpasang = '1';
+                const cv = el.querySelector('canvas'), ctx = cv.getContext('2d');
+                const teksEl = el.querySelector('.anim-teks'), hitungEl = el.querySelector('.anim-hitung');
+                const titikEl = Array.from(el.querySelectorAll('.anim-titik button'));
+                const tPutar = el.querySelector('[data-aksi="putar"]'), tUlang = el.querySelector('[data-aksi="ulang"]');
+                const tMulai = el.querySelector('.anim-mulai');
+
+                const awal = []; let total = 0;
+                a.langkah.forEach(l => { awal.push(total); total += l.durasi; });
+                let st = null, t = 0, main = false, terlihat = false, pernahMain = false, idx = -1, sebelum = 0, skala = 1, ts = 1;
+                const info = { t: 0, langkah: 0, lokal: 0, p: 0, selesai: false };
+
+                function hitungInfo() {
+                    let i = 0;
+                    for (let k = 0; k < awal.length; k++) if (t >= awal[k]) i = k;
+                    info.t = t; info.langkah = i; info.lokal = t - awal[i];
+                    info.p = Math.min(1, info.lokal / a.langkah[i].durasi);
+                    info.selesai = t >= total;
+                }
+                function reset() { st = a.buat(acak(a.benih || 7)); t = 0; hitungInfo(); }
+                function maju(dt) { t += dt; hitungInfo(); a.perbarui(st, dt, info); }
+                function gambar() {
+                    if (!st || !cv.width) return;
+                    ctx.setTransform(skala, 0, 0, skala, 0, 0);
+                    ctx.clearRect(0, 0, W, H);
+                    U.ts = ts;
+                    a.gambar(ctx, st, info, U);
+                }
+                function segarkanUI() {
+                    if (info.langkah !== idx) {
+                        idx = info.langkah;
+                        teksEl.innerHTML = a.langkah[idx].teks;
+                        hitungEl.textContent = `Adegan ${idx + 1}/${a.langkah.length}`;
+                        titikEl.forEach((b, i) => {
+                            b.classList.toggle('aktif', i === idx);
+                            b.classList.toggle('lewat', i < idx);
+                            if (i === idx) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+                        });
+                    }
+                    const b = titikEl[idx];
+                    if (b) b.firstElementChild.style.width = (info.p * 100).toFixed(1) + '%';
+                    el.classList.toggle('tamat', info.selesai);
+                }
+                function lompat(target) {
+                    reset();
+                    while (t < target) maju(1 / 30);
+                    segarkanUI(); gambar();
+                }
+                function aturMain(v) {
+                    main = v;
+                    tPutar.querySelector('.ikn').textContent = v ? '❚❚' : '▶';
+                    tPutar.querySelector('.tks').textContent = v ? 'Jeda' : 'Putar';
+                    tPutar.setAttribute('aria-label', v ? 'Jeda animasi' : 'Putar animasi');
+                    el.classList.toggle('berjalan', v);
+                    if (v) { pernahMain = true; tMulai.hidden = true; }
+                }
+                function ukur() {
+                    const w = cv.clientWidth;
+                    if (!w) return;
+                    const dpr = Math.min(2, window.devicePixelRatio || 1);
+                    cv.width = Math.round(w * dpr);
+                    cv.height = Math.round(w * H / W * dpr);
+                    skala = cv.width / W;
+                    ts = Math.max(1, Math.min(1.5, 470 / w));
+                    gambar();
+                }
+                function putaran(now) {
+                    const dt = sebelum ? Math.min(0.05, (now - sebelum) / 1000) : 0;
+                    sebelum = now;
+                    if (main && terlihat && dt > 0) { maju(dt); gambar(); segarkanUI(); }
+                    requestAnimationFrame(putaran);
+                }
+
+                tMulai.addEventListener('click', () => { if (info.selesai) lompat(0); aturMain(true); });
+                tPutar.addEventListener('click', () => { if (!main && info.selesai) lompat(0); aturMain(!main); });
+                tUlang.addEventListener('click', () => { lompat(0); aturMain(true); });
+                titikEl.forEach((b, i) => b.addEventListener('click', () => {
+                    lompat(awal[i] + 0.001);
+                    aturMain(!kurangiGerak);
+                    if (kurangiGerak) tMulai.hidden = true;
+                }));
+
+                reset(); segarkanUI();
+                if ('ResizeObserver' in window) new ResizeObserver(ukur).observe(cv); else window.addEventListener('resize', ukur);
+                ukur();
+                if (document.fonts && document.fonts.ready) document.fonts.ready.then(gambar);
+
+                if ('IntersectionObserver' in window) {
+                    new IntersectionObserver(ent => ent.forEach(e => {
+                        terlihat = e.isIntersecting;
+                        if (terlihat && !pernahMain && !kurangiGerak) aturMain(true);
+                    }), { threshold: 0.35 }).observe(el);
+                } else { terlihat = true; if (!kurangiGerak) aturMain(true); }
+                requestAnimationFrame(putaran);
+            }
+
+            function pasangSemua() { document.querySelectorAll('.anim-orientasi').forEach(pasang); }
+            document.addEventListener('DOMContentLoaded', () => {
+                pasangSemua();
+                const isi = document.getElementById('isiLkpd');
+                if (isi && 'MutationObserver' in window) new MutationObserver(pasangSemua).observe(isi, { childList: true, subtree: true });
+            });
+
+            window.AnimasiOrientasi = { html, U, daftar: (nama, def) => { ADEGAN[nama] = def; } };
+        })();
+    </script>
+    <script>
+        /* Adegan: demonstrasi tablet effervescent (LKPD Faktor-Faktor Laju Reaksi) */
+        (function () {
+            const AO = window.AnimasiOrientasi;
+            const ATAS = 84, AIR = 110, DASAR = 230, LEBAR = 116;
+            const PERCEPAT = 5; // 1 detik animasi = 5 detik percobaan
+
+            function gelas(nama, cx, dingin) {
+                return { nama, cx, dingin, masuk: false, mulai: -1, detik: 0, selesai: false, gelembung: [], busa: 0, akum: 0, percik: [] };
+            }
+            const format = s => { s = Math.floor(s); return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); };
+
+            AO.daftar('tablet', {
+                judul: 'Animasi permasalahan: tablet effervescent',
+                alt: 'Animasi dua gelas. Gelas A berisi air dingin dengan tablet utuh, gelas B berisi air hangat dengan tablet yang digerus. Gelembung gas di gelas B jauh lebih banyak dan tablet B habis lebih dulu.',
+                benih: 23,
+                langkah: [
+                    { durasi: 4, pendek: 'persiapan', teks: 'Guru menyiapkan dua gelas: <strong>gelas A</strong> berisi air dingin dan <strong>gelas B</strong> berisi air hangat.' },
+                    { durasi: 3.5, pendek: 'tablet masuk', teks: 'Tablet effervescent <strong>utuh</strong> dimasukkan ke gelas A, sedangkan tablet yang sudah <strong>digerus</strong> dimasukkan ke gelas B.' },
+                    { durasi: 7, pendek: 'amati', teks: 'Amati banyaknya gelembung gas CO₂ dan catat waktu yang diperlukan sampai tablet habis bereaksi.' },
+                    { durasi: 6, pendek: 'bandingkan', teks: 'Tablet di gelas B habis jauh lebih cepat, sedangkan tablet di gelas A masih bereaksi perlahan.' },
+                    { durasi: 6, pendek: 'pertanyaan', teks: 'Perusahaan farmasi ingin tablet vitamin bereaksi <strong>secepat mungkin</strong>. Faktor apa saja yang membuatnya lebih cepat? <strong>Buktikan dengan data percobaan!</strong>' }
+                ],
+
+                buat(r) {
+                    const A = gelas('A', 124, true), B = gelas('B', 356, false);
+                    A.tablet = { y: 58, vy: 0, m: 1 };
+                    B.butir = [];
+                    for (let i = 0; i < 38; i++) B.butir.push({ x: B.cx - 14 + r() * 28, y: 52 + r() * 8, vx: (r() - .5) * 40, vy: 0, m: .85 + r() * .3, dx: (r() - .5) * 90, jatuh: r() * .35 });
+                    return { r, A, B, waktu: 0, jatuh: false, tJatuh: 0 };
+                },
+
+                perbarui(st, dt, info) {
+                    const r = st.r, L = info.langkah, A = st.A, B = st.B;
+                    st.waktu += dt;
+                    if (L >= 1 && (L > 1 || info.lokal > .9)) { if (!st.jatuh) st.jatuh = true; st.tJatuh += dt; }
+
+                    // Tablet utuh jatuh ke gelas A
+                    if (st.jatuh) {
+                        const tb = A.tablet;
+                        if (tb.y < DASAR - 6) {
+                            tb.vy += 520 * dt;
+                            if (tb.y > AIR) tb.vy = Math.min(tb.vy, 90);
+                            const lama = tb.y;
+                            tb.y = Math.min(DASAR - 6, tb.y + tb.vy * dt);
+                            if (lama <= AIR && tb.y > AIR) for (let i = 0; i < 7; i++) A.percik.push({ x: A.cx + (r() - .5) * 20, y: AIR, vx: (r() - .5) * 80, vy: -60 - r() * 60, t: 0 });
+                            if (tb.y > AIR && !A.masuk) { A.masuk = true; A.mulai = st.waktu; }
+                        }
+                        // Serbuk ditabur ke gelas B
+                        B.butir.forEach(g => {
+                            if (st.tJatuh < g.jatuh) return;
+                            const lama = g.y;
+                            if (g.y < AIR) { g.vy += 420 * dt; g.x += g.vx * dt; }
+                            else { g.vy = Math.min(g.vy, 30 + g.m * 20); g.x += (g.dx - (g.x - B.cx)) * dt * .8; }
+                            g.y = Math.min(DASAR - 3 - (g.m * 2), g.y + g.vy * dt);
+                            if (lama <= AIR && g.y > AIR) {
+                                if (!B.masuk) { B.masuk = true; B.mulai = st.waktu; }
+                                if (r() < .3) B.percik.push({ x: g.x, y: AIR, vx: (r() - .5) * 50, vy: -40 - r() * 40, t: 0 });
+                            }
+                        });
+                    }
+
+                    // Reaksi berjalan
+                    [A, B].forEach(G => {
+                        if (!G.masuk || G.selesai) return;
+                        G.detik += dt * PERCEPAT;
+                        let sisa;
+                        if (G === A) { A.tablet.m = Math.max(0, 1 - G.detik / 190); sisa = A.tablet.m; }
+                        else {
+                            B.butir.forEach(g => { if (g.y > AIR) g.m = Math.max(0, g.m - dt * PERCEPAT / 30 * (0.8 + (g.x % 1) * .4)); });
+                            sisa = B.butir.reduce((s, g) => s + g.m, 0) / B.butir.length;
+                        }
+                        if (sisa <= 0.001) { G.selesai = true; return; }
+                        // Gelembung CO₂
+                        G.akum += dt * (G === A ? 7 : 70) * Math.max(.15, sisa);
+                        while (G.akum > 1) {
+                            G.akum -= 1;
+                            let x, y;
+                            if (G === A) { const w = 22 * Math.sqrt(A.tablet.m) + 2; x = A.cx + (r() - .5) * w * 2; y = A.tablet.y - 3; }
+                            else {
+                                const hidup = B.butir.filter(g => g.m > 0 && g.y > AIR);
+                                if (!hidup.length) break;
+                                const g = hidup[Math.floor(r() * hidup.length)]; x = g.x; y = g.y - 2;
+                            }
+                            G.gelembung.push({ x, y, r: 1.6 + r() * (G === A ? 2.2 : 2.8), vy: -(G === A ? 34 : 60) - r() * 30, fase: r() * 6.3 });
+                        }
+                    });
+
+                    [A, B].forEach(G => {
+                        G.gelembung.forEach(b => { b.y += b.vy * dt; b.x += Math.sin(st.waktu * 6 + b.fase) * 12 * dt; });
+                        const pecah = G.gelembung.filter(b => b.y <= AIR + 2).length;
+                        G.busa = Math.min(9, Math.max(0, G.busa + pecah * .09 - dt * (G.selesai ? 1.2 : .6)));
+                        G.gelembung = G.gelembung.filter(b => b.y > AIR + 2);
+                        G.percik.forEach(p => { p.t += dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 300 * dt; });
+                        G.percik = G.percik.filter(p => p.t < .5);
+                    });
+                },
+
+                gambar(ctx, st, info, U) {
+                    const W = U.W, L = info.langkah;
+                    // Latar laboratorium
+                    const g = ctx.createLinearGradient(0, 0, 0, 240);
+                    g.addColorStop(0, '#ecfdf5'); g.addColorStop(1, '#f8fafc');
+                    ctx.fillStyle = g; ctx.fillRect(0, 0, W, 240);
+                    ctx.fillStyle = '#475569'; ctx.fillRect(0, 234, W, 8);
+                    ctx.fillStyle = '#64748b'; ctx.fillRect(0, 242, W, 60);
+
+                    [st.A, st.B].forEach(G => {
+                        const x0 = G.cx - LEBAR / 2, x1 = G.cx + LEBAR / 2;
+                        // Judul gelas
+                        U.teks(ctx, `Gelas ${G.nama}`, G.cx, 22, { ukuran: U.uk(14), tebal: 800, rata: 'center', warna: '#0f172a' });
+                        U.teks(ctx, G.dingin ? 'tablet utuh · air dingin' : 'tablet digerus · air hangat', G.cx, 24 + U.uk(16), { ukuran: Math.min(U.uk(11), 14), tebal: 600, rata: 'center', warna: '#475569' });
+
+                        // Air
+                        ctx.save();
+                        ctx.beginPath(); ctx.moveTo(x0 + 3, AIR); ctx.lineTo(x1 - 3, AIR); ctx.lineTo(x1 - 7, DASAR); ctx.lineTo(x0 + 7, DASAR); ctx.closePath();
+                        ctx.fillStyle = G.dingin ? 'rgba(125,185,250,.42)' : 'rgba(251,176,105,.38)'; ctx.fill();
+                        ctx.clip();
+                        // Tablet / serbuk
+                        if (G.tablet && G.tablet.m > 0 && st.jatuh && G.tablet.y > AIR - 8) gambarTablet(ctx, G.cx, G.tablet.y, G.tablet.m);
+                        if (G.butir && st.jatuh) G.butir.forEach(b => { if (b.m > 0 && b.y > AIR - 4) { ctx.fillStyle = `rgba(255,255,255,${.5 + b.m * .5})`; ctx.fillRect(b.x - 1.8 * b.m, b.y - 1.8 * b.m, 3.6 * b.m + .6, 3.6 * b.m + .6); } });
+                        // Gelembung
+                        ctx.lineWidth = 1;
+                        G.gelembung.forEach(b => {
+                            ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, 6.3);
+                            ctx.fillStyle = 'rgba(255,255,255,.55)'; ctx.fill();
+                            ctx.strokeStyle = 'rgba(255,255,255,.95)'; ctx.stroke();
+                        });
+                        ctx.restore();
+                        // Busa di permukaan
+                        if (G.busa > .3) {
+                            ctx.fillStyle = 'rgba(255,255,255,.9)';
+                            for (let x = x0 + 8; x < x1 - 6; x += 7) {
+                                ctx.beginPath(); ctx.arc(x, AIR - 1, 2 + G.busa * .45 * (0.7 + .3 * Math.sin(x * 1.7 + st.waktu * 2)), 0, 6.3); ctx.fill();
+                            }
+                        }
+                        // Tablet/serbuk sebelum jatuh
+                        if (!st.jatuh && L >= 1) {
+                            if (G.tablet) gambarTablet(ctx, G.cx, 64, 1);
+                            else {
+                                ctx.fillStyle = '#cbd5e1'; U.kotak(ctx, G.cx - 26, 62, 52, 6, 3); ctx.fill();
+                                ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.ellipse(G.cx, 61, 16, 4.5, 0, Math.PI, 0); ctx.fill();
+                            }
+                        }
+                        if (G.tablet && st.jatuh && G.tablet.y <= AIR - 8) gambarTablet(ctx, G.cx, G.tablet.y, 1);
+                        if (G.butir && st.jatuh) G.butir.forEach(b => { if (b.y <= AIR - 4 && st.tJatuh >= b.jatuh) { ctx.fillStyle = '#fff'; ctx.fillRect(b.x - 1.8, b.y - 1.8, 3.6, 3.6); } });
+
+                        // Percikan air
+                        G.percik.forEach(p => { ctx.fillStyle = G.dingin ? 'rgba(96,165,250,.8)' : 'rgba(251,146,60,.7)'; ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, 6.3); ctx.fill(); });
+
+                        // Dinding gelas
+                        ctx.beginPath(); ctx.moveTo(x0, ATAS); ctx.lineTo(x0 + 7, DASAR + 3); ctx.lineTo(x1 - 7, DASAR + 3); ctx.lineTo(x1, ATAS);
+                        ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(71,85,105,.85)'; ctx.lineJoin = 'round'; ctx.stroke();
+                        ctx.strokeStyle = 'rgba(255,255,255,.7)'; ctx.lineWidth = 3;
+                        ctx.beginPath(); ctx.moveTo(x0 + 10, ATAS + 18); ctx.lineTo(x0 + 14, DASAR - 16); ctx.stroke();
+
+                        // Uap air hangat
+                        if (!G.dingin) {
+                            ctx.strokeStyle = 'rgba(148,163,184,.45)'; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+                            for (let i = 0; i < 3; i++) {
+                                const bx = G.cx - 26 + i * 26, f = (st.waktu * .6 + i * .33) % 1;
+                                ctx.globalAlpha = Math.sin(f * Math.PI);
+                                ctx.beginPath();
+                                for (let k = 0; k <= 10; k++) { const y = AIR - 8 - k * 4 - f * 16; const x = bx + Math.sin(k * .8 + st.waktu * 2 + i) * 4; k ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+                                ctx.stroke();
+                            }
+                            ctx.globalAlpha = 1;
+                        }
+
+                        // Termometer
+                        const tx = x1 + 12;
+                        ctx.fillStyle = '#fff'; U.kotak(ctx, tx - 4, 96, 8, 70, 4); ctx.fill();
+                        ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.2; ctx.stroke();
+                        ctx.fillStyle = G.dingin ? '#3b82f6' : '#ef4444';
+                        const tinggi = G.dingin ? 20 : 52;
+                        ctx.fillRect(tx - 1.8, 164 - tinggi, 3.6, tinggi);
+                        ctx.beginPath(); ctx.arc(tx, 170, 6.5, 0, 6.3); ctx.fill();
+                        U.teks(ctx, G.dingin ? '10 °C' : '45 °C', tx, 186 + U.uk(4), { ukuran: U.uk(10.5), tebal: 800, rata: 'center', warna: G.dingin ? '#1d4ed8' : '#b91c1c' });
+
+                        // Stopwatch
+                        const teks = !G.masuk ? 'Waktu 00:00' : G.selesai ? `Habis ${format(G.detik)} ✓` : `Waktu ${format(G.detik)}`;
+                        U.label(ctx, teks, G.cx, 262, { rata: 'center', ukuran: U.uk(12), latar: G.selesai ? '#dcfce7' : '#fff', warna: G.selesai ? '#166534' : '#0f172a' });
+                    });
+
+                    U.teks(ctx, U.ts > 1.2 ? '○ = gelembung gas CO₂' : '○ gelembung = gas CO₂ · waktu percobaan dipercepat', W / 2, 291, { ukuran: U.uk(10.5), tebal: 600, rata: 'center', warna: '#e2e8f0' });
+
+                    if (L === 4) {
+                        const s = 1 + Math.sin(st.waktu * 3) * .05;
+                        ctx.save(); ctx.translate(240, 150); ctx.scale(s, s);
+                        U.kotak(ctx, -44, -22, 88, 44, 22); ctx.fillStyle = '#fff'; ctx.fill();
+                        ctx.lineWidth = 3; ctx.strokeStyle = '#059669'; ctx.stroke();
+                        U.teks(ctx, '?', 0, 2, { ukuran: 22, tebal: 800, warna: '#059669', rata: 'center', dasar: 'middle' });
+                        ctx.restore();
+                    }
+                }
+            });
+
+            function gambarTablet(ctx, x, y, m) {
+                const w = 22 * Math.sqrt(m), h = 5.5 * Math.sqrt(m) + 1;
+                ctx.fillStyle = '#e2e8f0'; ctx.beginPath(); ctx.ellipse(x, y + 2, w, h, 0, 0, 6.3); ctx.fill();
+                ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.ellipse(x, y, w, h, 0, 0, 6.3); ctx.fill();
+                ctx.strokeStyle = 'rgba(100,116,139,.6)'; ctx.lineWidth = 1; ctx.stroke();
+            }
+        })();
+    </script>
+
+    <script type="module">
+        /* =====================================================================
+           MESIN LKPD DIGITAL EDUKINETIKA
+           - Simpan otomatis: perangkat (localStorage) + Firebase (status "draf")
+           - Kumpulkan ke dashboard guru: lkpd/{uid}/{id} status "dikumpulkan"
+           - Guru dapat menilai / mengembalikan untuk revisi (status "dinilai" / "revisi")
+           - Cetak / PDF lewat dialog cetak browser
+           ===================================================================== */
+        const FIREBASE_CONFIG = {
+            apiKey: "AIzaSyA_YUPPq0CZgNi5McaTx3-a8LOGW70zIzg",
+            authDomain: "starararrara.firebaseapp.com",
+            databaseURL: "https://starararrara-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "starararrara",
+            storageBucket: "starararrara.firebasestorage.app",
+            messagingSenderId: "1085300087665",
+            appId: "1:1085300087665:web:375eae85042f14ffa7f4d0"
+        };
+        const L = window.LKPD;
+        const $ = s => document.querySelector(s);
+        const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+        const S = {
+            uid: null, nama: '', kelas: '',
+            isian: {}, identitas: {},
+            status: 'draf', rekam: null,
+            terkunci: false, cloud: false,
+            db: null, fb: null
+        };
+
+        /* ---------- Daftar soal bernomor ---------- */
+        const SOAL = [];
+        L.bagian.forEach((b, bi) => b.blok.forEach(it => {
+            if (it.id) { it.nomor = SOAL.length + 1; it.fase = b.nama; SOAL.push(it); }
+        }));
+        const soalById = Object.fromEntries(SOAL.map(s => [s.id, s]));
+
+        /* =====================================================================
+           RENDER
+           ===================================================================== */
+        function render() {
+            document.documentElement.style.setProperty('--aksen-gelap', L.warnaGelap || '#1e3a8a');
+            $('#judulBilah').textContent = L.judul;
+            const html = [];
+            html.push(`
+                <section class="kartu sampul">
+                    <svg class="hiasan" viewBox="0 0 100 100" aria-hidden="true"><path d="M38 8h24M42 8v28L18 80a8 8 0 0 0 7 12h50a8 8 0 0 0 7-12L58 36V8" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"/><circle cx="40" cy="70" r="5" fill="#fff"/><circle cx="58" cy="76" r="4" fill="#fff"/><circle cx="50" cy="60" r="3" fill="#fff"/></svg>
+                    <span class="label">Lembar Kerja Peserta Didik · Pertemuan ${L.pertemuan}</span>
+                    <h1>${esc(L.judul)}</h1>
+                    <p>${L.subjudul}</p>
+                    <div class="meta">
+                        <span>📚 Kimia Fase F · Kelas XI</span>
+                        <span>⏱️ ${esc(L.alokasi)}</span>
+                        <span>🧩 Model Problem Based Learning</span>
+                    </div>
+                </section>
+                <div id="spandukStatus"></div>
+                <section class="kartu" id="bagian-identitas">
+                    <h2 class="judul-bagian">Identitas</h2>
+                    <div class="identitas" style="margin-top:12px">
+                        <label>Nama lengkap<input type="text" data-idn="nama" autocomplete="name"></label>
+                        <label>Kelas<input type="text" data-idn="kelas" placeholder="contoh: XI MIPA 2"></label>
+                        <label>Nomor kelompok<input type="text" data-idn="kelompok" placeholder="contoh: 3"></label>
+                        <label style="grid-column:1/-1">Anggota kelompok<textarea data-idn="anggota" rows="2" placeholder="Tulis nama anggota, pisahkan dengan koma"></textarea><div class="nilai-cetak" data-cetak-idn="anggota"></div></label>
+                    </div>
+                    <div class="spanduk biru layar-saja" id="spandukMasuk" hidden></div>
+                </section>
+                <section class="kartu">
+                    <h2 class="judul-bagian">Tujuan Pembelajaran</h2>
+                    <ol class="daftar">${L.tujuan.map(t => `<li>${t}</li>`).join('')}</ol>
+                    <h3 style="margin:16px 0 0;font-size:1rem">Petunjuk</h3>
+                    <ol class="daftar">${L.petunjuk.map(t => `<li>${t}</li>`).join('')}</ol>
+                </section>`);
+
+            L.bagian.forEach((b, bi) => {
+                html.push(`<section class="kartu fase" id="fase-${bi}" data-fase="${bi}">
+                    <div class="kepala-fase">
+                        <div class="no">${b.ikon || bi + 1}</div>
+                        <div><div class="sub">${esc(b.label)}</div><h2 class="judul-bagian">${esc(b.nama)}</h2>${b.ket ? `<div class="ket">${b.ket}</div>` : ''}</div>
+                    </div>
+                    <div class="blok-daftar">${b.blok.map(renderBlok).join('')}</div>
+                </section>`);
+            });
+
+            html.push(`<section class="kartu kirim layar-saja" id="bagianKirim">
+                <h2 class="judul-bagian">Selesai mengerjakan?</h2>
+                <p>Jawabanmu tersimpan otomatis. Tekan <strong>Kumpulkan</strong> agar LKPD terkirim ke dashboard guru untuk dinilai.</p>
+                <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+                    <button type="button" class="tombol" id="tombolCetakBawah">🖨️ Cetak / Simpan PDF</button>
+                    <button type="button" class="tombol utama" id="tombolKirim">📤 Kumpulkan ke guru</button>
+                </div>
+            </section>
+            <p class="cetak-saja" style="font-size:9pt;color:#475569;margin-top:10px">Dicetak dari EduKinetika · <span id="tanggalCetak"></span></p>`);
+            $('#isiLkpd').innerHTML = html.join('');
+
+            $('#langkahFase').innerHTML = `<a href="#bagian-identitas"><span class="n">i</span>Identitas</a>` +
+                L.bagian.map((b, bi) => `<a href="#fase-${bi}" data-fase="${bi}"><span class="n">${b.ikon || bi + 1}</span>${esc(b.pendek || b.nama)}</a>`).join('');
+        }
+
+        function labelSoal(it) {
+            const chip = [
+                it.tp ? `<span class="chip tp">${esc(it.tp)}</span>` : '',
+                it.opsional ? `<span class="chip opsional">${esc(it.opsional === true ? 'Tantangan · opsional' : it.opsional)}</span>` : ''
+            ].join('');
+            return `<div class="tanya"><span class="nomor">${it.nomor}</span><div><div class="teks-tanya">${it.label}${chip}</div>${it.ket ? `<div style="font-size:.85rem;color:var(--redup);margin-top:2px">${it.ket}</div>` : ''}</div></div>`;
+        }
+
+        function renderBlok(it) {
+            const levelAttr = it.level ? ` data-level="${esc(it.level)}"` : '';
+            switch (it.tipe) {
+                case 'animasi':
+                    return window.AnimasiOrientasi ? window.AnimasiOrientasi.html(it) : '';
+                case 'info':
+                    return `<div class="info ${it.gaya || ''}"${levelAttr}>${it.tag ? `<div class="tag">${it.tag}</div>` : ''}${it.html}</div>`;
+                case 'bantuan':
+                    return `<details class="bantuan"${levelAttr}><summary>${esc(it.judul || 'Kartu bantuan')}</summary><div class="isi">${it.html}</div></details>`;
+                case 'tautan':
+                    return `<div class="tautan-daftar">${it.item.map(t => `<a href="${esc(t.href)}" target="_blank" rel="noopener"><strong>${t.label} ↗</strong><span>${t.ket}</span></a>`).join('')}</div>`;
+                case 'datalab':
+                    return `<div class="data-lab" data-lab="${esc(it.lab)}"><strong>📡 Data dari laboratorium virtual (${esc(it.nama)})</strong><div class="isi-lab">Masuk ke akunmu agar data percobaanmu tampil di sini.</div></div>`;
+            }
+            let jawab = '';
+            const q = it.id;
+            if (it.tipe === 'uraian') {
+                jawab = `<textarea data-q="${q}" rows="${it.baris || 4}" placeholder="${esc(it.placeholder || 'Tulis jawabanmu di sini…')}"></textarea><div class="nilai-cetak" data-cetak="${q}"></div>`;
+            } else if (it.tipe === 'isian') {
+                jawab = `<input type="text" data-q="${q}" placeholder="${esc(it.placeholder || '')}" ${it.lebar ? `style="max-width:${it.lebar}"` : ''}>`;
+            } else if (it.tipe === 'pilihan') {
+                jawab = `<div class="pilihan-daftar" role="radiogroup">${it.opsi.map((o, i) => `<label><input type="radio" name="${q}" data-q="${q}" data-k="pilih" value="${esc(o)}"><span>${o}</span></label>`).join('')}</div>` +
+                    (it.alasan ? `<textarea data-q="${q}" data-k="alasan" rows="3" style="margin-top:8px" placeholder="Tuliskan alasanmu…"></textarea><div class="nilai-cetak" data-cetak="${q}.alasan"></div>` : '');
+            } else if (it.tipe === 'tabel') {
+                jawab = `<div class="tabel-wadah"><table class="lkpd"><thead><tr><th>${esc(it.kepala || '')}</th>${it.kolom.map(k => `<th>${esc(k.judul)}</th>`).join('')}</tr></thead><tbody>
+                    ${it.baris.map((br, r) => `<tr><td>${br}</td>${it.kolom.map((k, c) => `<td>${sel(q, `r${r}c${c}`, k)}</td>`).join('')}</tr>`).join('')}
+                    </tbody></table></div>` + (it.grafik ? `<div class="grafik" data-grafik="${q}"><div class="jdl">📊 Grafik otomatis: ${esc(it.grafik.judul)}</div><div class="svg"></div></div>` : '');
+            } else if (it.tipe === 'bs') {
+                jawab = `<div class="tabel-wadah"><table class="lkpd"><thead><tr><th>Pernyataan</th><th style="width:130px">Benar/Salah</th><th>Alasan</th></tr></thead><tbody>
+                    ${it.pernyataan.map((p, r) => `<tr><td style="white-space:normal;font-weight:600">${p}</td><td>${sel(q, `r${r}bs`, { tipe: 'pilih', opsi: ['Benar', 'Salah'] })}</td><td>${sel(q, `r${r}al`, { tipe: 'teks', ph: 'alasan singkat' })}</td></tr>`).join('')}
+                    </tbody></table></div>`;
+            } else if (it.tipe === 'diagram') {
+                jawab = `<div class="diagram">${it.svg}</div><div class="penanda-daftar">${it.penanda.map((p, r) => `<label><span class="bulat">${p}</span>${sel(q, `p${r}`, { tipe: 'pilih', opsi: it.opsi })}</label>`).join('')}</div>`;
+            }
+            return `<div class="soal" data-soal="${q}"${levelAttr}>${labelSoal(it)}<div class="jawab">${jawab}</div><div class="catatan-guru" data-catatan="${q}" hidden></div></div>`;
+        }
+
+        function sel(q, k, kol) {
+            if (kol.tipe === 'pilih') return `<select data-q="${q}" data-k="${k}" aria-label="${esc(kol.judul || k)}"><option value="">– pilih –</option>${kol.opsi.map(o => `<option>${esc(o)}</option>`).join('')}</select>`;
+            return `<input type="${kol.tipe === 'angka' ? 'text' : 'text'}" ${kol.tipe === 'angka' ? 'inputmode="decimal"' : ''} data-q="${q}" data-k="${k}" placeholder="${esc(kol.ph || '')}" aria-label="${esc(kol.judul || k)}">`;
+        }
+
+        /* =====================================================================
+           NILAI ISIAN <-> TAMPILAN
+           ===================================================================== */
+        function ambilDariForm(el) {
+            const q = el.dataset.q, k = el.dataset.k;
+            if (el.type === 'radio') {
+                if (!el.checked) return;
+                S.isian[q] = Object.assign({}, typeof S.isian[q] === 'object' ? S.isian[q] : {}, { pilih: el.value });
+            } else if (k) {
+                S.isian[q] = Object.assign({}, typeof S.isian[q] === 'object' ? S.isian[q] : {}, { [k]: el.value });
+            } else {
+                S.isian[q] = el.value;
+            }
+        }
+
+        function isiKeForm() {
+            document.querySelectorAll('[data-q]').forEach(el => {
+                const q = el.dataset.q, k = el.dataset.k, v = S.isian[q];
+                if (v == null) return;
+                if (el.type === 'radio') el.checked = typeof v === 'object' && v.pilih === el.value;
+                else if (k) el.value = (typeof v === 'object' && v[k]) || '';
+                else el.value = typeof v === 'string' ? v : '';
+            });
+            document.querySelectorAll('[data-idn]').forEach(el => { el.value = S.identitas[el.dataset.idn] || ''; });
+            perbaruiTampilanTurunan();
+        }
+
+        // Teks jawaban yang mudah dibaca guru di dashboard
+        function teksJawaban(it) {
+            const v = S.isian[it.id];
+            if (v == null || v === '') return '';
+            if (typeof v === 'string') return v.trim();
+            if (it.tipe === 'pilihan') return [v.pilih ? `Pilihan: ${v.pilih}` : '', v.alasan ? `Alasan: ${v.alasan}` : ''].filter(Boolean).join('\n');
+            if (it.tipe === 'tabel') return it.baris.map((br, r) => {
+                const isi = it.kolom.map((k, c) => v[`r${r}c${c}`] ? `${k.judul}: ${v[`r${r}c${c}`]}` : '').filter(Boolean).join('; ');
+                return isi ? `${br.replace(/<[^>]+>/g, '')} → ${isi}` : '';
+            }).filter(Boolean).join('\n');
+            if (it.tipe === 'bs') return it.pernyataan.map((p, r) => {
+                const bs = v[`r${r}bs`], al = v[`r${r}al`];
+                return bs || al ? `${r + 1}. ${p.replace(/<[^>]+>/g, '')} → ${bs || '-'}${al ? ` (alasan: ${al})` : ''}` : '';
+            }).filter(Boolean).join('\n');
+            if (it.tipe === 'diagram') return it.penanda.map((p, r) => v[`p${r}`] ? `Penanda ${p}: ${v[`p${r}`]}` : '').filter(Boolean).join('\n');
+            return JSON.stringify(v);
+        }
+
+        function sudahTerisi(it) {
+            const v = S.isian[it.id];
+            if (v == null) return false;
+            if (typeof v === 'string') return v.trim().length > 0;
+            if (it.tipe === 'pilihan') return !!v.pilih && (!it.alasan || !!(v.alasan || '').trim());
+            if (it.tipe === 'tabel') {
+                const total = it.baris.length * it.kolom.length;
+                const isi = Object.values(v).filter(x => String(x).trim()).length;
+                return isi >= Math.ceil(total * 0.6);
+            }
+            if (it.tipe === 'bs') return it.pernyataan.every((_, r) => v[`r${r}bs`]);
+            if (it.tipe === 'diagram') return it.penanda.every((_, r) => v[`p${r}`]);
+            return false;
+        }
+
+        const levelDipilih = () => (S.isian.level && S.isian.level.pilih) || null;
+        function soalAktif(it) { return !it.level || it.level === levelDipilih(); }
+        function soalWajib() { return SOAL.filter(it => !it.opsional && soalAktif(it) && !it.tidakWajib); }
+
+        function perbaruiTampilanTurunan() {
+            // Tampilkan soal sesuai level yang dipilih
+            const lv = levelDipilih();
+            document.querySelectorAll('[data-level]').forEach(el => { el.hidden = el.dataset.level !== lv; });
+            document.querySelectorAll('.pesan-level').forEach(el => { el.hidden = !!lv; });
+            // Tanda terisi & progres
+            SOAL.forEach(it => { const el = document.querySelector(`[data-soal="${it.id}"]`); if (el) el.classList.toggle('terisi', sudahTerisi(it)); });
+            const wajib = soalWajib(), terisi = wajib.filter(sudahTerisi).length;
+            $('#barProgres').style.width = (wajib.length ? terisi / wajib.length * 100 : 0) + '%';
+            L.bagian.forEach((b, bi) => {
+                const daftar = b.blok.filter(it => it.id && !it.opsional && soalAktif(it));
+                const a = document.querySelector(`.langkah a[data-fase="${bi}"]`);
+                if (a) a.classList.toggle('lengkap', daftar.length > 0 && daftar.every(sudahTerisi));
+            });
+            // Grafik otomatis
+            SOAL.filter(it => it.grafik).forEach(gambarGrafik);
+            // Salinan untuk cetak
+            document.querySelectorAll('[data-cetak]').forEach(d => {
+                const [q, k] = d.dataset.cetak.split('.');
+                const v = S.isian[q];
+                d.textContent = k ? ((v && v[k]) || '') : (typeof v === 'string' ? v : '');
+            });
+            document.querySelectorAll('[data-cetak-idn]').forEach(d => { d.textContent = S.identitas[d.dataset.cetakIdn] || ''; });
+        }
+
+        function angka(s) { const n = parseFloat(String(s || '').replace(',', '.').replace(/[^\d.eE+-]/g, '')); return isFinite(n) ? n : null; }
+
+        function gambarGrafik(it) {
+            const wadah = document.querySelector(`[data-grafik="${it.id}"] .svg`);
+            if (!wadah) return;
+            const v = S.isian[it.id] || {};
+            const c = it.grafik.kolom;
+            const data = it.baris.map((br, r) => ({ label: br.replace(/<[^>]+>/g, ''), n: angka(v[`r${r}c${c}`]) }));
+            const maks = Math.max(0, ...data.map(d => d.n || 0));
+            if (!maks) { wadah.innerHTML = `<p style="margin:4px 0;font-size:.82rem;color:var(--redup)">Isi kolom "${esc(it.kolom[c].judul)}" untuk melihat grafik.</p>`; return; }
+            const W = 520, H = 40 + data.length * 34, kiri = 130, kanan = 60;
+            const batang = data.map((d, i) => {
+                const y = 18 + i * 34, w = d.n ? (W - kiri - kanan) * d.n / maks : 0;
+                return `<text x="${kiri - 8}" y="${y + 15}" text-anchor="end" font-size="12" font-weight="700" fill="#334155">${esc(d.label.length > 18 ? d.label.slice(0, 17) + '…' : d.label)}</text>
+                    <rect x="${kiri}" y="${y}" width="${w}" height="22" rx="6" fill="var(--aksen)" opacity="${.55 + .45 * (i + 1) / data.length}"/>
+                    <text x="${kiri + w + 6}" y="${y + 15}" font-size="12" font-weight="800" fill="#0f172a">${d.n == null ? '' : String(d.n).replace('.', ',')} ${esc(it.grafik.satuan)}</text>`;
+            }).join('');
+            wadah.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(it.grafik.judul)}">${batang}<line x1="${kiri}" y1="10" x2="${kiri}" y2="${H - 12}" stroke="#94a3b8"/></svg>`;
+        }
+
+        /* =====================================================================
+           SIMPAN OTOMATIS
+           ===================================================================== */
+        const kunciLokal = () => `lkpd:${L.id}:${S.uid || 'tamu'}`;
+        let timerSimpan = null;
+
+        function infoSimpan(kelas, teks) {
+            const el = $('#simpanInfo');
+            el.className = 'simpan-info ' + kelas;
+            el.lastElementChild.textContent = teks;
+        }
+        const jam = () => new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+        function simpanLokal() {
+            if (typeof MODE_PERIKSA !== 'undefined' && MODE_PERIKSA) return;
+            try { localStorage.setItem(kunciLokal(), JSON.stringify({ isian: S.isian, identitas: S.identitas, diperbarui: Date.now() })); } catch (e) { }
+        }
+
+        function jadwalkanSimpan() {
+            if (S.terkunci) return;
+            simpanLokal();
+            infoSimpan('proses', 'Menyimpan…');
+            clearTimeout(timerSimpan);
+            timerSimpan = setTimeout(simpanCloud, 1800);
+        }
+
+        function paketData() {
+            const jawaban = {}, soalMeta = {}, faseMeta = {};
+            SOAL.forEach(it => {
+                const t = teksJawaban(it);
+                if (t) jawaban[it.id] = t;
+                soalMeta[it.id] = (it.label || '').replace(/<[^>]+>/g, '');
+                faseMeta[it.id] = it.fase;
+            });
+            const wajib = soalWajib();
+            return {
+                judul: L.judul, pertemuan: L.pertemuan, nama: S.identitas.nama || S.nama || '',
+                kelas: S.identitas.kelas || '', identitas: S.identitas,
+                jawaban, isian: S.isian, soal: soalMeta, fase: faseMeta,
+                progres: Math.round(wajib.filter(sudahTerisi).length / Math.max(1, wajib.length) * 100),
+                diperbarui: Date.now()
+            };
+        }
+
+        async function simpanCloud() {
+            if (S.terkunci) return;
+            if (!S.cloud || !S.uid) { infoSimpan('lokal', `Tersimpan di perangkat ${jam()}`); return; }
+            try {
+                const { ref, update } = S.fb;
+                const status = S.status === 'revisi' ? 'revisi' : 'draf';
+                await update(ref(S.db, `lkpd/${S.uid}/${L.id}`), Object.assign(paketData(), { status }));
+                infoSimpan('ok', `Tersimpan otomatis ${jam()}`);
+            } catch (e) {
+                console.warn(e);
+                infoSimpan('galat', 'Gagal ke server, tersimpan di perangkat');
+            }
+        }
+
+        /* =====================================================================
+           STATUS DARI GURU (draf / dikumpulkan / revisi / dinilai)
+           ===================================================================== */
+        function terapkanStatus(rec) {
+            S.rekam = rec || null;
+            S.status = (rec && rec.status) || 'draf';
+            S.terkunci = S.status === 'dikumpulkan' || S.status === 'dinilai';
+            document.querySelectorAll('[data-q], [data-idn]').forEach(el => el.disabled = S.terkunci);
+            ['#tombolKirim', '#tombolKirimAtas'].forEach(id => { const b = $(id); if (b) b.disabled = S.terkunci; });
+            const sp = $('#spandukStatus');
+            const cs = (rec && rec.catatanSoal) || {};
+            document.querySelectorAll('[data-catatan]').forEach(el => {
+                const t = S.status === 'revisi' || S.status === 'dinilai' ? cs[el.dataset.catatan] : '';
+                el.hidden = !t; el.textContent = t || '';
+            });
+            const tgl = t => t ? new Date(t).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) : '';
+            if (S.status === 'dinilai') {
+                sp.innerHTML = `<div class="spanduk hijau"><div class="nilai-besar">${esc(rec.nilai ?? '-')}</div><div><strong>LKPD sudah dinilai guru.</strong>${rec.catatanGuru ? `<br>${esc(rec.catatanGuru)}` : ''}<br><small>${tgl(rec.dinilaiPada)}</small></div></div>`;
+                infoSimpan('ok', 'Sudah dinilai');
+            } else if (S.status === 'dikumpulkan') {
+                sp.innerHTML = `<div class="spanduk biru">📤 <div><strong>LKPD sudah dikumpulkan</strong> ${tgl(rec.dikumpulkanPada)}. Jawaban dikunci sambil menunggu penilaian guru. Kamu tetap bisa mencetaknya.</div></div>`;
+                infoSimpan('ok', 'Terkumpul');
+            } else if (S.status === 'revisi') {
+                sp.innerHTML = `<div class="spanduk kuning">✏️ <div><strong>Guru meminta revisi.</strong>${rec.catatanGuru ? `<br>${esc(rec.catatanGuru)}` : ''}<br>Perbaiki jawaban yang diberi catatan, lalu kumpulkan lagi.</div></div>`;
+            } else sp.innerHTML = '';
+        }
+
+        /* =====================================================================
+           KUMPULKAN
+           ===================================================================== */
+        function modal(judul, isiHtml, aksi) {
+            $('#modalJudul').textContent = judul;
+            $('#modalIsi').innerHTML = isiHtml;
+            $('#modalAksi').innerHTML = '';
+            aksi.forEach(a => {
+                const b = document.createElement('button');
+                b.type = 'button'; b.className = 'tombol' + (a.utama ? ' utama' : ''); b.textContent = a.teks;
+                b.addEventListener('click', () => { $('#modal').hidden = true; a.aksi && a.aksi(); });
+                $('#modalAksi').appendChild(b);
+            });
+            $('#modal').hidden = false;
+            $('#modalAksi').lastElementChild.focus();
+        }
+
+        function mintaKumpulkan() {
+            if (S.terkunci) return;
+            if (!(S.identitas.nama || '').trim()) {
+                toast('Isi nama lengkap dulu.');
+                const el = document.querySelector('[data-idn="nama"]'); el.classList.add('salah-isi'); el.focus(); return;
+            }
+            const kosong = soalWajib().filter(it => !sudahTerisi(it));
+            if (kosong.length) {
+                modal('Masih ada soal yang belum lengkap', `<p>Lengkapi dulu soal berikut:</p><ul>${kosong.map(it => `<li>Soal ${it.nomor} (${esc(it.fase)})</li>`).join('')}</ul>`, [
+                    { teks: 'Kumpulkan saja', aksi: () => kumpulkan() },
+                    { teks: 'Lengkapi', utama: true, aksi: () => { const el = document.querySelector(`[data-soal="${kosong[0].id}"]`); el.scrollIntoView({ block: 'center' }); const f = el.querySelector('[data-q]'); if (f) f.focus({ preventScroll: true }); } }
+                ]);
+                return;
+            }
+            modal('Kumpulkan LKPD?', '<p>Setelah dikumpulkan, jawaban dikunci sampai guru menilai atau meminta revisi.</p>', [
+                { teks: 'Batal' }, { teks: 'Ya, kumpulkan', utama: true, aksi: kumpulkan }
+            ]);
+        }
+
+        async function kumpulkan() {
+            simpanLokal();
+            if (!S.cloud || !S.uid) {
+                modal('Belum terhubung ke server', `<p>LKPD belum bisa dikirim karena kamu belum masuk atau koneksi terputus. Jawabanmu aman tersimpan di perangkat ini.</p><p><a href="loging.html" target="_top">Masuk ke akun</a>, lalu buka LKPD ini lagi dan tekan Kumpulkan.</p>`, [{ teks: 'Mengerti', utama: true }]);
+                return;
+            }
+            try {
+                const { ref, update, push, serverTimestamp } = S.fb;
+                infoSimpan('proses', 'Mengirim…');
+                await update(ref(S.db, `lkpd/${S.uid}/${L.id}`), Object.assign(paketData(), { status: 'dikumpulkan', dikumpulkanPada: serverTimestamp() }));
+                push(ref(S.db, 'aktivitas'), { uid: S.uid, jenis: 'lkpd', pesan: `${S.identitas.nama || S.nama} mengumpulkan ${L.judul}`, waktu: serverTimestamp() }).catch(() => { });
+                toast('LKPD terkirim ke dashboard guru 🎉');
+            } catch (e) {
+                console.error(e);
+                infoSimpan('galat', 'Gagal mengirim');
+                modal('Gagal mengirim', `<p>Terjadi kesalahan (${esc(e.code || e.message)}). Periksa koneksi internet lalu coba lagi. Jawabanmu tetap tersimpan.</p>`, [{ teks: 'Tutup', utama: true }]);
+            }
+        }
+
+        /* =====================================================================
+           CETAK / PDF
+           ===================================================================== */
+        function cetak() {
+            perbaruiTampilanTurunan();
+            $('#tanggalCetak').textContent = new Date().toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'short' });
+            document.querySelectorAll('details.bantuan').forEach(d => d.dataset.buka = d.open);
+            const judulAsli = document.title;
+            document.title = `${L.judul} - ${S.identitas.nama || 'Siswa'}`;
+            window.print();
+            setTimeout(() => { document.title = judulAsli; }, 500);
+        }
+        window.addEventListener('beforeprint', perbaruiTampilanTurunan);
+
+        function toast(t) {
+            const el = $('#toast'); el.textContent = t; el.classList.add('tampil');
+            clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('tampil'), 2800);
+        }
+
+        /* =====================================================================
+           DATA LAB (referensi untuk LKPD praktikum)
+           ===================================================================== */
+        function pasangDataLab() {
+            document.querySelectorAll('[data-lab]').forEach(box => {
+                const { ref, onValue } = S.fb;
+                onValue(ref(S.db, `lab/${S.uid}/${box.dataset.lab}`), snap => {
+                    const d = snap.val(), isi = box.querySelector('.isi-lab');
+                    const p = d && d.percobaan ? Object.values(d.percobaan) : [];
+                    isi.innerHTML = p.length
+                        ? `<ul>${p.map(x => `<li><strong>${esc(x.label || '')}</strong>: ${esc(x.kondisi || '')}${x.waktu != null ? ` · waktu ${esc(String(x.waktu).replace('.', ','))} s` : ''}${x.gas ? ` · gas ${esc(x.gas)}` : ''}</li>`).join('')}</ul>`
+                        : 'Belum ada data. Lakukan percobaan di laboratorium virtual; hasilnya akan muncul di sini.';
+                });
+            });
+        }
+
+        /* =====================================================================
+           KONEKSI FIREBASE
+           ===================================================================== */
+        async function sambung() {
+            let sesi = {};
+            try { sesi = JSON.parse(localStorage.getItem('activeSession') || '{}'); } catch (e) { }
+            S.nama = sesi.name || '';
+            try {
+                const V = '10.12.2';
+                const APP = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
+                const A = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`);
+                const D = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-database.js`);
+                const app = APP.getApps().length ? APP.getApp() : APP.initializeApp(FIREBASE_CONFIG);
+                const auth = A.getAuth(app);
+                const user = await new Promise(res => {
+                    const batas = setTimeout(() => res(auth.currentUser), 4000);
+                    const lepas = A.onAuthStateChanged(auth, u => { clearTimeout(batas); lepas(); res(u); });
+                });
+                S.uid = (user && user.uid) || sesi.uid || null;
+                if (user && user.displayName) S.nama = user.displayName;
+                S.db = D.getDatabase(app);
+                S.fb = D;
+                S.cloud = !!S.uid;
+            } catch (e) {
+                console.warn('Firebase tidak tersedia, mode perangkat.', e);
+                S.uid = sesi.uid || null;
+                S.cloud = false;
+            }
+        }
+
+        async function muat() {
+            // 1) Data perangkat
+            let lokal = null;
+            try { lokal = JSON.parse(localStorage.getItem(kunciLokal()) || 'null'); } catch (e) { }
+            // 2) Data server
+            let remote = null;
+            if (S.cloud) {
+                try { remote = (await S.fb.get(S.fb.ref(S.db, `lkpd/${S.uid}/${L.id}`))).val(); } catch (e) { console.warn(e); }
+            }
+            const pakaiRemote = remote && remote.isian && (!lokal || remote.status !== 'draf' || (remote.diperbarui || 0) >= (lokal.diperbarui || 0));
+            const sumber = pakaiRemote ? remote : lokal;
+            S.isian = (sumber && sumber.isian) || {};
+            S.identitas = (sumber && sumber.identitas) || {};
+            if (!S.identitas.nama && S.nama) S.identitas.nama = S.nama;
+            isiKeForm();
+            terapkanStatus(remote);
+
+            $('#namaBilah').textContent = S.identitas.nama ? `${S.identitas.nama}${S.identitas.kelas ? ' · ' + S.identitas.kelas : ''}` : 'Siswa';
+            const sp = $('#spandukMasuk');
+            if (!S.cloud) {
+                sp.hidden = false;
+                sp.innerHTML = `ℹ️ <div>Kamu belum masuk, jadi jawaban hanya tersimpan di perangkat ini. <a href="loging.html" target="_top"><strong>Masuk ke akun</strong></a> agar LKPD bisa dikumpulkan ke guru.</div>`;
+                infoSimpan('lokal', 'Tersimpan di perangkat');
+            } else {
+                if (!S.terkunci) infoSimpan('ok', remote ? 'Tersambung, jawaban dimuat' : 'Tersambung');
+                // Pantau perubahan status dari guru secara langsung
+                S.fb.onValue(S.fb.ref(S.db, `lkpd/${S.uid}/${L.id}`), snap => {
+                    const r = snap.val();
+                    const statusLama = S.status;
+                    terapkanStatus(r);
+                    if (r && r.status !== statusLama && (r.status === 'dinilai' || r.status === 'revisi')) toast(r.status === 'dinilai' ? 'Guru sudah menilai LKPD-mu' : 'Guru meminta revisi');
+                });
+                pasangDataLab();
+                // Sinkronkan jawaban perangkat yang lebih baru ke server
+                if (!pakaiRemote && lokal && !S.terkunci) simpanCloud();
+            }
+        }
+
+        /* =====================================================================
+           PENGIKATAN PERISTIWA
+           ===================================================================== */
+        function ikat() {
+            const main = $('#isiLkpd');
+            const saatUbah = e => {
+                const el = e.target;
+                if (el.dataset.q) { ambilDariForm(el); el.classList.remove('salah-isi'); }
+                else if (el.dataset.idn) {
+                    S.identitas[el.dataset.idn] = el.value; el.classList.remove('salah-isi');
+                    $('#namaBilah').textContent = S.identitas.nama || 'Siswa';
+                } else return;
+                perbaruiTampilanTurunan();
+                jadwalkanSimpan();
+            };
+            main.addEventListener('input', saatUbah);
+            main.addEventListener('change', saatUbah);
+            $('#tombolKirim').addEventListener('click', mintaKumpulkan);
+            $('#tombolKirimAtas').addEventListener('click', mintaKumpulkan);
+            $('#tombolCetak').addEventListener('click', cetak);
+            $('#tombolCetakBawah').addEventListener('click', cetak);
+            $('#modal').addEventListener('click', e => { if (e.target.id === 'modal') $('#modal').hidden = true; });
+            document.addEventListener('keydown', e => { if (e.key === 'Escape') $('#modal').hidden = true; });
+            window.addEventListener('pagehide', () => { simpanLokal(); });
+            document.addEventListener('visibilitychange', () => { if (document.hidden && !S.terkunci) { simpanLokal(); clearTimeout(timerSimpan); simpanCloud(); } });
+
+            // Penanda fase aktif saat menggulir
+            const tautan = [...document.querySelectorAll('.langkah a')];
+            const perbaruiAktif = () => {
+                let aktif = tautan[0];
+                tautan.forEach(a => { const s = document.querySelector(a.getAttribute('href')); if (s && s.getBoundingClientRect().top < 180) aktif = a; });
+                tautan.forEach(a => a.classList.toggle('aktif', a === aktif));
+                const nav = $('#langkahFase');
+                if (aktif && !aktif._tengah) { tautan.forEach(a => a._tengah = false); aktif._tengah = true; nav.scrollTo({ left: aktif.offsetLeft - nav.clientWidth / 2 + aktif.offsetWidth / 2, behavior: 'smooth' }); }
+            };
+            window.addEventListener('scroll', perbaruiAktif, { passive: true });
+            perbaruiAktif();
+        }
+
+        /* =====================================================================
+           MODE PERIKSA GURU
+           Dashboard guru membuka file ini dengan ?mode=periksa lalu mengirim
+           rekaman LKPD siswa lewat postMessage. Lembar tampil persis seperti
+           milik siswa, terkunci, dan tidak menyimpan apa pun.
+           ===================================================================== */
+        function mulaiModePeriksa() {
+            document.body.classList.add('mode-periksa');
+            S.terkunci = true;
+            render();
+            ikat();
+            const kunci = () => document.querySelectorAll('[data-q], [data-idn]').forEach(el => el.disabled = true);
+            kunci();
+            perbaruiTampilanTurunan();
+            infoSimpan('ok', 'Mode periksa guru');
+            $('#spandukStatus').innerHTML = `<div class="spanduk periksa">🔎 <div>Menunggu data LKPD dari dashboard guru…</div></div>`;
+            const asal = location.origin && location.origin !== 'null' ? location.origin : '*';
+            const tglLengkap = t => t ? new Date(t).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) : '–';
+            const labelStatus = { draf: 'Draf (belum dikumpulkan)', dikumpulkan: 'Menunggu dinilai', revisi: 'Dikembalikan untuk revisi', dinilai: 'Sudah dinilai' };
+
+            function tampilkanCatatan(cs) {
+                document.querySelectorAll('[data-catatan]').forEach(el => {
+                    const t = (cs || {})[el.dataset.catatan];
+                    el.hidden = !t; el.textContent = t || '';
+                });
+            }
+            function sesuaikanTinggi() {
+                document.querySelectorAll('textarea[data-q], textarea[data-idn]').forEach(t => {
+                    t.style.height = 'auto';
+                    t.style.height = (t.scrollHeight + 4) + 'px';
+                });
+            }
+
+            window.addEventListener('message', e => {
+                if (e.source !== window.parent || !e.data || typeof e.data !== 'object') return;
+                const d = e.data;
+                if (d.tipe === 'edukinetika-periksa-data') {
+                    const rec = d.rec || {};
+                    S.isian = rec.isian || {};
+                    S.identitas = Object.assign({}, rec.identitas || {});
+                    if (!S.identitas.nama && rec.nama) S.identitas.nama = rec.nama;
+                    if (!S.identitas.kelas && rec.kelas) S.identitas.kelas = rec.kelas;
+                    isiKeForm();
+                    kunci();
+                    const namaTampil = S.identitas.nama || d.nama || 'Siswa';
+                    $('#namaBilah').textContent = `${namaTampil}${S.identitas.kelas ? ' · ' + S.identitas.kelas : ''}`;
+                    $('#spandukStatus').innerHTML = `<div class="spanduk periksa">🔎 <div><strong>Mode periksa guru.</strong> Lembar ini sama persis dengan yang dikerjakan ${esc(namaTampil)}.<br>Status: ${esc(labelStatus[rec.status] || rec.status || '–')} · dikumpulkan ${esc(tglLengkap(rec.dikumpulkanPada))}${rec.nilai != null ? ` · nilai <strong>${esc(rec.nilai)}</strong>` : ''}</div></div>`;
+                    tampilkanCatatan(d.catatanSoal || rec.catatanSoal);
+                    requestAnimationFrame(sesuaikanTinggi);
+                    setTimeout(sesuaikanTinggi, 400);
+                } else if (d.tipe === 'edukinetika-periksa-catatan') {
+                    tampilkanCatatan(d.catatanSoal);
+                } else if (d.tipe === 'edukinetika-periksa-fokus') {
+                    const el = document.querySelector(`[data-soal="${(window.CSS && CSS.escape) ? CSS.escape(d.qid) : d.qid}"]`);
+                    if (!el) return;
+                    if (el.hidden) el.hidden = false;
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    el.classList.remove('sorot'); void el.offsetWidth; el.classList.add('sorot');
+                }
+            });
+            window.addEventListener('resize', sesuaikanTinggi);
+            if (window.parent !== window) window.parent.postMessage({ tipe: 'edukinetika-periksa-siap' }, asal);
+        }
+
+        /* =====================================================================
+           MULAI
+           ===================================================================== */
+        const MODE_PERIKSA = new URLSearchParams(location.search).get('mode') === 'periksa';
+        if (MODE_PERIKSA) {
+            mulaiModePeriksa();
+        } else {
+            render();
+            ikat();
+            perbaruiTampilanTurunan();
+            infoSimpan('proses', 'Menyambungkan…');
+            await sambung();
+            await muat();
+        }
+    </script>
+</body>
+
+</html>
